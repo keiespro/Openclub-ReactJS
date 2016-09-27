@@ -1,0 +1,21 @@
+/**
+ * OpenClub (https://www.openclub.com.au/)
+ *
+ * Copyright © 2016 OpenClub Holdings, PTY LTD. All Rights Reserved.
+ *
+ * This source code is proprietary software belonging to OpenClub Holdings PTY LTD
+ * and is licensed for use by OpenClub PTY LTD.
+ */
+
+@import '../../components/variables.css';
+
+.root {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.container {
+  margin: 0 auto;
+  padding: 0 0 40px;
+  max-width: var(--max-content-width);
+}
