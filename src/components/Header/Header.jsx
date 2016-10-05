@@ -1,10 +1,11 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
 import { Dropdown, MenuItem } from 'react-bootstrap';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 import { LinkContainer } from 'react-router-bootstrap';
 
-import './Header.scss';
-import './HeaderMenuLinks.scss';
+import s from './Header.scss';
+// import s2 from './HeaderMenuLinks.scss';
 
 class Header extends React.Component {
 
@@ -35,8 +36,8 @@ class Header extends React.Component {
 
     render() {
         const ddMenuItem = (<span>
-                                <em className="ion-person"></em><sup className="badge bg-danger">3</sup>
-                            </span>);
+            <em className="ion-person"></em><sup className="badge bg-danger">3</sup>
+        </span>);
 
         return (
             <header className="header-container">
@@ -89,4 +90,4 @@ class Header extends React.Component {
     }
 }
 
-export default Header;
+export default withStyles(s)(Header);

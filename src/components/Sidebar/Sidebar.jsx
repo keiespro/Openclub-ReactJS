@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router'
+import Link from '../Link'
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './Sidebar.scss';
+import s from './Sidebar.scss';
 
 import SidebarRun from './Sidebar.run';
 import {initSvgReplace} from '../Utils/Utils';
@@ -18,12 +19,8 @@ class Sidebar extends React.Component {
     }
 
     routeActive(paths) {
-        paths = Array.isArray(paths) ? paths : [paths];
-        for (let p in paths) {
-            if (this.context.router.isActive(''+paths[p]) === true)
-                return 'active';
-        }
-        return '';
+      return '';
+      // FIXME: This needs to work with the new router context
     }
 
     render() {
@@ -404,4 +401,4 @@ Sidebar.contextTypes = {
     router: React.PropTypes.object
 };
 
-export default Sidebar;
+export default withStyles(s)(Sidebar);

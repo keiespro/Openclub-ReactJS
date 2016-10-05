@@ -11,6 +11,7 @@ import React, { Component, PropTypes } from 'react';
 import emptyFunction from 'fbjs/lib/emptyFunction';
 import s from './App.css';
 import Header from '../Header';
+import Core from '../Core';
 
 class App extends Component {
 
@@ -58,10 +59,11 @@ class App extends Component {
     }
 
     return (
-      <div>
-        <Header />
-        {this.props.children}
-      </div>
+      <Core>
+        {React.cloneElement(this.props.children, {
+            key: Math.random()
+        })}
+      </Core>
     );
   }
 

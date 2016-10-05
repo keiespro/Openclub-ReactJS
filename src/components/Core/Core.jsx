@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './Core.scss';
-import './LayoutVariants.scss';
-
+import s from './Core.scss';
 import Header from '../Header/Header';
 import HeaderSearch from '../Header/HeaderSearch';
 import Sidebar from '../Sidebar/Sidebar';
@@ -53,4 +52,4 @@ class Core extends React.Component {
     }
 }
 
-export default Core;
+export default withStyles(s)(Core);

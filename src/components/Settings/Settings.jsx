@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Modal } from 'react-bootstrap';
 import pubsub from 'pubsub-js';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
 import initSettings from './Settings.run';
 import {initScreenfull} from '../Utils/Utils';
-import './Settings.scss';
+import s from './Settings.scss';
 
 class Settings extends React.Component {
 
@@ -244,7 +245,4 @@ class Settings extends React.Component {
     }
 }
 
-export default Settings;
-
-
-
+export default withStyles(s)(Settings);
