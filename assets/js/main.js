@@ -145,28 +145,23 @@
 					event.preventDefault();
 
 					// Hide message.
-						$message._hide();
+					$message._hide();
 
 					// Disable submit.
-						$submit.disabled = true;
+					$submit.disabled = true;
 
-					// Process form.
-					// Note: Doesn't actually do anything yet (other than report back with a "thank you"),
-					// but there's enough here to piece together a working AJAX submission call that does.
-						window.setTimeout(function() {
-
-							// Reset form.
-								$form.reset();
-
-							// Enable submit.
-								$submit.disabled = false;
-
-							// Show message.
-								$message._show('success', 'Thank you!');
-								//$message._show('failure', 'Something went wrong. Please try again.');
-
-						}, 750);
-
+					$.getJSON(
+            this.action + "?callback=?",
+            $(this).serialize(),
+            function (data) {
+                if (data.Status === 400) {
+									$message._show('failure', data.Message);
+									$submit.disabled = false;
+                } else { // 200
+									$message._show('success', 'Thank you for subscribing! We sent you an email.');
+									$submit.disabled = false;
+                }
+            });
 				});
 
 		})();
