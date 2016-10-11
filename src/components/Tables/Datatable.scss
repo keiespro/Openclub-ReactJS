@@ -107,17 +107,17 @@ table.dataTable tfoot th, table.dataTable tfoot td {
 /* Fix datatables image paths for distribution */
 
 table.dataTable thead .sorting {
-  background-image: url("../../img/sort_both.png");
+  background-image: url("../../public/img/sort_both.png");
 }
 table.dataTable thead .sorting_asc {
-  background-image: url("../../img/sort_asc.png");
+  background-image: url("../../public/img/sort_asc.png");
 }
 table.dataTable thead .sorting_desc {
-  background-image: url("../../img/sort_desc.png");
+  background-image: url("../../public/img/sort_desc.png");
 }
 table.dataTable thead .sorting_asc_disabled {
-  background-image: url("../../img/sort_asc_disabled.png");
+  background-image: url("../../public/img/sort_asc_disabled.png");
 }
 table.dataTable thead .sorting_desc_disabled {
-  background-image: url("../../img/sort_desc_disabled.png");
+  background-image: url("../../public/img/sort_desc_disabled.png");
 }

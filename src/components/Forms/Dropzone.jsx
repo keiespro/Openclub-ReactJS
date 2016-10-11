@@ -2,8 +2,9 @@ import React from 'react';
 import pubsub from 'pubsub-js';
 import Dropzone from 'react-dropzone';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './Dropzone.scss';
+import s from './Dropzone.scss';
 
 class DropzoneUpload extends React.Component {
 
@@ -72,4 +73,4 @@ class DropzoneUpload extends React.Component {
     }
 }
 
-export default DropzoneUpload;
+export default withStyles(s)(DropzoneUpload);

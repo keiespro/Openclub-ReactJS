@@ -1,8 +1,9 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './Timeline.scss';
+import s from './Timeline.scss';
 
 class Timeline extends React.Component {
 
@@ -110,4 +111,4 @@ class Timeline extends React.Component {
     }
 }
 
-export default Timeline;
+export default withStyles(s)(Timeline);

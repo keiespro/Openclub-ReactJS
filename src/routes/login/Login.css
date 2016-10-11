@@ -6,7 +6,7 @@
  * This source code is proprietary software belonging to OpenClub Holdings PTY LTD
  * and is licensed for use by OpenClub PTY LTD.
  */
-@import '../../components/variables.css';
+@import '../../components/variables.scss';
 
 .root {
   padding-left: 20px;

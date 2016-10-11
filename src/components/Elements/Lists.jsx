@@ -1,8 +1,9 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './List.scss';
+import s from './List.scss';
 
 class Lists extends React.Component {
 
@@ -165,6 +166,4 @@ class Lists extends React.Component {
     }
 }
 
-export default Lists;
-
-
+export default withStyles(s)(Lists);

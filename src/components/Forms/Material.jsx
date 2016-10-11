@@ -1,7 +1,8 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './Material.scss';
+import s from './Material.scss';
 
 class Material extends React.Component {
 
@@ -548,6 +549,4 @@ class Material extends React.Component {
     }
 }
 
-export default Material;
-
-
+export default withStyles(s)(Material);

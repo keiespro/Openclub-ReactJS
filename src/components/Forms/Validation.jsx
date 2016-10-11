@@ -1,7 +1,8 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './Validation.scss';
+import s from './Validation.scss';
 import ValidationRun from './Validation.run';
 
 class Validation extends React.Component {
@@ -250,4 +251,4 @@ class Validation extends React.Component {
     }
 }
 
-export default Validation;
+export default withStyles(s)(Validation);

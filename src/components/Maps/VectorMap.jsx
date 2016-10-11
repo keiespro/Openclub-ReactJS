@@ -1,8 +1,9 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './VectorMap.scss';
+import s from './VectorMap.scss';
 import VectorMapRun from './VectorMap.run';
 
 class VectorMap extends React.Component {
@@ -46,4 +47,4 @@ class VectorMap extends React.Component {
     }
 }
 
-export default VectorMap;
+export default withStyles(s)(VectorMap);

@@ -7,7 +7,7 @@
  * and is licensed for use by OpenClub PTY LTD.
  */
 
-@import '../../components/variables.css';
+@import '../../components/variables.scss';
 
 .root {
   padding-left: 20px;

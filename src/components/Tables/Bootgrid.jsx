@@ -1,7 +1,8 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './Bootgrid.scss';
+import s from './Bootgrid.scss';
 import BootgridRun from './Bootgrid.run';
 
 class Bootgrid extends React.Component {
@@ -375,5 +376,4 @@ class Bootgrid extends React.Component {
     }
 }
 
-export default Bootgrid;
-
+export default withStyles(s)(Bootgrid);

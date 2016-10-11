@@ -1,7 +1,8 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './GridMasonry.scss';
+import s from './GridMasonry.scss';
 import GridMasonryRun from './GridMasonry.run';
 
 class GridMasonry extends React.Component {
@@ -131,7 +132,4 @@ class GridMasonry extends React.Component {
     }
 }
 
-export default GridMasonry;
-
-
-
+export default withStyles(s)(GridMasonry);

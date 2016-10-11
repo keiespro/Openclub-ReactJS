@@ -1,7 +1,8 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './Datatable.scss';
+import s from './Datatable.scss';
 import DatatableRun from './Datatable.run';
 
 class Datatable extends React.Component {
@@ -894,6 +895,4 @@ class Datatable extends React.Component {
     }
 }
 
-export default Datatable;
-
-
+export default withStyles(s)(Datatable);

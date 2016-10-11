@@ -1,7 +1,7 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
 
-import './Nestable.scss';
+import s from './Nestable.scss';
 import NestableRun from './Nestable.run';
 
 class Nestable extends React.Component {
@@ -137,4 +137,4 @@ class Nestable extends React.Component {
     }
 }
 
-export default Nestable;
+export default withStyles(s)(Nestable);

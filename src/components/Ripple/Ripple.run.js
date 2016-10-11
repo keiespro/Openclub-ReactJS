@@ -1,4 +1,5 @@
-import './Ripple.scss'
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import s from './Ripple.scss'
 import Ripple from './Ripple';
 
 function initRipple() {
@@ -7,4 +8,4 @@ function initRipple() {
     });
 }
 
-export default initRipple;
+export default withStyles(s)(initRipple);

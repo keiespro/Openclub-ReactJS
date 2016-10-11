@@ -1,8 +1,9 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
 import { Grid, Row, Col, Button } from 'react-bootstrap';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './GoogleMap.scss';
+import s from './GoogleMap.scss';
 import GoogleMapRun from './GoogleMap.run';
 
 class GoogleMap extends React.Component {
@@ -49,4 +50,4 @@ class GoogleMap extends React.Component {
     }
 }
 
-export default GoogleMap;
+export default withStyles(s)(GoogleMap);

@@ -1,7 +1,8 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './Editor.scss';
+import s from './Editor.scss';
 import EditorRun from './Editor.run';
 
 class Editor extends React.Component {
@@ -37,4 +38,4 @@ class Editor extends React.Component {
     }
 }
 
-export default Editor;
+export default withStyles(s)(Editor);

@@ -1,7 +1,8 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './Wizard.scss';
+import s from './Wizard.scss';
 import WizardRun from './Wizard.run';
 
 class Wizard extends React.Component {
@@ -91,4 +92,4 @@ class Wizard extends React.Component {
     }
 }
 
-export default Wizard;
+export default withStyles(s)(Wizard);

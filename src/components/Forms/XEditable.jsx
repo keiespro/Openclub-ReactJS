@@ -1,7 +1,8 @@
 import React from 'react';
 import pubsub from 'pubsub-js';
+import withStyles from 'isomorphic-style-loader/lib/withStyles';
 
-import './XEditable.scss';
+import s from './XEditable.scss';
 import XEditableRun from './XEditable.run';
 
 class XEditable extends React.Component {
@@ -109,5 +110,4 @@ class XEditable extends React.Component {
     }
 }
 
-export default XEditable;
-
+export default withStyles(s)(XEditable);

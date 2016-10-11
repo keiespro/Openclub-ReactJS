@@ -27,13 +27,13 @@
         background-color: transparent !important;
     }
 }
-
-@font-face {
-    font-family: "summernote";
-    font-style: normal;
-    font-weight: normal;
-    src: url("../../fonts/summernote.eot?ad8d7e2d177d2473aecd9b35d16211fb");
-    src: url("../../fonts/summernote.eot?#iefix") format("embedded-opentype"),
-         url("../../fonts/summernote.woff?ad8d7e2d177d2473aecd9b35d16211fb") format("woff"),
-         url("../../fonts/summernote.ttf?ad8d7e2d177d2473aecd9b35d16211fb") format("truetype")
-}
+// FIXME: Temporarily ignoring this font.
+// @font-face {
+//     font-family: "summernote";
+//     font-style: normal;
+//     font-weight: normal;
+//     src: url("../../public/fonts/summernote.eot?ad8d7e2d177d2473aecd9b35d16211fb");
+//     src: url("../../public/fonts/summernote.eot?#iefix") format("embedded-opentype"),
+//          url("../../public/fonts/summernote.woff?ad8d7e2d177d2473aecd9b35d16211fb") format("woff"),
+//          url("../../public/fonts/summernote.ttf?ad8d7e2d177d2473aecd9b35d16211fb") format("truetype")
+// }
