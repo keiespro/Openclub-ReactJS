@@ -2,8 +2,8 @@
  * Sidebar
  */
 
-@import '../Common/Variables';
-@import '../Common/Mixins';
+@import '../../styles/Variables';
+@import '../../styles/Mixins';
 
 .sidebar-container {
     position: absolute;
@@ -41,17 +41,14 @@
         letter-spacing: .023em;
         > img,
         > svg {
-            $sz: 24px;
-            display: inline-block;
-            width: $sz;
-            height: $sz;
-            vertical-align: -5%;
-            + .sidebar-header-logo-text {
-                margin-left: 16px;
-            }
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+            margin: 10%;
         }
         > svg {
             fill: #fff;
+            width: 80%;
         }
     }
     > .sidebar-header-logo-text {

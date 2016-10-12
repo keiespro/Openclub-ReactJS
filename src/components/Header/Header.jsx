@@ -1,37 +1,15 @@
-import React from 'react';
-import pubsub from 'pubsub-js';
+import React, { Component } from 'react';
 import { Dropdown, MenuItem } from 'react-bootstrap';
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+
 import { LinkContainer } from 'react-router-bootstrap';
 
-import s from './Header.scss';
-// import s2 from './HeaderMenuLinks.scss';
-
-class Header extends React.Component {
+class Header extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             pageTitle: ''
         };
-    }
-
-    componentWillMount() {
-        this.pubsub_token = pubsub.subscribe('setPageTitle', (ev, title) => {
-            this.setState({pageTitle: title});
-        });
-    }
-
-    componentWillUnmount() {
-        pubsub.unsubscribe(this.pubsub_token);
-    }
-
-    showSearch() {
-        pubsub.publish('showsearch');
-    }
-
-    showSettings() {
-        pubsub.publish('showsettings');
     }
 
     render() {
@@ -90,4 +68,4 @@ class Header extends React.Component {
     }
 }
 
-export default withStyles(s)(Header);
+export default Header;

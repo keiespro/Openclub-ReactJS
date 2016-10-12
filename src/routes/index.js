@@ -1,35 +1,36 @@
-/**
- * OpenClub (https://www.openclub.com.au/)
- *
- * Copyright © 2016 OpenClub Holdings, PTY LTD. All Rights Reserved.
- *
- * This source code is proprietary software belonging to OpenClub Holdings PTY LTD
- * and is licensed for use by OpenClub PTY LTD.
- */
+// We only need to import the modules necessary for initial render
+import CoreLayout from '../layouts/CoreLayout/CoreLayout'
+import Home from './Home'
+import CounterRoute from './Counter'
 
-import React from 'react';
-import App from '../components/App';
+/*  Note: Instead of using JSX, we recommend using react-router
+    PlainRoute objects to build route definitions.   */
 
-// Child routes
-import home from './home';
-import content from './content';
-import error from './error';
+export const createRoutes = (store) => ({
+  path        : '/',
+  component   : CoreLayout,
+  indexRoute  : Home,
+  childRoutes : [
+    CounterRoute(store)
+  ]
+})
 
-export default {
+/*  Note: childRoutes can be chunked or otherwise loaded programmatically
+    using getChildRoutes with the following signature:
 
-  path: '/',
-  children: [
-    home,
-    content,
-    error,
-  ],
+    getChildRoutes (location, cb) {
+      require.ensure([], (require) => {
+        cb(null, [
+          // Remove imports!
+          require('./Counter').default(store)
+        ])
+      })
+    }
 
-  async action({ next, render, context }) {
-    const component = await next();
-    if (component === undefined) return component;
-    return render(
-      <App context={context}>{component}</App>
-    );
-  },
+    However, this is not necessary for code-splitting! It simply provides
+    an API for async route definitions. Your code splitting should occur
+    inside the route `getComponent` function, since it is only invoked
+    when the route exists and matches.
+*/
 
-};
+export default createRoutes

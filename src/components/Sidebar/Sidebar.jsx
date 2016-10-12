@@ -1,26 +1,31 @@
-import React from 'react';
-import Link from '../Link'
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import React, { Component, PropTypes } from 'react';
+import { Link, IndexLink } from 'react-router'
 
-import s from './Sidebar.scss';
+import './Sidebar.scss';
+import Logo from '../Logo';
+import SidebarScripts from './SidebarScripts'
 
-import SidebarRun from './Sidebar.run';
-import {initSvgReplace} from '../Utils/Utils';
+class Sidebar extends Component {
 
-class Sidebar extends React.Component {
+    static contextTypes = {
+      router: PropTypes.object
+    }
 
     constructor(props, context){
         super(props, context);
     }
 
     componentDidMount() {
-        SidebarRun();
-        initSvgReplace();
+        SidebarScripts();
     }
 
     routeActive(paths) {
-      return '';
-      // FIXME: This needs to work with the new router context
+        paths = Array.isArray(paths) ? paths : [paths];
+        for (let p in paths) {
+            if (this.context.router.isActive(''+paths[p]) === true)
+                return 'active';
+        }
+        return '';
     }
 
     render() {
@@ -28,7 +33,9 @@ class Sidebar extends React.Component {
             <aside className="sidebar-container">
                 <div className="sidebar-header">
                     <div className="pull-right pt-lg text-muted hidden"><em className="ion-close-round"></em></div>
-                    <a href="#" className="sidebar-header-logo"><img src="img/logo.png" data-svg-replace="img/logo.svg" alt="Logo" /><span className="sidebar-header-logo-text">Centric</span></a>
+                    <IndexLink to="/" className="sidebar-header-logo">
+                        <Logo className="sidebar-header-logo-svg"/>
+                    </IndexLink>
                 </div>
                 <div className="sidebar-content">
                     <div className="sidebar-toolbar text-center">
@@ -397,8 +404,4 @@ class Sidebar extends React.Component {
     }
 }
 
-Sidebar.contextTypes = {
-    router: React.PropTypes.object
-};
-
-export default withStyles(s)(Sidebar);
+export default Sidebar;
