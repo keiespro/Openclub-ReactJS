@@ -1,7 +1,6 @@
 {
-  "name": "react-redux-starter-kit",
-  "version": "3.0.0-alpha.2",
-  "description": "Get started with React, Redux, and React-Router!",
+  "name": "openclub",
+  "version": "1.0.0",
   "main": "index.js",
   "engines": {
     "node": ">=4.5.0",
@@ -71,10 +70,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/davezuko/react-redux-starter-kit.git"
+    "url": "git+https://github.com/willhackett/openclub.git"
   },
-  "author": "David Zukowski <david@zuko.me> (http://zuko.me)",
-  "license": "MIT",
+  "author": "Will Hackett <will@willhackett.com> (http://willhackett.com)",
+  "license": "Proprietary",
   "dependencies": {
     "animate.css": "^3.5.2",
     "babel-loader": "^6.2.5",
