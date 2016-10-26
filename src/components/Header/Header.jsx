@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Dropdown, MenuItem } from 'react-bootstrap';
+import './Header.scss';
 
 import { LinkContainer } from 'react-router-bootstrap';
 
@@ -36,7 +37,7 @@ class Header extends Component {
                         </li>
                         <Dropdown id="basic-nav-dropdown" pullRight componentClass="li">
                             <Dropdown.Toggle useAnchor noCaret className="has-badge ripple">
-                              <em className="ion-person"></em>
+                              <i className="fa fa-user"></i>
                               <sup className="badge bg-danger">3</sup>
                             </Dropdown.Toggle>
                             <Dropdown.Menu className="md-dropdown-menu" >
