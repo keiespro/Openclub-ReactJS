@@ -28,6 +28,20 @@ class Sidebar extends Component {
         return '';
     }
 
+    timeOfDay() {
+        let date = new Date();
+        if (date.getHours() < 12) {
+            return 'Good morning';
+        }
+        if (date.getHours() >= 12 && date.getHours() <= 17) {
+            return 'Good afternoon';
+        }
+        if (date.getHours() > 17 && date.getHours() <= 24) {
+            return 'Good evening';
+        }
+        return 'Hello';
+    }
+
     render() {
         return (
             <aside className="sidebar-container">
@@ -39,13 +53,20 @@ class Sidebar extends Component {
                 </div>
                 <div className="sidebar-content">
                     <div className="sidebar-toolbar text-center">
-                        <div className="mt">Welcome, USERNAME</div>
+                        <a href=""><img src="img/user/01.jpg" alt="Profile" className="img-circle thumb64" /></a>
+                        <div className="mt">{this.timeOfDay()}, Test User</div>
+                        <div className="mt">
+                            <Link to="#">
+                                <i className="fa fa-user"></i>
+                                Edit Profile
+                            </Link>
+                        </div>
                     </div>
                     <nav className="sidebar-nav">
                         <h6 className="sidebar-title">Menu</h6>
                         <ul>
-                            <li className={this.routeActive('/')}>
-                                <Link to="/" className="ripple">
+                            <li className={this.routeActive('/feed')}>
+                                <Link to="/feed" className="ripple">
                                     <span className="pull-right nav-label">
                                         <span className="badge bg-success">2</span>
                                     </span>
@@ -94,6 +115,9 @@ class Sidebar extends Component {
                                 <li className={this.routeActive('/bmw-club-queensland')}>
                                     <Link to="/bmw-club-queensland" className="ripple">
                                         <span className="pull-right nav-label">
+                                            <span className="nav-pinned">
+                                                <i className="fa fa-thumb-tack"></i>
+                                            </span>
                                             <span className="badge bg-success">2</span>
                                         </span>
                                         <span className="nav-icon">

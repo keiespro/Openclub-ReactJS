@@ -32,7 +32,7 @@ class Header extends Component {
                     <ul className="pull-right">
                         <li>
                             <a href="#" className="ripple" onClick={this.showSearch}>
-                                <em className="ion-ios-search-strong"></em>
+                                <i className="fa fa-search"></i>
                             </a>
                         </li>
                         <Dropdown id="basic-nav-dropdown" pullRight componentClass="li">
@@ -58,7 +58,7 @@ class Header extends Component {
                         </Dropdown>
                         <li>
                             <a href="#" className="ripple" onClick={this.showSettings}>
-                                <em className="ion-gear-b"></em>
+                                <i className="fa fa-gears"></i>
                             </a>
                         </li>
                     </ul>

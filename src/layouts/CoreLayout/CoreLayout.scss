@@ -60,7 +60,9 @@ body {
     > section {
         min-height: calc(100% - #{$footer-hg});
     }
-
+    &.full {
+        height: 100%;
+    }
 }
 
 .content-heading {
