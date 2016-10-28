@@ -21,3 +21,6 @@ deploy:
   provider: heroku
   api_key: ab96e7e4-7e36-4133-8837-3714be7a0d48
   app: openclub-web
+
+notifications:
+  slack: openclub:1W4Wix44Cr3AHWfkdx0ALrHs
