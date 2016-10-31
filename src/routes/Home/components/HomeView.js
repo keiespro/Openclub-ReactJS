@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { Row, Col, Grid, Dropdown, MenuItem } from 'react-bootstrap';
-import DuckImage from '../assets/Duck.jpg'
+import { Grid } from 'react-bootstrap';
 import './HomeView.scss'
 
 class HomeView extends Component {

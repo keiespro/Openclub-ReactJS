@@ -11,7 +11,7 @@ class Sidebar extends Component {
       router: PropTypes.object
     }
 
-    constructor(props, context){
+    constructor(props, context) {
         super(props, context);
     }
 
@@ -22,7 +22,7 @@ class Sidebar extends Component {
     routeActive(paths) {
         paths = Array.isArray(paths) ? paths : [paths];
         for (let p in paths) {
-            if (this.context.router.isActive(''+paths[p]) === true)
+            if (this.context.router.isActive('' + paths[p]) === true)
                 return 'active';
         }
         return '';
@@ -48,7 +48,7 @@ class Sidebar extends Component {
                 <div className="sidebar-header">
                     <div className="pull-right pt-lg text-muted hidden"><em className="ion-close-round"></em></div>
                     <IndexLink to="/" className="sidebar-header-logo">
-                        <Logo className="sidebar-header-logo-svg"/>
+                        <Logo className="sidebar-header-logo-svg" />
                     </IndexLink>
                 </div>
                 <div className="sidebar-content">
@@ -66,7 +66,7 @@ class Sidebar extends Component {
                         <h6 className="sidebar-title">Menu</h6>
                         <ul>
                             <li className={this.routeActive('/feed')}>
-                                <Link to="/feed" className="ripple">
+                                <Link to="/" className="ripple">
                                     <span className="pull-right nav-label">
                                         <span className="badge bg-success">2</span>
                                     </span>
