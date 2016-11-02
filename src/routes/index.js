@@ -4,20 +4,22 @@ import Home from './Home'
 import CounterRoute from './Counter'
 import FeedRoute from './Feed'
 import NotificationsRoute from './Notifications'
+import ErrorRoute from './Error'
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
 export const createRoutes = (store) => ({
-  path        : '/',
-  component   : CoreLayout,
-  indexRoute  : Home,
-  childRoutes : [
+  path: '/',
+  component: CoreLayout,
+  indexRoute: Home,
+  childRoutes: [
     CounterRoute(store),
     FeedRoute(store),
-    NotificationsRoute(store)
+    NotificationsRoute(store),
+    ErrorRoute(store)
   ]
-})
+});
 
 /*  Note: childRoutes can be chunked or otherwise loaded programmatically
     using getChildRoutes with the following signature:

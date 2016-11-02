@@ -66,7 +66,7 @@ class Sidebar extends Component {
                         <h6 className="sidebar-title">Menu</h6>
                         <ul>
                             <li className={this.routeActive('/feed')}>
-                                <Link to="/" className="ripple">
+                                <Link to="/feed" className="ripple">
                                     <span className="pull-right nav-label">
                                         <span className="badge bg-success">2</span>
                                     </span>

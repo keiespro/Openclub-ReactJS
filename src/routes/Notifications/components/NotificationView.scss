@@ -1,12 +1,115 @@
-.homepage-bg {
-    background-image: url(http://img04.deviantart.net/ff5a/i/2010/196/3/d/jousting___knight_52_by_axy_stock.jpg);
+/**
+ * Material Lists
+ */
+
+@import '../../../styles/Variables';
+@import '../../../styles/Mixins';
+
+.notification-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    > .notification-list-item {
+        @include clearfix;
+        padding: 0 22px;
+        &.unread {
+            background-color: rgba(0, 91, 195, 0.1);
+        }
+        > .notification-list-item-img,
+        > .notification-list-item-icon,
+        > .notification-list-item-initial {
+            float: left;
+            width: $mda-list-img-wd;
+            height: $mda-list-img-wd;
+            margin-top: 14px;
+            margin-bottom: 8px;
+            margin-right: $mda-list-img-mr;
+            border-radius: 20%;
+        }
+        > .notification-list-item-icon {
+            line-height: 42px;
+            text-align: center;
+            > em, > i { line-height: inherit; }
+        }
+        > .notification-list-item-actions {
+            line-height: 75px;
+            width: auto;
+            display: inline-block;
+            text-align: right;
+            float: right;
+            > em, > i {
+                line-height: inherit;
+            }
+            span.caret {
+                content: '\f141';
+                font-family: FontAwesome;
+            }
+        }
+        > .notification-list-item-initial {
+            line-height: 50px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 300;
+        }
+
+        > .notification-list-item-text {
+            float: left;
+            padding: 20px 0;
+            display: inline-block;
+            width: auto;
+            &.notification-2-line {
+                padding-top: 26px;
+            }
+
+            h3 {
+                font-size: 16px;
+                font-weight: 400;
+                letter-spacing: .01em;
+                margin: 0 0 6px;
+                line-height: .75em;
+            }
+            h4 {
+                font-size: 14px;
+                letter-spacing: .01em;
+                font-weight: 400;
+                margin: 10px 0 5px;
+                line-height: .75em;
+            }
+            p {
+                font-size: 14px;
+                font-weight: 500;
+                margin: 0;
+                line-height: 1.6em
+            }
+        }
+        &:first-child > .notification-list-item-text {
+            // padding-top: 0;
+        }
+
+        // float left never breaks lines
+        // can not be used with float:right elements
+        > .notification-list-item-img,
+        > .notification-list-item-initial {
+            + .notification-list-item-text {
+                $sp: $mda-list-img-wd + $mda-list-img-mr;
+                width: auto;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+        }
+
+    } //.notification-list-item
+    &.notification-list-bordered {
+        > .notification-list-item {
+            border-bottom: 1px solid rgba($gray-base,.16);
+
+        }
+    }
 }
-.homepage-welcome {
-    text-align: center;
-    color: white;
-    h1 {
-        font-size: 57px;
-        text-align: center;
-        text-shadow: 1px 1px 20px rgba(0,0,0,0.75);
+// clear last border when inside cards
+.card > .notification-list-bordered {
+    > .notification-list-item:last-child {
+        border-bottom: 0;
     }
 }

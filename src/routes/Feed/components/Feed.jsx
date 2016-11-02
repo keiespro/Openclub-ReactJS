@@ -1,5 +1,5 @@
 import React, { Component, PropTypes as T } from 'react';
-import { Grid, Row, Col, Button, Dropdown, MenuItem } from 'react-bootstrap';
+import { Row, Col, Dropdown, MenuItem } from 'react-bootstrap';
 
 class Feed extends Component {
     static propTypes = {

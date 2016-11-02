@@ -15,8 +15,7 @@ class HomeView extends Component {
                 </div>
                 <div className="container container-md">
                     <div className="card animated fadeInUp b0">
-                        <div className="card-item card-media bg-pic4">
-                        </div>
+                        <div className="card-item card-media bg-pic4" />
                         <div className="card-body pt0">
                             <div className="container container-xs reader-block text-center">
                                 <h2>Some text</h2>
