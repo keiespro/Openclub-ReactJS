@@ -7,6 +7,7 @@ class AuthService {
         this.lock.on('authenticated', this.doAuthentication.bind(this));
 
         this.login = this.login.bind(this);
+        this.enterRoute = this.enterRoute.bind(this);
     }
     doAuthentication(authResult) {
         this.setToken(authResult.idToken);
