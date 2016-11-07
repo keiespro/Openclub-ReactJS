@@ -13,7 +13,9 @@
     "__DEV__"      : false,
     "__TEST__"     : false,
     "__PROD__"     : false,
-    "__COVERAGE__" : false
+    "__COVERAGE__" : false,
+    "__AUTH0_CLIENT_ID__" : false,
+    "__AUTH0_DOMAIN__" : false
   },
   "rules": {
     "react/jsx-quotes": 0,

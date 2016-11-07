@@ -1,7 +1,8 @@
 import { injectReducer } from '../../store/reducers';
 
-export default (store) => ({
+export default (store, auth) => ({
     path: 'feed',
+    onEnter: auth.enterRoute,
     getComponent (nextState, cb) { //eslint-disable-line
         require.ensure([], (require) => {
             const Feed = require('./containers/FeedContainer').default
@@ -11,6 +12,6 @@ export default (store) => ({
 
             cb(null, Feed);
 
-        }, 'feed')
+        }, 'feed'); // end require.ensure
     }
 })

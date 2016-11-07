@@ -6,6 +6,10 @@ import FeedRoute from './Feed'
 import NotificationsRoute from './Notifications'
 import ErrorRoute from './Error'
 
+import AuthService from '../utils/AuthService';
+
+const auth = new AuthService();
+
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
 
@@ -15,7 +19,7 @@ export const createRoutes = (store) => ({
   indexRoute: Home,
   childRoutes: [
     CounterRoute(store),
-    FeedRoute(store),
+    FeedRoute(store, auth),
     NotificationsRoute(store),
     ErrorRoute(store)
   ]

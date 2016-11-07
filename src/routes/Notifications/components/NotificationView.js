@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import { Grid, Row, Col, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Grid, Row, Col, DropdownButton, MenuItem, ButtonGroup, Button } from 'react-bootstrap';
 import './NotificationView.scss'
 
 class NotificationView extends Component {
     constructor(props) {
         super(props);
     }
-    
+
     render() {
     return (
         <section>
@@ -21,8 +21,16 @@ class NotificationView extends Component {
                                 <div className="notification-list-item unread">
                                     <img src="img/user/01.jpg" alt="List user" className="notification-list-item-img" />
                                     <div className="notification-list-item-text">
-                                        <h3><a href="#"><span>Availability request</span>Rugby Club</a></h3>
-                                        <p>First 15 try-outs on Tuesday, 14 November at 11:00 am.</p>
+                                        <h3><a href="#"><span>Souths Rugby Club</span></a></h3>
+                                        <div className="text-muted">
+                                            <h4><i className="fa fa-calendar-o" /> Check-in your availability for Tuesday Kick-off. 7 hours ago.</h4>
+                                        </div>
+                                    </div>
+                                    <div className="notification-list-item-actions">
+                                        <ButtonGroup>
+                                            <Button bsStyle="success" className="mr mb-sm ripple">Going</Button>
+                                            <Button bsStyle="danger" className="mr mb-sm ripple">{"Can't Go"}</Button>
+                                        </ButtonGroup>
                                     </div>
                                 </div>
                                 <div className="notification-list-item unread">
@@ -31,10 +39,10 @@ class NotificationView extends Component {
                                         alt="BMW Club Queensland" className="notification-list-item-img"
                                     />
                                     <div className="notification-list-item-text">
-                                        <h3>Your BMW Club Queensland membership is due for renewal.</h3>
+                                        <h3>BMW Club Queensland Renewal Due</h3>
                                         <h4 className="text-muted">
-                                            {"Your renewal isn't set to automatically renewal, would you like to renew for"}
-                                            <strong> {"$75.00"} </strong>?
+                                            <i className="fa fa-refresh" />
+                                            {" Your membership will automatically renew for $75.00 in 5 days."}
                                         </h4>
                                     </div>
                                     <div className="notification-list-item-actions">

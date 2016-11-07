@@ -73,6 +73,7 @@ Edit at Your Own Risk
 // Environment
 // ------------------------------------
 // N.B.: globals added here must _also_ be added to .eslintrc
+
 config.globals = {
   'process.env'  : {
     'NODE_ENV' : JSON.stringify(config.env)
@@ -82,7 +83,9 @@ config.globals = {
   '__PROD__'     : config.env === 'production',
   '__TEST__'     : config.env === 'test',
   '__COVERAGE__' : !argv.watch && config.env === 'test',
-  '__BASENAME__' : JSON.stringify(process.env.BASENAME || '')
+  '__BASENAME__' : JSON.stringify(process.env.BASENAME || ''),
+  '__AUTH0_CLIENT_ID__' : JSON.stringify("gJHJD5cPDhu31mXFVgJnpyvczrz3Z75E"),
+  '__AUTH0_DOMAIN__' : JSON.stringify("openclub.au.auth0.com")
 }
 
 // ------------------------------------
