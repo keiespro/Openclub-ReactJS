@@ -85,7 +85,8 @@ config.globals = {
   '__COVERAGE__' : !argv.watch && config.env === 'test',
   '__BASENAME__' : JSON.stringify(process.env.BASENAME || ''),
   '__AUTH0_CLIENT_ID__' : JSON.stringify("gJHJD5cPDhu31mXFVgJnpyvczrz3Z75E"),
-  '__AUTH0_DOMAIN__' : JSON.stringify("openclub.au.auth0.com")
+  '__AUTH0_DOMAIN__' : JSON.stringify("openclub.au.auth0.com"),
+  '__API_URL__' : JSON.stringify("openclub-api.herokuapp.com")
 }
 
 // ------------------------------------
