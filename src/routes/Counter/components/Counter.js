@@ -1,6 +1,9 @@
 import React from 'react'
 
-export const Counter = (props) => (
+export const Counter = (props) => {
+    console.log('Counter props', props);
+
+    return (
   <div style={{ margin: '0 auto' }} >
     <h2>Counter: {props.counter}</h2>
     <button className='btn btn-default' onClick={props.increment}>
@@ -11,7 +14,7 @@ export const Counter = (props) => (
       Double (Async)
     </button>
   </div>
-)
+)}
 
 Counter.propTypes = {
   counter     : React.PropTypes.number.isRequired,

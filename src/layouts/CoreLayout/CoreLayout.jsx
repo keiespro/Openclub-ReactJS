@@ -14,9 +14,11 @@ import '../../styles/core.scss'
 
 class CoreLayout extends Component {
   static propTypes = {
-    children: PropTypes.element.isRequired
+    children: PropTypes.element.isRequired,
+    isAuthenticated: PropTypes.bool.isRequired
   }
   render() {
+      console.log(this.props);
       const LoggedIn = true; // TODO: Make this an actual thing.
       if (LoggedIn) {
           return (

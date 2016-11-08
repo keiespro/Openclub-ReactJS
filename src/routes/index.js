@@ -1,5 +1,5 @@
 // We only need to import the modules necessary for initial render
-import CoreLayout from '../layouts/CoreLayout/CoreLayout'
+import { injectReducer } from '../store/reducers';
 import Home from './Home'
 import CounterRoute from './Counter'
 import FeedRoute from './Feed'
@@ -15,7 +15,15 @@ const auth = new AuthService();
 
 export const createRoutes = (store) => ({
   path: '/',
-  component: CoreLayout,
+  getComponent(nextState, cb) {
+      console.log('RUNNING', nextState, store);
+      require.ensure([], (require) => {
+          const CoreContainer = require('../containers/CoreContainer').default;
+          const reducer = require('../modules/auth/reducer').default;
+          injectReducer(store, { key: 'auth', reducer });
+          cb(null, CoreContainer);
+      });
+  },
   indexRoute: Home,
   childRoutes: [
     CounterRoute(store),
