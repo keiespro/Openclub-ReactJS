@@ -15,14 +15,18 @@ import '../../styles/core.scss'
 class CoreLayout extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired
+    isAuthenticated: PropTypes.bool.isRequired,
+    login: PropTypes.func.isRequired,
+    logoutUser: PropTypes.func.isRequired
   }
   render() {
       console.log(this.props);
-      const LoggedIn = true; // TODO: Make this an actual thing.
-      if (LoggedIn) {
+      const { isAuthenticated, login, logoutUser } = this.props;
+      if (isAuthenticated) {
           return (
               <div className="layout-container">
+                  <a href="#" onClick={logoutUser.bind(this)}>Test Logout</a>
+
                   <Header />
                   <Sidebar />
                 <div className="sidebar-layout-obfuscator" />
@@ -41,6 +45,7 @@ class CoreLayout extends Component {
       }
       return (
           <div className="layout-container sidebar-offcanvas">
+              <a href="#" onClick={login.bind(this)}>Test Login</a>
             <ReactCSSTransitionGroup
               component="main"
               className="main-container full"
