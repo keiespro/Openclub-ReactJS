@@ -16,20 +16,29 @@ class Feed extends Component {
                         <Col md={8}>
                             <div className="card">
                                 <div className="card-body">
-                                    <form action="" className="mt">
-                                        <div className="input-group mda-input-group">
-                                            <div className="mda-form-group">
-                                                <div className="mda-form-control">
-                                                    <textarea rows="1" aria-multiline="true" tabIndex="0" aria-invalid="false" className="no-resize form-control"></textarea>
-                                                    <div className="mda-form-control-line"></div>
-                                                    <label className="m0">What's on your mind?</label>
-                                                </div><span className="mda-form-msg right">Any message here</span>
-                                            </div><span className="input-group-btn">
-                                                <button type="button" className="btn btn-flat btn-success btn-circle">
-                                                    <i className="fa fa-paper-plane-o"></i>
-                                                </button></span>
+                                    <div className="card bg-primary">
+                                        <div className="card-body">
+                                            <div className="pull-right"><em className="fa fa-calendar fa-4x text-muted"></em></div>
+                                            <h4 className="mv-sm">Event Reminder</h4>
+                                            <h5>Street Race begins at 10 am.</h5>
                                         </div>
-                                    </form>
+                                        <div className="card-footer">
+                                            <button type="button" className="btn btn-flat btn-primary text-white"><i className="fa fa-calendar-o" /> View Event Details</button>
+                                            <button type="button" className="btn btn-flat btn-primary text-white"><i className="fa fa-map-o" /> Get Directions</button>
+                                            <button type="button" className="btn btn-flat btn-primary text-white"><i className="fa fa-times" /> Dismiss</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="card-body">
+                                    <div className="card bg-danger">
+                                        <div className="card-body">
+                                            <p className="lead m0">Your <strong>BMW Club Queensland</strong> membership is set to expire in 3 days. Would you like to renew?</p>
+                                        </div>
+                                        <div className="card-footer">
+                                            <button type="button" className="btn btn-flat btn-danger text-white"><i className="fa fa-refresh" /> Renew Membership</button>
+                                            <button type="button" className="btn btn-flat btn-danger text-white"><i className="fa fa-times" /> Dismiss</button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="card-body">
                                     {/* Inner card */}
@@ -42,7 +51,7 @@ class Feed extends Component {
                                                       <i className="fa fa-ellipsis-v"></i>
                                                     </Dropdown.Toggle>
                                                     <Dropdown.Menu className="md-dropdown-menu" >
-                                                        <MenuItem eventKey="1">Hide post</MenuItem>
+                                                        <MenuItem eventKey="1">Go to BMW Club Queensland</MenuItem>
                                                         <MenuItem eventKey="2">Stop following</MenuItem>
                                                         <MenuItem divider/>
                                                         <MenuItem eventKey="3">Report</MenuItem>
@@ -53,15 +62,22 @@ class Feed extends Component {
                                             <div className="media m0">
                                                 <div className="media-left"><a href="#"><img src="img/user/06.jpg" alt="User" className="media-object img-circle thumb48"/></a></div>
                                                 <div className="media-body media-middle pt-sm">
-                                                    <p className="media-heading m0 text-bold">Test User</p><small className="text-muted"><i className="fa fa-globe text-muted mr-sm"></i><span>2 hours</span></small>
+                                                    <p className="media-heading m0 text-bold">Ian Solomon</p>
+                                                    <small className="text-muted">
+                                                        <i className="fa fa-globe text-muted mr-sm" />
+                                                        <span className="mr-sm">2 hours ago</span>
+                                                        <span> • </span>
+                                                        <i className="fa fa-users text-muted mr-sm ml-sm" />
+                                                        <span>BMW Club Queensland</span>
+                                                    </small>
                                                 </div>
                                             </div>
-                                            <div className="p">Ut egestas consequat faucibus. Donec id lectus tortor. Maecenas at porta purus. Etiam feugiat risus massa. Vivamus fermentum libero vel felis aliquet interdum. </div>
+                                            <div className="p">To the member who keeps posting pictures of cats on the timeline: stop. </div>
                                         </div>
                                         <div className="card-footer">
-                                            <button type="button" className="btn btn-flat btn-primary">Like</button>
-                                            <button type="button" className="btn btn-flat btn-primary">Share</button>
-                                            <button type="button" className="btn btn-flat btn-primary">Comment</button>
+                                            <button type="button" className="btn btn-flat btn-primary"><i className="fa fa-heart-o" /> (873)</button>
+                                            <button type="button" className="btn btn-flat btn-primary"><i className="fa fa-share" /> (3)</button>
+                                            <button type="button" className="btn btn-flat btn-primary"><i className="fa fa-comments" /> (25)</button>
                                         </div>
                                     </div>
                                 </div>
@@ -87,19 +103,26 @@ class Feed extends Component {
                                             <div className="media m0">
                                                 <div className="media-left"><a href="#"><img src="img/user/05.jpg" alt="User" className="media-object img-circle thumb48"/></a></div>
                                                 <div className="media-body media-middle pt-sm">
-                                                    <p className="media-heading m0 text-bold">Ricky Wagner</p><small className="text-muted"><em className="ion-earth text-muted mr-sm"></em><span>10 hours</span></small>
+                                                    <p className="media-heading m0 text-bold">Ricky Wagner</p>
+                                                    <small className="text-muted">
+                                                        <i className="fa fa-globe text-muted mr-sm" />
+                                                        <span className="mr-sm">2 hours ago</span>
+                                                        <span> • </span>
+                                                        <i className="fa fa-users text-muted mr-sm ml-sm" />
+                                                        <span>BMW Club Queensland</span>
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="card-item"><img src="img/pic6.jpg" alt="MaterialImg" className="fw img-responsive"/>
+                                        <div className="card-item"><img src="http://www.rd.com/wp-content/uploads/sites/2/2016/04/01-cat-wants-to-tell-you-laptop.jpg" alt="MaterialImg" className="fw img-responsive"/>
                                             <div className="card-item-text bg-transparent">
-                                                <p>The sun was shinning</p>
+                                                <p>Nawwwwww</p>
                                             </div>
                                         </div>
                                         <div className="card-footer">
-                                            <button type="button" className="btn btn-flat btn-primary">Like</button>
-                                            <button type="button" className="btn btn-flat btn-primary">Share</button>
-                                            <button type="button" className="btn btn-flat btn-primary">Comment</button>
+                                            <button type="button" className="btn btn-flat btn-primary"><i className="fa fa-heart-o" /> (873)</button>
+                                            <button type="button" className="btn btn-flat btn-primary"><i className="fa fa-share" /> (3)</button>
+                                            <button type="button" className="btn btn-flat btn-primary"><i className="fa fa-comments" /> (25)</button>
                                         </div>
                                     </div>
                                 </div>
@@ -123,19 +146,23 @@ class Feed extends Component {
                                             </div>
                                             {/* END dropdown */}
                                             <div className="media m0">
-                                                <div className="media-left"><a href="#"><img src="img/user/06.jpg" alt="User" className="media-object img-circle thumb48"/></a></div>
+                                                <div className="media-left"><a href="#"><img src="img/user/05.jpg" alt="User" className="media-object img-circle thumb48"/></a></div>
                                                 <div className="media-body media-middle pt-sm">
-                                                    <p className="media-heading m0 text-bold">Stephen Palmer</p><small className="text-muted"><em className="ion-earth text-muted mr-sm"></em><span>Yesterday</span></small>
+                                                    <p className="media-heading m0 text-bold">Ricky Wagner</p>
                                                 </div>
                                             </div>
                                             <div className="p">
-                                                <div className="mb">Donec a purus auctor dui hendrerit accumsan non quis augue nisl sed iaculis.</div><a href="#"><img src="img/pic1.jpg" alt="Pic" className="mr-sm thumb48"/></a><a href="#"><img src="img/pic2.jpg" alt="Pic" className="mr-sm thumb48"/></a><a href="#"><img src="img/pic3.jpg" alt="Pic" className="mr-sm thumb48"/></a><a href="#"><img src="img/pic4.jpg" alt="Pic" className="mr-sm thumb48"/></a>
+                                                <div className="mb">OMG OMG OMG OMG OMG OMG.</div>
+                                                <a href="#"><img src="http://weknowyourdreams.com/images/cat/cat-02.jpg" alt="Pic" className="mr-sm thumb48"/></a>
+                                                <a href="#"><img src="https://www.petfinder.com/wp-content/uploads/2012/11/140272627-grooming-needs-senior-cat-632x475.jpg" alt="Pic" className="mr-sm thumb48"/></a>
+                                                <a href="#"><img src="http://www.rd.com/wp-content/uploads/sites/2/2016/04/05-cat-wants-to-tell-you-bathing-myself.jpg" alt="Pic" className="mr-sm thumb48"/></a>
+                                                <a href="#"><img src="https://i.ytimg.com/vi/cbP2N1BQdYc/maxresdefault.jpg" alt="Pic" className="mr-sm thumb48"/></a>
                                             </div>
                                         </div>
                                         <div className="card-footer">
-                                            <button type="button" className="btn btn-flat btn-primary">Like</button>
-                                            <button type="button" className="btn btn-flat btn-primary">Share</button>
-                                            <button type="button" className="btn btn-flat btn-primary">Comment</button>
+                                            <button type="button" className="btn btn-flat btn-primary"><i className="fa fa-heart-o" /> (873)</button>
+                                            <button type="button" className="btn btn-flat btn-primary"><i className="fa fa-share" /> (3)</button>
+                                            <button type="button" className="btn btn-flat btn-primary"><i className="fa fa-comments" /> (25)</button>
                                         </div>
                                     </div>
                                 </div>
