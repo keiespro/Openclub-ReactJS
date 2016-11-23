@@ -8,8 +8,11 @@ class AppContainer extends Component {
     store: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired
   }
-  shouldComponentUpdate() {
-    return false
+  shouldComponentUpdate(nextProps, nextState) {
+      if (nextProps.auth.loggedIn() !== this.props.auth.loggedIn()) {
+          return true;
+      }
+      return false;
   }
 
   render() {

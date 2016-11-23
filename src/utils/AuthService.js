@@ -33,6 +33,7 @@ class AuthService {
     logout() {
         localStorage.removeItem('profile');
         localStorage.removeItem('id_token');
+        history.pushState('/');
     }
     enterRoute(nextState, replace) {
         // if (!!this.getToken()) {

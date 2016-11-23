@@ -2,7 +2,6 @@
 import { injectReducer } from '../store/reducers';
 import Home from './Home'
 import CounterRoute from './Counter'
-import FeedRoute from './Feed'
 import NotificationsRoute from './Notifications'
 import ErrorRoute from './Error'
 import LoginRoute from './Login';
@@ -21,7 +20,7 @@ export const createRoutes = (store, auth) => ({
   indexRoute: Home(store, auth),
   childRoutes: [
     CounterRoute(store, auth),
-    FeedRoute(store, auth),
+    Home(store, auth),
     NotificationsRoute(store, auth),
     LoginRoute(store, auth),
     // Please leave the error route at the bottom...
