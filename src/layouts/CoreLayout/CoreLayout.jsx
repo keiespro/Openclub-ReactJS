@@ -25,10 +25,8 @@ class CoreLayout extends Component {
       if (isAuthenticated) {
           return (
               <div className="layout-container">
-                  <a href="#" onClick={logoutUser.bind(this)}>Test Logout</a>
-
-                  <Header />
-                  <Sidebar />
+                  <Header {...this.props} />
+                  <Sidebar {...this.props} />
                 <div className="sidebar-layout-obfuscator" />
 
                 <ReactCSSTransitionGroup
@@ -44,8 +42,7 @@ class CoreLayout extends Component {
           );
       }
       return (
-          <div className="layout-container sidebar-offcanvas">
-              <a href="#" onClick={login.bind(this)}>Test Login</a>
+          <div className="layout-container sidebar-offcanvas loggedout">
             <ReactCSSTransitionGroup
               component="main"
               className="main-container full"

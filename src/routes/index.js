@@ -5,15 +5,9 @@ import CounterRoute from './Counter'
 import FeedRoute from './Feed'
 import NotificationsRoute from './Notifications'
 import ErrorRoute from './Error'
+import LoginRoute from './Login';
 
-import AuthService from '../utils/AuthService';
-
-const auth = new AuthService();
-
-/*  Note: Instead of using JSX, we recommend using react-router
-    PlainRoute objects to build route definitions.   */
-
-export const createRoutes = (store) => ({
+export const createRoutes = (store, auth) => ({
   path: '/',
   getComponent(nextState, cb) {
       console.log('RUNNING', nextState, store);
@@ -24,31 +18,17 @@ export const createRoutes = (store) => ({
           cb(null, CoreContainer);
       });
   },
-  indexRoute: Home,
+  indexRoute: Home(store, auth),
   childRoutes: [
-    CounterRoute(store),
+    CounterRoute(store, auth),
     FeedRoute(store, auth),
-    NotificationsRoute(store),
-    ErrorRoute(store)
+    NotificationsRoute(store, auth),
+    LoginRoute(store, auth),
+    // Please leave the error route at the bottom...
+    // These are executed in order
+    // I'll let you guess what happens when * (CATCH_ALL) is at the top. :)
+    ErrorRoute(store, auth)
   ]
 });
-
-/*  Note: childRoutes can be chunked or otherwise loaded programmatically
-    using getChildRoutes with the following signature:
-
-    getChildRoutes (location, cb) {
-      require.ensure([], (require) => {
-        cb(null, [
-          // Remove imports!
-          require('./Counter').default(store)
-        ])
-      })
-    }
-
-    However, this is not necessary for code-splitting! It simply provides
-    an API for async route definitions. Your code splitting should occur
-    inside the route `getComponent` function, since it is only invoked
-    when the route exists and matches.
-*/
 
 export default createRoutes
