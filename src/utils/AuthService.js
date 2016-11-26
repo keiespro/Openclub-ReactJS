@@ -5,7 +5,15 @@ class AuthService {
         this.lock = new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
             auth: {
                 // redirect: false
+            },
+            theme: {
+                logo: "img/logo-s.png",
+                primaryColor: "#1976d2"
+            },
+            languageDictionary: {
+              title: "Log In to OpenClub"
             }
+
         });
 
         this.lock.on('authenticated', this.doAuthentication.bind(this));

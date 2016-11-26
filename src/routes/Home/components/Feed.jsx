@@ -171,7 +171,8 @@ class Feed extends Component {
                         <Col md={4}>
                             <div className="push-down"></div>
                             <div className="card card-transparent">
-                                <h5 className="card-heading">Sidebar???</h5>
+                                <h5 className="card-heading">Upcoming Events</h5>
+                                <h5 className="card-heading">Upcoming Renewals</h5>
                             </div>
                         </Col>
                     </Row>
