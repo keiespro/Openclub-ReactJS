@@ -1,6 +1,7 @@
 // We only need to import the modules necessary for initial render
 import { injectReducer } from '../store/reducers';
 import Home from './Home'
+import ClubsRoute from './Clubs';
 import CounterRoute from './Counter'
 import NotificationsRoute from './Notifications'
 import ErrorRoute from './Error'
@@ -23,9 +24,9 @@ export const createRoutes = (store, auth) => ({
     Home(store, auth),
     NotificationsRoute(store, auth),
     LoginRoute(store, auth),
-    // Please leave the error route at the bottom...
-    // These are executed in order
-    // I'll let you guess what happens when * (CATCH_ALL) is at the top. :)
+    // Routes that need to query a URL remain here.
+    ClubsRoute(store, auth),
+    // Error Route must remain at the bottom.
     ErrorRoute(store, auth)
   ]
 });
