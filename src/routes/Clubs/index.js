@@ -1,19 +1,27 @@
 export default (store, auth) => ({
     path: ':club',
+    getChildRoutes(partialNextState, cb) {
+        require.ensure([], (require) => {
+            cb(null, [
+                require('./subroutes/Feed'),
+                require('./subroutes/About')
+            ]);
+        });
+    },
+    getIndexRoute(partialNextState, cb) {
+            require.ensure([], (require) => {
+                cb(null, require('./subroutes/Feed'));
+            });
+    },
     getComponent(nextState, cb) {
         require.ensure([], (require) => {
-            if (nextState.params.club === 'clubs') {
-                let ClubPromo = require('./components/ClubPromo').default;
-                cb(null, ClubPromo);
+            // This is a simple check to make sure that our club exists before we render child routes
+            console.log('Params', nextState.params);
+            if (nextState.params.club.search(/(bmwclub|terracerowing)/) === -1) {
+                cb(null, require('../Error/components/Error').default);
                 return;
             }
-            if (nextState.params.club === 'testclub') {
-                let ClubIndex = require('./subroutes/ClubIndex').default;
-                cb(null, ClubIndex);
-                return;
-            }
-            let NotFound = require('../Error/components/Error').default;
-            cb(null, NotFound);
+            cb(null, require('./components/ClubView').default);
             return;
         });
     }

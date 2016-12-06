@@ -6,6 +6,7 @@ import CounterRoute from './Counter'
 import NotificationsRoute from './Notifications'
 import ErrorRoute from './Error'
 import LoginRoute from './Login';
+import ClubsLanding from './ClubsLanding';
 
 export const createRoutes = (store, auth) => ({
   path: '/',
@@ -24,7 +25,9 @@ export const createRoutes = (store, auth) => ({
     Home(store, auth),
     NotificationsRoute(store, auth),
     LoginRoute(store, auth),
-    // Routes that need to query a URL remain here.
+    // Landing pages
+    ClubsLanding(store),
+    // Clubs Route is a catch-all dynamic child route.
     ClubsRoute(store, auth),
     // Error Route must remain at the bottom.
     ErrorRoute(store, auth)

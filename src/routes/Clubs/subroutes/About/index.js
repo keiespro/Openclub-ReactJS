@@ -1,9 +1,9 @@
 export default (store, auth) => ({
-    path: '/',
+    path: 'about',
     getComponent(nextState, cb) {
         require.ensure([], (require) => {
-            const ClubView = require('./components/ClubView');
-            cb(null, ClubView);
+            const AboutView = require('./components/AboutView').default;
+            cb(null, AboutView);
         });
     }
 })

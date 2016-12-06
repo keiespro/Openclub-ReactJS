@@ -113,7 +113,7 @@ class Sidebar extends Component {
                         <h6 className="sidebar-title">My Clubs</h6>
                             <ul>
                                 <li className={this.routeActive('/bmw-club-queensland')}>
-                                    <Link to="/bmw-club-queensland" className="ripple">
+                                    <Link to="/bmwclub" className="ripple">
                                         <span className="pull-right nav-label">
                                             <span className="nav-pinned">
                                                 <i className="fa fa-thumb-tack"></i>
@@ -129,7 +129,7 @@ class Sidebar extends Component {
                                     </Link>
                                 </li>
                                 <li className={this.routeActive('/terrace-rowing')}>
-                                    <Link to="/terrace-rowing" className="ripple">
+                                    <Link to="/terracerowing" className="ripple">
                                         <span className="pull-right nav-label">
                                             <span className="badge bg-success">2</span>
                                         </span>
@@ -147,24 +147,6 @@ class Sidebar extends Component {
                                             <i className="fa fa-ellipsis-h"></i>
                                         </span>
                                     </a>
-                                </li>
-                            </ul>
-                            <h6 className="sidebar-title">Trending</h6>
-                            <ul>
-                                <li className={this.routeActive('/tags/rowing')}>
-                                    <Link to="/tags/rowing" className="ripple">
-                                        <span>#rowing</span>
-                                    </Link>
-                                </li>
-                                <li className={this.routeActive('/tags/tennis')}>
-                                    <Link to="/tags/tennis" className="ripple">
-                                        <span>#tennis</span>
-                                    </Link>
-                                </li>
-                                <li className={this.routeActive('/tags/tennis')}>
-                                    <Link to="/tags/tennis" className="ripple">
-                                        <span>#AussieOpen2017</span>
-                                    </Link>
                                 </li>
                             </ul>
                     </nav>
