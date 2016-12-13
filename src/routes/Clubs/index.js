@@ -1,18 +1,8 @@
+import Feed from './subroutes/Feed';
+import About from './subroutes/About';
+
 export default (store, auth) => ({
     path: ':club',
-    getChildRoutes(partialNextState, cb) {
-        require.ensure([], (require) => {
-            cb(null, [
-                require('./subroutes/Feed'),
-                require('./subroutes/About')
-            ]);
-        });
-    },
-    getIndexRoute(partialNextState, cb) {
-            require.ensure([], (require) => {
-                cb(null, require('./subroutes/Feed'));
-            });
-    },
     getComponent(nextState, cb) {
         require.ensure([], (require) => {
             // This is a simple check to make sure that our club exists before we render child routes
@@ -24,5 +14,10 @@ export default (store, auth) => ({
             cb(null, require('./components/ClubView').default);
             return;
         });
-    }
+    },
+    indexRoute: Feed(store, auth),
+    childRoutes: [
+        Feed(store, auth),
+        About(store, auth)
+    ]
 })
