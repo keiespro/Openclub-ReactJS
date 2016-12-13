@@ -19,18 +19,18 @@ class ClubView extends Component {
                     <div className="media m0 pv">
                         <div className="media-left">
                             <a href="#">
-                                <img src="img/user/01.jpg" alt="User" className="media-object img-circle thumb64" />
+                                <img src="/img/user/01.jpg" alt="User" className="media-object img-circle thumb128" />
                             </a>
                         </div>
                         <div className="media-body media-middle">
-                            <h4 className="media-heading">Test Club Title</h4>
-                            <span className="text-muted">Words, words, words words words words, words words.</span>
+                            <h4 className="media-heading">CLUB TITLE</h4>
+                            <span className="text-muted">CLUB SLOGAN?</span>
                         </div>
                     </div>
                 </div>
                 <div className="container-lg">
                     <Row>
-                        { this.props.children || <div>404 WTF MAN</div> }
+                        { this.props.children || <div>NO Route here</div> }
                     </Row>
                 </div>
             </section>
