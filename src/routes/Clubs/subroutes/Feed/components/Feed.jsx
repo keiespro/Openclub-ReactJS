@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Cow, Dropdown } from 'react-bootstrap';
+import { Col, Dropdown, MenuItem } from 'react-bootstrap';
 
 class Feed extends Component {
     constructor(props) {
