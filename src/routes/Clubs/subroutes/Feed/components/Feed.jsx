@@ -4,13 +4,13 @@ import { Link } from 'react-router';
 
 class Feed extends Component {
     static propTypes = {
-        routeParams: PropTypes.object.isRequired
+        params: PropTypes.object.isRequired
     }
     constructor(props) {
         super(props);
     }
     render() {
-        const { club } = this.props.routeParams;
+        const { club } = this.props.params;
         return (
             <div>
                 {/* Left column */}
