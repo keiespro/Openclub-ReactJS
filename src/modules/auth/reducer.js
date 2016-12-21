@@ -1,14 +1,15 @@
-import { LOCK_SUCCESS, LOGOUT_SUCCESS } from './actions'
+import { SHOW_LOCK, LOCK_SUCCESS, LOGOUT_SUCCESS } from './actions'
 
 const initialState = {
-  token: localStorage.getItem('id_token')
+  token: localStorage.getItem('token')
 };
 
 const ACTION_HANDLERS = {
-  [LOCK_SUCCESS]: (state, action) => Object.assign({}, state, {
+  [LOCK_SUCCESS]: (state, action) => {
+    return Object.assign({}, state, {
     token: action.token,
     errorMessage: ''
-  }),
+  })},
   [LOGOUT_SUCCESS]: (state) => {
     const newState = Object.assign({}, state)
     delete newState.token

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes, cloneElement } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-
 import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
 import './CoreLayout.scss'
@@ -15,11 +14,42 @@ import '../../styles/core.scss'
 class CoreLayout extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired,
-    login: PropTypes.func.isRequired,
-    logoutUser: PropTypes.func.isRequired
+    //isAuthenticated: PropTypes.bool.isRequired,
+    //login: PropTypes.func.isRequired,
+    //logoutUser: PropTypes.func.isRequired
+
+  }
+  componentDidMount() {
+    if(!this.props.token){
+      // TODO: fix possible double loading by keeping redux state for when auth0 is open
+      this.props.login()
+    }
   }
   render() {
+    if(!this.props.token){
+      return (
+        <div></div>
+      )
+    }else{
+      return (
+        <div className="layout-container">
+          <Header {...this.props} />
+          <Sidebar {...this.props} />
+          <div className="sidebar-layout-obfuscator" />
+
+          <ReactCSSTransitionGroup
+            component="main"
+            className="main-container"
+            transitionName="rag-fadeIn"
+            transitionEnterTimeout={250}
+            transitionLeaveTimeout={250}
+           >
+            {cloneElement(this.props.children, { key: Math.random() })}
+          </ReactCSSTransitionGroup>
+        </div>
+      );
+    }
+    /*
       console.log(this.props);
       const { isAuthenticated, login, logoutUser } = this.props;
       if (!isAuthenticated) {
@@ -54,7 +84,9 @@ class CoreLayout extends Component {
             </ReactCSSTransitionGroup>
           </div>
       );
+      */
   }
+
 }
 
 export default CoreLayout
