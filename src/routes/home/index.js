@@ -3,7 +3,6 @@ import { injectReducer } from '../../store/reducers';
 import HomeView from './components/HomeView';
 
 export default (store) => ({
-    path: 'feed',
     getComponent (nextState, cb) { //eslint-disable-line
         /*if (auth.loggedIn() === false) {
             const stateMap = () => ({
