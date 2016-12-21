@@ -1,3 +1,41 @@
+
+import reduxApi from 'redux-api'
+import adapterFetch from 'redux-api/lib/adapters/fetch'
+import user from './user'
+import clubs from './clubs'
+import events from './events'
+
+const BASE_URL = __API_URL__;
+
+export default reduxApi({
+  user,
+  clubs,
+  events
+}).use('options', (url, params, getState) => {
+  const headers = {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'    
+    }        
+  }
+
+  // grab the token from the user object if available
+  const { auth: { token }} = getState()
+
+  if(token) {
+    headers.Authorization = `Bearer ${token}`
+  }
+
+  return headers
+
+}).use('rootUrl', BASE_URL)
+  .use('fetch', adapterFetch(fetch))
+  
+
+
+
+
+
 /**
  * OpenClub API Handler (https://www.github.com/willhackett/openclub/)
  *
@@ -5,7 +43,7 @@
  *
  * This source code is licensed for use by OpenClub PTY LTD only.
  */
-
+/*
 const BASE_URL = __API_URL__;
 
 function callAPI(endpoint, authenticated) {
@@ -68,4 +106,4 @@ export default (store) => (next) => (action) => {
             type: errorType
         })
     )
-}
+}*/

@@ -1,41 +1,31 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import createStore from './store/createStore'
+import createRoutes from './routes/index'
 import AppContainer from './containers/AppContainer'
-import AuthService from './utils/AuthService';
 
-// ========================================================
-// Store Instantiation
-// ========================================================
+// Create store
 const initialState = window.___INITIAL_STATE__
 const store = createStore(initialState)
-const auth  = new AuthService();
 
-// ========================================================
-// Render Setup
-// ========================================================
+// Render setup
 const MOUNT_NODE = document.getElementById('root')
 
 let render = () => {
-  const routes = require('./routes/index').default(store, auth)
-
   ReactDOM.render(
-    <AppContainer store={store} routes={routes} auth={auth} />,
+    <AppContainer store={store} routes={createRoutes(store)} />,
     MOUNT_NODE
   )
 }
 
-// ========================================================
-// Developer Tools Setup
-// ========================================================
+// This code is excluded from production bundle
 if (__DEV__) {
+
+  // open devtools
   if (window.devToolsExtension) {
     window.devToolsExtension.open()
   }
-}
 
-// This code is excluded from production bundle
-if (__DEV__) {
   if (module.hot) {
     // Development render functions
     const renderApp = render
@@ -64,7 +54,5 @@ if (__DEV__) {
   }
 }
 
-// ========================================================
-// Go!
-// ========================================================
+// Start the application
 render()

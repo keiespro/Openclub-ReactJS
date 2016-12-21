@@ -22,7 +22,7 @@ class CoreLayout extends Component {
   render() {
       console.log(this.props);
       const { isAuthenticated, login, logoutUser } = this.props;
-      if (isAuthenticated) {
+      if (!isAuthenticated) {
           return (
               <div className="layout-container">
                   <Header {...this.props} />
