@@ -1,9 +1,9 @@
-// We only need to import the modules necessary for initial render
 import { injectReducer } from '../store/reducers'
 import { asyncRequire } from '../utils/codesplit'
 import { checkAuthentication } from '../modules/auth/actions'
+
 import Home from './Home'
-import ClubsRoute from './Clubs';
+import Club from './Club';
 import CounterRoute from './Counter'
 import NotificationsRoute from './Notifications'
 import ErrorRoute from './Error'
@@ -15,10 +15,14 @@ export const createRoutes = (store) => ({
   getComponent: asyncRequire(() => require('../containers/CoreContainer').default),
   onEnter: (nextState, state, cb) => {
     // enforce auth hash completion before loading root route
-    store.dispatch(checkAuthentication()).then(cb)
+    store.dispatch(checkAuthentication()).then(() => {
+      console.log('dispatched')
+      cb()
+    })
   },
   indexRoute: Home(store),
   childRoutes: [
+    Club(store)
     //CounterRoute(store, auth),
     //Home(store, auth),
     //NotificationsRoute(store, auth),

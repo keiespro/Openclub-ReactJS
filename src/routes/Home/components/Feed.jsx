@@ -46,8 +46,8 @@ class Feed extends Component {
                                         <div className="card-heading">
                                             {/* START dropdown */}
                                             <div className="pull-right">
-                                                <Dropdown pullRight >
-                                                    <Dropdown.Toggle bsStyle="" noCaret className="btn-flat btn-flat-icon">
+                                                <Dropdown pullRight id="123">
+                                                    <Dropdown.Toggle bsStyle="link" noCaret className="btn-flat btn-flat-icon">
                                                       <i className="fa fa-ellipsis-v"></i>
                                                     </Dropdown.Toggle>
                                                     <Dropdown.Menu className="md-dropdown-menu" >
@@ -87,8 +87,8 @@ class Feed extends Component {
                                         <div className="card-heading">
                                             {/* START dropdown */}
                                             <div className="pull-right">
-                                                <Dropdown pullRight >
-                                                    <Dropdown.Toggle bsStyle="" noCaret className="btn-flat btn-flat-icon">
+                                                <Dropdown pullRight id="other">
+                                                    <Dropdown.Toggle bsStyle="link" noCaret className="btn-flat btn-flat-icon">
                                                       <i className="fa fa-ellipsis-v"></i>
                                                     </Dropdown.Toggle>
                                                     <Dropdown.Menu className="md-dropdown-menu" >
@@ -132,8 +132,8 @@ class Feed extends Component {
                                         <div className="card-heading">
                                             {/* START dropdown */}
                                             <div className="pull-right">
-                                                <Dropdown pullRight >
-                                                    <Dropdown.Toggle bsStyle="" noCaret className="btn-flat btn-flat-icon">
+                                                <Dropdown pullRight id="more">
+                                                    <Dropdown.Toggle bsStyle="link" noCaret className="btn-flat btn-flat-icon">
                                                       <i className="fa fa-ellipsis-v"></i>
                                                     </Dropdown.Toggle>
                                                     <Dropdown.Menu className="md-dropdown-menu" >

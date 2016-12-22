@@ -8,7 +8,7 @@ class Header extends Component {
     static propTypes = {
         login: PropTypes.func.isRequired,
         logoutUser: PropTypes.func.isRequired,
-        isAuthenticated: PropTypes.func.isRequired
+        //isAuthenticated: PropTypes.func.isRequired
     }
     constructor(props) {
         super(props);

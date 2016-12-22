@@ -1,13 +1,20 @@
 import { connect } from 'react-redux'
-import * as ACTIONS from '../modules/auth/actions'
+import * as authActions from '../modules/auth/actions'
+import API from '../modules/api'
 import CoreLayout from '../layouts/CoreLayout'
 
-const mapDispatchToProps = ACTIONS
+const { sync } = API.actions.user
+
+const mapDispatchToProps = {
+  ...authActions,
+  syncUser: sync
+}
 
 const mapStateToProps = (state) => {
-  const { auth: { token } } = state
+  const { token } = state.auth
   return {
-    token
+    token,
+    user: state.user
   }
 }
 

@@ -7,6 +7,11 @@ import events from './events'
 
 const BASE_URL = __API_URL__;
 
+/**
+ * TEMPORARY ADAPTER USED TO SKIP API AND RUN TRANSFORMER ONLY
+ */
+const adapterDummy = (url, options) => Promise.resolve({})
+
 export default reduxApi({
   user,
   clubs,
@@ -29,4 +34,5 @@ export default reduxApi({
   return headers
 
 }).use('rootUrl', BASE_URL)
-  .use('fetch', adapterFetch(fetch))
+  //.use('fetch', adapterFetch(fetch))
+  .use('fetch', adapterDummy)

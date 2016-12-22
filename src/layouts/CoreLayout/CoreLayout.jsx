@@ -1,5 +1,6 @@
 import React, { Component, PropTypes, cloneElement } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import API from '../../modules/api'
 
 import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
@@ -23,14 +24,16 @@ class CoreLayout extends Component {
     if(!this.props.token){
       // TODO: fix possible double loading by keeping redux state for when auth0 is open
       this.props.login()
+    }else{
+      // sync the user data api here
+      this.props.syncUser()
     }
   }
   render() {
     if(!this.props.token){
-      return (
-        <div></div>
-      )
+      return (<div></div>)
     }else{
+      const user = this.props.user.data
       return (
         <div className="layout-container">
           <Header {...this.props} />

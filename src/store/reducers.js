@@ -5,12 +5,14 @@ import location from '../modules/location/reducer'
 import api from '../modules/api'
 
 // Build full combined reducer
-export const makeRootReducer = (asyncReducers) => combineReducers({
+export const makeRootReducer = (asyncReducers) => {
+	return combineReducers({
 	auth,
     location,
-    api: api.reducers,
+    ...api.reducers,
     ...asyncReducers
-});
+})
+}
 
 // dynamically add reducers to the store
 export const injectReducer = (store, { key, reducer }) => {
