@@ -3,7 +3,7 @@ import * as authActions from '../modules/auth/actions'
 import API from '../modules/api'
 import CoreLayout from '../layouts/CoreLayout'
 
-const { sync } = API.actions.user
+const { sync } = API.actions.users
 
 const mapDispatchToProps = {
   ...authActions,
@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
   const { token } = state.auth
   return {
     token,
-    user: state.user
+    users: state.users
   }
 }
 

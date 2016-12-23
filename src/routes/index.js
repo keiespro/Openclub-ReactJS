@@ -3,25 +3,26 @@ import { asyncRequire } from '../utils/codesplit'
 import { checkAuthentication } from '../modules/auth/actions'
 
 import Home from './Home'
-import Club from './Club';
+import Feed from './Feed'
+import Club from './Club'
+/*
 import CounterRoute from './Counter'
 import NotificationsRoute from './Notifications'
 import ErrorRoute from './Error'
-import LoginRoute from './Login';
-import ClubsLanding from './ClubsLanding';
+import LoginRoute from './Login'
+import ClubsLanding from './ClubsLanding'
+*/
 
 export const createRoutes = (store) => ({
   path: '/',
   getComponent: asyncRequire(() => require('../containers/CoreContainer').default),
-  onEnter: (nextState, state, cb) => {
+  onEnter: (nextState, replace, cb) => {
     // enforce auth hash completion before loading root route
-    store.dispatch(checkAuthentication()).then(() => {
-      console.log('dispatched')
-      cb()
-    })
+    store.dispatch(checkAuthentication()).then(() => cb())
   },
   indexRoute: Home(store),
   childRoutes: [
+    Feed(store),
     Club(store)
     //CounterRoute(store, auth),
     //Home(store, auth),

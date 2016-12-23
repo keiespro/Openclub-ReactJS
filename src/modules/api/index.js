@@ -1,7 +1,7 @@
 
 import reduxApi from 'redux-api'
 import adapterFetch from 'redux-api/lib/adapters/fetch'
-import user from './user'
+import users from './users'
 import clubs from './clubs'
 import events from './events'
 
@@ -13,7 +13,7 @@ const BASE_URL = __API_URL__;
 const adapterDummy = (url, options) => Promise.resolve({})
 
 export default reduxApi({
-  user,
+  users,
   clubs,
   events
 }).use('options', (url, params, getState) => {
@@ -25,7 +25,7 @@ export default reduxApi({
   }
 
   // grab the token from the user object if available
-  const { auth: { token }} = getState()
+  const { token } = getState().auth
 
   if(token) {
     headers.Authorization = `Bearer ${token}`

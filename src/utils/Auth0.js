@@ -26,7 +26,7 @@ export const hashParsed = new Promise((resolve, reject) => {
   lock.on('hash_parsed', result => {
     if(result && result.idToken){
       const token = result.idToken
-      lock.getProfile(token, (error, profile) => {
+      lock.getUserInfo(token, (error, profile) => {
         resolve({ token, profile })
       })
     }else if(result){

@@ -1,24 +1,14 @@
-import { connect } from 'react-redux';
-import { injectReducer } from '../../store/reducers';
-import HomeView from './components/HomeView';
+import { asyncRequire } from '../../utils/codesplit'
+import Home from './components/Home'
 
 export default (store) => ({
-    getComponent (nextState, cb) { //eslint-disable-line
-        /*if (auth.loggedIn() === false) {
-            const stateMap = () => ({
-                store,
-                auth
-            });
-            return cb(null, connect(stateMap)(HomeView));
-        }*/
-        require.ensure([], (require) => {
-            const Feed = require('./containers/FeedContainer').default
-            const reducer = require('./modules/feed').default
-
-            //injectReducer(store, { key: 'feed', reducer });
-
-            cb(null, Feed);
-
-        }, 'feed'); // end require.ensure
+  onEnter: (nextState, replace, cb) => {
+    // as a child this route will only run once user login stuff has been completed
+    const state = store.getState()
+    if(state.auth.token){
+      replace('/feed')
     }
+    cb()
+  },
+  getComponent: asyncRequire(() => require('./containers/HomeContainer').default)
 })
