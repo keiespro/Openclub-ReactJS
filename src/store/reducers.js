@@ -6,18 +6,18 @@ import api from '../modules/api'
 
 // Build full combined reducer
 export const makeRootReducer = (asyncReducers) => {
-	return combineReducers({
-	auth,
+  return combineReducers({
+    auth,
     location,
     ...api.reducers,
     ...asyncReducers
-})
+  })
 }
 
 // dynamically add reducers to the store
 export const injectReducer = (store, { key, reducer }) => {
-    store.asyncReducers[key] = reducer;
-    store.replaceReducer(makeRootReducer(store.asyncReducers))
+  store.asyncReducers[key] = reducer;
+  store.replaceReducer(makeRootReducer(store.asyncReducers))
 }
 
 export default makeRootReducer

@@ -1,3 +1,4 @@
+import { browserHistory } from 'react-router'
 import { lock, hashParsed } from '../../utils/Auth0';
 
 // Auth0 lock actions
@@ -62,6 +63,8 @@ export function checkAuthentication() {
 export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout())
-    localStorage.removeItem('id_token')
+    localStorage.removeItem('profile')
+    localStorage.removeItem('token')
+    browserHistory.replace('/')
   }
 }

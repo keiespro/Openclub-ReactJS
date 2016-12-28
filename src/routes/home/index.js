@@ -1,3 +1,4 @@
+import { browserHistory } from 'react-router'
 import { asyncRequire } from '../../utils/codesplit'
 import Home from './components/Home'
 
@@ -6,7 +7,7 @@ export default (store) => ({
     // as a child this route will only run once user login stuff has been completed
     const state = store.getState()
     if(state.auth.token){
-      replace('/feed')
+      browserHistory.replace('/feed')
     }
     cb()
   },

@@ -1,4 +1,4 @@
-import { SHOW_LOCK, LOCK_SUCCESS, LOGOUT_SUCCESS } from './actions'
+import { SHOW_LOCK, LOCK_SUCCESS, LOGOUT_REQUEST } from './actions'
 
 const initialState = {
   token: localStorage.getItem('token')
@@ -10,7 +10,7 @@ const ACTION_HANDLERS = {
     token: action.token,
     errorMessage: ''
   })},
-  [LOGOUT_SUCCESS]: (state) => {
+  [LOGOUT_REQUEST]: (state) => {
     const newState = Object.assign({}, state)
     delete newState.token
     return newState

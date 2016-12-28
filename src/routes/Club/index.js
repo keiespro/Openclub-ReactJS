@@ -1,13 +1,18 @@
 import { asyncRequire } from '../../utils/codesplit'
-import Feed from './subroutes/Feed'
-import About from './subroutes/About'
+import Feed from './routes/Feed'
+import About from './routes/About'
+import Events from './routes/Events'
+import Members from './routes/Members'
+import Admin from './routes/Admin'
 
 export default (store) => ({
   path: ':club_id',
   getComponent: asyncRequire(() => require('./containers/ClubContainer').default),
-  indexRoute: Feed(store),
   childRoutes: [
     Feed(store),
-    About(store)
+    About(store),
+    Events(store),
+    Members(store),
+    Admin(store)
   ]
 })

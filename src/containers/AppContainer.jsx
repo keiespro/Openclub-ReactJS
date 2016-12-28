@@ -7,14 +7,7 @@ class AppContainer extends Component {
     routes: PropTypes.object.isRequired,
     store: PropTypes.object.isRequired
   }
-
-  /*shouldComponentUpdate(nextProps, nextState) {
-      if (nextProps.auth.loggedIn() !== this.props.auth.loggedIn()) {
-          return true;
-      }
-      return false;
-  }*/
-
+  
   render() {
     //const { routes, store, auth } = this.props
     const { routes, store } = this.props;

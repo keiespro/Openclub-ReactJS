@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Col, Dropdown, MenuItem, ButtonGroup } from 'react-bootstrap';
 import { Link } from 'react-router';
 
-class Feed extends Component {
+class FeedView extends Component {
     static propTypes = {
         params: PropTypes.object.isRequired
     }
