@@ -14,7 +14,7 @@ const adapterDummy = (url, options) => Promise.resolve({})
 
 export default reduxApi({
   users,
-  clubs,
+  ...clubs,
   events
 }).use('options', (url, params, getState) => {
   const headers = {

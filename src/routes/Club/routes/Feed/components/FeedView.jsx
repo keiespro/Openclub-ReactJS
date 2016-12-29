@@ -191,4 +191,4 @@ class FeedView extends Component {
         );
     }
 }
-export default Feed;
+export default FeedView;

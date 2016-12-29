@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import API from '../../../modules/api'
 import Club from '../components/Club'
 
-const { sync } = API.actions.clubs
+const { sync } = API.actions.club
 
 const mapDispatchToProps = {
 	syncClub: sync
@@ -10,7 +10,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => {
   return {
-    clubs: state.clubs
+    club: state.club
   }
 }
 

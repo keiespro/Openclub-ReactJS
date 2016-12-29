@@ -46,7 +46,7 @@ class CoreLayout extends Component {
         <Header {...this.props} />
         { loggedIn && <Sidebar {...this.props} /> }
         { loggedIn && <div className="sidebar-layout-obfuscator" /> }
-        { contentReady &&
+        {/* contentReady &&          
           <ReactCSSTransitionGroup
             component="main"
             className={contentClasses.join(' ')}
@@ -56,7 +56,10 @@ class CoreLayout extends Component {
           >
             {cloneElement(this.props.children, { key: Math.random() })}
           </ReactCSSTransitionGroup>
-        }
+        */}
+        <div className={contentClasses.join(' ')}>
+          {this.props.children}
+        </div>
       </div>
     )
   }

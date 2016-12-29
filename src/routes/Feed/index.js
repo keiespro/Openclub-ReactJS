@@ -1,4 +1,4 @@
-import { asyncRequire } from '../../utils/codesplit'
+import { asyncRequire } from 'utils/codesplit'
 
 export default (store) => ({
   path: 'feed',
