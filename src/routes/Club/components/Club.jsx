@@ -47,7 +47,7 @@ class ClubView extends Component {
         </div>
         <div className="container-lg">
           <Row>
-            { this.props.children || <div>NO Route here</div> }
+            {this.props.children}
           </Row>
         </div>
       </section>
