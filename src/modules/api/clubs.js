@@ -6,10 +6,11 @@ config.club = {
   crud: true,
   transformer(data) {
   	return {
-  		club_id: 'jdjsoidccc',
-  		slug: 'aslug',
-  		name: 'Some Club',
-  		other: 12345
+      name: 'BMW Motor Club',
+  		slug: 'bmw',  	
+      profile_picture: 'https://pbs.twimg.com/profile_images/798844134404435969/fc6qzNNR_400x400.jpg',	
+  		profile_cover: 'https://pbs.twimg.com/profile_banners/1545994664/1476365735/1500x500',
+      slogan: 'Sheer Driving Pleasure'
   	}
   }
 }

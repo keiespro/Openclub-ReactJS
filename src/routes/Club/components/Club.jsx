@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react'
-import { Col, Row, ButtonGroup, Dropdown, MenuItem } from 'react-bootstrap'
+import { Col, Row, ButtonGroup, Button, Dropdown, MenuItem } from 'react-bootstrap'
 import { Link } from 'react-router'
-import MenuItemLink from '../../../components/MenuItemLink'
+import ClubHeader from './ClubHeader'
+import MenuItemLink from 'components/MenuItemLink'
+
+import './ClubView.scss'
 
 class ClubView extends Component {
   componentDidMount() {
@@ -13,28 +16,16 @@ class ClubView extends Component {
 
     return (
       <section>
-        <div className="container-overlap bg-indigo-500">
-          <div className="media m0 pv">
-            <div className="media-left">
-              <a href="#">
-                <img src="/img/user/01.jpg" alt="User" className="media-object img-circle thumb128" />
-              </a>
-            </div>
-            <div className="media-body media-middle">
-              <h4 className="media-heading">{club.name}</h4>
-              <span className="text-muted">CLUB SLOGAN?</span>
-            </div>
-          </div>
-        </div>
-        <div>
+        <ClubHeader club={club}/>
+        <div className="menu-bar">
           <ButtonGroup>
-            <Link className="btn" to={`/${params.club_id}/feed`}>Feed</Link>
-            <Link className="btn" to={`/${params.club_id}/events`}>Events</Link>
-            <Link className="btn" to={`/${params.club_id}/members`}>Members</Link>
-            <Link className="btn" to={`/${params.club_id}/about`}>About</Link>
+            <Link className="btn menu-btn" to={`/${params.club_id}/feed`}>FEED</Link>
+            <Link className="btn menu-btn" to={`/${params.club_id}/events`}>EVENTS</Link>
+            <Link className="btn menu-btn menu-btn-active" to={`/${params.club_id}/members`}>MEMBERS</Link>
+            <Link className="btn menu-btn" to={`/${params.club_id}/about`}>ABOUT</Link>
             <Dropdown pullRight id="clubextra">
-              <Dropdown.Toggle noCaret className="btn-flat">
-                <i className="fa fa-gear"></i>
+              <Dropdown.Toggle noCaret className="btn btn-flat menu-btn">
+                MORE...{/*<i className="fa fa-gear"></i>*/}
               </Dropdown.Toggle>
               <Dropdown.Menu className="md=dropdown-menu">
                 <MenuItemLink eventKey="1" to={`/${params.club_id}/admin`}>Club Admin</MenuItemLink>
@@ -43,6 +34,9 @@ class ClubView extends Component {
                 <MenuItem eventKey="4">Privacy</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
+          </ButtonGroup>
+          <ButtonGroup className="pull-right">
+            <Button className="btn-raised mr ripple btn btn-success menu-btn-inner">BECOME A MEMBER</Button>
           </ButtonGroup>
         </div>
         <div className="container-lg">

@@ -24,7 +24,8 @@ $brand-danger:           #F44336;
 $brand-inverse:          #37474F;
 
 // Gray base
-$gray-base:              #a2a2a2;
+//$gray-base:              #a2a2a2;
+$gray-base:				 #eee;
 
 //== Scaffolding
 
@@ -44,7 +45,7 @@ $font-size-base:        14px;
 
 //== Layout
 
-$header-hg:                     65px;
+$header-hg:                     50px;
 $header-bg:                     #fff;
 $header-item-color:             #555;
 $header-shadow:                 0 0 1px 1px rgba(0, 0, 0, 0.14);
