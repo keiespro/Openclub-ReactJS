@@ -7,7 +7,7 @@ const { sync } = API.actions.users
 
 const mapDispatchToProps = {
   ...authActions,
-  syncUser: sync
+  syncUsers: sync
 }
 
 const mapStateToProps = (state) => {

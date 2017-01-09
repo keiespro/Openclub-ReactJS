@@ -1,0 +1,38 @@
+
+@import '../../../styles/Variables';
+@import '../../../styles/Mixins';
+
+// reusable menu item colours
+.col-grey-800 {
+  color: $mdc-grey-800;
+}
+.col-indigo-600 {
+  color: $mdc-indigo-600;
+}
+.col-red-300 {
+  color: $mdc-red-300;
+}
+
+h6.sidebar-title {
+  padding: 5px;
+  padding-left: 10px;
+  margin: 0;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 500;
+  background-color: #f9f9f9;
+}
+
+.sidebar-nav {
+  font-weight: 500;
+  background-color: inherit;
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    margin-bottom: 10px;
+    padding: 0;
+  }
+}
+   
+  

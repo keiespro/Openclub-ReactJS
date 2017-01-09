@@ -3,7 +3,7 @@ import Auth0Lock from 'auth0-lock';
 // singleton Auth0 lock
 export const lock = new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
   theme: {
-    logo: 'img/logo-s.png',
+    logo: 'http://localhost:3000/img/logo-s.png',
     primaryColor: '#1976d2'
   },
   languageDictionary: {

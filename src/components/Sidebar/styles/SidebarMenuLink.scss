@@ -1,0 +1,86 @@
+
+@import '../../../styles/Variables';
+@import '../../../styles/Mixins';
+
+.sidebar-nav ul > li {
+  
+  a {
+    display: block;
+    padding-left: 8px;
+    height: 44px;
+    line-height: 44px;
+    text-decoration: none;
+    letter-spacing: 0.0125em;
+    color: inherit;
+    overflow: hidden;
+
+    .nav-pinned {
+        padding: 5px;
+        vertical-align: middle;
+        color: $mdc-blue-300;
+    }
+    
+    > .nav-icon {
+        position: relative;
+        display: inline-block;
+        width: 2em;
+        text-align: center;
+        font-size: 16px;
+        color: $mdc-blue-300;
+        > .img-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-size: cover;
+            vertical-align: middle;
+        }
+    }
+
+    // Labels an carets
+    > .nav-label,
+    > .nav-caret {
+      line-height: inherit;
+    }
+    > .nav-label {
+      margin-right: 16px;
+      margin-top: -2px;
+    }
+    > .nav-caret {
+      margin-left: 11px; // small icons width are ~5px
+      + .nav-label {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.sidebar-nav ul.sidebar-more {
+  text-align: center;
+  a {
+      padding: 0 5px;
+      line-height: 25px;
+      height: 25px;
+  }
+}
+.sidebar-nav ul {
+  // Hover an active states
+  > li > a:hover,
+  > li > a:focus {
+    background-color: rgba($gray-base,.09);
+    > .nav-icon em {
+      color: $sidebar-icon-color-active;
+    }
+  }
+  > li.active {
+    background-color: rgba($gray-base,.026);
+
+    > a > .nav-icon em {
+      color: $sidebar-icon-color-active;
+    }
+    > ul li.active a {
+      // color: $brand-primary;
+      background-color: rgba($gray-base,.026);
+    }
+  }
+}
+

@@ -1,6 +1,5 @@
 import React, { Component, PropTypes, cloneElement } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
-import API from '../../modules/api'
 
 import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
@@ -23,7 +22,7 @@ class CoreLayout extends Component {
   componentWillMount() {
     if(this.props.token){
       // sync the user data api here
-      this.props.syncUser('self')
+      this.props.syncUsers('self')
     }
   }
   render() {
@@ -44,7 +43,7 @@ class CoreLayout extends Component {
     return (
       <div className={containerClasses.join(' ')}>
         <Header {...this.props} />
-        { loggedIn && <Sidebar {...this.props} /> }
+        { loggedIn && <Sidebar user={this.props.users.data} /> }
         { loggedIn && <div className="sidebar-layout-obfuscator" /> }
         {/* contentReady &&          
           <ReactCSSTransitionGroup
