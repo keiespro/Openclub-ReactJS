@@ -42,9 +42,8 @@
     > img,
     > svg {
       display: block;
-      max-width: 80%;
-      max-height: 80%;
-      margin: 10px;
+      height: 100%;
+      padding: 10px;
     }
     > svg {
       fill: #fff;

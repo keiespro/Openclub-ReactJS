@@ -34,7 +34,10 @@ class Sidebar extends Component {
         <div className="sidebar-header">
           <div className="pull-right pt-lg text-muted hidden"><em className="ion-close-round"></em></div>
           <IndexLink to="/" className="sidebar-header-logo">
+            {/*
             <Logo className="sidebar-header-logo-svg" />
+            */}
+            <img src="/img/openclub_logo_header.png"/>
           </IndexLink>
         </div>
         {user &&

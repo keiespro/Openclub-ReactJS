@@ -6,24 +6,27 @@ $header-color: #1976d2;
 	border-bottom: 1px solid #dbdbdb;
 }
 
-.menu-btn {
-  
+.btn-group > .menu-btn {
   color: #6c7177;
   padding: 12px 12px;
-  margin-left: 0 !important;
 
-	&:hover {
+  &:hover {
     background-color: #f5f5f5;
     color: #6c7177;
-    z-index: 0 !important;
-	}
+    z-index: 0;
+  }
 
   &:focus {
     color: #6c7177;
   }
 }
 
-.menu-btn-active {
+// overrides 1px enlarging issue with bootstrap buttons
+.btn-group .btn+.btn {
+  margin-left: 0px;
+}
+
+.btn-group > .menu-btn-active {
   color: #fff;
   background-color: $header-color;
 

@@ -42,7 +42,7 @@ class CoreLayout extends Component {
 
     return (
       <div className={containerClasses.join(' ')}>
-        <Header {...this.props} />
+        <Header user={this.props.users.data}/>
         { loggedIn && <Sidebar user={this.props.users.data} /> }
         { loggedIn && <div className="sidebar-layout-obfuscator" /> }
         {/* contentReady &&          
