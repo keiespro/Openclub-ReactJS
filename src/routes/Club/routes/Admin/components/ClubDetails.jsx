@@ -1,17 +1,19 @@
-
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'
+import { FieldSet, Input } from 'components/Forms'
 
 class ClubDetails extends Component {
-  static propTypes = {}
   render() {
     return (
-      <DetailsItem>
-        <DetailsHeader>
-          This is the 
-        </DetailsHeader>
-      </DetailsItem>      
+      <form className="form-horizontal">
+        <FieldSet title="Club Name">
+          <Input/>
+        </FieldSet>
+        <FieldSet title="Slug">
+          <Input/>
+        </FieldSet>
+      </form>
     )
   }
 }
 
-export default AdminView
+export default ClubDetails

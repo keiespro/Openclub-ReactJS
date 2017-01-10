@@ -28,9 +28,10 @@
 // Sidebar header with brand logo
 .sidebar-header {
   height: $sidebar-header-hg;
-  // background-color: $sidebar-header-bg;
+  background-color: $sidebar-header-bg;
   padding: 0 16px;
   box-shadow: $sidebar-header-shadow;
+  text-align: center;
   > .sidebar-header-logo {
     display: inline-block;
     height: 100%;

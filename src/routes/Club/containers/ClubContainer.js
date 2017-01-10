@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import API from '../../../modules/api'
-import Club from '../components/Club'
+import ClubView from '../components/ClubView'
 
 const { sync } = API.actions.club
 
@@ -14,4 +14,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Club)
+export default connect(mapStateToProps, mapDispatchToProps)(ClubView)

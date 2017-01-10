@@ -1,5 +1,7 @@
-import React, { Component, Children } from 'react'
+import React, { Component, Children, PropTypes } from 'react'
 import { Row, Col, PanelGroup } from 'react-bootstrap'
+import DetailsItem from './DetailsItem'
+import './styles/DetailsLayout.scss'
 
 class DetailsLayout extends Component {
   constructor(props, context) {
@@ -37,15 +39,23 @@ class DetailsLayout extends Component {
     })).filter(c => c.props.eventKey === self.state.activeKey)
 
     return (
-    	<div className="card">
-        <div className="card-body">
-          <Row>
-            <Col md={4}>{leftChildren}</Col>
-            <Col md={8} xsHidden smHidden>{rightChildren}</Col>
-          </Row>
+    	<div className="details-container">
+        <div className="details-headings">{leftChildren}</div>
+        <div className="details-body hidden-sm hidden-xs">
+          {rightChildren}
         </div>
       </div>
     )
+  }
+}
+
+DetailsLayout.propTypes = {
+  children: (props, propName, componentName) => {
+    React.Children.forEach(props[propName], c => {
+      if (c.type !== DetailsItem) {
+        return new Error('`' + componentName + '` children should be of type `DetailsItem`.');
+      }
+    })
   }
 }
 

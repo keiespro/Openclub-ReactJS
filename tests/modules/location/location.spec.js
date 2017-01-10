@@ -2,8 +2,8 @@ import {
   LOCATION_CHANGE,
   locationChange,
   updateLocation,
-  default as locationReducer
-} from 'store/location'
+} from 'modules/location/actions'
+import locationReducer from 'modules/location/reducer'
 
 describe('(Internal Module) Location', () => {
   it('Should export a constant LOCATION_CHANGE.', () => {

@@ -12,12 +12,15 @@ class FeedView extends Component {
     render() {
         const { club } = this.props.params;
         return (
+            <div>FEED AREA</div>
+        )
+            /*
             <div>
-                {/* Left column */}
+                
                 <Col md={7} lg={8}>
                     <form name="user.profileForm" className="card">
                         <h5 className="card-heading pb0">
-                            {/* START dropdown */}
+                            
                             <div className="pull-right">
                                 <ButtonGroup>
                                     <Link className="btn btn-flat ripple btn btn-default" to={`/${club}`}>Home</Link>
@@ -37,7 +40,7 @@ class FeedView extends Component {
                                     </Dropdown>
                                 </ButtonGroup>
                             </div>
-                            {/* END dropdown */}
+                            
                             Club Title Goes Here
                         </h5>
                         <div className="card-body">
@@ -99,12 +102,12 @@ class FeedView extends Component {
                         <div className="card-divider"></div>
                     </form>
                 </Col>
-                {/* Right column */}
+                
                 <Col md={5} lg={4}>
                     <div className="card">
                         <h5 className="card-heading">
                             Members
-                            {/* START dropdown */}
+                            
                             <div className="pull-right">
                                 <Dropdown pullRight id="dd2">
                                     <Dropdown.Toggle noCaret className="btn-flat">
@@ -116,7 +119,7 @@ class FeedView extends Component {
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>
-                            {/* END dropdown */}
+                            
                         </h5>
                         <div className="mda-list">
                             <div className="mda-list-item"><img src="img/user/01.jpg" alt="List user" className="mda-list-item-img"/>
@@ -188,7 +191,9 @@ class FeedView extends Component {
                     </div>
                 </Col>
             </div>
+            
         );
+        */
     }
 }
 export default FeedView;

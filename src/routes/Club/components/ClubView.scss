@@ -1,45 +1,5 @@
 
-$header-color: #1976d2;
-
-.menu-bar {
-	background-color: white;
-	border-bottom: 1px solid #dbdbdb;
-}
-
-.btn-group > .menu-btn {
-  color: #6c7177;
-  padding: 12px 12px;
-
-  &:hover {
-    background-color: #f5f5f5;
-    color: #6c7177;
-    z-index: 0;
-  }
-
-  &:focus {
-    color: #6c7177;
-  }
-}
-
-// overrides 1px enlarging issue with bootstrap buttons
-.btn-group .btn+.btn {
-  margin-left: 0px;
-}
-
-.btn-group > .menu-btn-active {
-  color: #fff;
-  background-color: $header-color;
-
-  &:hover {
-    color: #fff;
-    background-color: $header-color;
-  }
-
-  &:focus {
-    color: #fff;
-  }
-}
-
-.menu-btn-inner {
-  margin-top: 6px;
+.container-club {
+  width: auto;
+  padding: 20px;
 }

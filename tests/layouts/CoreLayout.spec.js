@@ -20,8 +20,15 @@ describe('(Layout) Core', function () {
 
   beforeEach(function () {
     _child = <h1 className='child'>Child</h1>
+    // TODO: deal with apis in tests
     _props = {
-      children : _child
+      children : _child,
+      users: {
+        loading: false,
+        data: {
+          profile_picture: ''
+        }
+      }
     }
 
     _component = shallowRenderWithProps(_props)
