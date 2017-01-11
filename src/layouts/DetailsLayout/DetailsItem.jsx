@@ -1,5 +1,6 @@
 import React, { Component, Children, PropTypes } from 'react'
 import { Collapse } from 'react-bootstrap'
+import { Link } from 'react-router'
 import DetailsHeader from './DetailsHeader'
 import './styles/DetailsItem.scss'
 
@@ -7,18 +8,18 @@ class DetailsItem extends Component {
 	render() {
     const { 
       children,
-      eventKey,
+      pageRoute,
       header,
       collapsible,
       collapsed,
-      selectHeader
+      routePrefix
     } = this.props
 
     return collapsible ? (
       <div>
-        <div onClick={() => selectHeader(eventKey)}>
+        <Link to={routePrefix + pageRoute}>
           <DetailsHeader active={!collapsed}>{header}</DetailsHeader>
-        </div>
+        </Link>
         <div className="hidden-lg hidden-md">
           <Collapse in={!collapsed}>
             {children}
@@ -34,11 +35,11 @@ class DetailsItem extends Component {
 }
 
 DetailsItem.propTypes = {
-  eventKey: PropTypes.any.isRequired,
+  pageRoute: PropTypes.any.isRequired,
   header: PropTypes.any.isRequired,
   collapsible: PropTypes.bool,
   collapsed: PropTypes.bool,
-  selectHeader: PropTypes.func
+  routePrefix: PropTypes.string
 }
 
 export default DetailsItem

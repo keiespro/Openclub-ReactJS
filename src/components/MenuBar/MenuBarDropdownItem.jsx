@@ -1,26 +1,31 @@
 import React, { Component, PropTypes } from 'react'
-import MenuItemLink from './MenuItemLink'
+import { MenuItem } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 
 class MenuBarDropdownItem extends Component {
   render() {
     const { 
       label,
-      tab,
+      to,
       route,
-      routePrefix
+      routePrefix,
+      onSelect,
+      onKeyDown
     } = this.props
 
-    const toRoute = `${routePrefix}?tab=${tab}`
+    const toRoute = `${routePrefix}/${to}`
 
     return (
-      <MenuItemLink to={toRoute}>{label}</MenuItemLink>
+      <LinkContainer to={toRoute}>
+        <MenuItem onSelect={onSelect} onKeyDown={onKeyDown}>{label}</MenuItem>
+      </LinkContainer>
     )
   }
 }
 
 MenuBarDropdownItem.propTypes = {
   label: PropTypes.string.isRequired,
-  tab: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
   route: PropTypes.object,
   routePrefix: PropTypes.string
 }

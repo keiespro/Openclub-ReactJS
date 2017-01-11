@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import DetailsLayout from 'layouts/DetailsLayout/DetailsLayout'
 import DetailsItem from 'layouts/DetailsLayout/DetailsItem'
 
@@ -10,23 +10,33 @@ import Privacy from './Privacy'
 
 class AdminView extends Component {
   render() {
+    const { 
+      children,
+      location,
+      params
+    } = this.props
+
+    // get the route prefix for all sub pages
+    const end = location.pathname.length - params.page_id.length
+    const routePrefix = location.pathname.substring(0, end)
+
     return (
-      <DetailsLayout title="Admin">
-        <DetailsItem header="Club Details" eventKey="1">
+      <DetailsLayout title="Admin" routePrefix={routePrefix} page={params.page_id}>
+        <DetailsItem header="Club Details" pageRoute="club-details">
           <ClubDetails/>
         </DetailsItem>
-        <DetailsItem header="Permissions" eventKey="2">
+        <DetailsItem header="Permissions" pageRoute="permissions">
           <Permissions/>
         </DetailsItem>
-        <DetailsItem header="Finance and Billing" eventKey="3">
+        <DetailsItem header="Finance and Billing" pageRoute="finance-and-billing">
           <FinanceAndBilling/>
         </DetailsItem>
-        <DetailsItem header="Member Applications" eventKey="4">
+        <DetailsItem header="Member Applications" pageRoute="member-applications">
           <MemberApplications/>
         </DetailsItem>
-        <DetailsItem header="Privacy" eventKey="5">
+        <DetailsItem header="Privacy" pageRoute="privacy">
           <Privacy/>
-        </DetailsItem>
+        </DetailsItem>        
       </DetailsLayout>
     )
   }

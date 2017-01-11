@@ -15,7 +15,7 @@ class MenuBarDropdown extends Component {
     const toRoute = `${(routePrefix || '')}${to}`
 
     const classes = classNames({
-      'menu-btn-active': route && toRoute === route.pathname
+      'menu-btn-active': route && route.pathname.startsWith(toRoute)
     }, 'btn menu-btn')
 
     const modChildren = React.Children.map(children, c => React.cloneElement(c, {
