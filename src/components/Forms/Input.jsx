@@ -1,15 +1,11 @@
-import React, { Component } from 'react'
+import React from 'react'
+import ValidateBlock from './ValidateBlock'
 
-class Input extends Component {
-  render() {
-    const {
-
-    } = this.props
-
-    return (
-      <input type="text" className="form-control"/>
-    )
-  }
-}
+const Input = ({input, label, type, meta}) => (
+  <div>
+    <input {...input} placeholder={label} type={type}/>
+    <ValidateBlock {...meta}/>
+  </div>
+)
 
 export default Input
