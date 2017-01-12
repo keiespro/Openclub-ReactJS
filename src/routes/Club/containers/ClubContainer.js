@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import API from '../../../modules/api'
+import API from 'modules/api'
 import ClubView from '../components/ClubView'
 
 const { sync } = API.actions.club

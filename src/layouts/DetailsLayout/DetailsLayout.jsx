@@ -9,8 +9,15 @@ class DetailsLayout extends Component {
     const { 
       children,
       page,
-      routePrefix
+      route
     } = this.props
+
+    // get the route prefix for all sub pages (remove page if necessary)
+    let routePrefix = route
+    if(routePrefix.endsWith(page)){
+      const end = route.length - page.length
+      routePrefix = route.substring(0, end)  
+    }
 
     // custom left hand column accordion types
     const leftChildren = Children.map(children, ((c, i) => {

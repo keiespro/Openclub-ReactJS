@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import DetailsLayout from 'layouts/DetailsLayout/DetailsLayout'
-import DetailsItem from 'layouts/DetailsLayout/DetailsItem'
+import { DetailsLayout, DetailsItem } from 'layouts/DetailsLayout'
 
 import ClubDetails from './ClubDetails'
 import Permissions from './Permissions'
@@ -16,12 +15,8 @@ class AdminView extends Component {
       params
     } = this.props
 
-    // get the route prefix for all sub pages
-    const end = location.pathname.length - params.page_id.length
-    const routePrefix = location.pathname.substring(0, end)
-
     return (
-      <DetailsLayout title="Admin" routePrefix={routePrefix} page={params.page_id}>
+      <DetailsLayout title="Admin" route={location.pathname} page={params.page_id}>
         <DetailsItem header="Club Details" pageRoute="club-details">
           <ClubDetails/>
         </DetailsItem>
