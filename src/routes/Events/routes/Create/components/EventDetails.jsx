@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Field, reduxForm } from 'redux-form';
-import { FieldSet, Input, ImageUpload } from 'components/Forms'
+import { Input, ImageUpload, DateTimeRange, TextEditor } from 'components/Forms'
 import { Button } from 'react-bootstrap'
 
 class EventDetails extends Component {
@@ -13,9 +13,11 @@ class EventDetails extends Component {
   render() {
     return (
       <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
-        <FieldSet title="Event Title">
-          <Field name="title" type="text" component={Input}/>
-        </FieldSet>
+        <Field name="title" type="text" title="Event Title" component={Input}/>
+        <Field name="location" type="text" title="Location" component={Input}/>
+        <Field name="when" type="text" component={DateTimeRange}/>
+        <Field name="picture" type="image" component={ImageUpload}/>
+        <Field name="text" type="text" component={TextEditor}/>
         <Button type="submit">Next</Button>
       </form>
     )

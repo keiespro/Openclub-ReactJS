@@ -12,7 +12,7 @@ class FieldSet extends Component {
       <fieldset className="oc-fieldset">
         <label className="control-label">{title}</label>
         <div className="">
-            {children}
+          {children}
         </div>
       </fieldset>
     )

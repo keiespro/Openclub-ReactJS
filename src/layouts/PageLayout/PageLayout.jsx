@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
+import { Grid, Row, Col } from 'react-bootstrap'
+import './styles/PageLayout.scss'
 
 const PageLayout = ({ children }) => {
   return (
-    <div className="page-layout">{children}</div>
+    <Grid className="page-full">
+      <Row>
+        <Col xs={12}>{children}</Col>
+      </Row>
+    </Grid>
   )
 }
 

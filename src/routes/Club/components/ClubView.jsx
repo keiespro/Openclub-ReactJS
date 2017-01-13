@@ -40,4 +40,5 @@ class ClubView extends Component {
     );
   }
 }
+
 export default ClubView;
