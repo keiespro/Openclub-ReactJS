@@ -11,7 +11,7 @@ export default (store) => ({
     component: Events
   },
   childRoutes: [
-    Create(store),
+    ...Create(store),
     Event(store)
   ]
 })
