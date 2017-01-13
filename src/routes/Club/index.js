@@ -14,7 +14,7 @@ export default (store) => ({
     onEnter: (nextState, replace) => {
       const state = store.getState()
       let path = (state.auth.token) ? 'feed' : 'about'
-      browserHistory.replace(`/${nextState.params.club_id}/${path}`)
+      replace(`/${nextState.params.club_id}/${path}`)
     }
   },
   childRoutes: [
