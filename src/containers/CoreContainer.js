@@ -1,17 +1,21 @@
-import { connect } from 'react-redux';
-import * as ACTIONS from '../modules/auth/actions';
+import { connect } from 'react-redux'
+import * as authActions from '../modules/auth/actions'
+import API from '../modules/api'
+import CoreLayout from '../layouts/CoreLayout'
 
-import CoreLayout from '../layouts/CoreLayout';
+const { sync } = API.actions.users
 
-const mapDispatchToProps = ACTIONS;
+const mapDispatchToProps = {
+  ...authActions,
+  syncUsers: sync
+}
 
 const mapStateToProps = (state) => {
-    const { auth } = state;
-    const { isAuthenticated, errorMessage } = auth;
-    return {
-        isAuthenticated,
-        errorMessage
-    }
-};
+  const { token } = state.auth
+  return {
+    token,
+    users: state.users
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(CoreLayout);
+export default connect(mapStateToProps, mapDispatchToProps)(CoreLayout)

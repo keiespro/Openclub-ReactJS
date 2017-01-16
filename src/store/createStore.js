@@ -2,28 +2,22 @@ import { applyMiddleware, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
 import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
-import { updateLocation } from './location'
+import { updateLocation } from '../modules/location/actions'
 
 export default (initialState = {}) => {
-  // ======================================================
-  // Middleware Configuration
-  // ======================================================
+  // setup middlewares
   const middleware = [thunk]
 
-  // ======================================================
-  // Store Enhancers
-  // ======================================================
+  // setup enhancers
   const enhancers = []
   if (__DEV__) {
-    const devToolsExtension = window.devToolsExtension
+    const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__
     if (typeof devToolsExtension === 'function') {
       enhancers.push(devToolsExtension())
     }
   }
 
-  // ======================================================
-  // Store Instantiation and HMR Setup
-  // ======================================================
+  // create the store
   const store = createStore(
     makeRootReducer(),
     initialState,

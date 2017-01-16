@@ -5,6 +5,11 @@
 @import './Variables';
 @import './Mixins';
 
+.theme-openclub {
+    @include theme-sidebar(#fff, $text-color, #fff, $text-color);
+    @include theme-header(#fff, $text-color);
+}
+
 .theme-1 {
     @include theme-sidebar(#fff, $text-color, $mdc-blue-700, #fff);
     @include theme-header($mdc-blue-700, #fff);

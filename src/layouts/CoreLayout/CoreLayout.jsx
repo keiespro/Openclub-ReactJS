@@ -1,7 +1,6 @@
 import React, { Component, PropTypes, cloneElement } from 'react'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-
 import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
 import './CoreLayout.scss'
@@ -15,45 +14,53 @@ import '../../styles/core.scss'
 class CoreLayout extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired,
-    login: PropTypes.func.isRequired,
-    logoutUser: PropTypes.func.isRequired
+    //isAuthenticated: PropTypes.bool.isRequired,
+    //login: PropTypes.func.isRequired,
+    //logoutUser: PropTypes.func.isRequired
+
+  }
+  componentWillMount() {
+    if(this.props.token){
+      // sync the user data api here
+      this.props.syncUsers('self')
+    }
   }
   render() {
-      console.log(this.props);
-      const { isAuthenticated, login, logoutUser } = this.props;
-      if (isAuthenticated) {
-          return (
-              <div className="layout-container">
-                  <Header {...this.props} />
-                  <Sidebar {...this.props} />
-                <div className="sidebar-layout-obfuscator" />
+    const loggedIn = this.props.token && this.props.users.sync
+    const contentReady = !this.props.users.loading
 
-                <ReactCSSTransitionGroup
-                  component="main"
-                  className="main-container"
-                  transitionName="rag-fadeIn"
-                  transitionEnterTimeout={250}
-                  transitionLeaveTimeout={250}
-                 >
-                  {cloneElement(this.props.children, { key: Math.random() })}
-                </ReactCSSTransitionGroup>
-              </div>
-          );
-      }
-      return (
-          <div className="layout-container sidebar-offcanvas loggedout">
-            <ReactCSSTransitionGroup
-              component="main"
-              className="main-container full"
-              transitionName="rag-fadeIn"
-              transitionEnterTimeout={250}
-              transitionLeaveTimeout={250}
-              >
-              {cloneElement(this.props.children, { key: Math.random() })}
-            </ReactCSSTransitionGroup>
-          </div>
-      );
+    const containerClasses = ['layout-container']
+    if(!loggedIn){
+      containerClasses.push('sidebar-offcanvas')
+      containerClasses.push('loggedout')
+    }
+
+    const contentClasses = ['main-container']
+    if(!this.props.token){
+      contentClasses.push('full')
+    }
+
+    return (
+      <div className={containerClasses.join(' ')}>
+        <Header user={this.props.users.data}/>
+        { loggedIn && <Sidebar user={this.props.users.data} /> }
+        { loggedIn && <div className="sidebar-layout-obfuscator" /> }
+        {/* contentReady &&          
+          <ReactCSSTransitionGroup
+            component="main"
+            className={contentClasses.join(' ')}
+            transitionName="rag-fadeIn"
+            transitionEnterTimeout={250}
+            transitionLeaveTimeout={250}
+          >
+            {cloneElement(this.props.children, { key: Math.random() })}
+          </ReactCSSTransitionGroup>
+        */}
+        <div className={contentClasses.join(' ')}>
+          {this.props.children}
+        </div>
+      </div>
+    )
   }
 }
 

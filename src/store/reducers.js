@@ -1,15 +1,25 @@
+
 import { combineReducers } from 'redux'
-import locationReducer from './location'
+import auth from '../modules/auth/reducer'
+import location from '../modules/location/reducer'
+import api from '../modules/api'
+import { reducer as form } from 'redux-form'
 
-export const makeRootReducer = (asyncReducers) => combineReducers({
-    location: locationReducer,
+// Build full combined reducer
+export const makeRootReducer = (asyncReducers) => {
+  return combineReducers({
+    auth,
+    location,
+    form,
+    ...api.reducers,
     ...asyncReducers
-});
+  })
+}
 
+// dynamically add reducers to the store
 export const injectReducer = (store, { key, reducer }) => {
-    let asyncStore = store;
-    asyncStore.asyncReducers[key] = reducer;
-    asyncStore.replaceReducer(makeRootReducer(asyncStore.asyncReducers))
+  store.asyncReducers[key] = reducer;
+  store.replaceReducer(makeRootReducer(store.asyncReducers))
 }
 
 export default makeRootReducer

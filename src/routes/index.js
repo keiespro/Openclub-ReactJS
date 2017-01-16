@@ -1,36 +1,41 @@
-// We only need to import the modules necessary for initial render
-import { injectReducer } from '../store/reducers';
+import { injectReducer } from 'store/reducers'
+import { asyncRequire } from 'utils/codesplit'
+import { checkAuthentication } from 'modules/auth/actions'
+
 import Home from './Home'
-import ClubsRoute from './Clubs';
+import Feed from './Feed'
+import Club from './Club'
+import Events from './Events'
+/*
 import CounterRoute from './Counter'
 import NotificationsRoute from './Notifications'
 import ErrorRoute from './Error'
-import LoginRoute from './Login';
-import ClubsLanding from './ClubsLanding';
+import LoginRoute from './Login'
+import ClubsLanding from './ClubsLanding'
+*/
 
-export const createRoutes = (store, auth) => ({
+export const createRoutes = (store) => ({
   path: '/',
-  getComponent(nextState, cb) {
-      console.log('RUNNING', nextState, store);
-      require.ensure([], (require) => {
-          const CoreContainer = require('../containers/CoreContainer').default;
-          const reducer = require('../modules/auth/reducer').default;
-          injectReducer(store, { key: 'auth', reducer });
-          cb(null, CoreContainer);
-      });
+  getComponent: asyncRequire(() => require('../containers/CoreContainer').default),
+  onEnter: (nextState, replace, cb) => {
+    // enforce auth hash completion before loading root route
+    store.dispatch(checkAuthentication()).then(() => cb())
   },
-  indexRoute: Home(store, auth),
+  indexRoute: Home(store),
   childRoutes: [
-    CounterRoute(store, auth),
-    Home(store, auth),
-    NotificationsRoute(store, auth),
-    LoginRoute(store, auth),
+    Feed(store),
+    Events(store),
+    Club(store)
+    //CounterRoute(store, auth),
+    //Home(store, auth),
+    //NotificationsRoute(store, auth),
+    //LoginRoute(store, auth),
     // Landing pages
-    ClubsLanding(store),
+    //ClubsLanding(store),
     // Clubs Route is a catch-all dynamic child route.
-    ClubsRoute(store, auth),
+    //ClubsRoute(store, auth),
     // Error Route must remain at the bottom.
-    ErrorRoute(store, auth)
+    //ErrorRoute(store, auth)
   ]
 });
 
