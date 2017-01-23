@@ -22,7 +22,7 @@ class MenuBarDropdown extends Component {
       route,
       routePrefix: toRoute
     }))
-    
+
     return (
       <Dropdown pullRight id="MenuBarDropdown">
         <Dropdown.Toggle noCaret className={classes}>
