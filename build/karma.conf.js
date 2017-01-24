@@ -2,6 +2,7 @@ const argv = require('yargs').argv
 const config = require('../config')
 const webpackConfig = require('./webpack.config')
 const debug = require('debug')('app:karma')
+const path = require('path')
 
 debug('Creating configuration.')
 const karmaConfig = {
@@ -26,7 +27,8 @@ const karmaConfig = {
     devtool : 'cheap-module-source-map',
     resolve : Object.assign({}, webpackConfig.resolve, {
       alias : Object.assign({}, webpackConfig.resolve.alias, {
-        sinon : 'sinon/pkg/sinon.js'
+        sinon : 'sinon/pkg/sinon.js',
+        src: path.join(__dirname, 'src')
       })
     }),
     plugins : webpackConfig.plugins,
