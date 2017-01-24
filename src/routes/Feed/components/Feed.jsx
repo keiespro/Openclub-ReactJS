@@ -14,41 +14,16 @@ class Feed extends Component {
         <div className="container-lg">
           <Row>
             <Col md={8}>
+              <h5 className="card-heading pb0">
+                  <div className="pull-right">
+                    <a href="#" className="btn btn-flat btn-primary">Top</a>
+                    <a href="#" className="btn btn-flat btn-primary">Trending</a>
+                    <a href="#" className="btn btn-flat btn-primary">Discover</a>
+                  </div>
+                  News Feed
+              </h5>
+
               <div className="card">
-                <div className="card-body">
-                  <div className="card bg-primary">
-                    <div className="card-body">
-                      <div className="pull-right">
-                        <em className="fa fa-calendar fa-4x text-muted"></em>
-                      </div>
-                      <h4 className="mv-sm">Event Reminder</h4>
-                      <h5>Street Race begins at 10 am.</h5>
-                    </div>
-                    <div className="card-footer">
-                      <button type="button" className="btn btn-flat btn-primary text-white"><i className="fa fa-calendar-o"/>
-                        View Event Details</button>
-                      <button type="button" className="btn btn-flat btn-primary text-white"><i className="fa fa-map-o"/>
-                        Get Directions</button>
-                      <button type="button" className="btn btn-flat btn-primary text-white"><i className="fa fa-times"/>
-                        Dismiss</button>
-                    </div>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <div className="card bg-danger">
-                    <div className="card-body">
-                      <p className="lead m0">Your
-                        <strong>BMW Club Queensland</strong>
-                        membership is set to expire in 3 days. Would you like to renew?</p>
-                    </div>
-                    <div className="card-footer">
-                      <button type="button" className="btn btn-flat btn-danger text-white"><i className="fa fa-refresh"/>
-                        Renew Membership</button>
-                      <button type="button" className="btn btn-flat btn-danger text-white"><i className="fa fa-times"/>
-                        Dismiss</button>
-                    </div>
-                  </div>
-                </div>
                 <div className="card-body">
                   {/* Inner card */}
                   <div className="card">
@@ -201,7 +176,43 @@ class Feed extends Component {
               <div className="push-down"></div>
               <div className="card card-transparent">
                 <h5 className="card-heading">Upcoming Events</h5>
+                <div className="card">
+                  <div className="card-body">
+                    <div className="card bg-primary">
+                      <div className="card-body">
+                        <div className="pull-right">
+                          <em className="fa fa-calendar fa-4x text-muted"></em>
+                        </div>
+                        <h4 className="mv-sm">BMW Fundraiser</h4>
+                        <h5>Event starting in 2 hours.</h5>
+                      </div>
+                      <div className="card-footer">
+                        <button type="button" className="btn btn-flat btn-primary text-white">
+                          <i className="fa fa-calendar-o"/> Details
+                        </button>
+                        <button type="button" className="btn btn-flat btn-primary text-white">
+                          <i className="fa fa-map-o" /> Directions
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <h5 className="card-heading">Upcoming Renewals</h5>
+                <div className="card">
+                  <div className="card-body">
+                    <div className="card bg-danger">
+                      <div className="card-body">
+                        <p className="lead m0">Your <strong>BMW Club Queensland</strong> membership is set to expire in 3 days. Would you like to renew?</p>
+                      </div>
+                      <div className="card-footer">
+                        <button type="button" className="btn btn-flat btn-danger text-white"><i className="fa fa-refresh"/>
+                          Renew Membership</button>
+                        <button type="button" className="btn btn-flat btn-danger text-white"><i className="fa fa-times"/>
+                          Dismiss</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </Col>
           </Row>
