@@ -2,6 +2,8 @@ import { injectReducer } from 'store/reducers'
 import { asyncRequire } from 'utils/codesplit'
 import { checkAuthentication } from 'modules/auth/actions'
 
+console.log('iR', injectReducer);
+
 import Home from './Home'
 import Feed from './Feed'
 import Club from './Club'
