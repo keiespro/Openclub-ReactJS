@@ -3,7 +3,7 @@ import { IndexLink } from 'react-router'
 import Logo from '../Logo';
 import SidebarProfileWidget from './SidebarProfileWidget'
 import SidebarMenu from './SidebarMenu'
-import SidebarMenuLink from './SidebarMenuLink'
+import SidebarMenuLink from './SidebarMenuLink.jsx'
 
 import './styles/Sidebar.scss';
 import SidebarScripts from './SidebarScripts'
