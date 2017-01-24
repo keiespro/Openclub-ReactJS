@@ -27,8 +27,7 @@ const karmaConfig = {
     devtool: 'cheap-module-source-map',
     resolve: Object.assign({}, webpackConfig.resolve, {
       alias: Object.assign({}, webpackConfig.resolve.alias, {
-        sinon: 'sinon/pkg/sinon.js',
-        src: path.join(__dirname, 'src')
+        sinon: 'sinon/pkg/sinon.js'
       })
     }),
     plugins: webpackConfig.plugins,
