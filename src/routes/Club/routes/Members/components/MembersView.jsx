@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Col } from 'react-bootstrap'
 import Member from './Member'
+import ClubSectionTitle from '../../../components/ClubSectionTitle';
+
 
 class MembersView extends Component {
   static propTypes = {}
@@ -10,13 +12,12 @@ class MembersView extends Component {
   render() {
     return (
       <Col>
-        <div className="card">
+        <ClubSectionTitle title="Members" />
           <div className="mda-list mda-list-bordered">
             {this.props.members.page.map(m => {
             	return <Member key={m.user_id} id={m.user_id} name={m.name}/>
             })}
           </div>
-    	</div>
       </Col>
     )
   }
