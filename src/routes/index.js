@@ -25,9 +25,9 @@ export const createRoutes = (store) => ({
   indexRoute: Home(store),
   childRoutes: [
     Feed(store),
+    Notifications(store),
     Events(store),
     Club(store),
-    Notifications(store)
     //CounterRoute(store, auth),
     //Home(store, auth),
     //

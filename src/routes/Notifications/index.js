@@ -1,6 +1,6 @@
-export default (store, auth) => ({
+export default (store) => ({
     path: 'notifications',
-    onEnter: auth.enterRoute,
+    // onEnter: auth.enterRoute,
     getComponent(nextState, cb) {
         require.ensure([], (require) => {
             const Notification = require('./containers/Notification').default
