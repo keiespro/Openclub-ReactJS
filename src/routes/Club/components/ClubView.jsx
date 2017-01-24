@@ -1,11 +1,20 @@
 import React, { Component, PropTypes } from 'react'
-import { ButtonGroup, Button } from 'react-bootstrap'
+import { ButtonGroup, Button, Row, Col, Grid } from 'react-bootstrap'
 import ClubHeader from './ClubHeader'
 import { MenuBar, MenuBarItem, MenuBarDropdown, MenuBarDropdownItem } from 'components/MenuBar'
 
 import './ClubView.scss'
 
 class ClubView extends Component {
+  static propTypes = {
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.element
+    ]),
+    params: PropTypes.object,
+    syncClub: PropTypes.func,
+    location: PropTypes.object
+  }
   componentDidMount() {
     this.props.syncClub(this.props.params.club_id)
   }
@@ -33,9 +42,20 @@ class ClubView extends Component {
           </MenuBarDropdown>
           <Button className="btn-raised ripple btn btn-success menu-btn-inner pull-right btn-flat">Join Club</Button>
         </MenuBar>
-        <div className="container-club">
-          {this.props.children}
-        </div>
+        <Grid fluid>
+          <Row>
+            <Col lg={9} xs={12}>
+              <div className="card">
+                {this.props.children}
+              </div>
+            </Col>
+            <Col xsHidden lg={3}>
+              <div className="card">
+                Test
+              </div>
+            </Col>
+          </Row>
+        </Grid>
       </section>
     );
   }
