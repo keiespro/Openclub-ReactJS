@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Link, IndexLink } from 'react-router'
-import classNames from 'classnames'
+import cx from 'classnames'
 import './styles/SidebarMenuLink.scss'
 
 class SidebarMenuLink extends Component {
@@ -10,35 +10,32 @@ class SidebarMenuLink extends Component {
       link,
       iconImage,
       iconClasses,
-      text,
       badgeCount
     } = this.props
 
     let iconStyle = {};
-    if(iconImage){
+    if (iconImage) {
       iconStyle.backgroundImage = `url(${iconImage})`
     }
+    let iClasses = cx({
+      'img-icon': iconImage,
+      [iconClasses]: iconClasses
+    });
+
+    let liClasses = cx({
+      'active': active
+    });
 
     return (
-      <li className={classNames({'active' : active})}>
+      <li className={liClasses}>
         <Link to={link} className="ripple">
           <span className="pull-right nav-label">
-            {/*
-            <span className="nav-pinned">
-              <i className="fa fa-thumb-tack"></i>
-            </span>
-            */}
             {badgeCount > 0 &&
               <span className="badge bg-success">{badgeCount}</span>
             }
           </span>
           <span className="nav-icon">
-            <i className={classNames({
-                'img-icon': iconImage,
-                [iconClasses]: iconClasses
-              })}
-              style={iconStyle}
-            />
+            <i className={iClasses} style={iconStyle} />
           </span>
           <span>{this.props.children}</span>
         </Link>
@@ -52,7 +49,11 @@ SidebarMenuLink.propTypes = {
   link: PropTypes.string.isRequired,
   iconImage: PropTypes.string,
   iconClasses: PropTypes.string,
-  badgeCount: PropTypes.number
+  badgeCount: PropTypes.number,
+  children: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.element
+  ])
 }
 
 SidebarMenuLink.defaultProps = {
