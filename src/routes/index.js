@@ -4,7 +4,7 @@ import { checkAuthentication } from 'modules/auth/actions'
 
 console.log('iR', injectReducer);
 
-import Home from './Home'
+import Home from './Home/index'
 import Feed from './Feed'
 import Club from './Club'
 import Events from './Events'
