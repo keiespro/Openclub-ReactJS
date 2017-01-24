@@ -4,7 +4,7 @@ class Feed extends Component {
   static propTypes = {
     thread: PropTypes.oneOfType([
       PropTypes.array,
-      PropTyps.object
+      PropTypes.object
     ]),
     context: PropTypes.string.isRequired // oneOf: Feed, Thread
   }
