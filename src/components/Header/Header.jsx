@@ -20,9 +20,9 @@ class Header extends Component {
                 </a>
               </li>
             </ul>
-            <ul class="nav navbar-nav navbar-left">
-              <li><a href="#">Home</a></li>
-              <li><a href="#">Discover</a></li>
+            <ul className="hidden-xs hidden-sm">
+              <li><a href="#"><i className="fa fa-home" /> Home</a></li>
+              <li><a href="#"><i className="fa fa-globe" /> Discover</a></li>
             </ul>
             <ul className="pull-right">
               <li>

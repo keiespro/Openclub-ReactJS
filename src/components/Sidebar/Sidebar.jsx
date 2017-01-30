@@ -35,6 +35,10 @@ class Sidebar extends Component {
         {user &&
           <div className="sidebar-content">
             <SidebarProfileWidget user={user}/>
+            <SidebarMenu title="OpenClub" className="visible-xs visible-sm">
+              <SidebarMenuItem link="/" active={this.routeActive('/')} iconClasses="fa fa-home col-grey-800">Home</SidebarMenuItem>
+              <SidebarMenuItem link="/discover" active={this.routeActive('/discover')} iconClasses="fa fa-globe col-orange-300">Discover</SidebarMenuItem>
+            </SidebarMenu>
             <SidebarMenu title="Menu">
               <SidebarMenuItem link="/feed" active={this.routeActive('/feed')} iconClasses="fa fa-newspaper-o col-grey-800">News Feed</SidebarMenuItem>
               <SidebarMenuItem link="/profile" active={this.routeActive('/profile')} iconClasses="fa fa-list col-orange-300">Profile</SidebarMenuItem>
