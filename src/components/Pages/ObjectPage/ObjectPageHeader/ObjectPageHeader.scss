@@ -1,6 +1,7 @@
 .objectpage-header-container {
   height: 240px;
   position: relative;
+  transition: height 0.25s;
 
   .banner-container {
     height: 100%;
@@ -42,6 +43,27 @@
 
   .objectpage-heading {
     margin: 0;
+  }
+
+  &.collapsed {
+    height: 50px;
+    .profile-backdrop {
+      padding: 0;
+      border-radius: 0;
+      background-color: #fff;
+      box-shadow: none;
+    }
+    .header-details {
+      padding: 0px;
+    }
+    .media-object {
+      height: 50px;
+    }
+    .objectpage-heading {
+      margin-top: auto;
+      margin-bottom: auto;
+      height: 38px;
+    }
   }
 
 }
