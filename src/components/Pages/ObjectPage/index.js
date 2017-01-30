@@ -1,7 +1,5 @@
-import Header from './Header';
-import Menu from './Menu';
+import ObjectPageHeader from './ObjectPageHeader';
 
 export {
-  Header,
-  Menu
+  ObjectPageHeader
 }
