@@ -18,6 +18,9 @@ For example:
 @import '~material-colors/dist/colors.css';
 @import '~loaders.css/loaders.css';
 
+@import './Bootstrap/Mixins.scss';
+@import './Bootstrap/Reset.scss';
+
 // Common
 @import './Animate.scss';
 @import './ButtonsExtra.scss';

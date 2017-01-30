@@ -38,7 +38,8 @@ class ClubView extends Component {
           <MenuBarItem label="Events" to="/events" />
           <MenuBarItem label="Members" to="/members" />
           <MenuBarItem label="About" to="/about" />
-          <MenuBarDropdown label={<i className="fa fa-ellipsis-h" />} to="/admin">
+
+          <MenuBarDropdown label={<span>Manage <i className="fa fa-angle-down" /></span>} to="/admin">
             <MenuBarDropdownItem label="Club Details" to="club-details" />
             <MenuBarDropdownItem label="Permissions" to="permissions" />
             <MenuBarDropdownItem label="Billing and Finance" to="finance-and-billing" />
