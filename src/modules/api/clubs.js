@@ -5,13 +5,16 @@ config.club = {
   url: '/clubs/:club_id',
   crud: true,
   transformer(data) {
-  	return {
+    return {
       name: 'BMW Motor Club',
-  		slug: 'bmw',  	
-      profile_picture: 'https://pbs.twimg.com/profile_images/798844134404435969/fc6qzNNR_400x400.jpg',	
-  		profile_cover: 'https://pbs.twimg.com/profile_banners/1545994664/1476365735/1500x500',
-      slogan: 'Sheer Driving Pleasure'
-  	}
+      slug: 'bmw',
+      images: {
+        square: 'https://pbs.twimg.com/profile_images/798844134404435969/fc6qzNNR_400x400.jpg',
+        thumb: 'https://pbs.twimg.com/profile_images/798844134404435969/fc6qzNNR_400x400.jpg',
+        background: 'https://pbs.twimg.com/profile_banners/1545994664/1476365735/1500x500'
+      },
+      location: 'Brisbane, Australia'
+    }
   }
 }
 
@@ -20,8 +23,13 @@ config.club_members = {
   transformer(data) {
     return {
       page: [
-        { user_id: 1, name: 'Billy johnson' },
-        { user_id: 2, name: 'Mary Hilstead' }
+        { user_id: 1, name: 'Jeffry Boatwright', images: { thumb: '/img/user/01.jpg' } },
+        { user_id: 2, name: 'Dexter Padmore', images: { thumb: '/img/user/02.jpg' } },
+        { user_id: 3, name: 'Garry Bronson', images: { thumb: '/img/user/03.jpg' } },
+        { user_id: 4, name: 'Edgar Shakesheave', images: { thumb: '/img/user/04.jpg' } },
+        { user_id: 5, name: 'Maurice George', images: { thumb: '/img/user/05.jpg' } },
+        { user_id: 6, name: 'Willis Fuller', images: { thumb: '/img/user/06.jpg' } },
+        { user_id: 7, name: 'Irvin Horne', images: { thumb: '/img/user/07.jpg' } },
       ]
     }
   }
