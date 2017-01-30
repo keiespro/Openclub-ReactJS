@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Col, Dropdown, MenuItem, ButtonGroup } from 'react-bootstrap';
+import { Row, Col, Dropdown, MenuItem, ButtonGroup } from 'react-bootstrap';
 import { Link } from 'react-router';
 
 import ClubSectionTitle from '../../../components/ClubSectionTitle';
@@ -19,7 +19,8 @@ class FeedView extends Component {
         }
 
         return (
-            <div>
+          <Row>
+            <Col lg={9} xs={12}>
               <ClubSectionTitle title="News Feed" />
                 <div className="card-body">
                     <form action="" className="mt">
@@ -117,8 +118,11 @@ class FeedView extends Component {
                           </div>
                       </div>
                   </div>
-
-            </div>
+            </Col>
+            <Col xsHidden lg={3}>
+              Feed Sidebar
+            </Col>
+          </Row>
         );
     }
 }

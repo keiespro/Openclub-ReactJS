@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Button, Row, Col, Grid } from 'react-bootstrap'
+import { Button, Grid } from 'react-bootstrap'
 import { MenuBar, MenuBarItem, MenuBarDropdown, MenuBarDropdownItem } from 'components/HorizontalMenuBar'
 import { ObjectPageHeader } from 'components/Pages/ObjectPage';
 
@@ -41,18 +41,7 @@ class ClubView extends Component {
           <Button className="btn-raised ripple btn btn-success menu-btn-inner pull-right btn-flat">Join Club</Button>
         </MenuBar>
         <Grid fluid>
-          <Row>
-            <Col lg={9} xs={12}>
-              <div className="card">
-                {this.props.children}
-              </div>
-            </Col>
-            <Col xsHidden lg={3}>
-              <div className="card">
-                Test
-              </div>
-            </Col>
-          </Row>
+          {this.props.children}
         </Grid>
       </section>
     );

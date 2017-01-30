@@ -21,17 +21,15 @@ config.club = {
 config.club_members = {
   url: '/clubs/:club_id/members',
   transformer(data) {
-    return {
-      page: [
-        { user_id: 1, name: 'Jeffry Boatwright', images: { thumb: '/img/user/01.jpg' } },
-        { user_id: 2, name: 'Dexter Padmore', images: { thumb: '/img/user/02.jpg' } },
-        { user_id: 3, name: 'Garry Bronson', images: { thumb: '/img/user/03.jpg' } },
-        { user_id: 4, name: 'Edgar Shakesheave', images: { thumb: '/img/user/04.jpg' } },
-        { user_id: 5, name: 'Maurice George', images: { thumb: '/img/user/05.jpg' } },
-        { user_id: 6, name: 'Willis Fuller', images: { thumb: '/img/user/06.jpg' } },
-        { user_id: 7, name: 'Irvin Horne', images: { thumb: '/img/user/07.jpg' } },
-      ]
-    }
+    return [
+      { user_id: 1, name: 'Jeffry Boatwright', images: { thumb: '/img/user/01.jpg' } },
+      { user_id: 2, name: 'Dexter Padmore', images: { thumb: '/img/user/02.jpg' } },
+      { user_id: 3, name: 'Garry Bronson', images: { thumb: '/img/user/03.jpg' } },
+      { user_id: 4, name: 'Edgar Shakesheave', images: { thumb: '/img/user/04.jpg' } },
+      { user_id: 5, name: 'Maurice George', images: { thumb: '/img/user/05.jpg' } },
+      { user_id: 6, name: 'Willis Fuller', images: { thumb: '/img/user/06.jpg' } },
+      { user_id: 7, name: 'Irvin Horne', images: { thumb: '/img/user/07.jpg' } },
+    ]
   }
 }
 
