@@ -60,19 +60,24 @@ class MemberList extends Component {
       onSelect: this.setSelected,
       onSelectAll: this.setSelectAll,
       className: 'selected',
-      hideSelectColumn: true
     } : { selected: [] };
     return (
-      <BootstrapTable options={options} data={members} striped hover pagination selectRow={selectRow} search>
+      <BootstrapTable
+        options={options}
+        data={members}
+        striped
+        hover
+        pagination
+        selectRow={selectRow}
+        bordered={false}
+      >
         <TableHeaderColumn hidden isKey dataField="user_id" export={false} />
         <TableHeaderColumn
           export={false}
           dataField="images"
           dataFormat={this.imageFormat}
           columnClassName="photo"
-        >
-          <input type="checkbox" />
-        </TableHeaderColumn>
+        />
         <TableHeaderColumn dataField="name" dataSort>Name</TableHeaderColumn>
         <TableHeaderColumn dataField="join_date" dataSort>Date Joined</TableHeaderColumn>
         <TableHeaderColumn dataField="email" dataSort>Email</TableHeaderColumn>
