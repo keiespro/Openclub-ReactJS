@@ -23,9 +23,16 @@ class ClubView extends Component {
     const club = this.props.club.data;
     const { params, location } = this.props
 
+    const collapseHeader = location.pathname.includes('/feed') === false;
+
     return (
       <section>
-        <ObjectPageHeader name={club.name} location={club.location} images={club.images} />
+        <ObjectPageHeader
+          name={club.name}
+          location={club.location}
+          images={club.images}
+          collapsed={collapseHeader}
+        />
         <MenuBar routePrefix={`/${params.club_id}`} route={location}>
           <MenuBarItem label="Feed" to="/feed" />
           <MenuBarItem label="Events" to="/events" />
