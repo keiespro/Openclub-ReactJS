@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import { ButtonGroup, Button, Row, Col, Grid } from 'react-bootstrap'
-import ClubHeader from './ClubHeader'
-import { MenuBar, MenuBarItem, MenuBarDropdown, MenuBarDropdownItem } from 'components/MenuBar'
+import { Button, Row, Col, Grid } from 'react-bootstrap'
+import { MenuBar, MenuBarItem, MenuBarDropdown, MenuBarDropdownItem } from 'components/HorizontalMenuBar'
+import { ObjectPageHeader } from 'components/Pages/ObjectPage';
 
 import './ClubView.scss'
 
@@ -13,32 +13,30 @@ class ClubView extends Component {
     ]),
     params: PropTypes.object,
     syncClub: PropTypes.func,
-    location: PropTypes.object
+    location: PropTypes.object,
+    club: PropTypes.object
   }
   componentDidMount() {
     this.props.syncClub(this.props.params.club_id)
   }
   render() {
-    const club = this.props.club.data
-    const {
-      params,
-      location
-    } = this.props
+    const club = this.props.club.data;
+    const { params, location } = this.props
 
     return (
       <section>
-        <ClubHeader club={club}/>
+        <ObjectPageHeader name={club.name} location={club.location} images={club.images} />
         <MenuBar routePrefix={`/${params.club_id}`} route={location}>
-          <MenuBarItem label="Feed" to="/feed"/>
-          <MenuBarItem label="Events" to="/events"/>
-          <MenuBarItem label="Members" to="/members"/>
-          <MenuBarItem label="About" to="/about"/>
+          <MenuBarItem label="Feed" to="/feed" />
+          <MenuBarItem label="Events" to="/events" />
+          <MenuBarItem label="Members" to="/members" />
+          <MenuBarItem label="About" to="/about" />
           <MenuBarDropdown label={<i className="fa fa-ellipsis-h" />} to="/admin">
-            <MenuBarDropdownItem label="Club Details" to="club-details"/>
-            <MenuBarDropdownItem label="Permissions" to="permissions"/>
-            <MenuBarDropdownItem label="Billing and Finance" to="finance-and-billing"/>
-            <MenuBarDropdownItem label="Member Applications" to="member-applications"/>
-            <MenuBarDropdownItem label="Privacy" to="privacy"/>
+            <MenuBarDropdownItem label="Club Details" to="club-details" />
+            <MenuBarDropdownItem label="Permissions" to="permissions" />
+            <MenuBarDropdownItem label="Billing and Finance" to="finance-and-billing" />
+            <MenuBarDropdownItem label="Member Applications" to="member-applications" />
+            <MenuBarDropdownItem label="Privacy" to="privacy" />
           </MenuBarDropdown>
           <Button className="btn-raised ripple btn btn-success menu-btn-inner pull-right btn-flat">Join Club</Button>
         </MenuBar>

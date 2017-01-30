@@ -11,29 +11,28 @@ class ClubHeader extends Component {
       backgroundPosition: 'center center',
       backgroundSize: 'cover'
     }
-
-  	return (
-      <div className="clubheader-container">
-        <div className="banner-container" style={headerImageStyle}>
-          <div className="clubheader-details">
-            <div className="details-container">
-              <div className="media-left">
-                <div className="profile-backdrop">
-                  <a href="#">
-                    <img src={club.profile_picture} alt="User" className="media-object img-round-corners img-light-border thumb128" />
-                  </a>
+      return (
+        <div className="clubheader-container">
+          <div className="banner-container" style={headerImageStyle}>
+            <div className="clubheader-details">
+              <div className="details-container">
+                <div className="media-left">
+                  <div className="profile-backdrop">
+                    <a href="#">
+                      <img src={club.profile_picture} alt="User" className="media-object img-round-corners img-light-border thumb128" />
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <div className="media-body media-bottom club-label">
-                <h4 className="club-heading">{club.name}</h4>
-                <span className="club-slogan">{club.slogan}</span>
+                <div className="media-body media-bottom club-label">
+                  <h4 className="club-heading">{club.name}</h4>
+                  <span className="club-slogan">{club.slogan}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    )
-  }
+      )
+    }
 }
 
 export default ClubHeader
