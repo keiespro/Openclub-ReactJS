@@ -36,17 +36,17 @@ class ClubView extends Component {
         <MenuBar routePrefix={`/${params.club_id}`} route={location}>
           <MenuBarItem label="Feed" to="/feed" />
           <MenuBarItem label="Events" to="/events" />
-          <MenuBarItem label="Members" to="/members" />
           <MenuBarItem label="About" to="/about" />
-
-          <MenuBarDropdown label={<span>Manage <i className="fa fa-angle-down" /></span>} to="/admin">
-            <MenuBarDropdownItem label="Club Details" to="club-details" />
-            <MenuBarDropdownItem label="Permissions" to="permissions" />
-            <MenuBarDropdownItem label="Billing and Finance" to="finance-and-billing" />
-            <MenuBarDropdownItem label="Member Applications" to="member-applications" />
-            <MenuBarDropdownItem label="Privacy" to="privacy" />
-          </MenuBarDropdown>
-          <Button className="btn-raised ripple btn btn-success menu-btn-inner pull-right btn-flat">Join Club</Button>
+          <MenuBarItem label="Community" to="/community" />
+          <MenuBarItem label="My Membership" to="/membership" />
+          <MenuBarItem divider />
+          <MenuBarItem label="Club Profile" to="/admin/profile" />
+          <MenuBarItem label="Members" to="/admin/members" />
+          <MenuBarItem label="Privacy" to="/admin/privacy" />
+          <MenuBarItem label="Invoices" to="/admin/invoices" />
+          <MenuBarItem label="Finances" to="/admin/finances" />
+          <MenuBarItem label={<i className="fa fa-gear" />} to="/admin/settings" />
+          <button className="btn btn-primary menu-btn-inner pull-right ripple pl-xl pr-xl">Join Club</button>
         </MenuBar>
         <Grid fluid>
           {this.props.children}

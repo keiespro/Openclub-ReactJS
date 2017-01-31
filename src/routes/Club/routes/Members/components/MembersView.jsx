@@ -51,7 +51,7 @@ class MembersView extends Component {
           <Col xs={12} lg={9}>
             <Row>
               <Col xs={12} lg={6}>
-                <NumberGraph number={15} history={[1, 3, 10, 15]} title="Members" color="#008FCC"/>
+                <NumberGraph number={1534587} history={[1, 3, 10, 15]} title="Members" color="#008FCC"/>
               </Col>
               <Col xs={12} lg={6}>
                 <NumberGraph number={3} history={[0, 0, 8, 3]} title="New this week" color="#008FCC"/>
