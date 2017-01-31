@@ -23,7 +23,7 @@ class NumberGraph extends Component {
           <div className="clearfix">
             <div className="pull-left">
               <h4 className="m0 text-thin">{n(number).format(format)}</h4>
-              <small className="m0 text-muted">
+              <small className="m0">
                 <i className={`fa ${arrow}`} /> {title}
               </small>
             </div>
