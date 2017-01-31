@@ -10,14 +10,20 @@ class MenuBarItem extends Component {
       to,
       label,
       route,
-      routePrefix      
+      routePrefix,
+      divider
     } = this.props
+
+    if (divider) {
+      return <a className="btn menu-btn"> | </a>
+    }
 
     const toRoute = `${(routePrefix || '')}${to}`
 
     const classes = classNames({
       'menu-btn-active': route && toRoute === route.pathname
     }, 'btn menu-btn')
+
 
     return (
       <Link className={classes} to={toRoute}>{label}</Link>
@@ -29,7 +35,8 @@ MenuBarItem.propTypes = {
   to: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   route: PropTypes.object,
-  routePrefix: PropTypes.string
+  routePrefix: PropTypes.string,
+  divider: PropTypes.bool
 }
 
 export default MenuBarItem

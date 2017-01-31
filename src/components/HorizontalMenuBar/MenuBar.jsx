@@ -16,9 +16,9 @@ class MenuBar extends Component {
         menuChildren.push(React.cloneElement(child, {
           route,
           routePrefix,
-          key: 'menubar' + i          
+          key: 'menubar' + i
         }))
-      }else{
+      } else {
         otherChildren.push(React.cloneElement(child, {
           key: 'menubarother' + i
         }))
@@ -27,10 +27,12 @@ class MenuBar extends Component {
 
     return (
       <div className="menu-bar">
-        <ButtonGroup>
+        <ButtonGroup className="scroll">
           {menuChildren}
         </ButtonGroup>
-        {otherChildren}
+        <div className="menu-actions">
+          {otherChildren}
+        </div>
       </div>
     )
   }
