@@ -10,7 +10,7 @@ import {
 import cx from 'classnames';
 
 import MemberList from 'components/MemberList';
-import {NumberGraph} from 'components/Widgets';
+import { NumberGraph } from 'components/Widgets';
 
 class MembersView extends Component {
   static propTypes = {
