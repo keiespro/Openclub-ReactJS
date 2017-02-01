@@ -333,6 +333,47 @@ class CommunityView extends Component {
               </div>
             </div>
           </div>
+          <div className="card">
+            <div className="card-heading">
+              <div className="card-title">Directory listing</div>
+            </div>
+            <div className="card-body">
+              <div className="checkbox c-checkbox">
+                <label htmlFor="directoryListing">
+                  <input type="checkbox" checked id="directoryListing" />
+                  <span className="ion-checkmark-round" />
+                  List me in the club directory.
+                </label>
+              </div>
+              <div className="checkbox c-checkbox">
+                <label htmlFor="socialNetworks">
+                  <input type="checkbox" checked id="socialNetworks" />
+                  <span className="ion-checkmark-round" />
+                  Show my social networks.
+                </label>
+              </div>
+              <div className="checkbox c-checkbox">
+                <label htmlFor="emailAddress">
+                  <input type="checkbox" checked id="emailAddress" />
+                  <span className="ion-checkmark-round" />
+                  Show my email address.
+                </label>
+              </div>
+              <div className="checkbox c-checkbox">
+                <label htmlFor="bioMessage">
+                  <input type="checkbox" checked id="bioMessage" />
+                  <span className="ion-checkmark-round" />
+                  Show a custom bio message.
+                </label>
+              </div>
+              <div className="form-group">
+                <textarea rows="4" aria-multiline="true" tabIndex="0" ariaInvalid="false" className="form-control">
+                  {"I am cheese. That is all."}
+                </textarea>
+              </div>
+            </div>
+          </div>
+
         </Col>
       </Row>
     );
