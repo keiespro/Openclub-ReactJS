@@ -14,7 +14,7 @@ import { NumberGraph } from 'components/Widgets';
 
 class MembersView extends Component {
   static propTypes = {
-    members: PropTypes.object,
+    members: PropTypes.array,
     syncMembers: PropTypes.func,
     params: PropTypes.object
   }

@@ -2,27 +2,21 @@ import React, {Component, PropTypes} from 'react';
 import {
   Row,
   Col,
-  Form,
-  FormGroup,
-  FormControl,
-  ControlLabel
 } from 'react-bootstrap'
 import cx from 'classnames';
-
-import MemberList from 'components/MemberList';
-import { NumberGraph } from 'components/Widgets';
+import { Form, FormControl, FieldHandler, ControlLabel, HelpBlock, FieldSet, HorizontalInput, Input } from 'components/Forms';
 
 class ProfileView extends Component {
   static propTypes = {
-    members: PropTypes.object,
-    syncMembers: PropTypes.func,
     params: PropTypes.object
   }
   constructor(props) {
     super(props);
 
     this.state = {
-      select: false
+      select: false,
+      clubname: 'BMW Motor Club',
+      clubslug: 'bmwmotorclub'
     }
 
     this.toggleSelect = this.toggleSelect.bind(this);
@@ -34,8 +28,10 @@ class ProfileView extends Component {
       select: this.state.select === false
     });
   }
-  componentDidMount() {
-    this.props.syncMembers(this.props.params.club_id)
+  changeInput(field, e) {
+    let change = {};
+    change[field] = e.target.value;
+    this.setState(change);
   }
   render() {
     return (
@@ -45,24 +41,43 @@ class ProfileView extends Component {
             <h5>
               Club Profile
             </h5>
-            <small>Modify your club's public profile.</small>
           </Col>
         </Row>
         <Row>
           <Col xs={12} lg={9}>
             <Row>
-              <Col xs={12} lg={6}>
-                <NumberGraph number={1534587} history={[1, 3, 10, 15]} title="Members" color="#008FCC"/>
-              </Col>
-              <Col xs={12} lg={6}>
-                <NumberGraph number={3} history={[0, 0, 8, 3]} title="New this week" color="#008FCC"/>
-              </Col>
-            </Row>
-            <Row>
               <Col xs={12}>
                 <div className="card">
+                  <div className="card-heading bg-primary">
+                    <div className="card-title">
+                      Primary details
+                    </div>
+                  </div>
                   <div className="card-body">
-                    I am where the search & select options will go.
+                    <p>{JSON.stringify(this.state)}</p>
+                    <Form state={this.state} setState={this.setState.bind(this)} horizontal>
+                      <FieldSet>
+                        <FieldHandler validations={['email']} name="clubname">
+                          <Input name="clubname">
+                            <ControlLabel className="col-xs-12 col-md-2">Club Name</ControlLabel>
+                            <FormControl containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
+                            <HelpBlock>Enter a unique name for your club that adequately describes what you do.</HelpBlock>
+                          </Input>
+                        </FieldHandler>
+                      </FieldSet>
+                      <FieldSet>
+                        <HorizontalInput
+                          id="clubSlug"
+                          type="text"
+                          value={this.state.clubslug}
+                          placeholder="Please enter your club URL."
+                          helpBlock={`Your club's address on OpenClub will be http://openclub.co/${this.state.clubslug}.`}
+                          onChange={this.changeInput.bind(this, 'clubslug')}
+                        >
+                          Address
+                        </HorizontalInput>
+                      </FieldSet>
+                    </Form>
                   </div>
                 </div>
               </Col>
@@ -70,7 +85,6 @@ class ProfileView extends Component {
             <Row>
               <Col xs={12}>
                 <div className="card">
-                  <MemberList members={this.props.members} select={this.state.select}/>
                 </div>
               </Col>
             </Row>

@@ -1,8 +1,11 @@
 
-.oc-fieldset {
+fieldset {
   border: none;
   padding: 0px;
   margin-bottom: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed hsla(0,0%,64%,.25);
+  margin-bottom: 20px;
 }
 
 .oc-fieldset .control-label {
