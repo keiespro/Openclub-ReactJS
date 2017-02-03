@@ -32,8 +32,11 @@ class MenuBarItem extends Component {
 }
 
 MenuBarItem.propTypes = {
-  to: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  to: PropTypes.string,
+  label: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.string
+  ]),
   route: PropTypes.object,
   routePrefix: PropTypes.string,
   divider: PropTypes.bool

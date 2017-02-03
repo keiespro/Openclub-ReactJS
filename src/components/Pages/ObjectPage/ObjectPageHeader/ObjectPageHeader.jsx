@@ -35,10 +35,10 @@ class ObjectPageHeader extends Component {
 
     let contents = [];
     if (typeof name !== 'undefined') {
-      contents.push(<h4 className="objectpage-heading">{name}</h4>);
+      contents.push(<h4 className="objectpage-heading" key="op-heading">{name}</h4>);
     }
     if (typeof tagline !== 'undefined') {
-      contents.push(<span className="location">{location}</span>);
+      contents.push(<span className="location" key="op-location">{location}</span>);
     }
 
     return (

@@ -11,7 +11,7 @@ config.club = {
       images: {
         square: 'https://pbs.twimg.com/profile_images/798844134404435969/fc6qzNNR_400x400.jpg',
         thumb: 'https://pbs.twimg.com/profile_images/798844134404435969/fc6qzNNR_400x400.jpg',
-        background: 'https://pbs.twimg.com/profile_banners/1545994664/1476365735/1500x500'
+        background: 'https://www.bmwusa.com/content/dam/bmwusa/BMWi/Overview/BMW_BMWi_Overview-BM5_PureBMW-image01.jpg'
       },
       location: 'Brisbane, Australia'
     }

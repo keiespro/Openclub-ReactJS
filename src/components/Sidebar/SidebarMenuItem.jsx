@@ -3,7 +3,18 @@ import { Link, IndexLink } from 'react-router'
 import cx from 'classnames'
 import './styles/SidebarMenuLink.scss'
 
-class SidebarMenuLink extends Component {
+class SidebarMenuItem extends Component {
+  static defaultProps = {
+    active: false,
+    badgeCount: 0
+  }
+  static propTypes = {
+    active: PropTypes.bool,
+    link: PropTypes.string.isRequired,
+    iconImage: PropTypes.string,
+    iconClasses: PropTypes.string,
+    badgeCount: PropTypes.number,
+  }
   render() {
     const {
       active,
@@ -44,21 +55,4 @@ class SidebarMenuLink extends Component {
   }
 }
 
-SidebarMenuLink.propTypes = {
-  active: PropTypes.bool,
-  link: PropTypes.string.isRequired,
-  iconImage: PropTypes.string,
-  iconClasses: PropTypes.string,
-  badgeCount: PropTypes.number,
-  children: PropTypes.oneOfType([
-    PropTypes.array,
-    PropTypes.element
-  ])
-}
-
-SidebarMenuLink.defaultProps = {
-  active: false,
-  badgeCount: 0
-}
-
-export default SidebarMenuLink
+export default SidebarMenuItem

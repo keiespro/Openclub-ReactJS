@@ -27,6 +27,7 @@ class MembershipView extends Component {
                   <div className="progress">
                     <div role="progressbar" className="progress-bar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style={{ width: `${percent}%` }} />
                   </div>
+                  <a style={{ color: 'red' }}>Cancel your membership.</a>
                 </div>
               </div>
             </Col>
@@ -78,8 +79,8 @@ class MembershipView extends Component {
                   <Col sm={4}>
                     <div className="card b">
                       <div className="card-body text-center bb bg-deep-purple-500 text-white">
-                        <div className="text-bold">CORPORATE MEMBERSHIP</div>
-                        <h3 className="mv-lg"><sup>$</sup><span className="text-lg">95</span><span className="text-xs">/mo</span></h3>
+                        <div className="text-bold">ANNUAL PREMIUM MEMBERSHIP</div>
+                        <h3 className="mv-lg"><sup>$</sup><span className="text-lg">490</span><span className="text-xs">/y</span></h3>
                       </div>
                       <div className="card-body text-center">
                         <p className="mb-lg"><span>Club member</span></p>
@@ -87,7 +88,7 @@ class MembershipView extends Component {
                         <p className="mb-lg"><span>Discounted events</span></p>
                         <p className="mb-lg"><span>Access to member directory</span></p>
                         <p className="mb-lg"><span>Early event invitations</span></p>
-                        <p className="mb-lg"><span>Corporate partnerships</span></p>
+                        <p className="mb-lg"><span>2 months free</span></p>
                       </div>
                       <div className="card-body text-center bt"><a href="" className="btn btn-info btn-raised">UPGRADE</a></div>
                     </div>

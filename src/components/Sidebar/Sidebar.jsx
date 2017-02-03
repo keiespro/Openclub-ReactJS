@@ -21,9 +21,9 @@ class Sidebar extends Component {
     paths = Array.isArray(paths) ? paths : [paths];
     for (let p in paths) {
       if (this.context.router.isActive('' + paths[p]) === true)
-        return 'active'
+        return true
     }
-    return ''
+    return false
   }
 
   render() {
