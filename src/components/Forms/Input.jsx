@@ -1,10 +1,15 @@
-import React, { Component, PropTypes, Children, cloneElement } from 'react'
+import React, { Component, PropTypes, Children } from 'react'
 import { FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
 import _ from 'lodash';
 
 import emptyFunction from 'utils/emptyFunction'; //eslint-disable-line
 
 class Input extends Component {
+  static contextTypes = {
+    handleChange: PropTypes.func,
+    getState: PropTypes.func,
+    validateField: PropTypes.func
+  }
   static defaultProps = {
     help: '',
     label: ''
@@ -16,34 +21,24 @@ class Input extends Component {
     ]),
     label: PropTypes.string,
     help: PropTypes.string,
-    validation: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.object
-    ]),
-    onChange: PropTypes.func,
-    name: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.bool
-    ])
+    validations: PropTypes.array,
+    name: PropTypes.string.isRequired
   }
   render() {
-    console.log(this.props);
     const withoutKeys = (object) => _.omit(object, ['children', 'containerClassName']);
-    const { name, children, value, validation } = this.props;
+    const { name, children, validations } = this.props;
+    const validation = validations ? this.context.validateField(name, validations) : null;
     let label = this.props.label;
     let help = this.props.help;
-    let onChange = this.props.onChange || emptyFunction;
     let formGroupProps = {};
-    let formControlProps = {
-      name,
-      onChange,
-      value
-    };
     let controlLabelProps = {};
     let helpBlockProps = {};
     let containerClassName = '';
+    let formControlProps = {
+      name,
+      onChange: this.context.handleChange.bind(this, name),
+      value: this.context.getState(name)
+    };
 
     if (children) {
       Children.forEach(children, (child) => {
@@ -62,12 +57,13 @@ class Input extends Component {
           formControlProps = withoutKeys(_.merge(formControlProps, child.props));
         }
       });
-
-      if (validation) {
-        formGroupProps.validationState = validation.type;
-        help = validation.message;
-      }
     }
+
+    if (validation) {
+      formGroupProps.validationState = validation.type;
+      help = validation.message;
+    }
+
     return (
       <FormGroup
         controlId={`formcontrol-${name}`}
