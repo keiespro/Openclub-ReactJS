@@ -2,7 +2,8 @@ import React, { Component, PropTypes, Children } from 'react'
 import { FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
 import { DateField } from 'react-date-picker';
 import _ from 'lodash';
-import 'react-date-picker/index.css'
+
+import './styles/DateField.scss';
 
 class DateFieldInput extends Component {
   static contextTypes = {
@@ -36,6 +37,7 @@ class DateFieldInput extends Component {
     let helpBlockProps = {};
     let containerClassName = '';
     let formControlProps = {
+      forceValidDate: true,
       dateFormat: 'DD/MM/YYYY',
       onChange: this.context.handleChange.bind(this, name),
       date: value || new Date()
