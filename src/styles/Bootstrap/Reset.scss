@@ -349,6 +349,7 @@ button.list-group-item:hover {
 // -----------------------------------
 
 .form-control {
+  border-radius: 1px;
     @include box-shadow(0 0 0 #000 !important);
     &:focus {
         border-color: #aaa;
@@ -384,6 +385,7 @@ legend {
 
 fieldset {
     padding-bottom: 20px;
+    border:0;
     border-bottom: 1px dashed rgba($gray-base,.25);
     margin-bottom: 20px;
     &.last-child,
