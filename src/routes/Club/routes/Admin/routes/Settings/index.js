@@ -2,6 +2,8 @@ import { asyncRequire } from 'utils/codesplit'
 
 import Name from './components/Name';
 import Privacy from './components/Privacy';
+import Restrictions from './components/Restrictions';
+import Financial from './components/Financial';
 
 export default (store) => ({
   path: 'settings',
@@ -19,6 +21,14 @@ export default (store) => ({
     {
       path: 'privacy',
       component: Privacy
+    },
+    {
+      path: 'restrictions',
+      component: Restrictions
+    },
+    {
+      path: 'financial',
+      component: Financial
     }
   ]
 })

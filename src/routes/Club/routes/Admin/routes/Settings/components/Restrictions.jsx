@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import { Row, Col } from 'react-bootstrap'
-import { Form, FormGroup, FormControl, ControlLabel, HelpBlock, FieldSet, Input, Radio } from 'components/Forms';
+import { Form, FormGroup, FormControl, ControlLabel, HelpBlock, FieldSet, Input, Radio, Switch } from 'components/Forms';
 import _ from 'lodash';
 
-class Privacy extends Component {
+class Restrictions extends Component {
   static propTypes = {
     params: PropTypes.object
   }
@@ -40,13 +40,13 @@ class Privacy extends Component {
           { /* Club Details */}
           <div className="card">
             <div className="card-item">
-              <img src="/img/banners/privacy.png" alt="Privacy background" className="fw img-responsive" />
+              <img src="/img/banners/security.png" alt="Privacy background" className="fw img-responsive" />
               <div className="col-xs-8 card-item-text bg-transparent">
                 <h3 className="pl-lg text-primary">
-                  Privacy
+                  Restrictions
                   <br />
                   <small className="ml0">
-                    Configure what people can see within your club.
+                    Control what people can do within your club.
                   </small>
                 </h3>
               </div>
@@ -54,58 +54,47 @@ class Privacy extends Component {
             <div className="card-body">
               <Form state={this.state.club} setState={this.setClubState.bind(this)} horizontal>
                 <h5>
-                  Feed privacy
+                  Membership approvals
                   <br />
                   <small className="m0">
-                    {"The feed includes announcements and posts by members. The feed is visible to public by default."}
+                    {"By default, all clubs are open. However, you can require that all new memberships are approved before a member can join."}
                   </small>
                 </h5>
                 <FieldSet>
                   <FormGroup controlId="name">
-                    <div>
-                      <Radio name="feed_privacy" value="public" checked>
-                        <i className="fa fa-globe" /> Public
-                        <br />
-                        <span className="help-block ml-lg">Search engines and users from the internet can see your club posts.</span>
-                      </Radio>
-                    </div>
-                    <div>
-                      <Radio name="feed_privacy" value="private">
-                        <i className="fa fa-unlock-alt" /> Private
-                        <br />
-                        <span className="help-block ml-lg">Only members can see your club posts.</span>
-                      </Radio>
-                    </div>
+                    <Switch name="member_approval" value="1" className="switch-danger">
+                      Require new members to be approved.
+                    </Switch>
                   </FormGroup>
                 </FieldSet>
                 <h5>
-                  Community directory
+                  Feed restrictions
                   <br />
                   <small className="m0">
-                    {"The directory provides a place for people to discover members in the club."}
+                    {"The feed includes announcements and posts by members. Only members can post to the feed by default."}
                   </small>
                 </h5>
                 <FieldSet>
                   <FormGroup controlId="name">
                     <div>
-                      <Radio name="directory_privacy" value="public" checked>
+                      <Radio name="feed_restriction" value="private" checked>
+                        <i className="fa fa-users" /> Members
+                        <br />
+                        <span className="help-block ml-lg">Only members can post to your club feed.</span>
+                      </Radio>
+                    </div>
+                    <div>
+                      <Radio name="feed_restriction" value="public">
                         <i className="fa fa-globe" /> Public
                         <br />
-                        <span className="help-block ml-lg">Search engines and users from the internet can see your club directory.</span>
+                        <span className="help-block ml-lg">Anybody with an OpenClub account can post to your club feed.</span>
                       </Radio>
                     </div>
                     <div>
-                      <Radio name="directory_privacy" value="private">
-                        <i className="fa fa-unlock-alt" /> Private
+                      <Radio name="feed_restriction" value="admin">
+                        <i className="fa fa-lock" /> Admin
                         <br />
-                        <span className="help-block ml-lg">Only members can see your club directory.</span>
-                      </Radio>
-                    </div>
-                    <div>
-                      <Radio name="directory_privacy" value="private">
-                        <i className="fa fa-ban" /> Off
-                        <br />
-                        <span className="help-block ml-lg">Turn off the community directory.</span>
+                        <span className="help-block ml-lg">Only administrators can post to your club feed.</span>
                       </Radio>
                     </div>
                   </FormGroup>
@@ -114,23 +103,23 @@ class Privacy extends Component {
                   Events
                   <br />
                   <small className="m0">
-                    {"Your club events are displayed publicly by default. Hidden events are only visible to people who are invited."}
+                    {"Only administrators can create events by default. You can optionally open event creation to your members."}
                   </small>
                 </h5>
                 <FieldSet>
                   <FormGroup controlId="name">
                     <div>
-                      <Radio name="event_privacy" value="public" checked>
-                        <i className="fa fa-globe" /> Public
+                      <Radio name="event_restriction" value="private" checked>
+                        <i className="fa fa-lock" /> Admin
                         <br />
-                        <span className="help-block ml-lg">Search engines and users from the internet can see your club events.</span>
+                        <span className="help-block ml-lg">Only administrators can create events within your club.</span>
                       </Radio>
                     </div>
                     <div>
-                      <Radio name="event_privacy" value="private">
-                        <i className="fa fa-unlock-alt" /> Private
+                      <Radio name="event_restriction" value="memebrs">
+                        <i className="fa fa-users" /> Members
                         <br />
-                        <span className="help-block ml-lg">Only members can see your club events.</span>
+                        <span className="help-block ml-lg">Members can create events within your club.</span>
                       </Radio>
                     </div>
                   </FormGroup>
@@ -144,4 +133,4 @@ class Privacy extends Component {
   }
 }
 
-export default Privacy
+export default Restrictions
