@@ -4,7 +4,7 @@ import {
   Col,
 } from 'react-bootstrap'
 import cx from 'classnames';
-import { Form, FormControl, FieldHandler, ControlLabel, HelpBlock, FieldSet, HorizontalInput, Input } from 'components/Forms';
+import { Form, FormControl, ControlLabel, HelpBlock, FieldSet, HorizontalInput, Input, DateField } from 'components/Forms';
 
 class ProfileView extends Component {
   static propTypes = {
@@ -15,8 +15,15 @@ class ProfileView extends Component {
 
     this.state = {
       select: false,
-      clubname: 'BMW Motor Club',
-      clubslug: 'bmwmotorclub'
+      name: 'BMW Motor Club',
+      slug: 'bmwmotorclub',
+      club_details: {
+        about: '',
+        mission: '',
+        conditions_of_entry: '',
+        custom_details: '',
+        founded: new Date().getTime()
+      }
     }
 
     this.toggleSelect = this.toggleSelect.bind(this);
@@ -57,25 +64,53 @@ class ProfileView extends Component {
                     <p>{JSON.stringify(this.state)}</p>
                     <Form state={this.state} setState={this.setState.bind(this)} horizontal>
                       <FieldSet>
-                        <FieldHandler validations={['email']} name="clubname">
-                          <Input name="clubname">
-                            <ControlLabel className="col-xs-12 col-md-2">Club Name</ControlLabel>
-                            <FormControl containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
-                            <HelpBlock>Enter a unique name for your club that adequately describes what you do.</HelpBlock>
-                          </Input>
-                        </FieldHandler>
+                        <Input validations={['min5', 'max255', 'object_name']} name="name">
+                          <ControlLabel className="col-xs-12 col-md-2">Club Name</ControlLabel>
+                          <FormControl containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
+                          <HelpBlock>Enter a unique name for your club that adequately describes what you do.</HelpBlock>
+                        </Input>
                       </FieldSet>
                       <FieldSet>
-                        <HorizontalInput
-                          id="clubSlug"
-                          type="text"
-                          value={this.state.clubslug}
-                          placeholder="Please enter your club URL."
-                          helpBlock={`Your club's address on OpenClub will be http://openclub.co/${this.state.clubslug}.`}
-                          onChange={this.changeInput.bind(this, 'clubslug')}
-                        >
-                          Address
-                        </HorizontalInput>
+                        <Input validations={['min5', 'max48', 'slug']} name="slug">
+                          <ControlLabel className="col-xs-12 col-md-2">URL</ControlLabel>
+                          <FormControl containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
+                          <HelpBlock>Enter a unique address for your club. http://www.openclub.com/{this.state.slug}.</HelpBlock>
+                        </Input>
+                      </FieldSet>
+                      <FieldSet>
+                        <Input validations={['max1000']} name="club_details.about">
+                          <ControlLabel className="col-xs-12 col-md-2">About</ControlLabel>
+                          <FormControl componentClass="textarea" containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
+                          <HelpBlock>Write something about your club. ({this.state.club_details.about.length || 0} / 1000 characters)</HelpBlock>
+                        </Input>
+                      </FieldSet>
+                      <FieldSet>
+                        <Input validations={['max1000']} name="club_details.mission_statement">
+                          <ControlLabel className="col-xs-12 col-md-2">Mission Statement</ControlLabel>
+                          <FormControl componentClass="textarea" containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
+                          <HelpBlock>Write something about your mission.</HelpBlock>
+                        </Input>
+                      </FieldSet>
+                      <FieldSet>
+                        <Input validations={['max1000']} name="club_details.conditions_of_entry">
+                          <ControlLabel className="col-xs-12 col-md-2">Conditions of Entry</ControlLabel>
+                          <FormControl componentClass="textarea" containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
+                          <HelpBlock>Write about your {"club's"} conditions of entry.</HelpBlock>
+                        </Input>
+                      </FieldSet>
+                      <FieldSet>
+                        <Input validations={['max1000']} name="club_details.custom_details">
+                          <ControlLabel className="col-xs-12 col-md-2">More Details</ControlLabel>
+                          <FormControl componentClass="textarea" containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
+                          <HelpBlock>Write anything else that you may need to include.</HelpBlock>
+                        </Input>
+                      </FieldSet>
+                      <FieldSet>
+                        <DateField name="club_details.founded">
+                          <ControlLabel className="col-xs-12 col-md-2">Date Founded</ControlLabel>
+                          <FormControl containerClassName="col-xs-12 col-md-10" className="input-lg" />
+                          <HelpBlock>Select the date your club was founded.</HelpBlock>
+                        </DateField>
                       </FieldSet>
                     </Form>
                   </div>
