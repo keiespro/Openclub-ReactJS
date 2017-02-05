@@ -4,7 +4,7 @@ import {
   Col,
 } from 'react-bootstrap'
 import cx from 'classnames';
-import { Form, FormControl, ControlLabel, HelpBlock, FieldSet, HorizontalInput, Input, DateField } from 'components/Forms';
+import { Form, FormControl, ControlLabel, HelpBlock, FieldSet, Input, DateField } from 'components/Forms';
 
 class ProfileView extends Component {
   static propTypes = {
