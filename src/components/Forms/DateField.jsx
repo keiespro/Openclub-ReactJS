@@ -1,10 +1,15 @@
 import React, { Component, PropTypes, Children } from 'react'
-import { FormGroup, ControlLabel, HelpBlock } from 'react-bootstrap'
-import { Editor, EditorState, RichUtils } from 'draft-js'
-import _ from 'lodash'
-import emptyFunction from 'utils/emptyFunction'
+import { FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
+import { DateField } from 'react-date-picker';
+import _ from 'lodash';
+import 'react-date-picker/index.css'
 
-class TextEditor extends Component {
+class DateFieldInput extends Component {
+  static contextTypes = {
+    handleChange: PropTypes.func,
+    getState: PropTypes.func,
+    validateField: PropTypes.func
+  }
   static defaultProps = {
     help: '',
     label: ''
@@ -16,34 +21,14 @@ class TextEditor extends Component {
     ]),
     label: PropTypes.string,
     help: PropTypes.string,
-    onChange: PropTypes.func,
-    name: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number,
-      PropTypes.bool
-    ])
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {editorState: EditorState.createEmpty()};
-
-    this.onBoldClick = this.onBoldClick.bind(this);
-    this.onChange = this.onChange.bind(this);
-  }
-  onChange(editorState) {
-    const { name } = this.props;
-    this.setState({editorState});
-    const content = editorState.getCurrentContent();
-    this.props.onChange(name, content.getBlockMap());
-  }
-  onBoldClick() {
-    this.onChange(RichUtils.toggleInlineStyle(this.state.editorState, 'BOLD'));
+    validations: PropTypes.array,
+    name: PropTypes.string.isRequired
   }
   render() {
     const withoutKeys = (object) => _.omit(object, ['children', 'containerClassName']);
-    const { name, children } = this.props;
+    const { name, children, validations } = this.props;
+    const value = this.context.getState(name);
+    const validation = validations ? this.context.validateField(name, validations) : null;
     let label = this.props.label;
     let help = this.props.help;
     let formGroupProps = {};
@@ -51,9 +36,9 @@ class TextEditor extends Component {
     let helpBlockProps = {};
     let containerClassName = '';
     let formControlProps = {
-      name,
-      onChange: this.onChange,
-      editorState: this.state.editorState
+      dateFormat: 'DD/MM/YYYY',
+      onChange: this.context.handleChange.bind(this, name),
+      date: value || new Date()
     };
 
     if (children) {
@@ -66,7 +51,18 @@ class TextEditor extends Component {
           help = child.props.children;
           helpBlockProps = withoutKeys(_.merge(helpBlockProps, child.props));
         }
+        if (child.type === FormControl) {
+          if ('containerClassName' in child.props) {
+            containerClassName = child.props.containerClassName;
+          }
+          formControlProps = withoutKeys(_.merge(formControlProps, child.props));
+        }
       });
+    }
+
+    if (validation) {
+      formGroupProps.validationState = validation.type;
+      help = validation.message;
     }
 
     return (
@@ -75,14 +71,13 @@ class TextEditor extends Component {
         {...formGroupProps}
       >
         <ControlLabel {...controlLabelProps}>{label}</ControlLabel>
-        <button type="button" onClick={this.onBoldClick}>Bold</button>
         <div className={containerClassName}>
-          <Editor {...formControlProps} />
+          <DateField {...formControlProps}/>
           <HelpBlock {...helpBlockProps}>{help}</HelpBlock>
         </div>
       </FormGroup>
-    )
+    );
   }
 }
 
-export default TextEditor
+export default DateFieldInput;
