@@ -6,16 +6,35 @@ const definitions = {
     message: 'Please enter a valid message'
   }
   */
-
+  not_blank: {
+    expression: /^.{1,}/,
+    type: 'error',
+    message: 'Please enter a value.'
+  },
   email: {
     expression: /^[\w\d._%+-]+@[\w\d.-]+\.[\w]{2,}/,
     type: 'error',
-    message: 'Please enter a valid email address,'
+    message: 'Please enter a valid email address.'
   },
   phone: {
-    expression: /^[\d\s()+]+/,
+    expression: /^[\d\s()+]{6,}/,
     type: 'error',
     message: 'Please enter a valid phone number.'
+  },
+  name: {
+    expression: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,}$/,
+    type: 'error',
+    message: 'Names can only contain dictionary characters and punctuation.'
+  },
+  object_name: {
+    expression: /^[\w\s\d'-]+$/,
+    type: 'error',
+    message: 'Names must contain only dictionary characters, punctuation, underscores and numbers.'
+  },
+  slug: {
+    expression: /^[^-][a-z0-9-]+[^-]$/,
+    type: 'error',
+    message: 'URLs can only contain lowercase letters, numbers and hyphens.'
   }
 };
 
