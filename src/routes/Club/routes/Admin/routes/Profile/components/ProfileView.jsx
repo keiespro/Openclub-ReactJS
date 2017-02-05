@@ -6,6 +6,9 @@ import {
 import cx from 'classnames';
 import { Form, FormControl, ControlLabel, HelpBlock, FieldSet, Input, DateField } from 'components/Forms';
 
+// TODO: Remove Me
+import Debug from 'utils/componentDebug';
+
 class ProfileView extends Component {
   static propTypes = {
     params: PropTypes.object
@@ -18,11 +21,11 @@ class ProfileView extends Component {
       name: 'BMW Motor Club',
       slug: 'bmwmotorclub',
       club_details: {
-        about: '',
-        mission: '',
-        conditions_of_entry: '',
-        custom_details: '',
-        founded: new Date().getTime()
+        about: 'Some demo',
+        mission: 'Some demo',
+        conditions_of_entry: 'Some demo',
+        custom_details: 'Some demo',
+        founded: new Date().getTime(),
       }
     }
 
@@ -30,7 +33,6 @@ class ProfileView extends Component {
   }
   toggleSelect(e) {
     e.preventDefault();
-    console.log('toggle');
     this.setState({
       select: this.state.select === false
     });
@@ -43,6 +45,7 @@ class ProfileView extends Component {
   render() {
     return (
       <div>
+        <Debug component={this} />
         <Row>
           <Col xs={12}>
             <h5>
@@ -61,22 +64,7 @@ class ProfileView extends Component {
                     </div>
                   </div>
                   <div className="card-body">
-                    <p>{JSON.stringify(this.state)}</p>
                     <Form state={this.state} setState={this.setState.bind(this)} horizontal>
-                      <FieldSet>
-                        <Input validations={['min5', 'max255', 'object_name']} name="name">
-                          <ControlLabel className="col-xs-12 col-md-2">Club Name</ControlLabel>
-                          <FormControl containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
-                          <HelpBlock>Enter a unique name for your club that adequately describes what you do.</HelpBlock>
-                        </Input>
-                      </FieldSet>
-                      <FieldSet>
-                        <Input validations={['min5', 'max48', 'slug']} name="slug">
-                          <ControlLabel className="col-xs-12 col-md-2">URL</ControlLabel>
-                          <FormControl containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
-                          <HelpBlock>Enter a unique address for your club. http://www.openclub.com/{this.state.slug}.</HelpBlock>
-                        </Input>
-                      </FieldSet>
                       <FieldSet>
                         <Input validations={['max1000']} name="club_details.about">
                           <ControlLabel className="col-xs-12 col-md-2">About</ControlLabel>
@@ -85,7 +73,7 @@ class ProfileView extends Component {
                         </Input>
                       </FieldSet>
                       <FieldSet>
-                        <Input validations={['max1000']} name="club_details.mission_statement">
+                        <Input validations={['max1000']} name="club_details.mission">
                           <ControlLabel className="col-xs-12 col-md-2">Mission Statement</ControlLabel>
                           <FormControl componentClass="textarea" containerClassName="col-xs-12 col-md-10" className="input-lg" type="text" />
                           <HelpBlock>Write something about your mission.</HelpBlock>

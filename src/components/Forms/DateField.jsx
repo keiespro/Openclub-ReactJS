@@ -1,6 +1,6 @@
 import React, { Component, PropTypes, Children } from 'react'
 import { FormGroup, FormControl, ControlLabel, HelpBlock } from 'react-bootstrap';
-import { DateField } from 'react-date-picker';
+import { DateField, DatePicker } from 'react-date-picker';
 import _ from 'lodash';
 
 import './styles/DateField.scss';
@@ -40,7 +40,10 @@ class DateFieldInput extends Component {
       forceValidDate: true,
       dateFormat: 'DD/MM/YYYY',
       onChange: this.context.handleChange.bind(this, name),
-      date: value || new Date()
+      date: value || new Date(),
+      updateOnDateClick: true,
+      collapseOnDateClick: true,
+      showClock: false,
     };
 
     if (children) {
@@ -74,7 +77,17 @@ class DateFieldInput extends Component {
       >
         <ControlLabel {...controlLabelProps}>{label}</ControlLabel>
         <div className={containerClassName}>
-          <DateField {...formControlProps}/>
+          <DateField {...formControlProps}>
+            <DatePicker
+              navigation
+              locale="en"
+              forceValidDate
+              highlightWeekends
+              highlightToday
+              weekNumbers
+              weekStartDay={0}
+            />
+          </DateField>
           <HelpBlock {...helpBlockProps}>{help}</HelpBlock>
         </div>
       </FormGroup>
