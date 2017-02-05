@@ -36,7 +36,7 @@ class FormContainer extends Component {
     setState(_.set(clonedState, name, value));
   }
   validateField(name, validations) {
-    this.formValidation.check(name, validations, this.getState(name));
+    return this.formValidation.check(name, validations, this.getState(name));
   }
   getState(name) {
     const { state } = this.props;

@@ -54,7 +54,7 @@ class Input extends Component {
           if ('containerClassName' in child.props) {
             containerClassName = child.props.containerClassName;
           }
-          formControlProps = withoutKeys(_.merge(formControlProps, child.props));
+          formControlProps = _.omit(_.merge(formControlProps, child.props), ['containerClassName']);
         }
       });
     }
