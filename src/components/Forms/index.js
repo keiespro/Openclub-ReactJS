@@ -6,6 +6,8 @@ import ImageUpload from './ImageUpload'
 import DateField from './DateField'
 import TextEditor from './TextEditor'
 import Form from './FormContainer';
+import Radio from './Radio';
+import Switch from './Switch';
 
 export {
   // React Bootstrap Helpers
@@ -20,4 +22,6 @@ export {
   ImageUpload,
   DateField,
   TextEditor,
+  Radio,
+  Switch
 }

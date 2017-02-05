@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
+import cx from 'classnames';
 import _ from 'lodash';
 
-class Radio extends Component {
+class Switch extends Component {
   static defaultProps = {
-    className: 'bg-primary'
+    className: 'switch-primary'
   }
   static propTypes = {
     children: PropTypes.oneOfType([
@@ -18,13 +19,17 @@ class Radio extends Component {
     const { name, value, className, children } = this.props;
     const inputProps = _.omit(this.props, ['name', 'value', 'className', 'children']);
 
+    const switchClasses = cx('switch', className);
+
     return (
-      <label className="mda-radio" htmlFor={`mda-radio-${name}-${value}`}>
-        <input type="radio" value={value} name={name} id={`mda-radio-${name}-${value}`} {...inputProps} />
-        <em className={className} />
+      <div>
+        <label className={switchClasses} htmlFor={`switch-${name}-${value}`}>
+          <input type="checkbox" value={value} name={name} id={`switch-${name}-${value}`} {...inputProps} />
+          <span />
+        </label>
         {children}
-      </label>
+      </div>
     );
   }
 }
-export default Radio;
+export default Switch;
