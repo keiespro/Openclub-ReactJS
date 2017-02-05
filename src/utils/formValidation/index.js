@@ -25,7 +25,7 @@ class formValidation {
       }
       return value.length < minTest[1] ? conditions : false;
     }
-    return definitions[validation].expression.test(value) ? _.assign(definitions[validation], { name }) : false;
+    return definitions[validation].expression.test(value) === false ? _.assign(definitions[validation], { name }) : false;
   }
   check(name, validations, value) {
     console.log(arguments);
@@ -42,13 +42,16 @@ class formValidation {
     try {
       validations.map((validation) => {
         const test = this.test(value, validation);
+        console.log(test);
         if (test) {
           throw test;
         }
+        console.log('returning', false);
         return false;
       });
       return false;
     } catch (e) {
+      console.log('returning', e);
       return e;
     }
   }
