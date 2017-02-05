@@ -7,7 +7,7 @@ class formValidation {
   }
   test(value, validation) {
     const maxTest = validation.match(/max([\d]+)/);
-    const minTest = validation.match(/max([\d]+)/);
+    const minTest = validation.match(/min([\d]+)/);
 
     if (maxTest) {
       const conditions = {
@@ -33,9 +33,6 @@ class formValidation {
     }
     if (validations instanceof Array === false) {
       throw new Error("Validations must be an array.")
-    }
-    if (_.hasIn(definitions, validations) === false) {
-      throw new Error("Please ensure validations exist within definitions.")
     }
     this.inputs[name] = {
       validations,

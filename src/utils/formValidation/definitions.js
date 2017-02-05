@@ -24,7 +24,7 @@ const definitions = {
   name: {
     expression: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,}$/,
     type: 'error',
-    message: 'Names can only contain dictionary characters and punctuation.'
+    message: 'Names can only contain dictionary characters (a-z) and punctuation (\',-.).'
   },
   object_name: {
     expression: /^[\w\s\d'-]+$/,
@@ -34,7 +34,7 @@ const definitions = {
   slug: {
     expression: /^[^-][a-z0-9-]+[^-]$/,
     type: 'error',
-    message: 'URLs can only contain lowercase letters, numbers and hyphens.'
+    message: 'URLs can only contain lowercase letters (a-z), numbers (0-9) and hyphens (-), and cannot start or end with a hyphen (-).'
   }
 };
 
