@@ -4,6 +4,7 @@ import Name from './components/Name';
 import Privacy from './components/Privacy';
 import Restrictions from './components/Restrictions';
 import Financial from './components/Financial';
+import Plans from './components/Plans';
 
 export default (store) => ({
   path: 'settings',
@@ -29,6 +30,10 @@ export default (store) => ({
     {
       path: 'financial',
       component: Financial
+    },
+    {
+      path: 'plans',
+      component: Plans
     }
   ]
 })
