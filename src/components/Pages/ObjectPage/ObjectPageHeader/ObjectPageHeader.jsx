@@ -53,7 +53,7 @@ class ObjectPageHeader extends Component {
     const bgEle = typeof background === 'undefined' ? '#2b2b2b' : `url(${background})`;
 
     const headerImageStyles = {
-      background: `linear-gradient(to bottom, rgba(0, 0, 0, 0) ${this.props.collapsed ? '0%' : '50%'}, rgba(0, 0, 0, 0.5)) 100%, ${bgEle}`,
+      backgroundImage: `${bgEle}, linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.2) 100%)`,
       backgroundPosition: 'center center',
       backgroundSize: 'cover'
     }
