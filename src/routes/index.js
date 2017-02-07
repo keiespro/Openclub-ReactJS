@@ -3,10 +3,10 @@ import { asyncRequire } from 'utils/codesplit'
 import { checkAuthentication } from 'modules/auth/actions'
 
 import Home from './Home'
-import Feed from './Feed'
-import Club from './Club'
-import Events from './Events'
-import Notifications from './Notifications'
+import FeedRoute from './Feed'
+import ClubRoute from './Club'
+import EventRoute from './Event'
+import NotificationsRoute from './Notifications'
 import ErrorRoute from './Error'
 
 /*
@@ -25,10 +25,10 @@ export const createRoutes = (store) => ({
   },
   indexRoute: Home(store),
   childRoutes: [
-    Feed(store),
-    Notifications(store),
-    Events(store),
-    Club(store),
+    FeedRoute(store),
+    NotificationsRoute(store),
+    EventRoute(store),
+    ClubRoute(store),
     //CounterRoute(store, auth),
     //Home(store, auth),
     //
