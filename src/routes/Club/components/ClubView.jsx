@@ -42,7 +42,7 @@ class ClubView extends Component {
           <MenuBarItem divider />
           <MenuBarItem label="Club Profile" to="/admin/profile" />
           <MenuBarItem label="Members" to="/admin/members" />
-          <MenuBarItem label="Privacy" to="/admin/privacy" />
+          <MenuBarItem label="Approvals" to="/admin/approvals" />
           <MenuBarItem label="Invoices" to="/admin/invoices" />
           <MenuBarItem label="Finances" to="/admin/finances" />
           <MenuBarItem label={<i className="fa fa-gear" />} to="/admin/settings" />
