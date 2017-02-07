@@ -17,10 +17,19 @@
 .header-container {
   position: relative;
   background-color: $header-bg;
-     z-index: 21;
-     @media #{$min-desktop} {
-        //  margin-left: $sidebar-wd;
-     }
+   z-index: 21;
+   @media #{$min-desktop} {
+      //  margin-left: $sidebar-wd;
+   }
+   &.loading {
+      background: linear-gradient(270deg, #0aa5fd, #cd60ff);
+      background-size: 400% 400%;
+      animation: LoadingAnimation 13s ease infinite;
+      color: white !important;
+      svg {
+        fill: white;
+      }
+   }
      > nav {
          min-height: $header-hg;
          line-height: $header-hg - 1;
@@ -91,7 +100,6 @@
          }
 
      }
-
  }
 
 .header-user-image {
@@ -333,3 +341,9 @@
          }
      }
  }
+
+@keyframes LoadingAnimation {
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}

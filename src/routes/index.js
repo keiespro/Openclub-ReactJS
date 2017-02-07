@@ -7,10 +7,11 @@ import Feed from './Feed'
 import Club from './Club'
 import Events from './Events'
 import Notifications from './Notifications'
+import ErrorRoute from './Error'
+
 /*
 import CounterRoute from './Counter'
 import NotificationsRoute from './Notifications'
-import ErrorRoute from './Error'
 import LoginRoute from './Login'
 import ClubsLanding from './ClubsLanding'
 */
@@ -37,7 +38,7 @@ export const createRoutes = (store) => ({
     // Clubs Route is a catch-all dynamic child route.
     //ClubsRoute(store, auth),
     // Error Route must remain at the bottom.
-    //ErrorRoute(store, auth)
+    ErrorRoute(store)
   ]
 });
 
