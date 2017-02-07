@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import { IndexLink } from 'react-router';
+import Logo from '../Logo';
+
 import './Header.scss';
 
 class Header extends Component {
@@ -17,19 +20,21 @@ class Header extends Component {
                 </a>
               </li>
             </ul>
-            <ul className="hidden-xs">
-              <li>
-                <a id="offcanvas-toggler" href="#" className="menu-link menu-link-slide">
-                  <span><em/></span>
-                </a>
-              </li>
+            <ul className="hidden-xs hidden-sm">
+              <li><a href="#"><i className="fa fa-home" /> Home</a></li>
+              <li><a href="#"><i className="fa fa-globe" /> Discover</a></li>
             </ul>
             <ul className="pull-right">
-              {/*<li>
+              <li>
+                <a href="#" className="ripple" onClick={this.showSearch}>
+                  <i className="fa bell-o" />
+                </a>
+              </li>
+              <li>
                 <a href="#" className="ripple" onClick={this.showSearch}>
                   <i className="fa fa-search" />
                 </a>
-              </li>*/}
+              </li>
               <Dropdown id="basic-nav-dropdown" pullRight componentClass="li">
                 <Dropdown.Toggle useAnchor noCaret className="has-badge ripple">
                   <img src={user.profile_picture} alt="Profile" className="header-user-image thumb32"/>
@@ -53,6 +58,9 @@ class Header extends Component {
                   </MenuItem>
                 </Dropdown.Menu>
               </Dropdown>
+              <IndexLink to="/" className="navbar-brand">
+                <Logo color="#008FCC" />
+              </IndexLink>
             </ul>
           </nav>
         </header>

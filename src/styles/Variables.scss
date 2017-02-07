@@ -15,17 +15,18 @@ $gray-lighter:           #ECEFF1;
 
 // Classic brand colors
 
-$brand-primary:          $mdc-blue-A200;
+$brand-primary:          #008fcc;
 $brand-success:          #4CAF50;
 $brand-info:             #03A9F4;
 $brand-warning:          #FFB300;
 $brand-danger:           #F44336;
 
 $brand-inverse:          #37474F;
+$brand-color:            #008FCC;
 
 // Gray base
 //$gray-base:              #a2a2a2;
-$gray-base:				 #eee;
+$gray-base:				 #777;
 
 //== Scaffolding
 
@@ -41,7 +42,7 @@ $link-hover-color:      darken($link-color, 15%);
 //== Typography
 
 $font-family:           "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-$font-size-base:        14px;
+$font-size-base:        16px;
 
 //== Layout
 
@@ -148,7 +149,7 @@ $wizard-subheading-color:     $text-muted;
 
 $timeline-badge-size: 20px;
 $timeline-datetime-height: 20px;
-$timeline-separator-width: 120px;
+$timeline-separator-width: 150px;
 
 //== Other BS variables for easy customization
 

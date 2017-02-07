@@ -58,6 +58,8 @@ body {
     -webkit-overflow-scrolling: touch;
     @media #{$min-desktop} {
         margin-left: $sidebar-wd;
+        max-width: 1200px;
+        // margin: 0 auto;
     }
 
     > section {

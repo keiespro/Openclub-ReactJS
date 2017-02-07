@@ -1,41 +1,56 @@
 import React, { Component, PropTypes } from 'react'
-import { ButtonGroup, Button } from 'react-bootstrap'
-import ClubHeader from './ClubHeader'
-import { MenuBar, MenuBarItem, MenuBarDropdown, MenuBarDropdownItem } from 'components/MenuBar'
+import { Button, Grid } from 'react-bootstrap'
+import { MenuBar, MenuBarItem, MenuBarDropdown, MenuBarDropdownItem } from 'components/HorizontalMenuBar'
+import { ObjectPageHeader } from 'components/Pages/ObjectPage';
 
 import './ClubView.scss'
 
 class ClubView extends Component {
+  static propTypes = {
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.element
+    ]),
+    params: PropTypes.object,
+    syncClub: PropTypes.func,
+    location: PropTypes.object,
+    club: PropTypes.object
+  }
   componentDidMount() {
     this.props.syncClub(this.props.params.club_id)
   }
   render() {
-    const club = this.props.club.data
-    const { 
-      params,
-      location
-    } = this.props
+    const club = this.props.club.data;
+    const { params, location } = this.props
+
+    const collapseHeader = location.pathname.includes('/feed') === false;
 
     return (
       <section>
-        <ClubHeader club={club}/>
+        <ObjectPageHeader
+          name={club.name}
+          location={club.location}
+          images={club.images}
+          collapsed={collapseHeader}
+        />
         <MenuBar routePrefix={`/${params.club_id}`} route={location}>
-          <MenuBarItem label="Feed" to="/feed"/>
-          <MenuBarItem label="Events" to="/events"/>
-          <MenuBarItem label="Members" to="/members"/>
-          <MenuBarItem label="About" to="/about"/>
-          <MenuBarDropdown label="More..." to="/admin">
-            <MenuBarDropdownItem label="Club Details" to="club-details"/>
-            <MenuBarDropdownItem label="Permissions" to="permissions"/>
-            <MenuBarDropdownItem label="Billing and Finance" to="finance-and-billing"/>
-            <MenuBarDropdownItem label="Member Applications" to="member-applications"/>
-            <MenuBarDropdownItem label="Privacy" to="privacy"/>
-          </MenuBarDropdown>        
-          <Button className="btn-raised ripple btn btn-success menu-btn-inner pull-right">BECOME A MEMBER</Button>
+          <MenuBarItem label="Feed" to="/feed" />
+          <MenuBarItem label="Events" to="/events" />
+          <MenuBarItem label="About" to="/about" />
+          <MenuBarItem label="Community" to="/community" />
+          <MenuBarItem label="My Membership" to="/membership" />
+          <MenuBarItem divider />
+          <MenuBarItem label="Club Profile" to="/admin/profile" />
+          <MenuBarItem label="Members" to="/admin/members" />
+          <MenuBarItem label="Approvals" to="/admin/approvals" />
+          <MenuBarItem label="Invoices" to="/admin/invoices" />
+          <MenuBarItem label="Finances" to="/admin/finances" />
+          <MenuBarItem label={<i className="fa fa-gear" />} to="/admin/settings" />
+          <button className="btn btn-primary menu-btn-inner pull-right ripple pl-xl pr-xl">Join Club</button>
         </MenuBar>
-        <div className="container-club">
+        <Grid fluid>
           {this.props.children}
-        </div>
+        </Grid>
       </section>
     );
   }

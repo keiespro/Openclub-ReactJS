@@ -2,25 +2,21 @@ import React, { Component, PropTypes } from 'react'
 import './styles/FieldSet.scss'
 
 class FieldSet extends Component {
+  static propTypes = {
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.element
+    ])
+  }
   render() {
-    const { 
-      title,
-      children
-    } = this.props;
+    const { children } = this.props
 
     return (
-      <fieldset className="oc-fieldset">
-        <label className="control-label">{title}</label>
-        <div className="">
-          {children}
-        </div>
+      <fieldset>
+        {children}
       </fieldset>
     )
   }
-}
-
-FieldSet.propTypes = {
-  title: PropTypes.string
 }
 
 export default FieldSet

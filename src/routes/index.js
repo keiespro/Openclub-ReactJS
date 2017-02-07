@@ -6,6 +6,7 @@ import Home from './Home'
 import Feed from './Feed'
 import Club from './Club'
 import Events from './Events'
+import Notifications from './Notifications'
 /*
 import CounterRoute from './Counter'
 import NotificationsRoute from './Notifications'
@@ -24,11 +25,12 @@ export const createRoutes = (store) => ({
   indexRoute: Home(store),
   childRoutes: [
     Feed(store),
+    Notifications(store),
     Events(store),
-    Club(store)
+    Club(store),
     //CounterRoute(store, auth),
     //Home(store, auth),
-    //NotificationsRoute(store, auth),
+    //
     //LoginRoute(store, auth),
     // Landing pages
     //ClubsLanding(store),

@@ -3,7 +3,7 @@
 @import '../../../styles/Mixins';
 
 .sidebar-nav ul > li {
-  
+
   a {
     display: block;
     padding-left: 8px;
@@ -19,7 +19,7 @@
         vertical-align: middle;
         color: $mdc-blue-300;
     }
-    
+
     > .nav-icon {
         position: relative;
         display: inline-block;
@@ -66,13 +66,13 @@
   // Hover an active states
   > li > a:hover,
   > li > a:focus {
-    background-color: rgba($gray-base,.09);
+    background-color: rgba(0, 143, 204, 0.1);
     > .nav-icon em {
       color: $sidebar-icon-color-active;
     }
   }
   > li.active {
-    background-color: rgba($gray-base,.026);
+    background-color: rgba(0, 143, 204, 0.1);
 
     > a > .nav-icon em {
       color: $sidebar-icon-color-active;
@@ -83,4 +83,3 @@
     }
   }
 }
-

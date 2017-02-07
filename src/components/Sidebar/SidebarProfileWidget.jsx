@@ -23,7 +23,7 @@ class SidebarProfileWidget extends Component {
     return (
       <div className="profile-widget text-center">
         <a href=""><img src={user.profile_picture} alt="Profile" className="profile-widget--img thumb64" /></a>
-        <div className="mt">{this.timeOfDay()}, {user.first_name} {user.last_name}</div>
+        <div className="mt">{user.first_name} {user.last_name}</div>
         {/*
         <div className="mt">
             <Link to="#">
