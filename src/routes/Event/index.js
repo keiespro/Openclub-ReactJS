@@ -5,7 +5,7 @@ import Create from './routes/Create'
 import Event from './routes/Event'
 
 export default (store) => ({
-  path: 'events',
+  path: 'event/:event_id',
   component: PageLayout,
   indexRoute: {
     component: Events
