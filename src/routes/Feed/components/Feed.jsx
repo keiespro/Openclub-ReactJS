@@ -1,5 +1,8 @@
 import React, {Component, PropTypes as T} from 'react';
 import {Row, Col, Dropdown, MenuItem} from 'react-bootstrap';
+import m from 'moment';
+
+import { CalendarItem } from 'components/EventCalendar';
 
 class Feed extends Component {
   static propTypes = {
@@ -13,16 +16,36 @@ class Feed extends Component {
       <section>
         <div className="container-lg">
           <Row>
-            <Col md={8}>
-              <h5 className="card-heading pb0">
-                  <div className="pull-right">
-                    <a href="#" className="btn btn-flat btn-primary">Top</a>
-                    <a href="#" className="btn btn-flat btn-primary">Trending</a>
-                    <a href="#" className="btn btn-flat btn-primary">Discover</a>
+            <Col xs={12} md={4} className="pull-right">
+                <div className="card">
+                  <div className="card-body">
+                    <CalendarItem date={new Date('12 Jan 2017')} attending liked title="Splended alcoholism and co"/>
+                    <CalendarItem date={new Date('19 Mar 2017')} attending title="How to use OpenClub"/>
+                    <CalendarItem date={new Date('11 May 2017')} attending title="Dance Party"/>
                   </div>
-                  News Feed
-              </h5>
-
+                </div>
+                <h5 className="card-heading">Upcoming Renewals</h5>
+                <div className="card">
+                  <div className="card-body">
+                    <div className="card bg-danger">
+                      <div className="card-heading">
+                        Upcoming Events
+                        <span className="pull-right">{m(new Date()).format('Do MMM YYYY')}</span>
+                      </div>
+                      <div className="card-body">
+                        <p className="lead m0">Your <strong>BMW Club Queensland</strong> membership is set to expire in 3 days. Would you like to renew?</p>
+                      </div>
+                      <div className="card-footer">
+                        <button type="button" className="btn btn-flat btn-danger text-white"><i className="fa fa-refresh"/>
+                          Renew Membership</button>
+                        <button type="button" className="btn btn-flat btn-danger text-white"><i className="fa fa-times"/>
+                          Dismiss</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </Col>
+            <Col md={8} xs={12}>
               <div className="card">
                 <div className="card-body">
                   {/* Inner card */}
@@ -167,49 +190,6 @@ class Feed extends Component {
                         (3)</button>
                       <button type="button" className="btn btn-flat btn-primary"><i className="fa fa-comments"/>
                         (25)</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Col>
-            <Col md={4}>
-              <div className="push-down"></div>
-              <div className="card card-transparent">
-                <h5 className="card-heading">Upcoming Events</h5>
-                <div className="card">
-                  <div className="card-body">
-                    <div className="card bg-primary">
-                      <div className="card-body">
-                        <div className="pull-right">
-                          <em className="fa fa-calendar fa-4x text-muted"></em>
-                        </div>
-                        <h4 className="mv-sm">BMW Fundraiser</h4>
-                        <h5>Event starting in 2 hours.</h5>
-                      </div>
-                      <div className="card-footer">
-                        <button type="button" className="btn btn-flat btn-primary text-white">
-                          <i className="fa fa-calendar-o"/> Details
-                        </button>
-                        <button type="button" className="btn btn-flat btn-primary text-white">
-                          <i className="fa fa-map-o" /> Directions
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <h5 className="card-heading">Upcoming Renewals</h5>
-                <div className="card">
-                  <div className="card-body">
-                    <div className="card bg-danger">
-                      <div className="card-body">
-                        <p className="lead m0">Your <strong>BMW Club Queensland</strong> membership is set to expire in 3 days. Would you like to renew?</p>
-                      </div>
-                      <div className="card-footer">
-                        <button type="button" className="btn btn-flat btn-danger text-white"><i className="fa fa-refresh"/>
-                          Renew Membership</button>
-                        <button type="button" className="btn btn-flat btn-danger text-white"><i className="fa fa-times"/>
-                          Dismiss</button>
-                      </div>
                     </div>
                   </div>
                 </div>
