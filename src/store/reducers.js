@@ -3,7 +3,6 @@ import apolloClient from 'modules/apollo'
 import { reducer as form } from 'redux-form'
 import auth from '../modules/auth/reducer'
 import location from '../modules/location/reducer'
-import api from '../modules/api'
 
 // Build full combined reducer
 export const makeRootReducer = (asyncReducers) => combineReducers({
@@ -11,7 +10,6 @@ export const makeRootReducer = (asyncReducers) => combineReducers({
   auth,
   location,
   form,
-  ...api.reducers,
   ...asyncReducers
 })
 

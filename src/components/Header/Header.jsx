@@ -69,9 +69,9 @@ class Header extends Component {
 }
 
 Header.propTypes = {
-  user: PropTypes.shape({
+  /*user: PropTypes.shape({
     profile_picture: PropTypes.string.isRequired
-  }),
+  }),*/
   //login: PropTypes.func.isRequired,
   //logoutUser: PropTypes.func.isRequired,
   //isAuthenticated: PropTypes.func.isRequired
