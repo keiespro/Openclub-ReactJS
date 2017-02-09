@@ -162,6 +162,12 @@ table.va-bottom { td { vertical-align: bottom !important; } }
 
 .lh1 { line-height: 1; }
 
+// Text alignment
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
+
 // Text others
 
 .text-nowrap { white-space: nowrap; }
