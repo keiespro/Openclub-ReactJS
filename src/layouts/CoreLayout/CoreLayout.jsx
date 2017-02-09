@@ -22,15 +22,15 @@ class CoreLayout extends Component {
   componentWillMount() {
     if(this.props.token){
       // sync the user data api here
-      this.props.syncUsers('self')
+      //this.props.syncUsers('self')
     }
   }
   render() {
-    const loggedIn = this.props.token && this.props.users.sync
-    const contentReady = !this.props.users.loading
+    //const loggedIn = this.props.token && this.props.users.sync
+    //const contentReady = !this.props.users.loading
 
     const containerClasses = ['layout-container']
-    if(!loggedIn){
+    /*if(!loggedIn){
       containerClasses.push('sidebar-offcanvas')
       containerClasses.push('loggedout')
     }
@@ -38,14 +38,17 @@ class CoreLayout extends Component {
     const contentClasses = ['main-container']
     if(!this.props.token){
       contentClasses.push('full')
-    }
+    }*/
+
+    const contentClasses = ['main-container']
+    const loggedIn = false
 
     return (
       <div className={containerClasses.join(' ')}>
-        <Header user={this.props.users.data}/>
+        <Header user={{}}/>
         { loggedIn && <Sidebar user={this.props.users.data} /> }
         { loggedIn && <div className="sidebar-layout-obfuscator" /> }
-        {/* contentReady &&          
+        {/* contentReady &&
           <ReactCSSTransitionGroup
             component="main"
             className={contentClasses.join(' ')}

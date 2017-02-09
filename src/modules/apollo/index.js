@@ -4,7 +4,9 @@
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
 import store from 'store'
 
-const networkInterface = createNetworkInterface('http://localhost:5000/v1/graphql') // TBD: Need to provide the right path for production
+const networkInterface = createNetworkInterface({
+  uri: 'http://localhost:5000/v1/graphql'
+})
 
 networkInterface.use([{
   applyMiddleware: ({ options }, next) => {
@@ -23,6 +25,19 @@ networkInterface.use([{
     next();
   }
 }]);
+
+const errorLog = {
+  applyAfterware({ response }, next) {
+    response.clone().json().then(({ errors }) => {
+      if (errors) {
+        console.error('GraphQL Errors:', errors.map(e => e.message));
+      }
+      next();
+    })
+  }
+}
+
+networkInterface.useAfter([errorLog])
 
 const apolloClient = new ApolloClient({
   networkInterface,

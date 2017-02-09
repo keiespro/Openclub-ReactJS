@@ -3,11 +3,11 @@ import * as authActions from '../modules/auth/actions'
 import API from '../modules/api'
 import CoreLayout from '../layouts/CoreLayout'
 
-const { sync } = API.actions.users
+//const { sync } = API.actions.users
 
 const mapDispatchToProps = {
   ...authActions,
-  syncUsers: sync
+  //syncUsers: sync
 }
 
 const mapStateToProps = (state) => {

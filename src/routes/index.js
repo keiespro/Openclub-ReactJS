@@ -15,12 +15,19 @@ import LoginRoute from './Login'
 import ClubsLanding from './ClubsLanding'
 */
 
+let ran = false
+
 export const createRoutes = (store) => ({
   path: '/',
   getComponent: asyncRequire(() => require('../containers/CoreContainer').default),
   onEnter: (nextState, replace, cb) => {
-    // enforce auth hash completion before loading root route
-    store.dispatch(checkAuthentication()).then(() => cb())
+    // this should only be run once, and so seems like a bug in react-router
+    // TODO: figure out a proper fix
+    if(!ran){
+      ran = true
+      // enforce auth hash completion before loading root route
+      store.dispatch(checkAuthentication()).then(() => cb())
+    }
   },
   indexRoute: Home(store),
   childRoutes: [
