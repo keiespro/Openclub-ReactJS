@@ -45,8 +45,9 @@ class EventCalendar extends Component {
     return <li key={`day-header-${date.getDay}-${key}`} className="timeline-separator" data-datetime={m(date).calendar(null, this.calendar)} />
   }
   renderEventCard(card, key) {
+    const { props } = card;
     return (
-      <li key={key}>
+      <li key={`${props.date.getTime()}${key}`}>
         <div className="timeline-badge bg-primary" />
         <div className="timeline-panel">
           {card}
