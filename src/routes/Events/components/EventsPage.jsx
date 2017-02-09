@@ -59,8 +59,6 @@ class EventsPage extends Component {
                   <i className="fa fa-plus" /> Create Event
                 </button>
               </div>
-            </div>
-            <div className="card">
               <div className="card-body">
                 <button className="btn btn-default btn-lg fw"><i className="fa fa-calendar" /> Add to iCal</button>
                 <p>
@@ -68,45 +66,17 @@ class EventsPage extends Component {
                 <input type="text" className="form-control fw" defaultValue="https://calendar.openclub.co/c2b3847tf89c73fg783c4f78i34cg8f" />
                 </p>
               </div>
-            </div>
-            <div className="card">
-              <div className="card-heading">
-                <h6>Categories</h6>
-              </div>
               <div className="card-body">
-                <div className="list-unstyled">
-                  <li>
-                    <a href=""><i className="fa fa-fw fa-picture-o" /> Art / Photography / Film</a>
-                  </li>
-                  <li>
-                    <a href=""><i className="fa fa-fw fa-book" /> Books & Literature</a>
-                  </li>
-                  <li>
-                    <a href=""><i className="fa fa-handshake-o" /> Charitable & Causes</a>
-                  </li>
-                  <li>
-                    <a href=""><i className="fa fa-fw fa-smile-o" /> Comedy</a>
-                  </li>
-                  <li>
-                    <a href=""><i className="fa fa-fw fa-cutlery" /> Food & Drink</a>
-                  </li>
-                  <li>
-                    <a href=""><i className="fa fa-fw fa-gamepad" /> Gaming</a>
-                  </li>
-                  <li>
-                    <a href=""><i className="fa fa-fw fa-medkit" /> Health & Fitness</a>
-                  </li>
-                  <li>
-                    <a href=""><i className="fa fa-fw fa-glass" /> Networking</a>
-                  </li>
-                  <li>
-                    <a href=""><i className="fa fa-fw fa-blind" /> Religion</a>
-                  </li>
-                  <li>
-                    <a href=""><i className="fa fa-fw fa-microphone" /> Theatre & Dance</a>
-                  </li>
-
-                </div>
+                <button className="btn-flat btn-primary text-left fw"><i className="fa fa-fw fa-picture-o" /> Art / Photography / Film</button>
+                <button className="btn-flat btn-primary text-left fw"><i className="fa fa-fw fa-book" /> Books & Literature</button>
+                <button className="btn-flat btn-primary text-left fw"><i className="fa fa-handshake-o" /> Charitable & Causes</button>
+                <button className="btn-flat btn-primary text-left fw"><i className="fa fa-fw fa-smile-o" /> Comedy</button>
+                <button className="btn-flat btn-primary text-left fw"><i className="fa fa-fw fa-cutlery" /> Food & Drink</button>
+                <button className="btn-flat btn-primary text-left fw"><i className="fa fa-fw fa-gamepad" /> Gaming</button>
+                <button className="btn-flat btn-primary text-left fw"><i className="fa fa-fw fa-medkit" /> Health & Fitness</button>
+                <button className="btn-flat btn-primary text-left fw"><i className="fa fa-fw fa-glass" /> Networking</button>
+                <button className="btn-flat btn-primary text-left fw"><i className="fa fa-fw fa-blind" /> Religion</button>
+                <button className="btn-flat btn-primary text-left fw"><i className="fa fa-fw fa-microphone" /> Theatre & Dance</button>
               </div>
             </div>
           </Col>
