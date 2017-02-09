@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { Row, Col, Jumbotron } from 'react-bootstrap';
 
 class Error extends Component {
@@ -14,13 +15,15 @@ class Error extends Component {
         return (
             <Row>
                 <Col lg={12}>
-                    <Jumbotron>
-                        <div className="container text-center">
-                            <h1>Uh-oh!</h1>
-                            <p>{"The page you're looking for could not be found."}</p>
-                            <p><a role="button" className="btn btn-primary btn-lg">Help!</a></p>
-                        </div>
-                    </Jumbotron>
+                  <div className="container text-center">
+                    <h1>:(</h1>
+                    <h2>Something went wrong</h2>
+                    <h3>
+                      {"Looks like we can't load the page you've requested. Please try again or return to "}
+                      <Link to="/">home</Link>
+                      .
+                    </h3>
+                  </div>
                 </Col>
             </Row>
         );
