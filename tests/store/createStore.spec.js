@@ -1,6 +1,4 @@
-import {
-  default as createStore
-} from 'store/createStore'
+import createStore from 'store'
 
 describe('(Store) createStore', () => {
   let store

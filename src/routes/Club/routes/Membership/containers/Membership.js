@@ -5,4 +5,4 @@ const mapStateToProps = (state) => {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MembershipView)
+export default connect(mapStateToProps)(MembershipView)

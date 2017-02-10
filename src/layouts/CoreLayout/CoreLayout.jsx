@@ -54,3 +54,7 @@ export default graphql(currentViewer, {
     return !ownProps.token
   }
 })(CoreLayout);
+
+export {
+  CoreLayout
+}

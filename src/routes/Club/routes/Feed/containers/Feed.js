@@ -5,4 +5,4 @@ const mapStateToProps = (state) => {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedView)
+export default connect(mapStateToProps)(FeedView)

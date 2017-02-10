@@ -5,4 +5,4 @@ const mapStateToProps = (state) => {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(JoinView)
+export default connect(mapStateToProps)(JoinView)

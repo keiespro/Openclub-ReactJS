@@ -6,4 +6,4 @@ const mapStateToProps = (state) => {
   return {}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminView)
+export default connect(mapStateToProps)(AdminView)
