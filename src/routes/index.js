@@ -15,7 +15,7 @@ import LoginRoute from './Login'
 import ClubsLanding from './ClubsLanding'
 */
 
-let ran = false
+let ran
 
 export const createRoutes = (store) => ({
   path: '/',
@@ -24,10 +24,10 @@ export const createRoutes = (store) => ({
     // this should only be run once, and so seems like a bug in react-router
     // TODO: figure out a proper fix
     if(!ran){
-      ran = true
       // enforce auth hash completion before loading root route
-      store.dispatch(checkAuthentication()).then(() => cb())
+      ran = store.dispatch(checkAuthentication())
     }
+    ran.then(() => cb())
   },
   indexRoute: Home(store),
   childRoutes: [

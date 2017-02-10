@@ -67,6 +67,7 @@ body {
     }
     &.full {
         height: 100%;
+        max-width: none;
     }
 }
 

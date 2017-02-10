@@ -9,6 +9,9 @@ import './styles/Sidebar.scss';
 import SidebarScripts from './SidebarScripts'
 
 class Sidebar extends Component {
+  static propTypes = {
+    user: PropTypes.object.isRequired
+  }
   static contextTypes = {
     router: PropTypes.object
   }
@@ -29,7 +32,6 @@ class Sidebar extends Component {
   render() {
     const { user } = this.props;
 
-
     return (
       <aside className="sidebar-container">
         {user &&
@@ -47,7 +49,7 @@ class Sidebar extends Component {
               <SidebarMenuItem link="/clubs" active={this.routeActive('/clubs')} iconClasses="fa fa-users">Clubs</SidebarMenuItem>
             </SidebarMenu>
             <SidebarMenu title="My Clubs">
-              {user.club_memberships.map((c, index) =>
+              {user.club_memberships && user.club_memberships.map((c, index) =>
                 <SidebarMenuItem
                   key={`clubmenu${index}`}
                   link={`/${c.slug}`}
@@ -62,5 +64,7 @@ class Sidebar extends Component {
     )
   }
 }
+
+
 
 export default Sidebar;

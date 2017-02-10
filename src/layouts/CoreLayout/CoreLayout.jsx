@@ -1,37 +1,30 @@
 import React, { Component, PropTypes } from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
-//import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import classNames from 'classnames'
 
 import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
 import './styles'
 
-const CoreLayout = props => {
-  //const loggedIn = this.props.token && this.props.users.sync
-  //const contentReady = !this.props.users.loading
-
-  const containerClasses = ['layout-container']
-  /*if(!loggedIn){
-    containerClasses.push('sidebar-offcanvas')
-    containerClasses.push('loggedout')
-  }
-
-  if(!this.props.token){
-    contentClasses.push('full')
-  }*/
-
-  const contentClasses = ['main-container']
-  const loggedIn = true
+const CoreLayout = ({ data = {}, children, logoutUser }) => {
+  const user = data.user
+  const containerClasses = classNames('layout-container', {
+    'sidebar-offcanvas': !user,
+    'loggedout': !user
+  })
+  const contentClasses = classNames('main-container', {
+    full: !user
+  })
 
   return (
-    <div className={containerClasses.join(' ')}>
-      <Header user={{}}/>
-      { loggedIn && <Sidebar user={props.user} /> }
-      { loggedIn && <div className="sidebar-layout-obfuscator" /> }
+    <div className={containerClasses}>
+      <Header user={user} />
+      { user && <Sidebar user={user} /> }
+      { user && <div className="sidebar-layout-obfuscator" /> }
 
-      <div className={contentClasses.join(' ')}>
-        {props.children}
+      <div className={contentClasses}>
+        {children}
       </div>
     </div>
   )
@@ -47,8 +40,17 @@ const currentViewer = gql`
     user {
       _id
       email
+      name
+      images {
+        thumb
+        square
+      }
     }
   }
 `
 
-export default graphql(currentViewer)(CoreLayout);
+export default graphql(currentViewer, {
+  skip: ownProps => {
+    return !ownProps.token
+  }
+})(CoreLayout);

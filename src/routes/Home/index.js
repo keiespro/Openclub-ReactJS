@@ -5,8 +5,9 @@ export default (store) => ({
   onEnter: (nextState, replace, cb) => {
     // as a child this route will only run once user login stuff has been completed
     const state = store.getState()
+    console.log(state.auth.token)
     if (state.auth.token) {
-      browserHistory.replace('/feed')
+      replace('/feed')
     }
     cb()
   },

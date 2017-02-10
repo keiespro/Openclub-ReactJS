@@ -64,6 +64,8 @@ export function checkAuthentication() {
         const { token } = data.signin
         localStorage.setItem('openclub_token', token)
         dispatch(lockSuccess(token))
+      }).catch(error => {
+        dispatch(lockError(error))
       })
     }
   })
@@ -73,8 +75,9 @@ export function checkAuthentication() {
 export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout())
-    localStorage.removeItem('profile')
-    localStorage.removeItem('token')
+    localStorage.removeItem('openclub_token')
+    // clear apollos cache
+    apolloClient.resetStore()
     browserHistory.replace('/')
   }
 }
