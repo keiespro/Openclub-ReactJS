@@ -8,7 +8,12 @@ class MembershipCard extends Component {
     return (
       <div className="card">
         <div className="card-body">
-          SOLD
+          <div className="col-xs-4">
+            <img src="/img/img01.jpg" className="img-responsive" />
+          </div>
+          <div className="col-xs-8">
+            <h2>Club Name</h2>
+          </div>
         </div>
       </div>
     );
