@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { Row, Col } from 'react-bootstrap';
 
 class ClubsPage extends Component {
     render() {
