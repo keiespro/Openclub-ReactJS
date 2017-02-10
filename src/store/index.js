@@ -4,7 +4,12 @@ import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from '../modules/location/actions'
 
+let store
+
 export default (initialState = {}) => {
+  // singleton store
+  if (store) { return store }
+
   // setup middlewares
   const middleware = [thunk]
 
@@ -18,7 +23,7 @@ export default (initialState = {}) => {
   }
 
   // create the store
-  const store = createStore(
+  store = createStore(
     makeRootReducer(),
     initialState,
     compose(

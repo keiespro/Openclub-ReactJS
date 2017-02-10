@@ -24,15 +24,12 @@ export const lock = new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
 export const hashParsed = new Promise((resolve, reject) => {
   // catch hash parse event because of all the problems with the authentication event
   lock.on('hash_parsed', result => {
-    if(result && result.idToken){
-      const token = result.idToken
-      lock.getUserInfo(token, (error, profile) => {
-        resolve({ token, profile })
-      })
-    }else if(result){
+    if (result && result.accessToken) {
+      resolve(result.accessToken)
+    } else if (result) {
       // a non token result is an error
       reject(result)
-    }else{
+    } else {
       // a null result is a pass through
       resolve(result)
     }

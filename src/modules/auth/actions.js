@@ -1,5 +1,7 @@
+import apolloClient from 'modules/apollo'
+import gql from 'graphql-tag'
 import { browserHistory } from 'react-router'
-import { lock, hashParsed } from '../../utils/Auth0';
+import { lock, hashParsed } from '../../utils/Auth0'
 
 // Auth0 lock actions
 export const SHOW_LOCK = 'SHOW_LOCK'
@@ -12,10 +14,9 @@ function showLock() {
   }
 }
 
-function lockSuccess(token, profile) {
+function lockSuccess(token) {
   return {
     type: LOCK_SUCCESS,
-    profile,
     token
   }
 }
@@ -44,27 +45,39 @@ export function login() {
   }
 }
 
+const authMutation = gql`
+  mutation signin($accessToken: ID!) {
+    signin(access_token: $accessToken) {
+      token
+    }
+  }
+`
+
 // checks current authentication status of the lock
 export function checkAuthentication() {
-  return dispatch => {
-    return hashParsed.then(authResult => {
-      // not null if hash provided
-      if(authResult){
-        const { token, profile } = authResult
-        localStorage.setItem('profile', JSON.stringify(profile))
-        localStorage.setItem('token', token)
-        dispatch(lockSuccess(token, profile))
-      }
-    })
-  }
+  return dispatch => hashParsed.then(accessToken => {
+    if (accessToken) {
+      return apolloClient.mutate({
+        mutation: authMutation,
+        variables: { accessToken }
+      }).then(({ data }) => {
+        const { token } = data.signin
+        localStorage.setItem('openclub_token', token)
+        dispatch(lockSuccess(token))
+      }).catch(error => {
+        dispatch(lockError(error))
+      })
+    }
+  })
 }
 
 // Logs the user out
 export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout())
-    localStorage.removeItem('profile')
-    localStorage.removeItem('token')
+    localStorage.removeItem('openclub_token')
+    // clear apollos cache
+    apolloClient.resetStore()
     browserHistory.replace('/')
   }
 }

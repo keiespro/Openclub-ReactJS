@@ -10,7 +10,7 @@ import Join from './routes/Join'
 
 export default (store) => ({
   path: ':club_id',
-  getComponent: asyncRequire(() => require('./containers/ClubContainer').default),
+  getComponent: asyncRequire(() => require('./components/ClubView').default),
   indexRoute: {
     onEnter: (nextState, replace) => {
       const state = store.getState()

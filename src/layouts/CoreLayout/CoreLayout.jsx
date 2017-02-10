@@ -1,67 +1,68 @@
-import React, { Component, PropTypes, cloneElement } from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+import classNames from 'classnames'
+import * as authActions from 'modules/auth/actions'
 
 import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
-import './CoreLayout.scss'
-import './LayoutVariants.scss'
-import './Utils.scss'
-import './Cards.scss'
-import './Forms.scss';
-import './List.scss';
-import '../../styles/core.scss'
+import './styles'
 
-class CoreLayout extends Component {
-  static propTypes = {
-    children: PropTypes.element.isRequired,
-    //isAuthenticated: PropTypes.bool.isRequired,
-    //login: PropTypes.func.isRequired,
-    //logoutUser: PropTypes.func.isRequired
+const CoreLayout = ({ data = {}, children, logoutUser }) => {
+  const user = data.user
+  const containerClasses = classNames('layout-container', {
+    'sidebar-offcanvas': !user,
+    'loggedout': !user
+  })
+  const contentClasses = classNames('main-container', {
+    full: !user
+  })
 
-  }
-  componentWillMount() {
-    if(this.props.token){
-      // sync the user data api here
-      this.props.syncUsers('self')
-    }
-  }
-  render() {
-    const loggedIn = this.props.token && this.props.users.sync
-    const contentReady = !this.props.users.loading
+  return (
+    <div className={containerClasses}>
+      <Header user={user} />
+      { user && <Sidebar user={user} /> }
+      { user && <div className="sidebar-layout-obfuscator" /> }
 
-    const containerClasses = ['layout-container']
-    if(!loggedIn){
-      containerClasses.push('sidebar-offcanvas')
-      containerClasses.push('loggedout')
-    }
-
-    const contentClasses = ['main-container']
-    if(!this.props.token){
-      contentClasses.push('full')
-    }
-
-    return (
-      <div className={containerClasses.join(' ')}>
-        <Header user={this.props.users.data}/>
-        { loggedIn && <Sidebar user={this.props.users.data} /> }
-        { loggedIn && <div className="sidebar-layout-obfuscator" /> }
-        {/* contentReady &&          
-          <ReactCSSTransitionGroup
-            component="main"
-            className={contentClasses.join(' ')}
-            transitionName="rag-fadeIn"
-            transitionEnterTimeout={250}
-            transitionLeaveTimeout={250}
-          >
-            {cloneElement(this.props.children, { key: Math.random() })}
-          </ReactCSSTransitionGroup>
-        */}
-        <div className={contentClasses.join(' ')}>
-          {this.props.children}
-        </div>
+      <div className={contentClasses}>
+        {children}
       </div>
-    )
-  }
+    </div>
+  )
 }
 
-export default CoreLayout
+CoreLayout.PropTypes = {
+  children: PropTypes.element.isRequired,
+  data: PropTypes.object
+}
+
+const currentViewer = gql`
+  query currentViewer {
+    user {
+      _id
+      email
+      name
+      images {
+        thumb
+        square
+      }
+    }
+  }
+`
+
+// connect to apollo
+const CoreLayoutWithApollo = graphql(currentViewer, {
+  skip: ownProps => {
+    return !ownProps.token
+  }
+})(CoreLayout)
+
+// connect to redux
+export default connect(state => ({
+  token: state.auth.token
+}), { ...authActions })(CoreLayoutWithApollo)
+
+export {
+  CoreLayout
+}
