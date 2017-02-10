@@ -4,27 +4,6 @@ import { Row, Col } from 'react-bootstrap';
 import Event from 'components/EventCalendar/CalendarItem';
 
 class EventsPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      view: 'days'
-    }
-  }
-  setMonthView() {
-    this.setState({
-      view: 'months'
-    });
-  }
-  setDayView() {
-    this.setState({
-      view: 'days'
-    });
-  }
-  toggleView() {
-    this.setState({
-      view: this.state.view === 'days' ? 'months' : 'days'
-    });
-  }
   render() {
     return (
       <div>
