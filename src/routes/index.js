@@ -1,5 +1,4 @@
 import { injectReducer } from 'store/reducers'
-import { asyncRequire } from 'utils/codesplit'
 import { checkAuthentication } from 'modules/auth/actions'
 
 import Home from './Home'

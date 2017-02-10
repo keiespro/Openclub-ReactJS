@@ -1,6 +1,6 @@
-import { asyncRequire } from 'utils/codesplit'
 
 export default (store) => ({
   path: 'feed',
-  getComponent: asyncRequire(() => require('./containers/FeedContainer').default)
+  getComponent: (nextState, cb) => require.ensure([], require =>
+    cb(null, require('./containers/FeedContainer').default), 'feed')
 })

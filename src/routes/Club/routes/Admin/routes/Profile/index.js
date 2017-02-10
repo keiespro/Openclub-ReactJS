@@ -1,6 +1,5 @@
-import { asyncRequire } from 'utils/codesplit'
-
 export default (store) => ({
   path: 'profile',
-  getComponent: asyncRequire(() => require('./containers/Profile').default)
+  getComponent: (nextState, cb) => require.ensure([], require =>
+    cb(null, require('./containers/Profile').default), 'club_admin_profile')
 })

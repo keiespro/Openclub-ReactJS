@@ -1,6 +1,5 @@
-import { asyncRequire } from 'utils/codesplit'
-
 export default (store) => ({
   path: ':event_id',
-  getComponent: asyncRequire(() => require('./containers/EventContainer').default)
+  getComponent: (nextState, cb) => require.ensure([], require =>
+    cb(null, require('./containers/EventContainer').default), 'event_event')
 })

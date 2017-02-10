@@ -1,5 +1,4 @@
 import { browserHistory } from 'react-router'
-import { asyncRequire } from '../../utils/codesplit'
 
 export default (store) => ({
   onEnter: (nextState, replace, cb) => {
@@ -11,5 +10,6 @@ export default (store) => ({
     }
     cb()
   },
-  getComponent: asyncRequire(() => require('./containers/HomeContainer').default)
+  getComponent: (nextState, cb) => require.ensure([], require =>
+    cb(null, require('./containers/HomeContainer').default), 'home')
 })

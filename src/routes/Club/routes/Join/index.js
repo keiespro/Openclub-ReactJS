@@ -1,6 +1,6 @@
-import { asyncRequire } from 'utils/codesplit'
 
 export default (store) => ({
   path: 'join',
-  getComponent: asyncRequire(() => require('./containers/Join').default)
+  getComponent: (nextState, cb) => require.ensure([], require =>
+    cb(null, require('./containers/Join').default), 'club_join')
 })

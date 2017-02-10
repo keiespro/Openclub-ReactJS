@@ -1,16 +1,18 @@
-import { asyncRequire } from 'utils/codesplit';
-import { browserSync } from 'react-router';
+import { browserSync } from 'react-router'
 
 export default (store) => ({
   path: 'events',
-  getComponent: asyncRequire(() => require('./containers/EventsContainer').default),
+  getComponent: (nextState, cb) => require.ensure([], require =>
+    cb(null, require('./containers/EventsContainer').default), 'events'),
   indexRoute: {
-    getComponent: asyncRequire(() => require('./containers/EventsPageContainer').default)
+    getComponent: (nextState, cb) => require.ensure([], require =>
+      cb(null, require('./containers/EventsPageContainer').default), 'events_page')
   },
   childRoutes: [
     {
       path: 'create',
-      getComponent: asyncRequire(() => require('./containers/CreateEventContainer').default)
+      getComponent: (nextState, cb) => require.ensure([], require =>
+        cb(null, require('./containers/CreateEventContainer').default), 'events_create')
     }
   ]
 })

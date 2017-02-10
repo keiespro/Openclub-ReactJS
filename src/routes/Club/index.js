@@ -1,4 +1,3 @@
-import { asyncRequire } from 'utils/codesplit'
 import { browserHistory } from 'react-router'
 import Feed from './routes/Feed'
 import About from './routes/About'
@@ -10,7 +9,8 @@ import Join from './routes/Join'
 
 export default (store) => ({
   path: ':club_id',
-  getComponent: asyncRequire(() => require('./components/ClubView').default),
+  getComponent: (nextState, cb) => require.ensure([], require =>
+    cb(null, require('./components/ClubView').default), 'club'),
   indexRoute: {
     onEnter: (nextState, replace) => {
       const state = store.getState()
