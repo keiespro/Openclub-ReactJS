@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import classNames from 'classnames'
+import * as authActions from 'modules/auth/actions'
 
 import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
@@ -49,11 +51,17 @@ const currentViewer = gql`
   }
 `
 
-export default graphql(currentViewer, {
+// connect to apollo
+const CoreLayoutWithApollo = graphql(currentViewer, {
   skip: ownProps => {
     return !ownProps.token
   }
-})(CoreLayout);
+})(CoreLayout)
+
+// connect to redux
+export default connect(state => ({
+  token: state.auth.token
+}), { ...authActions })(CoreLayoutWithApollo)
 
 export {
   CoreLayout
