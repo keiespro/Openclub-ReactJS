@@ -6,7 +6,8 @@ import Home from './Home'
 import FeedRoute from './Feed'
 import ClubRoute from './Club'
 import EventRoute from './Event'
-import Events from './Events'
+import EventsRoute from './Events'
+import ClubsRoute from './Clubs'
 import NotificationsRoute from './Notifications'
 import ErrorRoute from './Error'
 
@@ -28,8 +29,9 @@ export const createRoutes = (store) => ({
   childRoutes: [
     FeedRoute(store),
     NotificationsRoute(store),
-    Events(store),
+    EventsRoute(store),
     EventRoute(store),
+    ClubsRoute(store),
     ClubRoute(store),
     //CounterRoute(store, auth),
     //Home(store, auth),
