@@ -12,14 +12,15 @@ class ClubView extends Component {
       PropTypes.element
     ]),
     params: PropTypes.object,
-    syncClub: PropTypes.func,
+    // syncClub: PropTypes.func,
     location: PropTypes.object,
     club: PropTypes.object
   }
-  componentDidMount() {
-    this.props.syncClub(this.props.params.club_id)
-  }
+  // componentWillMount() { //FIXME
+  //   this.props.syncClub(this.props.params.club_id)
+  // }
   render() {
+    console.log(this.props);
     const club = this.props.club.data;
     const { params, location } = this.props
 
