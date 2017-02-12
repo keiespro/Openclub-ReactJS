@@ -6,12 +6,12 @@ class ObjectPageHeader extends Component {
   static propTypes = {
     name: PropTypes.string,
     location: PropTypes.string,
-    images: PropTypes.object,
+    imageSet: PropTypes.object,
     collapsed: PropTypes.bool
   }
   renderProfileBackdrop() {
-    const { images, name, collapsed } = this.props;
-    if (typeof images.square === 'undefined' && typeof name !== 'undefined') {
+    const { imageSet, name, collapsed } = this.props;
+    if (typeof imageSet.square === 'undefined' && typeof name !== 'undefined') {
       return <div />;
     }
     const classes = cx({
@@ -24,7 +24,7 @@ class ObjectPageHeader extends Component {
       <div className="media-left">
         <div className="profile-backdrop">
           <a href="#">
-            <img src={images.square} alt={name} className={classes} />
+            <img src={imageSet.square} alt={name} className={classes} />
           </a>
         </div>
       </div>
@@ -48,7 +48,7 @@ class ObjectPageHeader extends Component {
     );
   }
   render() {
-    const { background } = this.props.images;
+    const { background } = this.props.imageSet;
 
     const bgEle = typeof background === 'undefined' ? '#2b2b2b' : `url(${background})`;
 
