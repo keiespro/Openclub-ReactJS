@@ -8,6 +8,7 @@ import EventRoute from './Event'
 import EventsRoute from './Events'
 import ClubsRoute from './Clubs'
 import NotificationsRoute from './Notifications'
+import ProfileRoute from './Profile';
 import ErrorRoute from './Error'
 
 let ran // IGNORE THE UGLINESS
@@ -29,6 +30,7 @@ export const createRoutes = (store) => ({
   childRoutes: [
     FeedRoute(store),
     NotificationsRoute(store),
+    ProfileRoute(store),
     EventsRoute(store),
     EventRoute(store),
     ClubsRoute(store),
