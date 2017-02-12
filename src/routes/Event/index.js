@@ -1,16 +1,9 @@
-import { PageLayout } from 'layouts/PageLayout'
-import Events from './components/Events'
-import Create from './routes/Create'
-import Event from './routes/Event'
-
 export default (store) => ({
-  path: 'event/:event_idpe',
-  component: PageLayout,
+  path: 'event/:event_id',
+  getComponent: (nextState, cb) => require.ensure([], require =>
+    cb(null, require('./containers/EventContainer').default), 'event'),
   indexRoute: {
-    component: Events
+    getComponent: (nextState, cb) => require.ensure([], require =>
+    cb(null, require('./containers/EventHome').default), 'event_home')
   },
-  childRoutes: [
-    ...Create(store),
-    Event(store)
-  ]
 })
