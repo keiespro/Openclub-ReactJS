@@ -9,7 +9,6 @@ class MenuBarItem extends Component {
     const {
       to,
       label,
-      route,
       routePrefix,
       divider
     } = this.props
@@ -20,13 +19,8 @@ class MenuBarItem extends Component {
 
     const toRoute = `${(routePrefix || '')}${to}`
 
-    const classes = classNames({
-      'menu-btn-active': route && toRoute === route.pathname
-    }, 'btn menu-btn')
-
-
     return (
-      <Link className={classes} to={toRoute}>{label}</Link>
+      <Link className="btn menu-btn" activeClassName=" menu-btn-active" to={toRoute}>{label}</Link>
     )
   }
 }
@@ -37,7 +31,6 @@ MenuBarItem.propTypes = {
     PropTypes.element,
     PropTypes.string
   ]),
-  route: PropTypes.object,
   routePrefix: PropTypes.string,
   divider: PropTypes.bool
 }
