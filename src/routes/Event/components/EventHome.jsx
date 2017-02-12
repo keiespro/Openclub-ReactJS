@@ -54,7 +54,7 @@ class EventHome extends Component {
                 )}}
               />
             <div className="qr-overlay">
-              <svg width="75" height="75" viewBox="-1441 -134 512 512" version="1.1">
+              <svg width="80" height="80" viewBox="-1441 -134 512 512" version="1.1">
                   <g id="Group-6" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" transform="translate(-1441.000000, -134.000000)">
                       <rect id="Rectangle-5" fill="#008FCC" x="0" y="0" width="512" height="512" rx="73" />
                       <g id="Group-2" transform="translate(71.000000, 158.000000)" fill="#FFFFFF">

@@ -5,6 +5,6 @@
 .qr-overlay {
   position: absolute;
   width: 100%;
-  top: 36%;
-  left: 36%;
+  top: calc(50% - 80px / 2);
+  left: calc(50% - 80px / 2);
 }
