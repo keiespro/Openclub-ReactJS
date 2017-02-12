@@ -17,14 +17,11 @@ class Feed extends Component {
         <div className="container-lg">
           <Row>
             <Col xs={12} md={4} className="pull-right">
-                <div className="card">
-                  <div className="card-body">
-                    <CalendarItem date={new Date('12 Jan 2017')} attending liked title="Splended alcoholism and co"/>
-                    <CalendarItem date={new Date('19 Mar 2017')} attending title="How to use OpenClub"/>
-                    <CalendarItem date={new Date('11 May 2017')} attending title="Dance Party"/>
-                  </div>
-                </div>
-                <h5 className="card-heading">Upcoming Renewals</h5>
+              <h5 className="card-heading">Upcoming Events</h5>
+                <CalendarItem date={new Date('12 Jan 2017')} attending liked title="Splended alcoholism and co"/>
+                <CalendarItem date={new Date('19 Mar 2017')} attending title="How to use OpenClub"/>
+                <CalendarItem date={new Date('11 May 2017')} attending title="Dance Party"/>
+              <h5 className="card-heading">Upcoming Renewals</h5>
                 <div className="card">
                   <div className="card-body">
                     <div className="card bg-danger">
