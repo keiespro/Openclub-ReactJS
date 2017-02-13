@@ -6,7 +6,7 @@ import Finances from './routes/Finances';
 export default (store) => ({
   path: 'admin',
   getComponent: (nextState, cb) => require.ensure([], require =>
-    cb(null, require('./containers/Admin').default), 'club_admin'),
+    cb(null, require('./components/AdminView').default), 'club_admin'),
   childRoutes: [
     Members(store),
     Settings(store),

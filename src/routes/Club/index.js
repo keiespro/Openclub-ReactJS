@@ -1,11 +1,5 @@
 import { browserHistory } from 'react-router'
-import Feed from './routes/Feed'
-import About from './routes/About'
-import Events from './routes/Events'
-import Community from './routes/Community'
-import Membership from './routes/Membership'
 import Admin from './routes/Admin'
-import Join from './routes/Join'
 
 export default (store) => ({
   path: ':club_id',
@@ -19,12 +13,36 @@ export default (store) => ({
     }
   },
   childRoutes: [
-    Feed(store),
-    About(store),
-    Events(store),
-    Community(store),
-    Membership(store),
-    Admin(store),
-    Join(store)
+    {
+      path: 'feed',
+      getComponent: (nextState, cb) => require.ensure([], require =>
+        cb(null, require('./routes/Feed/components/FeedView').default), 'club_feed')
+    },
+    {
+      path: 'about',
+      getComponent: (nextState, cb) => require.ensure([], require =>
+        cb(null, require('./routes/About/components/AboutView').default), 'club_about')
+    },
+    {
+      path: 'events',
+      getComponent: (nextState, cb) => require.ensure([], require =>
+        cb(null, require('./routes/Events/components/EventsView').default), 'club_events')
+    },
+    {
+      path: 'community',
+      getComponent: (nextState, cb) => require.ensure([], require =>
+        cb(null, require('./routes/Community/components/CommunityView').default), 'club_community')
+    },
+    {
+      path: 'membership',
+      getComponent: (nextState, cb) => require.ensure([], require =>
+        cb(null, require('./routes/Membership/components/MembershipView').default), 'club_membership')
+    },
+    {
+      path: 'join',
+      getComponent: (nextState, cb) => require.ensure([], require =>
+        cb(null, require('./routes/Join/components/JoinView').default), 'club_join')
+    },
+    Admin(store)
   ]
 })
