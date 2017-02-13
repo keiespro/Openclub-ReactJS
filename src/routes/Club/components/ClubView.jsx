@@ -9,9 +9,13 @@ import './ClubView.scss'
 
 const ClubView = ({ data, params, location, children }) => {
   const collapseHeader = location.pathname.includes('/feed') === false
-  const { club } = data
+  const { club, loading } = data
 
   console.log(data)
+
+  if(loading){
+    return <div>Loading...</div>
+  }
 
   if(!club){
     return <div>Club not found</div>
