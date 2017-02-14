@@ -12,4 +12,4 @@ RUN npm run deploy
 ENV PORT 80
 EXPOSE 80
 
-CMD [ "node", "server/main.js" ]
+CMD [ "npm", "start" ]

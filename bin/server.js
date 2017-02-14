@@ -1,3 +1,4 @@
+require('newrelic');
 const config = require('../config')
 const server = require('../server/main')
 const debug = require('debug')('app:bin:server')
