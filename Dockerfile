@@ -7,7 +7,7 @@ COPY package.json /usr/app
 RUN npm install
 
 COPY . /usr/app
-RUN npm run deploy
+RUN npm run clean && npm run compile
 
 ENV PORT 80
 EXPOSE 80
