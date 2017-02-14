@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Ele from '../components/CreateEvent';
+import Ele from '../components/Create';
 
 const mapDispatchToProps = {};
 

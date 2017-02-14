@@ -1,52 +1,37 @@
 import React, { Component, Children, PropTypes } from 'react'
-import { Row, Col, PanelGroup } from 'react-bootstrap'
+import { Row, Col, PanelGroup, Collapse } from 'react-bootstrap'
 import DetailsItem from './DetailsItem'
+import DetailsHeader from './DetailsHeader'
 import './styles/DetailsLayout.scss'
 
-class DetailsLayout extends Component {
+const DetailsLayout = ({ location: { query }, children, defaultPageId }) => {
+  const currentId = query.page || defaultPageId
 
-  render() {
-    const { 
-      children,
-      page,
-      route
-    } = this.props
-
-    // get the route prefix for all sub pages (remove page if necessary)
-    let routePrefix = route
-    if(routePrefix.endsWith(page)){
-      const end = route.length - page.length
-      routePrefix = route.substring(0, end)  
-    }
-
-    // custom left hand column accordion types
-    const leftChildren = Children.map(children, ((c, i) => {
-      const leftProps = {
-        routePrefix,
-        collapsible: true,
-        collapsed: c.props.pageRoute !== page
-      }
-      return React.cloneElement(c, leftProps)
-    }))
-
-    // custom right hand body column children
-    // (filter to render only the active child)
-    const rightChildren = Children.map(children, (c => {
-      const rightProps = {
-        collapsible: false
-      }
-      return React.cloneElement(c, rightProps)
-    })).filter(c => c.props.pageRoute === page)
-   
-    return (
-    	<div className="details-container">
-        <div className="details-headings">{leftChildren}</div>
-        <div className="details-body hidden-sm hidden-xs">
-          {rightChildren}
-        </div>
+  return (
+    <div className="details-container">
+      <div className="details-headings">
+        {React.Children.map(children, c => (
+          <div>
+            <DetailsHeader
+              active={c.props.pageId === currentId}
+              location={location}
+              key={`iheader${c.key}`}
+              pageId={c.props.pageId}
+            >{c.props.header}</DetailsHeader>
+            {c.props.pageId === currentId &&
+            <div className="hidden-lg hidden-md">
+              <Collapse in={true}>
+                {c}
+              </Collapse>
+            </div>}
+          </div>
+        ))}
       </div>
-    )
-  }
+      <div className="details-body hidden-sm hidden-xs">
+        {React.Children.toArray(children).filter(c => c.props.pageId === currentId)}
+      </div>
+    </div>
+  )
 }
 
 DetailsLayout.propTypes = {

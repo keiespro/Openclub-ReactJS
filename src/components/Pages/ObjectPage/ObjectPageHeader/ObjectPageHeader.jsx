@@ -10,7 +10,9 @@ class ObjectPageHeader extends Component {
     collapsed: PropTypes.bool
   }
   renderProfileBackdrop() {
-    const { images, name, collapsed } = this.props;
+    const { name, collapsed } = this.props;
+    const images = this.props.images || {}
+
     if (typeof images.square === 'undefined' && typeof name !== 'undefined') {
       return <div />;
     }
@@ -48,7 +50,8 @@ class ObjectPageHeader extends Component {
     );
   }
   render() {
-    const { background } = this.props.images;
+    const images = this.props.images || {}
+    const { background } = images
     const bgEle = typeof background === 'undefined' ? '#2b2b2b' : `url(${background})`;
 
     const headerImageStyles = {
