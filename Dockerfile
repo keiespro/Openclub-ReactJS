@@ -11,4 +11,4 @@ COPY . /usr/app
 ENV PORT 8001
 EXPOSE 8001
 
-CMD [ "npm", "start" ]
+CMD [ "node", "server/main.js" ]
