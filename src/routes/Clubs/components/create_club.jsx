@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import { PageHeader } from 'layouts/PageLayout'
 import { DetailsLayout, DetailsItem } from 'layouts/DetailsLayout'
 import CreateClubForm from './create_club_form'
+import { browserHistory } from 'react-router'
 
 const CreateClub = ({ mutate }) => {
 
@@ -17,8 +18,10 @@ const CreateClub = ({ mutate }) => {
       }
     }).then(({ data }) => {
       console.log('yay created a club')
+      browserHistory.push(`/${values.slug}`)
     }).catch(err => {
       console.log('got error')
+      console.log(err)
     })
   }
 
