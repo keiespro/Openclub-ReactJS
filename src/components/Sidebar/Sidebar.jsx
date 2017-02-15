@@ -8,6 +8,8 @@ import SidebarMenuItem from './SidebarMenuItem'
 import './styles/Sidebar.scss';
 import SidebarScripts from './SidebarScripts'
 
+//const SideBar = ({ user }) =>
+
 class Sidebar extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired

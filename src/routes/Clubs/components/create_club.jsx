@@ -2,13 +2,12 @@ import React, { PropTypes } from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { PageHeader } from 'layouts/PageLayout'
-import { DetailsLayout, DetailsItem } from 'layouts/DetailsLayout'
-import CreateClubForm from './create_club_form'
 import { browserHistory } from 'react-router'
+import CreateClubForm from './create_club_form'
 
 const CreateClub = ({ mutate }) => {
 
-  const createForm = values => {
+  const createTheClub = values => {
     mutate({
       variables: {
         slug: values.slug,
@@ -26,7 +25,7 @@ const CreateClub = ({ mutate }) => {
     <div className="card">
       <div className="card-body">
         <PageHeader title="Create Club"></PageHeader>
-        <CreateClubForm onSubmit={createForm}/>
+        <CreateClubForm onSubmit={createTheClub}/>
       </div>
     </div>
   )

@@ -3,16 +3,16 @@ import { browserSync } from 'react-router'
 export default (store) => ({
   path: 'events',
   getComponent: (nextState, cb) => require.ensure([], require =>
-    cb(null, require('./containers/EventsContainer').default), 'events'),
+    cb(null, require('./components/EventsView').default), 'events'),
   indexRoute: {
     getComponent: (nextState, cb) => require.ensure([], require =>
-      cb(null, require('./containers/EventsPageContainer').default), 'events_page')
+      cb(null, require('./components/EventsPage').default), 'events_page')
   },
   childRoutes: [
     {
       path: 'create',
       getComponent: (nextState, cb) => require.ensure([], require =>
-        cb(null, require('./containers/CreateEventContainer').default), 'events_create')
+        cb(null, require('./components/create_event').default), 'events_create')
     }
   ]
 })

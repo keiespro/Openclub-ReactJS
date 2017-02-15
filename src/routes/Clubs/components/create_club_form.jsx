@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Input, FieldSet, ImageUpload } from 'components/Forms'
 import { required, maxLength, slug } from 'utils/form_validation/errors'
 
-const NameAndAddress = ({ handleSubmit, createForm }) => {
+const CreateClubForm = ({ handleSubmit, createForm }) => {
 
   const slugString = (createForm && createForm.values && createForm.values.slug) ?
     createForm.values.slug : '<your id here>'
@@ -45,10 +45,10 @@ const NameAndAddress = ({ handleSubmit, createForm }) => {
   )
 }
 
-const NameAndAddressForm = reduxForm({
+const CreateClubReduxForm = reduxForm({
   form: 'create_club'
-})(NameAndAddress)
+})(CreateClubForm)
 
 export default connect(state => ({
   createForm: state.form.create_club
-}))(NameAndAddressForm)
+}))(CreateClubReduxForm)

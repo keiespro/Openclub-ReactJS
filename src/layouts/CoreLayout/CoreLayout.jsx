@@ -47,6 +47,14 @@ const currentViewer = gql`
         thumb
         square
       }
+      clubs {
+        _id
+        slug
+        name
+        images {
+          thumb
+        }
+      }
     }
   }
 `
