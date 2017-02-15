@@ -3,14 +3,27 @@ import Auth0Lock from 'auth0-lock';
 // singleton Auth0 lock
 export const lock = new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
   theme: {
-    logo: 'http://localhost:3000/img/logo-s.png',
-    primaryColor: '#1976d2'
+    logo: 'https://openclubdev.github.io/openclub-assets/images/logo/logo-color.png',
+    primaryColor: '#008fcc'
   },
   languageDictionary: {
     title: 'Log In to OpenClub'
   },
+  auth: {
+    redirectUrl: location.origin
+  },
   closable: false
 })
+
+export const inlineLock = (container) => new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
+  container,
+  theme: {
+    primaryColor: '#008fcc'
+  },
+  auth: {
+    redirectUrl: location.origin
+  }
+});
 
 /**
  * Due to Auth0s stupid choice to use events, and the fact that they
