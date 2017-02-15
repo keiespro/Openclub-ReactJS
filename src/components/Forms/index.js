@@ -8,6 +8,7 @@ import TextEditor from './TextEditor'
 import Form from './FormContainer'
 import Radio from './Radio'
 import Switch from './Switch'
+import Select from './Select'
 
 export {
   // React Bootstrap Helpers
@@ -23,5 +24,6 @@ export {
   DateField,
   TextEditor,
   Radio,
-  Switch
+  Switch,
+  Select
 }
