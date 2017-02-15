@@ -11,5 +11,5 @@ export default (store) => ({
     cb()
   },
   getComponent: (nextState, cb) => require.ensure([], require =>
-    cb(null, require('./containers/HomeContainer').default), 'home')
+    cb(null, require('./components/Home').default), 'home')
 })
