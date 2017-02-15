@@ -19,11 +19,13 @@ const CreateEvent = ({ mutate }) => {
     })
   }
 
+  const clubs = []
+
   return (
     <div className="card">
       <div className="card-body">
         <PageHeader title="Create Event"></PageHeader>
-        <CreateEventForm onSubmit={createTheEvent}/>
+        <CreateEventForm clubs={clubs} onSubmit={createTheEvent}/>
       </div>
     </div>
   )

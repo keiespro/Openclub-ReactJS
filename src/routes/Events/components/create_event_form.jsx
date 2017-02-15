@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Input, FieldSet, ImageUpload, Select } from 'components/Forms'
 import { required, maxLength, slug } from 'utils/form_validation/errors'
 
-const CreateEventForm = ({ user, handleSubmit, createForm }) => {
+const CreateEventForm = ({ clubs, handleSubmit, createForm }) => {
 
   const slugString = (createForm && createForm.values && createForm.values.slug) ?
     createForm.values.slug : '<your id here>'
@@ -18,7 +18,7 @@ const CreateEventForm = ({ user, handleSubmit, createForm }) => {
           type="text"
           help="Which club is hosting this event?"
           component={Select}
-          options={[{label: 'Law Society', value: 'aaa'}]}
+          options={clubs.map(c => ({ label: c.name, value: c._id }))}
         />
       </FieldSet>
       <FieldSet>
