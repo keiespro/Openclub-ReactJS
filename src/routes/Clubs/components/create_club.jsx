@@ -9,18 +9,15 @@ import { browserHistory } from 'react-router'
 const CreateClub = ({ mutate }) => {
 
   const createForm = values => {
-    console.log('mutating!!')
-    console.log(values)
     mutate({
       variables: {
         slug: values.slug,
         club: values.club
       }
     }).then(({ data }) => {
-      console.log('yay created a club')
       browserHistory.push(`/${values.slug}`)
     }).catch(err => {
-      console.log('got error')
+      console.log('Error creating club')
       console.log(err)
     })
   }
