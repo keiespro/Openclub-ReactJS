@@ -20,9 +20,22 @@ export const inlineLock = (container) => new Auth0Lock(__AUTH0_CLIENT_ID__, __AU
   theme: {
     primaryColor: '#008fcc'
   },
-  auth: {
+  additionalSignUpFields: [
+    {
+      name: "address",
+      placeholder: "enter where your babies live",
+    },
+    {
+      name: "full_name",
+      placeholder: "Enter your full name"
+    },
+    {
+      name: ""
+    }
+  ]
+  /*auth: {
     redirectUrl: location.origin
-  }
+  }*/
 });
 
 /**
