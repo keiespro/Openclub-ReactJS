@@ -1,9 +1,9 @@
 import WebpackIsomorphicTools from 'webpack-isomorphic-tools';
+import webpackConfig from '../build/webpack.config';
 import config from '../config';
 import _debug from 'debug';
 
 global.webpackIsomorphicTools = new WebpackIsomorphicTools(require('../build/webpack-isomorphic-tools'))
-  // .development(true)
   .server('.', () => {
     const server = require('../server/main').default;
 

@@ -1,5 +1,6 @@
 .DS_STORE
 *.log
+.env
 
 node_modules
 
@@ -7,3 +8,4 @@ dist
 coverage
 
 .idea/
+webpack-assets.json

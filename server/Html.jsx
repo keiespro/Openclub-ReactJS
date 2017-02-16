@@ -37,7 +37,9 @@ export default class Html extends Component {
         </head>
         <body>
           <div id="root" dangerouslySetInnerHTML={{__html: content}}/>
-          <script dangerouslySetInnerHTML={{__html: `window.__INITIAL_STATE__=${serialize(store.getState())};`}}
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.__AUTH0_CLIENT_ID=${global.__AUTH0_CLIENT_ID};window.__AUTH0_DOMAIN__=${global.__AUTH0_DOMAIN__};window.__INITIAL_STATE__=${serialize(store.getState())};`}}
                   charSet="UTF-8"/>
           <script src={assets.javascript.vendor} charSet="UTF-8"/>
           <script src={assets.javascript.app} charSet="UTF-8"/>

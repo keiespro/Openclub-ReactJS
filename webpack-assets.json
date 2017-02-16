@@ -1,8 +1,1 @@
-{
-  "javascript": {
-    "app": "http://localhost:3001/app.b6e279e6cf46394f0d74.js",
-    "vendor": "http://localhost:3001/vendor.b6e279e6cf46394f0d74.js"
-  },
-  "styles": {},
-  "assets": {}
-}
+{"javascript":{"app":"http://localhost:3001/app.b6e279e6cf46394f0d74.js","vendor":"http://localhost:3001/vendor.b6e279e6cf46394f0d74.js"},"styles":{},"assets":{}}

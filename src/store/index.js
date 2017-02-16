@@ -12,30 +12,23 @@ export default (history, initialState = {}) => {
   if (store) { return store }
 
   // setup middlewares
-  const middleware = applyMiddleware(thunk, routerMiddleware(history));
+  let middleware = applyMiddleware(thunk, routerMiddleware(history));
 
   // setup enhancers
-  const enhancers = []
   if (__DEV__ && __CLIENT__) {
     const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__
     if (typeof devToolsExtension === 'function') {
-      enhancers.push(devToolsExtension())
+      middleware = compose(middleware, devToolsExtension);
     }
   }
 
   // create the store
-  store = createStore(
-    makeRootReducer(),
-    initialState,
-    compose(
-      applyMiddleware(...middleware),
-      ...enhancers
-    )
-  )
+  store = middleware(createStore)(makeRootReducer(), initialState);
+
   store.asyncReducers = {}
 
   // To unsubscribe, invoke `store.unsubscribeHistory()` anytime
-  store.unsubscribeHistory = browserHistory.listen(updateLocation(store))
+  store.unsubscribeHistory = __CLIENT__ ? browserHistory.listen(updateLocation(store)) : null
 
   if (module.hot) {
     module.hot.accept('./reducers', () => {

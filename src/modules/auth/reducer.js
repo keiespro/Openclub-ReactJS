@@ -1,7 +1,7 @@
 import { SHOW_LOCK, LOCK_SUCCESS, LOGOUT_REQUEST } from './actions'
 
 const initialState = {
-  token: localStorage.getItem('openclub_token')
+  token: typeof localStorage === 'undefined' ? null : localStorage.getItem('openclub_token')
 };
 
 const ACTION_HANDLERS = {

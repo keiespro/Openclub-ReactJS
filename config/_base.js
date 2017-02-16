@@ -82,7 +82,9 @@ config.globals = {
   '__TEST__'     : config.env === 'test',
   '__DEBUG__'    : config.env === 'development' && !argv.no_debug,
   '__DEBUG_NEW_WINDOW__' : !!argv.nw,
-  '__BASENAME__' : JSON.stringify(process.env.BASENAME || '')
+  '__BASENAME__' : JSON.stringify(process.env.BASENAME || ''),
+  '__AUTH0_CLIENT_ID__' : process.env.OCA_AUTH0_CLIENT_ID || '',
+  '__AUTH0_DOMAIN__' : process.env.OCA_AUTH0_DOMAIN || ''
 };
 
 // ------------------------------------
