@@ -23,9 +23,13 @@ export default class Html extends Component {
           {head.meta.toComponent()}
           {head.link.toComponent()}
           {head.script.toComponent()}
+          <meta charSet="utf-8" />
+
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+          <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
 
           <link rel="shortcut icon" href="/favicon.ico" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
           {/* styles (will be present only in production with webpack extract text plugin) */}
           {Object.keys(assets.styles).map((style, key) =>
             <link
@@ -35,7 +39,7 @@ export default class Html extends Component {
               rel="stylesheet" type="text/css" charSet="UTF-8"/>
           )}
         </head>
-        <body>
+        <body className="theme-openclub">
           <div id="root" dangerouslySetInnerHTML={{__html: content}}/>
           <script
             dangerouslySetInnerHTML={{

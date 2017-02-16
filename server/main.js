@@ -48,7 +48,7 @@ app.use((req, res) => {
       const component = React.createElement(AppContainer, { store, routes, history });
     res.send('<!doctype html>\n' + renderToString(
       React.createElement(HTML, {
-        assets: global.webpackIsomorphicTools.assets,
+        assets: global.webpackIsomorphicTools.assets(),
         component,
         store
       })));

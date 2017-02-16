@@ -23,6 +23,7 @@ class MemberList extends Component {
     rows.map((row) => this.setSelected(row, select))
   }
   setSelected(row, select) {
+    if (typeof window === 'undefined') return true;
     const key = row.user_id;
     let selected = this.state.selected;
     if (selected.includes(key) || select === false) {
