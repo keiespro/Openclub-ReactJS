@@ -86,7 +86,8 @@ config.globals = {
   '__BASENAME__' : JSON.stringify(process.env.BASENAME || ''),
   '__AUTH0_CLIENT_ID__' : JSON.stringify("gJHJD5cPDhu31mXFVgJnpyvczrz3Z75E"),
   '__AUTH0_DOMAIN__' : JSON.stringify("openclub.au.auth0.com"),
-  '__API_URL__' : JSON.stringify("openclub-api.herokuapp.com")
+  '__API_URL__' : JSON.stringify("openclub-api.herokuapp.com"),
+  '__VERSION__': JSON.stringify("0.0.1")
 }
 
 // ------------------------------------
@@ -108,15 +109,16 @@ config.compiler_vendors = config.compiler_vendors
 // ------------------------------------
 // Utilities
 // ------------------------------------
-function base () {
+function base() {
   const args = [config.path_base].concat([].slice.call(arguments))
   return path.resolve.apply(path, args)
 }
 
 config.utils_paths = {
-  base   : base,
-  client : base.bind(null, config.dir_client),
-  dist   : base.bind(null, config.dir_dist)
+  base: base,
+  client: base.bind(null, config.dir_client),
+  dist: base.bind(null, config.dir_dist),
+  server: base.bind(null, config.dir_server)
 }
 
 // ========================================================

@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const config = require('../config')
 const debug = require('debug')('app:webpack:config')
+const _ = require('lodash');
 
 const paths = config.utils_paths
 const __DEV__ = config.globals.__DEV__
@@ -12,7 +13,23 @@ const __PROD__ = config.globals.__PROD__
 const __TEST__ = config.globals.__TEST__
 
 debug('Creating configuration.')
-const webpackConfig = {
+
+let webpackConfig = {
+  module: {},
+  plugins: []
+};
+let webpackClient = {
+  module: {},
+  plugins: []
+};
+let webpackServer = {
+  module: {},
+  plugins: []
+};
+
+const APP_ENTRY = paths.client('main.jsx')
+
+const clientConfig = {
   name    : 'client',
   target  : 'web',
   devtool : config.compiler_devtool,
@@ -20,27 +37,37 @@ const webpackConfig = {
     root       : paths.client(),
     extensions : ['', '.js', '.jsx', '.json']
   },
+  entry: {
+    app : __DEV__
+      ? [APP_ENTRY].concat(`webpack-hot-middleware/client?path=${config.compiler_public_path}__webpack_hmr`)
+      : [APP_ENTRY],
+    vendor : config.compiler_vendors
+  },
+  output: {
+    filename   : `[name].[${config.compiler_hash_type}].js`,
+    path       : paths.dist(),
+    publicPath : config.compiler_public_path
+  },
   module : {}
 }
-// ------------------------------------
-// Entry Points
-// ------------------------------------
-const APP_ENTRY = paths.client('main.jsx')
 
-webpackConfig.entry = {
-  app : __DEV__
-    ? [APP_ENTRY].concat(`webpack-hot-middleware/client?path=${config.compiler_public_path}__webpack_hmr`)
-    : [APP_ENTRY],
-  vendor : config.compiler_vendors
-}
-
-// ------------------------------------
-// Bundle Output
-// ------------------------------------
-webpackConfig.output = {
-  filename   : `[name].[${config.compiler_hash_type}].js`,
-  path       : paths.dist(),
-  publicPath : config.compiler_public_path
+const serverConfig = {
+  name: 'server',
+  target: 'node',
+  devtool: config.compiler_devtool,
+  resolve: {
+    root: paths.server(),
+    extensions : ['', '.js', '.jsx', '.json']
+  },
+  entry: {
+    app: paths.server('main.js'),
+    vendor : config.compiler_vendors
+  },
+  output: {
+    filename   : `server/[name].[${config.compiler_hash_type}].js`,
+    path       : paths.dist()
+  },
+  module: {}
 }
 
 // ------------------------------------
@@ -60,15 +87,17 @@ webpackConfig.plugins = [
   })
 ]
 
+webpackClient.plugins = [];
+
 if (__DEV__) {
   debug('Enable plugins for live development (HMR, NoErrors).')
-  webpackConfig.plugins.push(
+  webpackClient.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   )
 } else if (__PROD__) {
   debug('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).')
-  webpackConfig.plugins.push(
+  webpackClient.plugins.push(
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
@@ -82,7 +111,7 @@ if (__DEV__) {
 }
 
 // Don't split bundles during testing, since we only want import one bundle
-if (!__TEST__) {
+if (!__TEST__ ) {
   webpackConfig.plugins.push(
     new webpack.optimize.CommonsChunkPlugin({
       names : ['vendor']
@@ -190,4 +219,7 @@ if (!__DEV__) {
   )
 }
 
-module.exports = webpackConfig
+module.exports = [
+  _.merge({}, clientConfig, webpackConfig, webpackClient),
+  _.merge({}, serverConfig, webpackConfig, webpackServer)
+]
