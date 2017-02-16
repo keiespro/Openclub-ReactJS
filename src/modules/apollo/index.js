@@ -2,7 +2,7 @@
  * Apollo integration with openclub for graphql API
  */
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
-import store from 'store'
+import store from '../../store'
 
 const networkInterface = createNetworkInterface({
   uri: 'http://localhost:5000/v1/graphql'

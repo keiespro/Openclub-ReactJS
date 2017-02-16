@@ -13,7 +13,7 @@ import ErrorRoute from './Error'
 
 let ran // IGNORE THE UGLINESS
 
-export const createRoutes = (store) => ({
+export const createRoutes = (store, history) => ({
   path: '/',
   getComponent: (nextState, cb) => require.ensure([], require =>
     cb(null, require('layouts/CoreLayout/CoreLayout').default), 'core'),

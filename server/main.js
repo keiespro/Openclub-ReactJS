@@ -1,120 +1,76 @@
-const express = require('express')
-const debug = require('debug')('app:server')
-const webpack = require('webpack')
-const webpackConfig = require('../build/webpack.config')
-const config = require('../config')
+import express from 'express';
+import _debug from 'debug';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import { createMemoryHistory, match } from 'react-router';
+import { syncHistoryWithStore } from 'react-router-redux';
 
-const app = express()
-const paths = config.utils_paths
+import webpackProxyMiddleware from './middleware/webpack-proxy';
+import AppContainer from '../src/containers/AppContainer';
+import HTML from './Html';
+import createStore from '../src/store';
+import createRoutes from '../src/routes';
+import config from '../config';
 
-const { useRouterHistory, RouterContext, match } = require('react-router');
-const React = require('react');
-const ReactDOMServer = require('react-dom/server');
-const { createMemoryHistory, useQueries } = require('history');
-const createStore = require('../src/store');
-const createRoutes = require('../src/routes');
-const AppContainer = require('../src/containers/AppContainer');
-const Helmet = require('react-helmet');
 
-// This rewrites all routes requests to the root /index.html file
-// (ignoring file requests). If you want to implement universal
-// rendering, you'll want to remove this middleware.
-app.use(require('connect-history-api-fallback')())
+global.__CLIENT__ = false;
+global.__SERVER__ = true;
 
-let client;
-const getReduxPromise = (props, store) => {
-  let { query, params } = props
-  let comp = props.components[props.components.length - 1].WrappedComponent
-  let promise = comp.fetchData ?
-    comp.fetchData({ query, params, store, history }) :
-    Promise.resolve()
-  return promise
-}
-const subscribeUrl = (history, location) => {
-  let currentUrl = location.pathname + location.search
-  let unsubscribe = history.listen((newLoc) => {
-    if (newLoc.action === 'PUSH' || newLoc.action === 'REPLACE') {
-      currentUrl = newLoc.pathname + newLoc.search
+Object.keys(config.globals).map((key) => { //eslint-disable-line
+  global[key] = config.globals[key];
+});
+
+const debug = _debug('app:server');
+const paths = config.utils_paths;
+const app = express();
+
+// ------------------------------------
+// Apply redux-router
+// ------------------------------------
+app.use((req, res) => {
+  const memoryHistory = createMemoryHistory(req.path);
+  const store = createStore(memoryHistory);
+  const history = syncHistoryWithStore(memoryHistory, store);
+  const routes = createRoutes(store);
+
+  match({history, routes, location: req.url}, (error, redirectLocation, renderProps) => {
+    if (error) {
+      res.status(500).send(error.message);
+    } else if (redirectLocation) {
+      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+    } else if (renderProps) {
+      const component = React.createElement(AppContainer, { store, routes, history });
+    res.send('<!doctype html>\n' + renderToString(
+      React.createElement(HTML, {
+        assets: global.webpackIsomorphicTools.assets,
+        component,
+        store
+      })));
     }
-  })
-  return [
-    () => currentUrl,
-    unsubscribe
-  ]
-}
+  });
+});
 
 // ------------------------------------
 // Apply Webpack HMR Middleware
 // ------------------------------------
 if (config.env === 'development') {
-  const compiler = webpack(webpackConfig)
-
-  debug('Enable webpack dev and HMR middleware')
-  app.use(require('webpack-dev-middleware')(compiler, {
-    publicPath  : webpackConfig.output.publicPath,
-    contentBase : paths.client(),
-    hot         : true,
-    quiet       : config.compiler_quiet,
-    noInfo      : config.compiler_quiet,
-    lazy        : false,
-    stats       : config.compiler_stats
-  }))
-  app.use(require('webpack-hot-middleware')(compiler))
-
-  // Serve static assets from ~/src/static since Webpack is unaware of
-  // these files. This middleware doesn't need to be enabled outside
-  // of development since this directory will be copied into ~/dist
-  // when the application is compiled.
-  client = paths.client('static');
-  // app.use(express.static(paths.client('static')))
+  if (config.proxy && config.proxy.enabled) {
+    const options = config.proxy.options;
+    app.use(webpackProxyMiddleware(options));
+  }
+  app.use(express.static(paths.client('static')));
 } else {
-  debug('Running in production');
+  debug(
+    'Server is being run outside of live development mode. This starter kit ' +
+    'does not provide any production-ready server functionality. To learn ' +
+    'more about deployment strategies, check out the "deployment" section ' +
+    'in the README.'
+  );
 
   // Serving ~/dist by default. Ideally these files should be served by
   // the web server and not the app server, but this helps to demo the
   // server in production.
-  console.log(paths);
-  // app.use(express.static(paths.dist()))
-  client = paths.dist();
+  app.use(express.static(paths.base(config.dir_dist)));
 }
 
-app.get('*', (req, res, next) => {
-  // Primary server-side routing happens here
-  let history = useRouterHistory(useQueries(createMemoryHistory))();
-  let store = createStore();
-  let routes = createRoutes(store, history);
-  let location = history.createLocation(req.url);
-
-  match({ routes, location }, (error, redirection, props) => {
-    if (redirection) {
-      res.redirect(301, redirection.pathname + redirection.search);
-    } else if (error) {
-      res.status(500).send(error.message);
-    } else if (props == null) {
-      res.status(404).send('Not Found');
-    } else {
-      let [getCurrentUrl, unsubscribe] = subscribeUrl(history, location);
-      let reqUrl = location.pathname + location.search;
-
-      getReduxPromise(props, store).then(() => {
-        let reduxState = escape(JSON.stringify(store.getState()));
-        let html = ReactDOMServer.renderToString(React.createElement(AppContainer, { store, routes }));
-        let meta = Helmet.rewind();
-
-        if (getCurrentUrl() === reqUrl) {
-          res.render('index', { meta, html, reduxState, client });
-        } else {
-          res.redirect(302, getCurrentUrl());
-        }
-        unsubscribe();
-      });
-    }
-  });
-});
-
-app.use((err, req, res, next) => {
-  console.log(err.stack);
-  res.status(500).send("Something went wrong.");
-});
-
-module.exports = app
+export default app;
