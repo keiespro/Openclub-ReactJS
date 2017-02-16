@@ -50,7 +50,7 @@ if (typeof window !== 'undefined') {
 const hashParsed = new Promise((resolve, reject) => {
   if (typeof window === 'undefined') resolve(true);
   // catch hash parse event because of all the problems with the authentication event
-  lock.on('hash_parsed', result => {
+  const resolveToken = result => {
     if (result && result.accessToken) {
       resolve(result.accessToken)
     } else if (result) {
@@ -60,7 +60,10 @@ const hashParsed = new Promise((resolve, reject) => {
       // a null result is a pass through
       resolve(result)
     }
-  })
+  }
+
+  lock.on('hash_parsed', resolveToken);
+  inlineLock.on('hash_parsed', resolveToken)
 })
 
 
