@@ -7,34 +7,8 @@ class StripeWrapper extends Component {
       PropTypes.element,
       PropTypes.array
     ]),
-    onError: PropTypes.func,
     isScriptLoaded: PropTypes.bool,
     isScriptLoadSucceed: PropTypes.bool
-  }
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      ready: false
-    }
-  }
-  componentWillReceiveProps ({ isScriptLoaded, isScriptLoadSucceed }) {
-    if (isScriptLoaded && !this.props.isScriptLoaded) { // load finished
-      if (isScriptLoadSucceed) {
-        this.setState({ ready: true })
-      }
-      else {
-        this.props.onError((error) => {
-          this.setState({ ready: false, error })
-        });
-      }
-    }
-  }
-  componentDidMount () {
-    const { isScriptLoaded, isScriptLoadSucceed } = this.props
-    if (isScriptLoaded && isScriptLoadSucceed) {
-      this.setState({ ready: true })
-    }
   }
   render() {
     const { isScriptLoaded, isScriptLoadSucceed } = this.props
@@ -46,7 +20,7 @@ class StripeWrapper extends Component {
     }
     return (
       <div>
-      <h1>Loading Payment Service</h1>
+        <h1>Loading Payment Service</h1>
       </div>
     );
   }
