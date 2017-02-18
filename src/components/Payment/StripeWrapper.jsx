@@ -3,18 +3,17 @@ import scriptLoader from 'react-async-script-loader';
 
 class StripeWrapper extends Component {
   static propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.element,
-      PropTypes.array
-    ]),
     isScriptLoaded: PropTypes.bool,
     isScriptLoadSucceed: PropTypes.bool
+  }
+  constructor(comp, props) {
+    super(comp, props);
   }
   render() {
     const { isScriptLoaded, isScriptLoadSucceed } = this.props
     if (isScriptLoaded && isScriptLoadSucceed) {
       const Stripe = window.Stripe;
-      return React.cloneElement(this.props.children, {
+      return React.cloneElement(this.comp, {
         stripe: Stripe.setPublishableKey(__STRIPE_PUB_KEY__)
       });
     }
@@ -25,4 +24,4 @@ class StripeWrapper extends Component {
     );
   }
 }
-export default scriptLoader('https://js.stripe.com/v2/')(StripeWrapper);
+export default scriptLoader('https://js.stripe.com/v3/')(StripeWrapper);
