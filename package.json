@@ -19,7 +19,8 @@
     "deploy": "better-npm-run deploy",
     "deploy:dev": "better-npm-run deploy:dev",
     "deploy:prod": "better-npm-run deploy:prod",
-    "codecov": "cat coverage/*/lcov.info | codecov"
+    "codecov": "cat coverage/*/lcov.info | codecov",
+    "build": "webpack --config config/webpack.config.babel.js"
   },
   "betterScripts": {
     "compile": {
@@ -111,7 +112,6 @@
     "material-colors": "^1.1.1",
     "moment": "^2.17.1",
     "newrelic": "^1.37.0",
-    "node-sass": "^3.7.0",
     "normalize.css": "^4.1.1",
     "numeral": "^2.0.4",
     "postcss-loader": "^0.13.0",
@@ -137,16 +137,16 @@
     "redux-form": "^6.4.3",
     "redux-thunk": "^2.0.0",
     "rimraf": "^2.5.4",
-    "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.6",
-    "webpack": "^1.12.14",
     "yargs": "^5.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",
     "babel-eslint": "^6.0.0-beta.6",
     "babel-plugin-istanbul": "^2.0.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-latest": "^6.22.0",
     "chai": "^3.4.1",
     "chai-as-promised": "^5.3.0",
     "chai-enzyme": "^0.5.0",
@@ -165,6 +165,7 @@
     "eslint-plugin-react": "^6.0.0",
     "eslint-plugin-standard": "^2.0.0",
     "express": "^4.14.0",
+    "file-loader": "^0.9.0",
     "karma": "^1.4.0",
     "karma-chrome-launcher": "^2.0.0",
     "karma-coverage": "^1.0.0",
@@ -173,12 +174,16 @@
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-webpack-with-fast-source-maps": "^1.9.2",
     "mocha": "^3.0.1",
+    "node-sass": "^4.5.0",
     "nodemon": "^1.10.2",
     "phantomjs-prebuilt": "^2.1.12",
     "react-addons-test-utils": "^15.0.0",
     "redbox-react": "^1.2.10",
+    "sass-loader": "^6.0.1",
     "sinon": "^1.17.5",
     "sinon-chai": "^2.8.0",
+    "url-loader": "^0.5.7",
+    "webpack": "^2.2.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.12.2"
   }
