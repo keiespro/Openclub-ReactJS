@@ -4,6 +4,8 @@ import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from '../modules/location/actions'
 
+const { __DEV__ } = Env
+
 let store
 
 export default (initialState = {}) => {

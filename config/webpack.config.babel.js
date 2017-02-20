@@ -1,11 +1,24 @@
 import path from 'path'
+import envBuilder from './env'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import webpack from 'webpack'
 
 const extractSass = new ExtractTextPlugin({
     //filename: "[name].[contenthash].css",
     filename: '[name].css',
     //disable: process.env.NODE_ENV === "development"
-});
+})
+
+const htmlWebpack = new HtmlWebpackPlugin({
+  template: 'src/index.html',
+  hash: false,
+  inject: 'body',
+  favicon: 'src/static/favicon.ico'
+})
+
+// build stringify env vars and put them as globals
+const envInsert = new webpack.DefinePlugin({ Env: envBuilder() })
 
 export default {
   name: 'openclub',
@@ -16,34 +29,29 @@ export default {
     extensions: ['.js', '.jsx', '.json']
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: 'dist',
     filename: '[name].js',
     publicPath: '/'
   },
+  plugins: [
+    extractSass,
+    htmlWebpack,
+    envInsert
+  ],
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loader: 'babel-loader?cacheDirectory=true'
       },
       {
         test: /\.scss$/,
-        /*loader: extractSass.extract({
-          loader: [
-            { loader: 'css-loader' },
-            { loader: 'sass-loader' }
-          ],
+        use: extractSass.extract({
+          use: ['css-loader', 'sass-loader'],
           // use style-loader in development
           fallbackLoader: 'style-loader'
-        })*/
-        use: [{
-            loader: "style-loader" // creates style nodes from JS strings
-        }, {
-            loader: "css-loader" // translates CSS into CommonJS
-        }, {
-            loader: "sass-loader" // compiles Sass to CSS
-        }]
+        })
       },
       {
         test: /\.css$/,

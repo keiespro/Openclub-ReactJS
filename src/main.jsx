@@ -4,6 +4,8 @@ import createStore from './store'
 import createRoutes from './routes/index'
 import AppContainer from './containers/AppContainer'
 
+const { __DEV__ } = Env
+
 // Create store
 const initialState = window.___INITIAL_STATE__
 const store = createStore(initialState)

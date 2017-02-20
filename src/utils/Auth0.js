@@ -1,4 +1,6 @@
-import Auth0Lock from 'auth0-lock';
+import Auth0Lock from 'auth0-lock'
+
+const { __AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__ } = Env
 
 // singleton Auth0 lock
 export const lock = new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
@@ -9,9 +11,9 @@ export const lock = new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
   languageDictionary: {
     title: 'Log In to OpenClub'
   },
-  auth: {
+  /*auth: {
     redirectUrl: location.origin
-  },
+  },*/
   closable: false
 })
 
