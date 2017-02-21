@@ -24,9 +24,9 @@ config.globals = {
 
 config.paths = {
   src: path.resolve(CURRENT_WORKING_DIR, 'src'),
-  public: '/assets/',
+  public: 'assets/',
   dist: path.resolve(CURRENT_WORKING_DIR, 'dist'),
-  assets: path.resolve(CURRENT_WORKING_DIR, 'dist/public/assets/'),
+  assets: path.resolve(CURRENT_WORKING_DIR, 'dist/public/assets'),
   modules: path.resolve(CURRENT_WORKING_DIR, 'node_modules')
 };
 

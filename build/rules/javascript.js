@@ -4,7 +4,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
   const enableHotModuleReplacement = !production && browser;
   const createPresets = enableHotModuleReplacement => {
     const presets = ['latest', 'react', 'stage-0'];
-    return enableHotModuleReplacement ? ['react-hmre', ...presets]: presets;
+    return enableHotModuleReplacement ? ['react-hmre', ...presets] : presets;
   };
   const presets = createPresets(enableHotModuleReplacement);
 
@@ -12,7 +12,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
       'transform-react-remove-prop-types',
       'transform-react-constant-elements',
       'transform-react-inline-elements'
-  ]: [];
+  ] : [];
 
   return {
     test: /\.js$|\.jsx$/,

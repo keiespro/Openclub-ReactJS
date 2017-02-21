@@ -33,12 +33,14 @@ module.exports = (env = '') => {
   const prodBrowserRender = {
     devtool: 'cheap-module-source-map',
     context: PATHS.src,
-    entry: { app: ['./main'] },
+    entry: {
+      app: ['./main']
+    },
     node,
     output: {
       path: PATHS.assets,
       filename: '[name].js', // filename: '[name].[hash:6].js',
-      chunkFilename: '[name].[chunkhash:6].js', // for code splitting. will work without but useful to set
+      chunkFilename: '[name].[hash].js', // for code splitting. will work without but useful to set
       publicPath: PATHS.public
     },
     module: { rules: rules({ production: true, browser: true }) },
@@ -67,12 +69,14 @@ module.exports = (env = '') => {
   const devBrowserRender = {
     devtool: 'eval',
     context: PATHS.src,
-    entry: { app: ['./main', hotMiddlewareScript] },
+    entry: {
+      app: ['./main', hotMiddlewareScript]
+    },
     node,
     output: {
       path: PATHS.assets,
-      filename: '[name].js',
-      chunkFilename: '[name].[chunkhash:6].js', // for code splitting. will work without but useful to set
+      filename: '[name].[hash].js',
+      chunkFilename: '[name].[hash].js', // for code splitting. will work without but useful to set
       publicPath: PATHS.public
     },
     module: { rules: rules({ production: false, browser: true }) },
