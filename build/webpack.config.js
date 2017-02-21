@@ -57,7 +57,7 @@ module.exports = (env = '') => {
     externals,
     output: {
       path: PATHS.dist,
-      filename: '[name].dev.js',
+      filename: '[name].[hash].js',
       publicPath: PATHS.public,
       libraryTarget: 'commonjs2',
     },

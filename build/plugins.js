@@ -10,6 +10,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
     return [
       new webpack.DefinePlugin(config.globals),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
+      new ExtractTextPlugin({ filename: '[name].[hash].css', allChunks: true }),
       new webpack.BannerPlugin(bannerOptions)
     ];
   }
@@ -18,6 +19,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
       new webpack.DefinePlugin(config.globals),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
       new webpack.HotModuleReplacementPlugin(),
+      new ExtractTextPlugin({ filename: '[name].[hash].css', allChunks: true }),
       new webpack.NoEmitOnErrorsPlugin()
     ];
   }
@@ -26,6 +28,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
       new webpack.DefinePlugin(config.globals),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
       new webpack.BannerPlugin(bannerOptions),
+      new ExtractTextPlugin({ filename: '[name].[hash].css', allChunks: true }),
       new webpack.optimize.UglifyJsPlugin({ compress })
     ];
   }
@@ -33,7 +36,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
     return [
       new webpack.DefinePlugin(config.globals),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
-      new ExtractTextPlugin({ filename: '[name].[hash].css', disable: false, allChunks: true }),
+      new ExtractTextPlugin({ filename: '[name].[hash].css', allChunks: true }),
       new webpack.optimize.UglifyJsPlugin({ compress })
     ];
   }

@@ -9,13 +9,14 @@ module.exports = ({ production = false, browser = false } = {}) => {
   const presets = createPresets(enableHotModuleReplacement);
 
   const plugins = production ? [
+      'transform-runtime',
       'transform-react-remove-prop-types',
       'transform-react-constant-elements',
       'transform-react-inline-elements'
-  ] : [];
+  ] : ['transform-runtime'];
 
   return {
-    test: /\.js$|\.jsx$/,
+    test: /\.js$|\.jsx|\.json$/,
     loader: 'babel-loader',
     options: {
       presets,
