@@ -12,7 +12,7 @@ config.globals = {
     'NODE_ENV': JSON.stringify(config.env)
   },
   'NODE_ENV': config.env,
-  '__DEV__': config.env === 'development',
+  '__DEV__': JSON.stringify(JSON.parse(config.env === 'development' || 'true')),
   '__PROD__': config.env === 'production',
   '__TEST__': config.env === 'test',
   '__DEBUG__': config.env === 'development' && !argv.no_debug,
@@ -29,6 +29,6 @@ config.paths = {
   assets: path.resolve(CURRENT_WORKING_DIR, 'dist/public/assets'),
   modules: path.resolve(CURRENT_WORKING_DIR, 'node_modules')
 };
-
+console.log(config);
 
 module.exports = config;

@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 const config = require('../config/index');
+const AssetsPlugin = require('assets-webpack-plugin');
 
 module.exports = ({ production = false, browser = false } = {}) => {
   const bannerOptions = { raw: true, banner: 'require("source-map-support").install();' };
@@ -9,23 +10,17 @@ module.exports = ({ production = false, browser = false } = {}) => {
 
   const ExtractText = new ExtractTextPlugin({ filename: '[name].[hash].css', allChunks: true });
   const CommonChunks = new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest'],
-      minChunks: (module) => module.context && module.context.indexOf('node_modules') !== -1
+    names: ['vendor'],
+    async: true
   });
   const Manifest = new ChunkManifestPlugin({
     filename: "manifest.json",
     manifestVariable: "webpackManifest"
   });
 
-
   if (!production && !browser) {
     return [
       new webpack.DefinePlugin(config.globals),
-      new webpack.optimize.CommonsChunkPlugin({
-          names: ['commons'],
-          filename: "commons.[hash].js",
-          async: true
-      }),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
       ExtractText,
       new webpack.BannerPlugin(bannerOptions)
@@ -33,6 +28,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
   }
   if (!production && browser) {
     return [
+      new AssetsPlugin({path: config.paths.dist, filename: 'assets.json'}),
       CommonChunks,
       Manifest,
       new webpack.DefinePlugin(config.globals),
@@ -54,6 +50,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
   }
   if (production && browser) {
     return [
+      new AssetsPlugin({path: config.paths.dist, filename: 'dist/assets.json'}),
       CommonChunks,
       Manifest,
       new webpack.DefinePlugin(config.globals),

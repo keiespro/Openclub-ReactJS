@@ -9,6 +9,14 @@ module.exports = (env = '') => {
   const isBrowser = (env.indexOf('browser') >= 0);
   console.log(`Running webpack in ${process.env.NODE_ENV} mode on ${isBrowser ? 'browser' : 'server'}`);
   const node = { __dirname: true, __filename: true };
+  const vendor = [
+    'react',
+    'react-dom',
+    'redux',
+    'react-redux',
+    'react-router',
+    'react-router-redux'
+  ];
 
   const prodServerRender = {
     devtool: 'source-map',
@@ -32,12 +40,13 @@ module.exports = (env = '') => {
     devtool: 'cheap-module-source-map',
     context: PATHS.src,
     entry: {
-      app: ['./main']
+      app: ['./main'],
+      vendor
     },
     node,
     output: {
       path: PATHS.assets,
-      filename: '[chunkhash].[name].js',
+      filename: '[hash].[name].js',
       publicPath: PATHS.public
     },
     module: { rules: rules({ production: true, browser: true }) },
@@ -54,7 +63,7 @@ module.exports = (env = '') => {
     externals,
     output: {
       path: PATHS.dist,
-      filename: '[name].[hash].js',
+      filename: '[name].dev.js',
       publicPath: PATHS.public,
       libraryTarget: 'commonjs2',
     },
@@ -71,12 +80,14 @@ module.exports = (env = '') => {
         'react-hot-loader/patch',
         'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
         './main'
-      ]
+      ],
+      vendor
     },
     node,
     output: {
       path: PATHS.assets,
-      filename: '[chunkhash].[name].js',
+      filename: '[hash].[name].js',
+      chunkFilename: '[hash].[name].js',
       publicPath: PATHS.public
     },
     module: { rules: rules({ production: false, browser: true }) },

@@ -17,7 +17,7 @@ const App = <OCAppContainer store={store} routes={createRoutes(store)} history={
 // Production-ready Render
 let render = (Component) => {
   ReactDOM.render(
-    <Component/>,
+    <Component />,
     MOUNT_NODE
   )
 }
@@ -36,7 +36,7 @@ if (__DEV__) {
   }
 
   if (module.hot) {
-    module.hot.accept('./components/App', () => {
+    module.hot.accept('./containers/AppContainer', () => {
       render(App)
     });
   }
