@@ -2,6 +2,7 @@ import path from 'path'
 import envBuilder from './env'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import CleanWebpackPlugin from 'clean-webpack-plugin'
 import webpack from 'webpack'
 
 const extractSass = new ExtractTextPlugin({
@@ -15,6 +16,12 @@ const htmlWebpack = new HtmlWebpackPlugin({
   hash: false,
   inject: 'body',
   favicon: 'src/static/favicon.ico'
+})
+
+const cleaner = new CleanWebpackPlugin(['dist'], {
+  root: __dirname,
+  verbose: true,
+  dry: true
 })
 
 // build stringify env vars and put them as globals
@@ -36,12 +43,10 @@ export default {
   },
   devtool: 'eval',
   plugins: [
+    cleaner,
     extractSass,
     htmlWebpack,
-    envInsert,
-    new webpack.LoaderOptionsPlugin({
-      debug: true
-    })
+    envInsert
   ],
   module: {
     rules: [
