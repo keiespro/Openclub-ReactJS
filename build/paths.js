@@ -8,7 +8,7 @@ const path = require('path');
 const CURRENT_WORKING_DIR = process.cwd();
 
 module.exports = {
-  app: path.resolve(CURRENT_WORKING_DIR, 'src'),
+  src: path.resolve(CURRENT_WORKING_DIR, 'src'),
   assets: path.resolve(CURRENT_WORKING_DIR, 'src/static'),
   dist: path.resolve(CURRENT_WORKING_DIR, 'dist'),
   public: '/assets/', // use absolute path for css-loader?

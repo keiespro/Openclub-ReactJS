@@ -3,7 +3,7 @@
     "watch": [
       "src",
       "server",
-      "webpack"
+      "build"
     ],
-    "exec": "npm run build:dev && node build/server.dev.js"
+    "exec": "npm run build:dev && node dist/server.dev.js"
 }

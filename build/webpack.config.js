@@ -15,7 +15,7 @@ module.exports = (env = '') => {
   const prodServerRender = {
     devtool: 'source-map',
     context: PATHS.src,
-    entry: { server: './server/main' },
+    entry: { server: '../server/main' },
     target: 'node',
     node,
     externals,
@@ -64,7 +64,7 @@ module.exports = (env = '') => {
   const devServerRender = {
     devtool: 'sourcemap',
     context: PATHS.src,
-    entry: { server: './server/main' },
+    entry: { server: '../server/main' },
     target: 'node',
     node,
     externals,
