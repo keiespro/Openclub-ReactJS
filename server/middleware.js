@@ -5,7 +5,7 @@ import createRoutes from '../src/routes';
 import renderPage from './render';
 
 export default function(req, res) {
-  const memoryHistory = createMemoryHistory(req.path);
+  const memoryHistory = createMemoryHistory();
   const store = createStore(memoryHistory);
   const history = syncHistoryWithStore(memoryHistory, store);
   const routes = createRoutes(store);
