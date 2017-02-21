@@ -1,6 +1,8 @@
+import { loadcb, splitError } from 'utils/code_splitting'
 
 export default (store) => ({
   path: 'members',
-  getComponent: (nextState, cb) => require.ensure([], require =>
-    cb(null, require('./containers/Members').default), 'club_admin_members')
+  getComponent: (nextState, cb) => {
+    import('./components/MembersView').then(loadcb(cb)).catch(splitError)
+  }
 })

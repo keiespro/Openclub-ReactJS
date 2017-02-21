@@ -1,17 +1,13 @@
+import { loadcb, splitError } from 'utils/code_splitting'
+
 export default (store) => ({
     path: 'profile',
-    // onEnter: auth.enterRoute,
-    getComponent(nextState, cb) {
-        require.ensure([], (require) =>
-        cb(null, require('./containers/ProfileContainer').default),
-        'profile')
+    getComponent: (nextState, cb) => {
+      import('./components/ProfilePage').then(loadcb(cb)).catch(splitError)
     },
     indexRoute: {
-      getComponent(nextState, cb) {
-        require.ensure([], (require) =>
-        cb(null, require('./components/Details').default),
-        'profile_details'
-        );
+      getComponent: (nextState, cb) => {
+        import('./components/Details').then(loadcb(cb)).catch(splitError)
       }
     }
 })

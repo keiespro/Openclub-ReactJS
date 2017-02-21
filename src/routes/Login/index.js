@@ -1,10 +1,10 @@
-import LoginView from './components/LoginView';
+import LoginView from './components/LoginView'
 
 export default (store, auth) => {
-        return {
-            path: 'login',
-            component: LoginView,
-            auth,
-            store
-        };
-};
+  return {
+      path: 'login',
+      component: LoginView,
+      auth,
+      store
+  }
+}

@@ -1,4 +1,5 @@
 import { browserHistory } from 'react-router'
+import { loadcb, splitError } from 'utils/code_splitting'
 
 export default (store) => ({
   onEnter: (nextState, replace, cb) => {
@@ -11,9 +12,6 @@ export default (store) => ({
     cb()
   },
   getComponent: (nextState, cb) => {
-    import('./components/Home').then(m => cb(null, m.default))
+    import('./components/Home').then(loadcb(cb)).catch(splitError)
   }
-  /*{
-    require.ensure([], require => cb(null, require('./components/Home').default), 'home')
-  }*/
 })

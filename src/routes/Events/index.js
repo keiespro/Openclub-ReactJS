@@ -1,18 +1,22 @@
 import { browserSync } from 'react-router'
+import { loadcb, splitError } from 'utils/code_splitting'
 
 export default (store) => ({
   path: 'events',
-  getComponent: (nextState, cb) => require.ensure([], require =>
-    cb(null, require('./components/EventsView').default), 'events'),
+  getComponent: (nextState, cb) => {
+    import('./components/EventsView').then(loadcb(cb)).catch(splitError)
+  },
   indexRoute: {
-    getComponent: (nextState, cb) => require.ensure([], require =>
-      cb(null, require('./components/EventsPage').default), 'events_page')
+    getComponent: (nextState, cb) => {
+      import('./components/EventsPage').then(loadcb(cb)).catch(splitError)
+    }
   },
   childRoutes: [
     {
       path: 'create',
-      getComponent: (nextState, cb) => require.ensure([], require =>
-        cb(null, require('./components/create_event').default), 'events_create')
+      getComponent: (nextState, cb) => {
+        import('./components/create_event').then(loadcb(cb)).catch(splitError)
+      }
     }
   ]
 })

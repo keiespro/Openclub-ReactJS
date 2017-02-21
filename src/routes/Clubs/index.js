@@ -1,19 +1,21 @@
 import { browserSync } from 'react-router';
-
-import ClubsPage from './components/ClubsPage';
+import { loadcb, splitError } from 'utils/code_splitting'
+import ClubsPage from './components/ClubsPage'
 
 export default (store) => ({
   path: 'clubs',
-  getComponent: (nextState, cb) => require.ensure([], require =>
-    cb(null, require('./components/ClubsView').default), 'clubs'),
+  getComponent: (nextState, cb) => {
+    import('./components/ClubsView').then(loadcb(cb)).catch(splitError)
+  },
   indexRoute: {
     component: ClubsPage
   },
   childRoutes: [
     {
       path: 'create',
-      getComponent: (nextState, cb) => require.ensure([], require =>
-        cb(null, require('./components/create_club').default), 'clubs_create')
+      getComponent: (nextState, cb) => {
+        import('./components/create_club').then(loadcb(cb)).catch(splitError)
+      }
     }
   ]
 });
