@@ -1,16 +1,12 @@
 import { browserHistory } from 'react-router'
-import Feed from './routes/Feed'
-import About from './routes/About'
-import Events from './routes/Events'
-import Community from './routes/Community'
-import Membership from './routes/Membership'
+import { loadcb, splitError } from 'utils/code_splitting'
 import Admin from './routes/Admin'
-import Join from './routes/Join'
 
 export default (store) => ({
   path: ':club_id',
-  getComponent: (nextState, cb) => require.ensure([], require =>
-    cb(null, require('./components/ClubView').default), 'club'),
+  getComponent: (nextState, cb) => {
+    import('./components/ClubView').then(loadcb(cb)).catch(splitError)
+  },
   indexRoute: {
     onEnter: (nextState, replace) => {
       const state = store.getState()
@@ -19,12 +15,42 @@ export default (store) => ({
     }
   },
   childRoutes: [
-    Feed(store),
-    About(store),
-    Events(store),
-    Community(store),
-    Membership(store),
-    Admin(store),
-    Join(store)
+    {
+      path: 'feed',
+      getComponent: (nextState, cb) => {
+        import('./routes/Feed/components/FeedView').then(loadcb(cb)).catch(splitError)
+      }
+    },
+    {
+      path: 'about',
+      getComponent: (nextState, cb) => {
+        import('./routes/About/components/AboutView').then(loadcb(cb)).catch(splitError)
+      }
+    },
+    {
+      path: 'events',
+      getComponent: (nextState, cb) => {
+        import('./routes/Events/components/EventsView').then(loadcb(cb)).catch(splitError)
+      }
+    },
+    {
+      path: 'community',
+      getComponent: (nextState, cb) => {
+        import('./routes/Community/components/CommunityView').then(loadcb(cb)).catch(splitError)
+      }
+    },
+    {
+      path: 'membership',
+      getComponent: (nextState, cb) => {
+        import('./routes/Membership/components/MembershipView').then(loadcb(cb)).catch(splitError)
+      }
+    },
+    {
+      path: 'join',
+      getComponent: (nextState, cb) => {
+        import('./routes/Join/components/JoinView').then(loadcb(cb)).catch(splitError)
+      }
+    },
+    Admin(store)
   ]
 })

@@ -1,5 +1,6 @@
 import { injectReducer } from 'store/reducers'
 import { checkAuthentication } from 'modules/auth/actions'
+import { loadcb, splitError } from 'utils/code_splitting'
 
 import Home from './Home'
 import FeedRoute from './Feed'
@@ -13,10 +14,11 @@ import ErrorRoute from './Error'
 
 let ran // IGNORE THE UGLINESS
 
-export const createRoutes = (store, history) => ({
+export const createRoutes = (store) => ({
   path: '/',
-  getComponent: (nextState, cb) => require.ensure([], require =>
-    cb(null, require('layouts/CoreLayout/CoreLayout').default), 'core'),
+  getComponent: (nextState, cb) => {
+    import('layouts/CoreLayout/CoreLayout').then(loadcb(cb)).catch(splitError)
+  },
   onEnter: (nextState, replace, cb) => {
     // this should only be run once, and so seems like a bug in react-router
     // TODO: figure out a proper fix
