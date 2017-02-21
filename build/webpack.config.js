@@ -46,21 +46,6 @@ module.exports = (env = '') => {
     plugins: plugins({ production: true, browser: true })
   };
 
-  const devBrowserRender = {
-    devtool: 'eval',
-    context: PATHS.src,
-    entry: { app: ['./main', hotMiddlewareScript] },
-    node,
-    output: {
-      path: PATHS.assets,
-      filename: '[name].js',
-      publicPath: PATHS.public
-    },
-    module: { rules: rules({ production: false, browser: true }) },
-    resolve,
-    plugins: plugins({ production: false, browser: true })
-  };
-
   const devServerRender = {
     devtool: 'sourcemap',
     context: PATHS.src,
@@ -77,6 +62,22 @@ module.exports = (env = '') => {
     module: { rules: rules({ production: false, browser: false }) },
     resolve,
     plugins: plugins({ production: false, browser: false })
+  };
+
+  const devBrowserRender = {
+    devtool: 'eval',
+    context: PATHS.src,
+    entry: { app: ['./main', hotMiddlewareScript] },
+    node,
+    output: {
+      path: PATHS.assets,
+      filename: '[name].js',
+      chunkFilename: '[name].[chunkhash:6].js', // for code splitting. will work without but useful to set
+      publicPath: PATHS.public
+    },
+    module: { rules: rules({ production: false, browser: true }) },
+    resolve,
+    plugins: plugins({ production: false, browser: true })
   };
 
   const prodConfig = [prodBrowserRender, prodServerRender];

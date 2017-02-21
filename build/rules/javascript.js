@@ -3,7 +3,7 @@ const PATHS = require('../paths');
 module.exports = ({ production = false, browser = false } = {}) => {
   const enableHotModuleReplacement = !production && browser;
   const createPresets = enableHotModuleReplacement => {
-    const presets = ['es2015', 'react', 'stage-0'];
+    const presets = ['latest', 'react', 'stage-0'];
     return enableHotModuleReplacement ? ['react-hmre', ...presets]: presets;
   };
   const presets = createPresets(enableHotModuleReplacement);
@@ -24,4 +24,3 @@ module.exports = ({ production = false, browser = false } = {}) => {
     exclude: PATHS.modules
   };
 };
-
