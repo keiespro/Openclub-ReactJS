@@ -15,8 +15,6 @@ class HomeView extends Component {
         inlineLogin: PropTypes.func
     }
     componentDidMount() {
-      console.log(this.props);
-      debugger;
       this.props.inlineLogin('home-lock-container');
     }
     render() {

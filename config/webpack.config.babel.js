@@ -34,10 +34,14 @@ export default {
     filename: '[name].[hash].js',
     publicPath: '/'
   },
+  devtool: 'eval',
   plugins: [
     extractSass,
     htmlWebpack,
-    envInsert
+    envInsert,
+    new webpack.LoaderOptionsPlugin({
+      debug: true
+    })
   ],
   module: {
     rules: [

@@ -10,6 +10,10 @@ export default (store) => ({
     }
     cb()
   },
-  getComponent: (nextState, cb) => require.ensure([], require =>
-    cb(null, require('./components/Home').default), 'home')
+  getComponent: (nextState, cb) => {
+    import('./components/Home').then(m => cb(null, m.default))
+  }
+  /*{
+    require.ensure([], require => cb(null, require('./components/Home').default), 'home')
+  }*/
 })
