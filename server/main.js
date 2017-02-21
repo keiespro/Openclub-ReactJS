@@ -79,4 +79,4 @@ if (config.env === 'development') {
   app.use(express.static(paths.base(config.dir_dist)));
 }
 
-export default app;
+app.listen(process.env.PORT);
