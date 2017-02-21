@@ -9,6 +9,6 @@ ga('send', 'pageview');
 
 const createAppScript = () => '<script type="text/javascript" charset="utf-8" src="/app.js"></script>';
 
-const createTrackingScript = () => 'ANALYTICS_ID' in proces.env ? createAnalyticsSnippet(process.env.ANALYTICS_ID) : '';
+const createTrackingScript = () => 'ANALYTICS_ID' in process.env ? createAnalyticsSnippet(process.env.ANALYTICS_ID) : '';
 
 export { createTrackingScript, createAppScript };

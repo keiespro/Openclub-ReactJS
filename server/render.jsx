@@ -18,7 +18,7 @@ const buildPage = ({ componentHTML, initialState, headAssets }) => `
     ${createTrackingScript()}
   </head>
   <body>
-    <div id="app">${componentHTML}</div>
+    <div id="root">${componentHTML}</div>
     <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
     ${createAppScript()}
   </body>

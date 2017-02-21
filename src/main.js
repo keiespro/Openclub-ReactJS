@@ -11,9 +11,6 @@ const initialState = window.__INITIAL_STATE__
 const store = createStore(browserHistory, initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 
-window.__CLIENT__ = true;
-window.__SERVER__ = false;
-
 const MOUNT_NODE = document.getElementById('root')
 let render = () => {
   ReactDOM.render(

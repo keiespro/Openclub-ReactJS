@@ -6,6 +6,7 @@ import setupExpress from './setupExpress';
 import middleware from './middleware';
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV !== 'production') {
   dotenv.config();
@@ -21,13 +22,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 setupExpress(app);
 
-global.__CLIENT__ = false;
-global.__SERVER__ = true;
-global.__AUTH0_CLIENT_ID__ = process.env.OCA_AUTH0_CLIENT_ID;
-global.__AUTH0_DOMAIN__ = process.env.OCA_AUTH0_DOMAIN;
-
-app.use(express.static('../dist'));
-
 app.get('*', middleware);
 
-app.listen(process.env.PORT);
+app.listen(PORT);

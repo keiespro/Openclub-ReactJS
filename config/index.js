@@ -1,29 +1,23 @@
-import fs from 'fs';
-import _debug from 'debug';
-import config from './_base';
+/* eslint key-spacing:0 spaced-comment:0 */
+const { argv } = require('yargs');
 
-const debug = _debug('app:config');
-debug('Create configuration.');
-debug(`Apply environment overrides for NODE_ENV "${config.env}".`);
-
-// Check if the file exists before attempting to require it, this
-// way we can provide better error reporting that overrides
-// weren't applied simply because the file didn't exist.
-const overridesFilename = `_${config.env}`;
-let hasOverridesFile;
-try {
-  fs.lstatSync(`${__dirname}/${overridesFilename}.js`);
-  hasOverridesFile = true;
-} catch (e) {}
-
-// Overrides file exists, so we can attempt to require it.
-// We intentionally don't wrap this in a try/catch as we want
-// the Node process to exit if an error occurs.
-let overrides;
-if (hasOverridesFile) {
-  overrides = require(`./${overridesFilename}`).default(config);
-} else {
-  debug(`No configuration overrides found for NODE_ENV "${config.env}"`);
+const config = {
+  env: process.env.NODE_ENV || 'development'
 }
 
-export default Object.assign({}, config, overrides);
+config.globals = {
+  'process.env': {
+    'NODE_ENV': JSON.stringify(config.env)
+  },
+  'NODE_ENV': config.env,
+  '__DEV__': config.env === 'development',
+  '__PROD__': config.env === 'production',
+  '__TEST__': config.env === 'test',
+  '__DEBUG__': config.env === 'development' && !argv.no_debug,
+  '__DEBUG_NEW_WINDOW__': !!argv.nw,
+  '__BASENAME__': JSON.stringify(process.env.BASENAME || ''),
+  '__AUTH0_CLIENT_ID__': JSON.stringify(process.env.OCA_AUTH0_CLIENT_ID || ''),
+  '__AUTH0_DOMAIN__': JSON.stringify(process.env.OCA_AUTH0_DOMAIN || '')
+};
+
+module.exports = config;

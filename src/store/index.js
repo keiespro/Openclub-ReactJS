@@ -5,6 +5,8 @@ import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from '../modules/location/actions'
 
+const __CLIENT__ = typeof window !== 'undefined';
+
 let store
 
 export default (history, initialState = {}) => {
