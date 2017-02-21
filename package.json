@@ -8,48 +8,16 @@
     "npm": "^3.0.0"
   },
   "scripts": {
-    "clean": "rimraf dist",
-    "compile": "babel-node bin/compile",
-    "lint": "eslint . ./",
-    "lint:fix": "npm run lint -- --fix",
-    "start": "better-npm-run start",
-    "dev": "better-npm-run dev",
-    "dev:nw": "npm run dev -- --nw",
-    "dev:no-debug": "npm run dev -- --no_debug",
-    "test": "better-npm-run test",
-    "test:dev": "npm run test -- --watch",
-    "deploy": "better-npm-run deploy",
-    "flow:check": "babel-node bin/flow-check",
+    "lint": "eslint --ext .js,.jsx app server",
+    "lint:fix": "eslint --ext .js,.jsx app server --fix",
+    "clean": "rimraf public && rimraf dist",
+    "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
+    "dev": "cross-env NODE_ENV=development nodemon",
+    "build:dev": "cross-env NODE_ENV=development webpack --debug --colors --display-error-details --config ./build/webpack.config.js",
+    "build": "npm run clean && cross-env NODE_ENV=production webpack --colors --display-error-details --config ./build/webpack.config.js",
+    "test": "cross-env NODE_ENV=test karma start ./app/tests/karma.conf.js",
+    "test:watch": "cross-env NODE_ENV=test npm test -- --watch --no-single-run",
     "codecov": "cat coverage/*/lcov.info | codecov"
-  },
-  "betterScripts": {
-    "dev": {
-      "command": "concurrently --raw 'nodemon --exec babel-node bin/server' 'babel-node bin/watch'",
-      "env": {
-        "NODE_ENV": "development",
-        "DEBUG": "app:*"
-      }
-    },
-    "deploy": {
-      "command": "npm run clean && npm run compile",
-      "env": {
-        "NODE_ENV": "production",
-        "DEBUG": "app:*"
-      }
-    },
-    "start": {
-      "command": "babel-node bin/server",
-      "env": {
-        "DEBUG": "app:*"
-      }
-    },
-    "test": {
-      "command": "babel-node ./node_modules/karma/bin/karma start bin/karma",
-      "env": {
-        "NODE_ENV": "test",
-        "DEBUG": "app:*"
-      }
-    }
   },
   "repository": {
     "type": "git",
@@ -101,7 +69,10 @@
     "node-sass": "^3.7.0",
     "normalize.css": "^4.1.1",
     "numeral": "^2.0.4",
+    "postcss-cssnext": "^2.9.0",
+    "postcss-import": "^9.1.0",
     "postcss-loader": "^0.13.0",
+    "postcss-reporter": "^3.0.0",
     "qrcodesvg": "^1.0.2",
     "react": "^15.0.0",
     "react-addons-css-transition-group": "^15.3.2",
@@ -129,7 +100,9 @@
     "serialize-javascript": "^1.3.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.6",
-    "webpack": "^1.12.14",
+    "webpack": "^2.2.1",
+    "webpack-dev-middleware": "^1.10.1",
+    "webpack-hot-middleware": "^2.17.0",
     "webpack-isomorphic-tools": "^2.6.6",
     "webpack-node-externals": "^1.5.4",
     "yargs": "^5.0.0"
@@ -171,8 +144,6 @@
     "react-addons-test-utils": "^15.0.0",
     "redbox-react": "^1.2.10",
     "sinon": "^1.17.5",
-    "sinon-chai": "^2.8.0",
-    "webpack-dev-middleware": "^1.6.1",
-    "webpack-hot-middleware": "^2.12.2"
+    "sinon-chai": "^2.8.0"
   }
 }
