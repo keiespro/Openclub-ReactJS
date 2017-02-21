@@ -48,7 +48,7 @@ if (typeof window !== 'undefined') {
 }
 
 const hashParsed = new Promise((resolve, reject) => {
-  if (typeof window === 'undefined') resolve(true);
+  if (typeof window === 'undefined') resolve(null);
   // catch hash parse event because of all the problems with the authentication event
   const resolveToken = result => {
     if (result && result.accessToken) {

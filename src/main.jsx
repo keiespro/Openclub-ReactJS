@@ -1,45 +1,42 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { browserHistory } from 'react-router'
+import { browserHistory, match } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 
 import createStore from './store'
 import createRoutes from './routes/index'
-import OCAppContainer from './containers/AppContainer'
+import AppContainer from './containers/AppContainer'
 
 const initialState = window.__INITIAL_STATE__
 const store = createStore(browserHistory, initialState);
 const history = syncHistoryWithStore(browserHistory, store);
+const routes = createRoutes(store);
 
 const MOUNT_NODE = document.getElementById('root')
-const App = <OCAppContainer store={store} routes={createRoutes(store)} history={history} />;
+const App = <AppContainer store={store} routes={createRoutes(store)} history={history} />;
 
-// Production-ready Render
-let render = (Component) => {
-  ReactDOM.render(
-    <Component />,
-    MOUNT_NODE
-  )
-}
-
-// This code is excluded from production bundle
-if (__DEV__) {
-  const { AppContainer } = require('react-hot-loader');
-
-  render = (Component) => {
-      ReactDOM.render(
-      <AppContainer>
-        <Component />
-      </AppContainer>,
+match({ history, routes }, (error, redirectLocation, renderProps) => {
+  if (!__DEV__) {
+    ReactDOM.render(
+      <AppContainer store={store} routes={createRoutes(store)} history={history} {...renderProps} client/>,
       MOUNT_NODE
     );
-  }
+  } else {
+    const AC = require('react-hot-loader').AppContainer;
 
-  if (module.hot) {
-    module.hot.accept('./containers/AppContainer', () => {
-      render(App)
-    });
-  }
-}
+    let render = (Component) => {
+        ReactDOM.render(
+        <AC>
+          <Component />
+        </AC>,
+        MOUNT_NODE
+      );
+    }
 
-render(App)
+    if (module.hot) {
+      module.hot.accept('./containers/AppContainer', () => {
+        render(App)
+      });
+    }
+  }
+});

@@ -2,6 +2,8 @@ import { injectReducer } from 'store/reducers'
 import { checkAuthentication } from 'modules/auth/actions'
 import { loadcb, splitError } from 'utils/code_splitting'
 
+import CoreLayout from 'layouts/CoreLayout/CoreLayout';
+
 import Home from './Home'
 import FeedRoute from './Feed'
 import ClubRoute from './Club'
@@ -12,33 +14,26 @@ import NotificationsRoute from './Notifications'
 import ProfileRoute from './Profile';
 import ErrorRoute from './Error'
 
-let ran // IGNORE THE UGLINESS
+export default (store) => {
+  const checkAuth = (nextState, replace, callback) => {
+    store.dispatch(checkAuthentication());
+    callback();
+  };
 
-export const createRoutes = (store) => ({
-  path: '/',
-  getComponent: (nextState, cb) => {
-    import('layouts/CoreLayout/CoreLayout').then(loadcb(cb)).catch(splitError)
-  },
-  onEnter: (nextState, replace, cb) => {
-    // this should only be run once, and so seems like a bug in react-router
-    // TODO: figure out a proper fix
-    if (!ran) {
-      // enforce auth hash completion before loading root route
-      ran = store.dispatch(checkAuthentication())
-    }
-    ran.then(() => cb())
-  },
-  indexRoute: Home(store),
-  childRoutes: [
-    FeedRoute(store),
-    NotificationsRoute(store),
-    ProfileRoute(store),
-    EventsRoute(store),
-    EventRoute(store),
-    ClubsRoute(store),
-    ClubRoute(store),
-    ErrorRoute(store)
-  ]
-});
-
-export default createRoutes
+  return {
+    path: '/',
+    component: CoreLayout,
+    onEnter: checkAuth,
+    indexRoute: Home(store),
+    childRoutes: [
+      FeedRoute(store),
+      NotificationsRoute(store),
+      ProfileRoute(store),
+      EventsRoute(store),
+      EventRoute(store),
+      ClubsRoute(store),
+      ClubRoute(store),
+      ErrorRoute(store)
+    ]
+  }
+}

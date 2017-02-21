@@ -9,7 +9,7 @@ import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
 import './styles'
 
-const CoreLayout = ({ data = {}, children, logoutUser }) => {
+const CoreLayout = ({ data, children, logoutUser }) => {
   const user = data.user
   const containerClasses = classNames('layout-container', {
     'sidebar-offcanvas': !user,
@@ -34,7 +34,12 @@ const CoreLayout = ({ data = {}, children, logoutUser }) => {
 
 CoreLayout.PropTypes = {
   children: PropTypes.element.isRequired,
-  data: PropTypes.object
+  data: PropTypes.object,
+  logoutUser: PropTypes.func
+}
+
+CoreLayout.defaultProps = {
+  data: {}
 }
 
 const currentViewer = gql`
