@@ -4,8 +4,8 @@ import Helmet from 'react-helmet';
 import { createAppScript, createTrackingScript } from './createScripts';
 import AppContainer from '../src/containers/AppContainer';
 
-const createApp = (store, routes, history) => renderToString(
-  <AppContainer store={store} routes={routes} history={history} />
+const createApp = (store, props) => renderToString(
+  <AppContainer store={store} {...props} server/>
 );
 
 const buildPage = ({ componentHTML, initialState, headAssets }) => `
