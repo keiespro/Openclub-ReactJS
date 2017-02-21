@@ -2,5 +2,5 @@ const PATHS = require('./paths');
 
 module.exports = {
   modules: [PATHS.src, PATHS.modules],
-  extensions: ['.js', '.jsx', '.css'],
+  extensions: ['.js', '.jsx', '.css', '.scss'],
 };

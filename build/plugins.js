@@ -33,7 +33,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
     return [
       new webpack.DefinePlugin(config.globals),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
-      new ExtractTextPlugin({ filename: '[name]/[name].css', disable: false, allChunks: true }),
+      new ExtractTextPlugin({ filename: '[name].[hash].css', disable: false, allChunks: true }),
       new webpack.optimize.UglifyJsPlugin({ compress })
     ];
   }
