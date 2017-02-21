@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-import QRCodeSVG from 'qrcodesvg';
-
 import './EventHome.scss';
 
 class EventHome extends Component {
@@ -15,7 +13,6 @@ class EventHome extends Component {
     this.state = {};
   }
   render() {
-    const QR = new QRCodeSVG("OpenClub Rules!", 250, {ecclevel: 4});
     return (
       <Row>
         <Col xs={12} md={4} className="pull-right">
@@ -40,19 +37,6 @@ class EventHome extends Component {
               </small>
             </div>
             <div className="card-body">
-              <div
-                className="qr-code"
-                dangerouslySetInnerHTML={{
-                  __html: QR.generate({
-                    method: 'round',
-                    radius: 5
-                  },
-                  {
-                    'stroke': '#008FCC',
-                    'fill': '#008FCC'
-                  }
-                )}}
-              />
             <div className="qr-overlay">
               <svg width="80" height="80" viewBox="-1441 -134 512 512" version="1.1">
                   <g id="Group-6" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" transform="translate(-1441.000000, -134.000000)">
