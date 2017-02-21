@@ -7,7 +7,7 @@ export default (stringify = true) => {
 
   const config = {
     NODE_ENV,
-    __DEV__      : NODE_ENV === 'development',
+    __DEV__      : NODE_ENV !== 'production',
     __PROD__     : NODE_ENV === 'production',
     __TEST__     : NODE_ENV === 'test',
     //__COVERAGE__ : !argv.watch && NODE_ENV === 'test',

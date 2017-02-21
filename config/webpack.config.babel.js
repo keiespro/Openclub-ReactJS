@@ -6,7 +6,7 @@ import webpack from 'webpack'
 
 const extractSass = new ExtractTextPlugin({
     //filename: "[name].[contenthash].css",
-    filename: '[name].css',
+    filename: '[name].[hash].css',
     //disable: process.env.NODE_ENV === "development"
 })
 
@@ -18,6 +18,7 @@ const htmlWebpack = new HtmlWebpackPlugin({
 })
 
 // build stringify env vars and put them as globals
+console.log(envBuilder())
 const envInsert = new webpack.DefinePlugin({ Env: envBuilder() })
 
 export default {
@@ -30,7 +31,7 @@ export default {
   },
   output: {
     path: 'dist',
-    filename: '[name].js',
+    filename: '[name].[hash].js',
     publicPath: '/'
   },
   plugins: [
@@ -43,14 +44,15 @@ export default {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader?cacheDirectory=true'
+        //loader: 'babel-loader?cacheDirectory=true'
+        loader: 'babel-loader'
       },
       {
         test: /\.scss$/,
         use: extractSass.extract({
           use: ['css-loader', 'sass-loader'],
           // use style-loader in development
-          fallbackLoader: 'style-loader'
+          fallback: 'style-loader'
         })
       },
       {

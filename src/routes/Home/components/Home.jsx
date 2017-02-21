@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-import { Grid } from 'react-bootstrap';
+import { Grid } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import * as authActions from 'modules/auth/actions'
 
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player'
 
 import './Home.scss'
 
@@ -16,6 +16,7 @@ class HomeView extends Component {
     }
     componentDidMount() {
       console.log(this.props);
+      debugger;
       this.props.inlineLogin('home-lock-container');
     }
     render() {
