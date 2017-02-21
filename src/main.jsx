@@ -5,53 +5,41 @@ import { syncHistoryWithStore } from 'react-router-redux'
 
 import createStore from './store'
 import createRoutes from './routes/index'
-import AppContainer from './containers/AppContainer'
+import OCAppContainer from './containers/AppContainer'
 
 const initialState = window.__INITIAL_STATE__
 const store = createStore(browserHistory, initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 
 const MOUNT_NODE = document.getElementById('root')
-let render = () => {
+const App = <OCAppContainer store={store} routes={createRoutes(store)} history={history} />;
+
+// Production-ready Render
+let render = (Component) => {
   ReactDOM.render(
-    <AppContainer store={store} routes={createRoutes(store)} history={history} />,
+    <Component/>,
     MOUNT_NODE
   )
 }
+
 // This code is excluded from production bundle
 if (__DEV__) {
-  // open devtools
-  if (window.devToolsExtension) {
-    window.devToolsExtension.open()
+  const { AppContainer } = require('react-hot-loader');
+
+  render = (Component) => {
+      ReactDOM.render(
+      <AppContainer>
+        <Component />
+      </AppContainer>,
+      MOUNT_NODE
+    );
   }
 
   if (module.hot) {
-    // Development render functions
-    const renderApp = render
-    const renderError = (error) => {
-      const RedBox = require('redbox-react').default
-
-      ReactDOM.render(<RedBox error={error} />, MOUNT_NODE)
-    }
-
-    // Wrap render in try/catch
-    render = () => {
-      try {
-        renderApp()
-      } catch (error) {
-        renderError(error)
-      }
-    }
-
-    // Setup hot module replacement
-    module.hot.accept('./routes/index', () =>
-      setImmediate(() => {
-        ReactDOM.unmountComponentAtNode(MOUNT_NODE)
-        render()
-      })
-    )
+    module.hot.accept('./components/App', () => {
+      render(App)
+    });
   }
 }
 
-// Start the application
-render()
+render(App)

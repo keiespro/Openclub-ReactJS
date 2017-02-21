@@ -8,8 +8,6 @@ module.exports = (env = '') => {
   const isProduction = process.env.NODE_ENV === 'production';
   const isBrowser = (env.indexOf('browser') >= 0);
   console.log(`Running webpack in ${process.env.NODE_ENV} mode on ${isBrowser ? 'browser' : 'server'}`);
-
-  const hotMiddlewareScript = 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true';
   const node = { __dirname: true, __filename: true };
 
   const prodServerRender = {
@@ -39,8 +37,7 @@ module.exports = (env = '') => {
     node,
     output: {
       path: PATHS.assets,
-      filename: '[name].js', // filename: '[name].[hash:6].js',
-      chunkFilename: '[name].[hash].js', // for code splitting. will work without but useful to set
+      filename: '[chunkhash].[name].js',
       publicPath: PATHS.public
     },
     module: { rules: rules({ production: true, browser: true }) },
@@ -67,16 +64,19 @@ module.exports = (env = '') => {
   };
 
   const devBrowserRender = {
-    devtool: 'eval',
+    devtool: 'inline-source-map',
     context: PATHS.src,
     entry: {
-      app: ['./main', hotMiddlewareScript]
+      app: [
+        'react-hot-loader/patch',
+        'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
+        './main'
+      ]
     },
     node,
     output: {
       path: PATHS.assets,
-      filename: '[name].[hash].js',
-      chunkFilename: '[name].[hash].js', // for code splitting. will work without but useful to set
+      filename: '[chunkhash].[name].js',
       publicPath: PATHS.public
     },
     module: { rules: rules({ production: false, browser: true }) },

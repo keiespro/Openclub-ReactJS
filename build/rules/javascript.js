@@ -1,19 +1,18 @@
 const PATHS = require('../paths');
 
 module.exports = ({ production = false, browser = false } = {}) => {
-  const enableHotModuleReplacement = !production && browser;
   const createPresets = enableHotModuleReplacement => {
-    const presets = ['latest', 'react', 'stage-0'];
+    const presets = [["latest", {"modules": false}], 'react', 'stage-0'];
     return enableHotModuleReplacement ? ['react-hmre', ...presets] : presets;
   };
-  const presets = createPresets(enableHotModuleReplacement);
+  const presets = createPresets(!production && browser);
 
   const plugins = production ? [
       'transform-runtime',
       'transform-react-remove-prop-types',
       'transform-react-constant-elements',
       'transform-react-inline-elements'
-  ] : ['transform-runtime'];
+  ] : ["react-hot-loader/babel", 'transform-runtime'];
 
   return {
     test: /\.js$|\.jsx|\.json$/,
