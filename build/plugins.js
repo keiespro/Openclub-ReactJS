@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 const config = require('../config/index');
 const AssetsPlugin = require('assets-webpack-plugin');
 
@@ -10,12 +9,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
 
   const ExtractText = new ExtractTextPlugin({ filename: '[name].[hash].css', allChunks: true });
   const CommonChunks = new webpack.optimize.CommonsChunkPlugin({
-    names: ['vendor'],
-    async: true
-  });
-  const Manifest = new ChunkManifestPlugin({
-    filename: "manifest.json",
-    manifestVariable: "webpackManifest"
+    names: ['vendor']
   });
 
   if (!production && !browser) {
@@ -30,10 +24,10 @@ module.exports = ({ production = false, browser = false } = {}) => {
     return [
       new AssetsPlugin({path: config.paths.dist, filename: 'assets.json'}),
       CommonChunks,
-      Manifest,
       new webpack.DefinePlugin(config.globals),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
       new webpack.HotModuleReplacementPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),
       ExtractText,
       new webpack.NoEmitOnErrorsPlugin()
@@ -50,9 +44,8 @@ module.exports = ({ production = false, browser = false } = {}) => {
   }
   if (production && browser) {
     return [
-      new AssetsPlugin({path: config.paths.dist, filename: 'dist/assets.json'}),
+      new AssetsPlugin({path: config.paths.dist, filename: 'assets.json'}),
       CommonChunks,
-      Manifest,
       new webpack.DefinePlugin(config.globals),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
       ExtractText,

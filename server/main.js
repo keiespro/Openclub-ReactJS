@@ -16,8 +16,21 @@ if (process.env.NODE_ENV !== 'production') {
   const webpackConfig = require('../build/webpack.config');
   const devBrowserConfig = webpackConfig('browser');
   const compiler = webpack(devBrowserConfig);
-  app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: devBrowserConfig.output.publicPath }));
-  app.use(webpackHotMiddleware(compiler));
+  app.use(webpackDevMiddleware(compiler, {
+    hot: true,
+    filename: 'bundle.js',
+    publicPath: '/assets/',
+    stats: {
+      colors: true,
+    },
+    historyApiFallback: true,
+  }));
+
+  app.use(webpackHotMiddleware(compiler, {
+    log: console.log,
+    path: '/__webpack_hmr',
+    heartbeat: 10 * 1000,
+  }));
 }
 
 setupExpress(app);

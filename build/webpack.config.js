@@ -6,7 +6,7 @@ const resolve = require('./resolve');
 
 module.exports = (env = '') => {
   const isProduction = process.env.NODE_ENV === 'production';
-  const isBrowser = (env.indexOf('browser') >= 0);
+  const isBrowser = env === 'browser';
   console.log(`Running webpack in ${process.env.NODE_ENV} mode on ${isBrowser ? 'browser' : 'server'}`);
   const node = { __dirname: true, __filename: true };
   const vendor = [
