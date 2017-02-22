@@ -7,7 +7,7 @@ const ASSET_PATH = path.resolve(CWD, 'dist/assets.json');
 async function getAssets() {
   try {
     if (await fs.exists(ASSET_PATH)) {
-      const file = await fs.readFile(ASSET_PATH);
+      const file = await fs.read(ASSET_PATH);
       return JSON.parse(file);
     }
     return false;
@@ -27,7 +27,6 @@ function createAnalyticsSnippet(id) {
 
 async function createAppScript() {
   const assets = await getAssets();
-  if (assets === false) return `<!-- SCRIPTS PENDING -->`;
   return `
   <script type="text/javascript" charset="utf-8" src="${assets.vendor.js}"></script>
   <script type="text/javascript" charset="utf-8" src="${assets.app.js}"></script>
