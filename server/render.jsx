@@ -21,6 +21,7 @@ function buildPage({ componentHTML, initialState, headAssets }) {
     <body>
       <div id="root">${componentHTML}</div>
       <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
+      <script>window.globalConfig = ${JSON.stringify(globalConfig)}</script>
       ${createAppScript()}
     </body>
   </html>`;

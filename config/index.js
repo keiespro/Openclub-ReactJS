@@ -7,19 +7,24 @@ const config = {
 }
 const CURRENT_WORKING_DIR = process.cwd();
 
-config.globals = {
-  'process.env': {
-    'NODE_ENV': JSON.stringify(config.env)
-  },
-  'NODE_ENV': config.env,
-  '__DEV__': JSON.stringify(JSON.parse(config.env === 'development' || 'true')),
-  '__PROD__': config.env === 'production',
-  '__TEST__': config.env === 'test',
-  '__DEBUG__': config.env === 'development' && !argv.no_debug,
-  '__DEBUG_NEW_WINDOW__': !!argv.nw,
-  '__BASENAME__': JSON.stringify(process.env.BASENAME || ''),
-  '__AUTH0_CLIENT_ID__': JSON.stringify(process.env.OCA_AUTH0_CLIENT_ID || ''),
-  '__AUTH0_DOMAIN__': JSON.stringify(process.env.OCA_AUTH0_DOMAIN || '')
+config.globals = (shouldStringify = true) => {
+
+  const st = (val = '') => shouldStringify ? JSON.stringify(val) : val
+
+  return {
+    'process.env': {
+      'NODE_ENV': st(config.env)
+    },
+    'NODE_ENV': config.env,
+    '__DEV__': st(JSON.parse(config.env === 'development' || 'true')),
+    '__PROD__': config.env === 'production',
+    '__TEST__': config.env === 'test',
+    '__DEBUG__': config.env === 'development' && !argv.no_debug,
+    '__DEBUG_NEW_WINDOW__': !!argv.nw,
+    '__BASENAME__': st(process.env.BASENAME),
+    '__AUTH0_CLIENT_ID__': st(process.env.OCA_AUTH0_CLIENT_ID),
+    '__AUTH0_DOMAIN__': st(process.env.OCA_AUTH0_DOMAIN)
+  }
 };
 
 config.paths = {

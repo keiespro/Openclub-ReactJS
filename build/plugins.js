@@ -14,7 +14,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
 
   if (!production && !browser) {
     return [
-      new webpack.DefinePlugin(config.globals),
+      new webpack.DefinePlugin(config.globals()),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
       ExtractText,
       new webpack.BannerPlugin(bannerOptions)
@@ -24,7 +24,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
     return [
       new AssetsPlugin({path: config.paths.dist, filename: 'assets.json'}),
       CommonChunks,
-      new webpack.DefinePlugin(config.globals),
+      new webpack.DefinePlugin(config.globals()),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
@@ -35,7 +35,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
   }
   if (production && !browser) {
     return [
-      new webpack.DefinePlugin(config.globals),
+      new webpack.DefinePlugin(config.globals()),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
       new webpack.BannerPlugin(bannerOptions),
       ExtractText,
@@ -46,7 +46,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
     return [
       new AssetsPlugin({path: config.paths.dist, filename: 'assets.json'}),
       CommonChunks,
-      new webpack.DefinePlugin(config.globals),
+      new webpack.DefinePlugin(config.globals()),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
       ExtractText,
       new webpack.optimize.UglifyJsPlugin({ compress })
