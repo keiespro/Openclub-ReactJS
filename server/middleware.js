@@ -8,19 +8,13 @@ function middleware(req, res) {
   const store = createStore(memoryHistory);
   const routes = createRoutes(store);
 
-  async function getHtml(store, props, cb) {
-    cb(await renderPage(store, props));
-  }
-
   match({routes, location: req.url}, (err, redirect, props) => {
     if (err) {
       res.status(500).json(err);
     } else if (redirect) {
       res.redirect(302, redirect.pathname + redirect.search);
     } else if (props) {
-      getHtml(store, props, (cb) => {
-        res.status(200).send(cb);
-      });
+      res.status(200).send(renderPage(store, props));
     } else {
       res.sendStatus(404);
     }

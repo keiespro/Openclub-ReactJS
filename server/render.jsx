@@ -8,7 +8,7 @@ const createApp = (store, props) => renderToString(
   <AppContainer store={store} {...props} server/>
 );
 
-async function buildPage({ componentHTML, initialState, headAssets }) {
+function buildPage({ componentHTML, initialState, headAssets }) {
   return `
   <!doctype html>
   <html>
@@ -21,16 +21,16 @@ async function buildPage({ componentHTML, initialState, headAssets }) {
     <body>
       <div id="root">${componentHTML}</div>
       <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
-      ${await createAppScript()}
+      ${createAppScript()}
     </body>
   </html>`;
 }
 
-async function setup(store, routes,history) {
+function setup(store, routes, history) {
   const initialState = store.getState();
   const componentHTML = createApp(store, routes, history);
   const headAssets = Helmet.rewind();
-  return await buildPage({ componentHTML, initialState, headAssets });
+  return buildPage({ componentHTML, initialState, headAssets });
 }
 
 export default setup;
