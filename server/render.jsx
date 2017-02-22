@@ -8,25 +8,29 @@ const createApp = (store, props) => renderToString(
   <AppContainer store={store} {...props} server/>
 );
 
-const buildPage = ({ componentHTML, initialState, headAssets }) => `
-<!doctype html>
-<html>
-  <head>
-    ${headAssets.title.toString()}
-    ${headAssets.meta.toString()}
-    ${headAssets.link.toString()}
-    ${createTrackingScript()}
-  </head>
-  <body>
-    <div id="root">${componentHTML}</div>
-    <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
-    ${createAppScript()}
-  </body>
-</html>`;
+async function buildPage({ componentHTML, initialState, headAssets }) {
+  return `
+  <!doctype html>
+  <html>
+    <head>
+      ${headAssets.title.toString()}
+      ${headAssets.meta.toString()}
+      ${headAssets.link.toString()}
+      ${createTrackingScript()}
+    </head>
+    <body>
+      <div id="root">${componentHTML}</div>
+      <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
+      ${await createAppScript()}
+    </body>
+  </html>`;
+}
 
-export default (store, routes, history) => {
+async function setup(store, routes,history) {
   const initialState = store.getState();
   const componentHTML = createApp(store, routes, history);
   const headAssets = Helmet.rewind();
-  return buildPage({ componentHTML, initialState, headAssets });
-};
+  return await buildPage({ componentHTML, initialState, headAssets });
+}
+
+export default setup;

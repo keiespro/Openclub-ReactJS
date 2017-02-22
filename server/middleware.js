@@ -3,10 +3,14 @@ import createStore from '../src/store';
 import createRoutes from '../src/routes';
 import renderPage from './render';
 
-export default function(req, res) {
+function middleware(req, res) {
   const memoryHistory = createMemoryHistory();
   const store = createStore(memoryHistory);
   const routes = createRoutes(store);
+
+  async function getHtml(store, props, cb) {
+    cb(await renderPage(store, props));
+  }
 
   match({routes, location: req.url}, (err, redirect, props) => {
     if (err) {
@@ -14,10 +18,13 @@ export default function(req, res) {
     } else if (redirect) {
       res.redirect(302, redirect.pathname + redirect.search);
     } else if (props) {
-      const html = renderPage(store, props);
-      res.status(200).send(html);
+      getHtml(store, props, (cb) => {
+        res.status(200).send(cb);
+      });
     } else {
       res.sendStatus(404);
     }
   });
 }
+
+export default middleware;
