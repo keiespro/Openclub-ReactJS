@@ -1,13 +1,24 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { show } from 'redux-modal'
 import { Field, reduxForm } from 'redux-form'
 import { Input, FieldSet, ImageUpload } from 'components/Forms'
 import { required, maxLength, slug } from 'utils/form_validation/errors'
+import ImageCropper from 'components/Modals/ImageCropper'
 
-const CreateClubForm = ({ handleSubmit, createForm }) => {
+const CreateClubForm = ({ handleSubmit, createForm, show }) => {
 
   const slugString = (createForm && createForm.values && createForm.values.slug) ?
     createForm.values.slug : '<your id here>'
+
+  const tester = e => {
+    console.log('got cliky')
+    e.preventDefault()
+    show('modal-cropper', {
+      sometext: 'hello there mate'
+    })
+  }
 
   return (
     <form className="form-horizontal" onSubmit={handleSubmit}>
@@ -39,8 +50,9 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
           component={ImageUpload}
         />
       </FieldSet>
-
       <button type="submit">Submit</button>
+      <button onClick={tester}>My Test Button</button>
+      <ImageCropper/>
     </form>
   )
 }
@@ -51,4 +63,4 @@ const CreateClubReduxForm = reduxForm({
 
 export default connect(state => ({
   createForm: state.form.create_club
-}))(CreateClubReduxForm)
+}), dispatch => bindActionCreators({ show }, dispatch))(CreateClubReduxForm)
