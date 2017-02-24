@@ -1,8 +1,11 @@
 import React from 'react'
 import classNames from 'classnames'
 import { ControlLabel, HelpBlock } from 'react-bootstrap'
+import ReactSelect from 'react-select'
 
-const Input = ({ input, meta, label, help, type }) => {
+import 'react-select/dist/react-select.css'
+
+const Select = ({ input, meta, label, help, options = [], value }) => {
 
   const wrapClasses = classNames('form-group', {
     'has-error': meta.touched && meta.error,
@@ -14,7 +17,15 @@ const Input = ({ input, meta, label, help, type }) => {
       {label &&
         <ControlLabel className="text-uppercase">{label}</ControlLabel>
       }
-      <input className="form-control" {...input} type={type}/>
+      <ReactSelect
+        floatingLabelText={label}
+        errorText={meta.touched && meta.error}
+        {...input}
+        onChange={value => input.onChange(value.value)}
+        onBlur={() => {input.onBlur(input.value)}}
+        value={value}
+        options={options}
+      />
       {meta.touched && meta.error &&
         <HelpBlock bsStyle="danger">{meta.error}</HelpBlock>
       }
@@ -25,4 +36,4 @@ const Input = ({ input, meta, label, help, type }) => {
   )
 }
 
-export default Input
+export default Select
