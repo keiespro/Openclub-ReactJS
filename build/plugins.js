@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const config = require('../config/index');
-const AssetsPlugin = require('assets-webpack-plugin');
+const fs = require('fs');
 
 module.exports = ({ production = false, browser = false } = {}) => {
   const bannerOptions = { raw: true, banner: 'require("source-map-support").install();' };
@@ -11,6 +11,12 @@ module.exports = ({ production = false, browser = false } = {}) => {
   const CommonChunks = new webpack.optimize.CommonsChunkPlugin({
     names: ['vendor']
   });
+
+  function BuildStats() {
+    this.plugin("done", (stats) => {
+      fs.writeFileSync(config.paths.dist + '/stats.json', JSON.stringify(stats.toJson()));
+    });
+  }
 
   if (!production && !browser) {
     return [
@@ -22,7 +28,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
   }
   if (!production && browser) {
     return [
-      new AssetsPlugin({path: config.paths.dist, filename: 'assets.json'}),
+      BuildStats,
       CommonChunks,
       new webpack.DefinePlugin(config.globals),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
@@ -44,7 +50,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
   }
   if (production && browser) {
     return [
-      new AssetsPlugin({path: config.paths.dist, filename: 'assets.json'}),
+      BuildStats,
       CommonChunks,
       new webpack.DefinePlugin(config.globals),
       new webpack.EnvironmentPlugin(['NODE_ENV']),

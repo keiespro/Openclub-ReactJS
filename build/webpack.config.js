@@ -40,7 +40,7 @@ module.exports = (env = '') => {
     devtool: 'cheap-module-source-map',
     context: PATHS.src,
     entry: {
-      app: ['./main'],
+      app: ['./main.jsx'],
       vendor
     },
     node,
@@ -73,21 +73,21 @@ module.exports = (env = '') => {
   };
 
   const devBrowserRender = {
-    devtool: 'inline-source-map',
+    devtool: 'cheap-module-source-map',
     context: PATHS.src,
     entry: {
       app: [
         'react-hot-loader/patch',
         'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
-        './main'
+        './main.jsx'
       ],
       vendor
     },
     node,
     output: {
       path: PATHS.assets,
-      filename: '[hash].[name].js',
-      chunkFilename: '[hash].[name].js',
+      filename: '[name].js',
+      chunkFilename: '[name].js',
       publicPath: PATHS.public
     },
     module: { rules: rules({ production: false, browser: true }) },

@@ -2,8 +2,10 @@ import express from 'express';
 import webpack from 'webpack';
 import dotenv from 'dotenv';
 import setupExpress from './setupExpress';
+import fs from 'fs';
 
 import middleware from './middleware';
+import config from '../config';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,13 +18,13 @@ if (process.env.NODE_ENV !== 'production') {
   const webpackConfig = require('../build/webpack.config');
   const devBrowserConfig = webpackConfig('browser');
   const compiler = webpack(devBrowserConfig);
-  // console.log('hi compiler');
-  // compiler.run((err, stats) => {
-  //   global.hash = stats.hash;
-  // });
   app.use(webpackDevMiddleware(compiler, {
     hot: true,
-    publicPath: '/assets/'
+    stats: {
+      hash: true
+    },
+    publicPath: devBrowserConfig.output.publicPath,
+    filename: devBrowserConfig.output.filename
   }));
 
   app.use(webpackHotMiddleware(compiler, {
@@ -30,11 +32,15 @@ if (process.env.NODE_ENV !== 'production') {
     path: '/__webpack_hmr',
     heartbeat: 10 * 1000,
   }));
-}
 
-app.use((req, res) => {
-  console.log(res.locals)
-});
+  app.use((req, res, next) => {
+    fs.readFile(config.paths.dist + '/stats.json', (err, data) => {
+      if (err) console.error(err);
+      global.hash = JSON.parse(data).hash;
+      next();
+    });
+  });
+}
 
 setupExpress(app);
 
