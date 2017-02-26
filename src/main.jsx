@@ -11,7 +11,6 @@ const initialState = window.__INITIAL_STATE__
 const store = createStore(browserHistory, initialState);
 const history = syncHistoryWithStore(browserHistory, store);
 const routes = createRoutes(store);
-const { __DEV__ } = Env
 
 const MOUNT_NODE = document.getElementById('root')
 const App = <AppContainer store={store} routes={createRoutes(store)} history={history} />;

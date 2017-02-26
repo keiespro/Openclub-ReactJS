@@ -86,8 +86,8 @@ module.exports = (env = '') => {
     node,
     output: {
       path: PATHS.assets,
-      filename: '[name].js',
-      chunkFilename: '[name].js',
+      filename: '[name].[hash].js',
+      chunkFilename: '[name].[hash].js',
       publicPath: PATHS.public
     },
     module: { rules: rules({ production: false, browser: true }) },
@@ -96,7 +96,7 @@ module.exports = (env = '') => {
   };
 
   const prodConfig = [prodBrowserRender, prodServerRender];
-  const devConfig = isBrowser ? devBrowserRender : devServerRender;
+  const devConfig = isBrowser ? devBrowserRender : [devBrowserRender, devServerRender];
   const configuration = isProduction ? prodConfig : devConfig;
 
   return configuration;
