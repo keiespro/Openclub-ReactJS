@@ -1,0 +1,123 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.LOGOUT_REQUEST = exports.LOCK_ERROR = exports.LOCK_SUCCESS = exports.SHOW_LOCK = exports.SHOW_INLINE_LOCK = undefined;
+
+var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
+
+var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
+
+var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n  mutation signin($accessToken: ID!) {\n    signin(access_token: $accessToken) {\n      token\n    }\n  }\n'], ['\n  mutation signin($accessToken: ID!) {\n    signin(access_token: $accessToken) {\n      token\n    }\n  }\n']);
+
+exports.inlineLogin = inlineLogin;
+exports.login = login;
+exports.checkAuthentication = checkAuthentication;
+exports.logoutUser = logoutUser;
+
+var _apollo = require('modules/apollo');
+
+var _apollo2 = _interopRequireDefault(_apollo);
+
+var _graphqlTag = require('graphql-tag');
+
+var _graphqlTag2 = _interopRequireDefault(_graphqlTag);
+
+var _reactRouter = require('react-router');
+
+var _Auth = require('../../utils/Auth0');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Auth0 lock actions
+var SHOW_INLINE_LOCK = exports.SHOW_INLINE_LOCK = 'SHOW_INLINE_LOCK';
+var SHOW_LOCK = exports.SHOW_LOCK = 'SHOW_LOCK';
+var LOCK_SUCCESS = exports.LOCK_SUCCESS = 'LOCK_SUCCESS';
+var LOCK_ERROR = exports.LOCK_ERROR = 'LOCK_ERROR';
+
+function showInlineLock() {
+  return {
+    type: SHOW_INLINE_LOCK
+  };
+}
+
+function showLock() {
+  return {
+    type: SHOW_LOCK
+  };
+}
+
+function lockSuccess(token) {
+  return {
+    type: LOCK_SUCCESS,
+    token: token
+  };
+}
+
+function lockError(err) {
+  return {
+    type: LOCK_ERROR,
+    err: err
+  };
+}
+
+// single logout action due to jwt (keep as request in case we add complexity)
+var LOGOUT_REQUEST = exports.LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+
+function requestLogout() {
+  return {
+    type: LOGOUT_REQUEST
+  };
+}
+
+function inlineLogin(id) {
+  return function (dispatch) {
+    dispatch(showInlineLock());
+    console.log('inlineLogin', id);
+    (0, _Auth.inlineLock)(id).show();
+  };
+}
+
+// Opens the Lock widget and dispatches actions along the way
+function login() {
+  return function (dispatch) {
+    dispatch(showLock());
+    _Auth.lock.show();
+  };
+}
+
+var authMutation = (0, _graphqlTag2.default)(_templateObject);
+
+// checks current authentication status of the lock
+function checkAuthentication() {
+  return function (dispatch) {
+    return _Auth.hashParsed.then(function (accessToken) {
+      if (accessToken) {
+        return _apollo2.default.mutate({
+          mutation: authMutation,
+          variables: { accessToken: accessToken }
+        }).then(function (_ref) {
+          var data = _ref.data;
+          var token = data.signin.token;
+
+          localStorage.setItem('openclub_token', token);
+          dispatch(lockSuccess(token));
+        }).catch(function (error) {
+          dispatch(lockError(error));
+        });
+      }
+    });
+  };
+}
+
+// Logs the user out
+function logoutUser() {
+  return function (dispatch) {
+    dispatch(requestLogout());
+    localStorage.removeItem('openclub_token');
+    // clear apollos cache
+    _apollo2.default.resetStore();
+    _reactRouter.browserHistory.replace('/');
+  };
+}

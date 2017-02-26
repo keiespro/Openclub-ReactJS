@@ -14,6 +14,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
 
   function BuildStats() {
     this.plugin("done", (stats) => {
+      console.log(stats);
       fs.writeFileSync(config.paths.dist + '/stats.json', JSON.stringify(stats.toJson()));
     });
   }

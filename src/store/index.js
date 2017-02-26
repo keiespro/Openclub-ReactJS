@@ -6,7 +6,6 @@ import makeRootReducer from './reducers'
 import { updateLocation } from '../modules/location/actions'
 
 const __CLIENT__ = typeof window !== 'undefined';
-const { __DEV__ } = Env;
 
 let store
 

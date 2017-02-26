@@ -1,0 +1,67 @@
+/**
+ * Material Lists
+ */
+.mda-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+  .mda-list > .mda-list-item {
+    padding: 0 22px;
+    display: block; }
+    .mda-list > .mda-list-item:before, .mda-list > .mda-list-item:after {
+      content: " ";
+      display: table; }
+    .mda-list > .mda-list-item:after {
+      clear: both; }
+    .mda-list > .mda-list-item > .mda-list-item-img,
+    .mda-list > .mda-list-item > .mda-list-item-icon,
+    .mda-list > .mda-list-item > .mda-list-item-initial {
+      float: left;
+      width: 48px;
+      height: 48px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+      margin-right: 20px;
+      border-radius: 50%; }
+    .mda-list > .mda-list-item > .mda-list-item-icon {
+      line-height: 48px;
+      text-align: center;
+      font-size: 24px; }
+      .mda-list > .mda-list-item > .mda-list-item-icon > em, .mda-list > .mda-list-item > .mda-list-item-icon > i {
+        line-height: inherit; }
+    .mda-list > .mda-list-item > .mda-list-item-initial {
+      line-height: 50px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 300; }
+    .mda-list > .mda-list-item > .mda-list-item-text {
+      float: left;
+      padding: 20px 0; }
+      .mda-list > .mda-list-item > .mda-list-item-text.mda-2-line {
+        padding-top: 26px;
+        width: calc(100% - 68px); }
+      .mda-list > .mda-list-item > .mda-list-item-text h3 {
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: .01em;
+        margin: 0 0 6px;
+        line-height: .75em; }
+      .mda-list > .mda-list-item > .mda-list-item-text h4 {
+        font-size: 14px;
+        letter-spacing: .01em;
+        font-weight: 400;
+        margin: 10px 0 5px;
+        line-height: 1em; }
+      .mda-list > .mda-list-item > .mda-list-item-text p {
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+        line-height: 1.6em; }
+    .mda-list > .mda-list-item > .mda-list-item-img + .mda-list-item-text,
+    .mda-list > .mda-list-item > .mda-list-item-initial + .mda-list-item-text {
+      width: calc(100% - 68px); }
+  .mda-list.mda-list-bordered > .mda-list-item {
+    border-bottom: 1px solid rgba(119, 119, 119, 0.16); }
+
+.card > .mda-list-bordered > .mda-list-item:last-child {
+  border-bottom: 0; }

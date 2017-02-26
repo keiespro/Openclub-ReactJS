@@ -1,0 +1,44 @@
+'use strict';
+
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/* eslint key-spacing:0 spaced-comment:0 */
+var _require = require('yargs'),
+    argv = _require.argv;
+
+var path = require('path');
+
+var config = {
+  env: process.env.NODE_ENV || 'development'
+};
+var CURRENT_WORKING_DIR = process.cwd();
+
+config.globals = {
+  'process.env': {
+    'NODE_ENV': (0, _stringify2.default)(config.env)
+  },
+  'NODE_ENV': config.env,
+  '__DEV__': (0, _stringify2.default)(JSON.parse(config.env === 'development' || 'true')),
+  '__PROD__': config.env === 'production',
+  '__TEST__': config.env === 'test',
+  '__DEBUG__': config.env === 'development' && !argv.no_debug,
+  '__DEBUG_NEW_WINDOW__': !!argv.nw,
+  '__BASENAME__': (0, _stringify2.default)(process.env.BASENAME || ''),
+  '__AUTH0_CLIENT_ID__': (0, _stringify2.default)(process.env.OCA_AUTH0_CLIENT_ID || ''),
+  '__AUTH0_DOMAIN__': (0, _stringify2.default)(process.env.OCA_AUTH0_DOMAIN || '')
+};
+
+config.paths = {
+  src: path.resolve(CURRENT_WORKING_DIR, 'src'),
+  public: 'assets/',
+  dist: path.resolve(CURRENT_WORKING_DIR, 'dist'),
+  assets: path.resolve(CURRENT_WORKING_DIR, 'dist/public/assets'),
+  modules: path.resolve(CURRENT_WORKING_DIR, 'node_modules')
+};
+console.log(config);
+
+module.exports = config;

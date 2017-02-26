@@ -1,0 +1,9 @@
+.qr-code {
+  text-align: center;
+  width: 100%; }
+
+.qr-overlay {
+  position: absolute;
+  width: 100%;
+  top: calc(50% - 80px / 2);
+  left: calc(50% - 80px / 2); }

@@ -1,0 +1,100 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _reactApollo = require('react-apollo');
+
+var _apollo = require('../modules/apollo');
+
+var _apollo2 = _interopRequireDefault(_apollo);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var AppContainer = function (_Component) {
+  (0, _inherits3.default)(AppContainer, _Component);
+
+  function AppContainer() {
+    (0, _classCallCheck3.default)(this, AppContainer);
+    return (0, _possibleConstructorReturn3.default)(this, (AppContainer.__proto__ || (0, _getPrototypeOf2.default)(AppContainer)).apply(this, arguments));
+  }
+
+  (0, _createClass3.default)(AppContainer, [{
+    key: 'renderClient',
+    value: function renderClient() {
+      var store = this.props.store;
+
+
+      return _react2.default.createElement(
+        _reactApollo.ApolloProvider,
+        { store: store, client: _apollo2.default },
+        _react2.default.createElement(
+          'div',
+          { style: { height: '100%' } },
+          _react2.default.createElement(_reactRouter.Router, this.props)
+        )
+      );
+    }
+  }, {
+    key: 'renderServer',
+    value: function renderServer() {
+      var store = this.props.store;
+
+
+      return _react2.default.createElement(
+        _reactApollo.ApolloProvider,
+        { store: store, client: _apollo2.default },
+        _react2.default.createElement(
+          'div',
+          { style: { height: '100%' } },
+          _react2.default.createElement(_reactRouter.RouterContext, this.props)
+        )
+      );
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          server = _props.server,
+          client = _props.client;
+
+      if (server) return this.renderServer();
+      if (client) return this.renderClient();
+    }
+  }]);
+  return AppContainer;
+}(_react.Component);
+
+AppContainer.propTypes = {
+  store: _react.PropTypes.object.isRequired,
+  server: _react.PropTypes.bool,
+  client: _react.PropTypes.bool
+};
+exports.default = AppContainer;

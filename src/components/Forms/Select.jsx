@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import { ControlLabel, HelpBlock } from 'react-bootstrap'
 import ReactSelect from 'react-select'
 
-import 'react-select/dist/react-select.css'
+import './styles/Select.scss';
 
 const Select = ({ input, meta, label, help, options = [], value }) => {
 

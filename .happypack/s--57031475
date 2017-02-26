@@ -1,0 +1,276 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+require('./NotificationView.scss');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var NotificationView = function (_Component) {
+    (0, _inherits3.default)(NotificationView, _Component);
+
+    function NotificationView(props) {
+        (0, _classCallCheck3.default)(this, NotificationView);
+        return (0, _possibleConstructorReturn3.default)(this, (NotificationView.__proto__ || (0, _getPrototypeOf2.default)(NotificationView)).call(this, props));
+    }
+
+    (0, _createClass3.default)(NotificationView, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'section',
+                null,
+                _react2.default.createElement(
+                    _reactBootstrap.Grid,
+                    { className: 'container-lg' },
+                    _react2.default.createElement(
+                        _reactBootstrap.Row,
+                        null,
+                        _react2.default.createElement(
+                            _reactBootstrap.Col,
+                            { xs: 12 },
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'card' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'card-heading' },
+                                    _react2.default.createElement(
+                                        'strong',
+                                        null,
+                                        'Unread Notifications'
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'notification-list' },
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'notification-list-item unread' },
+                                        _react2.default.createElement('img', { src: 'img/user/01.jpg', alt: 'List user', className: 'notification-list-item-img' }),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'notification-list-item-text' },
+                                            _react2.default.createElement(
+                                                'h3',
+                                                null,
+                                                _react2.default.createElement(
+                                                    'a',
+                                                    { href: '#' },
+                                                    _react2.default.createElement(
+                                                        'span',
+                                                        null,
+                                                        'Souths Rugby Club'
+                                                    )
+                                                )
+                                            ),
+                                            _react2.default.createElement(
+                                                'div',
+                                                { className: 'text-muted' },
+                                                _react2.default.createElement(
+                                                    'h4',
+                                                    null,
+                                                    _react2.default.createElement('i', { className: 'fa fa-calendar-o' }),
+                                                    ' Check-in your availability for Tuesday Kick-off. 7 hours ago.'
+                                                )
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'notification-list-item-actions' },
+                                            _react2.default.createElement(
+                                                _reactBootstrap.ButtonGroup,
+                                                null,
+                                                _react2.default.createElement(
+                                                    _reactBootstrap.Button,
+                                                    { bsStyle: 'success', className: 'mr mb-sm ripple' },
+                                                    'Going'
+                                                ),
+                                                _react2.default.createElement(
+                                                    _reactBootstrap.Button,
+                                                    { bsStyle: 'danger', className: 'mr mb-sm ripple' },
+                                                    "Can't Go"
+                                                )
+                                            )
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'notification-list-item unread' },
+                                        _react2.default.createElement('img', {
+                                            src: 'http://orig00.deviantart.net/4e3d/f/2015/018/2/7/bmw_m3_challange_aicon_by_treneski-d8egkcy.png',
+                                            alt: 'BMW Club Queensland', className: 'notification-list-item-img'
+                                        }),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'notification-list-item-text' },
+                                            _react2.default.createElement(
+                                                'h3',
+                                                null,
+                                                'BMW Club Queensland Renewal Due'
+                                            ),
+                                            _react2.default.createElement(
+                                                'h4',
+                                                { className: 'text-muted' },
+                                                _react2.default.createElement('i', { className: 'fa fa-refresh' }),
+                                                " Your membership will automatically renew for $75.00 in 5 days."
+                                            )
+                                        ),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'notification-list-item-actions' },
+                                            _react2.default.createElement(
+                                                _reactBootstrap.DropdownButton,
+                                                { bsStyle: 'default', className: 'btn-circle mr ripple ellipsis' },
+                                                _react2.default.createElement(
+                                                    _reactBootstrap.MenuItem,
+                                                    { eventKey: '1' },
+                                                    'Renew'
+                                                ),
+                                                _react2.default.createElement(
+                                                    _reactBootstrap.MenuItem,
+                                                    { eventKey: '2' },
+                                                    'Lapse'
+                                                ),
+                                                _react2.default.createElement(_reactBootstrap.MenuItem, { divider: true }),
+                                                _react2.default.createElement(
+                                                    _reactBootstrap.MenuItem,
+                                                    { eventKey: '3' },
+                                                    'Dismiss'
+                                                )
+                                            )
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'card-heading' },
+                                        _react2.default.createElement(
+                                            'strong',
+                                            null,
+                                            'Past Notifications'
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'notification-list-item' },
+                                        _react2.default.createElement('img', { src: 'img/user/02.jpg', alt: 'List user', className: 'notification-list-item-img' }),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'notification-list-item-text' },
+                                            _react2.default.createElement(
+                                                'h3',
+                                                null,
+                                                _react2.default.createElement(
+                                                    'a',
+                                                    { href: '#' },
+                                                    'Catherine Crawford'
+                                                )
+                                            ),
+                                            _react2.default.createElement(
+                                                'h4',
+                                                null,
+                                                'Brunch this weekend?'
+                                            ),
+                                            _react2.default.createElement(
+                                                'p',
+                                                null,
+                                                ' I\'ll be in your neighborhood doing errands'
+                                            )
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'notification-list-item' },
+                                        _react2.default.createElement('img', { src: 'img/user/03.jpg', alt: 'List user', className: 'notification-list-item-img' }),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'notification-list-item-text' },
+                                            _react2.default.createElement(
+                                                'h3',
+                                                null,
+                                                _react2.default.createElement(
+                                                    'a',
+                                                    { href: '#' },
+                                                    'Rosemary Jimenez'
+                                                )
+                                            ),
+                                            _react2.default.createElement(
+                                                'h4',
+                                                null,
+                                                'Brunch this weekend?'
+                                            ),
+                                            _react2.default.createElement(
+                                                'p',
+                                                null,
+                                                ' I\'ll be in your neighborhood doing errands'
+                                            )
+                                        )
+                                    ),
+                                    _react2.default.createElement(
+                                        'div',
+                                        { className: 'notification-list-item' },
+                                        _react2.default.createElement('img', { src: 'img/user/04.jpg', alt: 'List user', className: 'notification-list-item-img' }),
+                                        _react2.default.createElement(
+                                            'div',
+                                            { className: 'notification-list-item-text' },
+                                            _react2.default.createElement(
+                                                'h3',
+                                                null,
+                                                _react2.default.createElement(
+                                                    'a',
+                                                    { href: '#' },
+                                                    'Guy Carpenter'
+                                                )
+                                            ),
+                                            _react2.default.createElement(
+                                                'h4',
+                                                null,
+                                                'Brunch this weekend?'
+                                            ),
+                                            _react2.default.createElement(
+                                                'p',
+                                                null,
+                                                ' I\'ll be in your neighborhood doing errands'
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+    return NotificationView;
+}(_react.Component);
+
+exports.default = NotificationView;

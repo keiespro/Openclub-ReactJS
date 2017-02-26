@@ -1,0 +1,199 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _moment = require('moment');
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _CalendarItem = require('./CalendarItem');
+
+var _CalendarItem2 = _interopRequireDefault(_CalendarItem);
+
+require('./EventCalendar.scss');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EventCalendar = function (_Component) {
+  (0, _inherits3.default)(EventCalendar, _Component);
+
+  function EventCalendar(props) {
+    (0, _classCallCheck3.default)(this, EventCalendar);
+
+    var _this = (0, _possibleConstructorReturn3.default)(this, (EventCalendar.__proto__ || (0, _getPrototypeOf2.default)(EventCalendar)).call(this, props));
+
+    _this.calendar = {
+      sameDay: '[Today]',
+      nextDay: '[Tomorrow]',
+      nextWeek: 'dddd',
+      lastDay: '[Yesterday]',
+      lastWeek: '[Last] dddd',
+      sameElse: 'Do MMM YYYY'
+    };
+    return _this;
+  }
+
+  (0, _createClass3.default)(EventCalendar, [{
+    key: 'renderMonthHeader',
+    value: function renderMonthHeader(date) {
+      var monthStyle = {
+        backgroundImage: 'url(/img/calendar/' + (0, _moment2.default)(date).format('MMMM').toLowerCase() + '.jpg)',
+        backgroundAttachment: 'fixed',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        height: 150
+      };
+      return _react2.default.createElement(
+        'div',
+        { className: 'card-item month-header', key: 'month-header-' + (0, _moment2.default)(date).format('MM') },
+        _react2.default.createElement('div', { className: 'fw img-responsive paralax', style: monthStyle }),
+        _react2.default.createElement(
+          'div',
+          { className: 'card-item-text bg-transparent' },
+          _react2.default.createElement(
+            'h4',
+            null,
+            (0, _moment2.default)(date).format('MMMM')
+          )
+        )
+      );
+    }
+  }, {
+    key: 'renderDayHeader',
+    value: function renderDayHeader(date, key) {
+      return _react2.default.createElement('li', { key: 'day-header-' + date.getDay + '-' + key, className: 'timeline-separator', 'data-datetime': (0, _moment2.default)(date).calendar(null, this.calendar) });
+    }
+  }, {
+    key: 'renderEventCard',
+    value: function renderEventCard(card, key) {
+      var props = card.props;
+
+      return _react2.default.createElement(
+        'li',
+        { key: '' + props.date.getTime() + key },
+        _react2.default.createElement('div', { className: 'timeline-badge bg-primary' }),
+        _react2.default.createElement(
+          'div',
+          { className: 'timeline-panel' },
+          card
+        )
+      );
+    }
+  }, {
+    key: 'renderDay',
+    value: function renderDay(events, month, year) {
+      var _this2 = this;
+
+      var dayEvs = [];
+      (0, _keys2.default)(events).map(function (day, key) {
+        dayEvs.push(_this2.renderDayHeader(new Date(year + '-' + month + '-' + day), key));
+        (0, _keys2.default)(events['' + day]).map(function (i) {
+          return dayEvs.push(_this2.renderEventCard(events['' + day][i], i));
+        });
+        return true;
+      });
+      return _react2.default.createElement(
+        'ul',
+        { className: 'timeline-alt ml-lg mr-lg' },
+        dayEvs
+      );
+    }
+  }, {
+    key: 'renderMonth',
+    value: function renderMonth(events, year) {
+      var _this3 = this;
+
+      return (0, _keys2.default)(events).map(function (month) {
+        return _react2.default.createElement(
+          'div',
+          { className: 'card-body month fw p0', key: 'month-' + month },
+          _this3.renderMonthHeader(new Date(year + '-' + month + '-01')),
+          _this3.renderDay(events['' + month], month, year)
+        );
+      });
+    }
+  }, {
+    key: 'renderYear',
+    value: function renderYear(events) {
+      var _this4 = this;
+
+      return (0, _keys2.default)(events).map(function (year) {
+        return _react2.default.createElement(
+          'div',
+          { key: 'year-' + year },
+          _this4.renderMonth(events['' + year], year)
+        );
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var children = this.props.children;
+
+      var events = {};
+
+      var lastChildPath = void 0;
+      var someInc = 0;
+
+      _react.Children.forEach(children, function (child) {
+        if (child.type === _CalendarItem2.default) {
+          var childPath = (0, _moment2.default)(child.props.date).format('\'YYYY\'.\'MM\'.\'DD\'');
+          if (lastChildPath === childPath) {
+            someInc += 1;
+          } else {
+            lastChildPath = childPath;
+            someInc = 0;
+          }
+          childPath += '.\'' + someInc + '\'';
+          _lodash2.default.setWith(events, childPath, child, Object);
+        }
+      });
+      console.log(events);
+      return _react2.default.createElement(
+        'div',
+        { className: 'card calendar' },
+        this.renderYear(events)
+      );
+    }
+  }]);
+  return EventCalendar;
+}(_react.Component);
+
+EventCalendar.propTypes = {
+  children: _react.PropTypes.oneOfType([_react.PropTypes.element, _react.PropTypes.array])
+};
+exports.default = EventCalendar;

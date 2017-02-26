@@ -1,0 +1,59 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _code_splitting = require('utils/code_splitting');
+
+var _Name = require('./components/Name');
+
+var _Name2 = _interopRequireDefault(_Name);
+
+var _Privacy = require('./components/Privacy');
+
+var _Privacy2 = _interopRequireDefault(_Privacy);
+
+var _Restrictions = require('./components/Restrictions');
+
+var _Restrictions2 = _interopRequireDefault(_Restrictions);
+
+var _Financial = require('./components/Financial');
+
+var _Financial2 = _interopRequireDefault(_Financial);
+
+var _Plans = require('./components/Plans');
+
+var _Plans2 = _interopRequireDefault(_Plans);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (store) {
+  return {
+    path: 'settings',
+    getComponent: function getComponent(nextState, cb) {
+      import('./components/SettingsView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+    },
+    indexRoute: {
+      onEnter: function onEnter(nextState, replace) {
+        replace('/' + nextState.params.club_id + '/admin/settings/name');
+      }
+    },
+    childRoutes: [{
+      path: 'name',
+      component: _Name2.default
+    }, {
+      path: 'privacy',
+      component: _Privacy2.default
+    }, {
+      path: 'restrictions',
+      component: _Restrictions2.default
+    }, {
+      path: 'financial',
+      component: _Financial2.default
+    }, {
+      path: 'plans',
+      component: _Plans2.default
+    }]
+  };
+};

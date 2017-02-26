@@ -1,0 +1,41 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRouter = require('react-router');
+
+var _store = require('../src/store');
+
+var _store2 = _interopRequireDefault(_store);
+
+var _routes = require('../src/routes');
+
+var _routes2 = _interopRequireDefault(_routes);
+
+var _render = require('./render');
+
+var _render2 = _interopRequireDefault(_render);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function middleware(req, res) {
+  var memoryHistory = (0, _reactRouter.createMemoryHistory)();
+  var store = (0, _store2.default)(memoryHistory);
+  var routes = (0, _routes2.default)(store);
+
+  (0, _reactRouter.match)({ routes: routes, location: req.url }, function (err, redirect, props) {
+    if (err) {
+      res.status(500).json(err);
+    } else if (redirect) {
+      res.redirect(302, redirect.pathname + redirect.search);
+    } else if (props) {
+      res.status(200).send((0, _render2.default)(store, props));
+    } else {
+      res.sendStatus(404);
+    }
+  });
+}
+
+exports.default = middleware;

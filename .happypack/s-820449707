@@ -1,0 +1,157 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+require('./ObjectPageHeader.scss');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ObjectPageHeader = function (_Component) {
+  (0, _inherits3.default)(ObjectPageHeader, _Component);
+
+  function ObjectPageHeader() {
+    (0, _classCallCheck3.default)(this, ObjectPageHeader);
+    return (0, _possibleConstructorReturn3.default)(this, (ObjectPageHeader.__proto__ || (0, _getPrototypeOf2.default)(ObjectPageHeader)).apply(this, arguments));
+  }
+
+  (0, _createClass3.default)(ObjectPageHeader, [{
+    key: 'renderProfileBackdrop',
+    value: function renderProfileBackdrop() {
+      var _props = this.props,
+          name = _props.name,
+          collapsed = _props.collapsed;
+
+      var images = this.props.images || {};
+
+      if (typeof images.square === 'undefined' && typeof name !== 'undefined') {
+        return _react2.default.createElement('div', null);
+      }
+      var classes = (0, _classnames2.default)({
+        'media-object': true,
+        'img-rounded-corners': collapsed === false,
+        'img-light-border': collapsed === false,
+        'thumb128': collapsed === false
+      });
+      return _react2.default.createElement(
+        'div',
+        { className: 'media-left' },
+        _react2.default.createElement(
+          'div',
+          { className: 'profile-backdrop' },
+          _react2.default.createElement(
+            'a',
+            { href: '#' },
+            _react2.default.createElement('img', { src: images.square, alt: name, className: classes })
+          )
+        )
+      );
+    }
+  }, {
+    key: 'renderHeading',
+    value: function renderHeading() {
+      var _props2 = this.props,
+          name = _props2.name,
+          location = _props2.location;
+
+
+      var contents = [];
+      if (typeof name !== 'undefined') {
+        contents.push(_react2.default.createElement(
+          'h4',
+          { className: 'objectpage-heading', key: 'op-heading' },
+          name
+        ));
+      }
+      if (typeof tagline !== 'undefined') {
+        contents.push(_react2.default.createElement(
+          'span',
+          { className: 'location', key: 'op-location' },
+          location
+        ));
+      }
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'media-body media-bottom objectpage-label' },
+        contents
+      );
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var images = this.props.images || {};
+      var background = images.background;
+
+      var bgEle = typeof background === 'undefined' ? '#2b2b2b' : 'url(' + background + ')';
+
+      var headerImageStyles = {
+        backgroundImage: bgEle + ', linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.2) 100%)',
+        backgroundPosition: 'center center',
+        backgroundSize: 'cover'
+      };
+
+      var classes = (0, _classnames2.default)({
+        'objectpage-header-container': true,
+        'collapsed': this.props.collapsed
+      });
+
+      return _react2.default.createElement(
+        'div',
+        { className: classes },
+        _react2.default.createElement(
+          'div',
+          { className: 'banner-container', style: headerImageStyles },
+          _react2.default.createElement(
+            'div',
+            { className: 'header-details' },
+            _react2.default.createElement(
+              'div',
+              { className: 'details-container' },
+              this.renderProfileBackdrop(),
+              this.renderHeading()
+            )
+          )
+        )
+      );
+    }
+  }]);
+  return ObjectPageHeader;
+}(_react.Component);
+
+ObjectPageHeader.propTypes = {
+  name: _react.PropTypes.string,
+  location: _react.PropTypes.string,
+  images: _react.PropTypes.object,
+  collapsed: _react.PropTypes.bool
+};
+exports.default = ObjectPageHeader;

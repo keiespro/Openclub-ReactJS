@@ -1,47 +1,46 @@
 import Auth0Lock from 'auth0-lock'
 
-const { __AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__ } = Env
+// const { __AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__ } = Env
 
 let lock = () => true;
 let inlineLock = () => true;
 
-// singleton Auth0 lock
-lock = new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
-  theme: {
-    logo: 'https://openclubdev.github.io/openclub-assets/images/logo/logo-color.png',
-    primaryColor: '#008fcc'
-  },
-  languageDictionary: {
-    title: 'Log In to OpenClub'
-  },
-  /*auth: {
-    redirectUrl: location.origin
-  },*/
-  closable: false
-})
+if (typeof window !== 'undefined') {
+  // singleton Auth0 lock
+  lock = new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
+    theme: {
+      logo: 'https://openclubdev.github.io/openclub-assets/images/logo/logo-color.png',
+      primaryColor: '#008fcc'
+    },
+    languageDictionary: {
+      title: 'Log In to OpenClub'
+    },
+    closable: false
+  })
 
-inlineLock = (container) => new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
-  container,
-  theme: {
-    primaryColor: '#008fcc'
-  },
-  additionalSignUpFields: [
-    {
-      name: "address",
-      placeholder: "enter where your babies live",
+  inlineLock = (container) => new Auth0Lock(__AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__, {
+    container,
+    theme: {
+      primaryColor: '#008fcc'
     },
-    {
-      name: "full_name",
-      placeholder: "Enter your full name"
-    },
-    {
-      name: ""
-    }
-  ]
-  /* auth: {
-    redirectUrl: location.origin
-  }*/
-});
+    additionalSignUpFields: [
+      {
+        name: "address",
+        placeholder: "enter where your babies live",
+      },
+      {
+        name: "full_name",
+        placeholder: "Enter your full name"
+      },
+      {
+        name: ""
+      }
+    ]
+    /* auth: {
+      redirectUrl: location.origin
+    }*/
+  });
+}
 
 /**
  * Due to Auth0s stupid choice to use events, and the fact that they

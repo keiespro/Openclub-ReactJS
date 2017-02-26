@@ -1,0 +1,19 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.MiniClubCard = undefined;
+
+var _ClubCard = require('./ClubCard');
+
+var _ClubCard2 = _interopRequireDefault(_ClubCard);
+
+var _MiniClubCard = require('./MiniClubCard');
+
+var _MiniClubCard2 = _interopRequireDefault(_MiniClubCard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.MiniClubCard = _MiniClubCard2.default;
+exports.default = _ClubCard2.default;

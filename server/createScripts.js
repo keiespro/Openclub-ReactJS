@@ -9,8 +9,8 @@ function createAnalyticsSnippet(id) {
 
 function createAppScript() {
   return `
-  <script type="text/javascript" charset="utf-8" src="/assets/vendor.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/assets/app.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/assets/${global.hash}.vendor.js"></script>
+  <script type="text/javascript" charset="utf-8" src="/assets/${global.hash}.app.js"></script>
   `;
 }
 

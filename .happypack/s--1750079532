@@ -1,0 +1,29 @@
+"use strict";
+
+var PATHS = require('../paths');
+
+module.exports = function () {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref$production = _ref.production,
+      production = _ref$production === undefined ? false : _ref$production,
+      _ref$browser = _ref.browser,
+      browser = _ref$browser === undefined ? false : _ref$browser;
+
+  var createPresets = function createPresets(enableHotModuleReplacement) {
+    var presets = [["latest", { "modules": false }], 'react', 'stage-0'];
+    return enableHotModuleReplacement ? ['react-hmre'].concat(presets) : presets;
+  };
+  var presets = createPresets(!production && browser);
+
+  var plugins = production ? ['transform-runtime', 'transform-react-remove-prop-types', 'transform-react-constant-elements', 'transform-react-inline-elements'] : ["react-hot-loader/babel", 'transform-runtime'];
+
+  return {
+    test: /\.js$|\.jsx|\.json$/,
+    loader: 'happypack/loader',
+    options: {
+      presets: presets,
+      plugins: plugins
+    },
+    exclude: PATHS.modules
+  };
+};

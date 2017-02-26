@@ -1,0 +1,109 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ClubCard = require('components/ClubCard');
+
+var _ClubCard2 = _interopRequireDefault(_ClubCard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ClubsPage = function (_Component) {
+  (0, _inherits3.default)(ClubsPage, _Component);
+
+  function ClubsPage() {
+    (0, _classCallCheck3.default)(this, ClubsPage);
+    return (0, _possibleConstructorReturn3.default)(this, (ClubsPage.__proto__ || (0, _getPrototypeOf2.default)(ClubsPage)).apply(this, arguments));
+  }
+
+  (0, _createClass3.default)(ClubsPage, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'div',
+          { className: 'container-overlap bg-primary p0 pb-lg pt-lg' },
+          _react2.default.createElement(
+            'div',
+            { className: 'text-center' },
+            _react2.default.createElement(
+              'h5',
+              { className: 'mb-xl' },
+              'My memberships'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'container-fluid' },
+          _react2.default.createElement(
+            'div',
+            { className: 'col-xs-12 col-md-4 pull-right' },
+            _react2.default.createElement(
+              'div',
+              { className: 'card' },
+              _react2.default.createElement(
+                'div',
+                { className: 'card-body m0 text-center' },
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn btn-primary btn-lg fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-plus' }),
+                  ' Create Club'
+                )
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-xs-12 col-md-8' },
+            _react2.default.createElement(
+              'div',
+              { className: 'row' },
+              _react2.default.createElement(_ClubCard.MiniClubCard, null),
+              _react2.default.createElement(_ClubCard.MiniClubCard, null)
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'row' },
+              _react2.default.createElement(_ClubCard2.default, null),
+              _react2.default.createElement(_ClubCard2.default, null),
+              _react2.default.createElement(_ClubCard2.default, null)
+            )
+          )
+        )
+      );
+    }
+  }]);
+  return ClubsPage;
+}(_react.Component);
+
+exports.default = ClubsPage;

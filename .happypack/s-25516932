@@ -1,0 +1,44 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _ACTION_HANDLERS;
+
+exports.default = authReducer;
+
+var _actions = require('./actions');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialState = {
+  token: typeof localStorage === 'undefined' ? null : localStorage.getItem('openclub_token')
+};
+
+var ACTION_HANDLERS = (_ACTION_HANDLERS = {}, (0, _defineProperty3.default)(_ACTION_HANDLERS, _actions.LOCK_SUCCESS, function (state, action) {
+  return (0, _assign2.default)({}, state, {
+    token: action.token,
+    errorMessage: ''
+  });
+}), (0, _defineProperty3.default)(_ACTION_HANDLERS, _actions.LOGOUT_REQUEST, function (state) {
+  var newState = (0, _assign2.default)({}, state);
+  delete newState.token;
+  return newState;
+}), _ACTION_HANDLERS);
+
+function authReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+  var action = arguments[1];
+
+  var handler = ACTION_HANDLERS[action.type];
+  return handler ? handler(state, action) : state;
+}

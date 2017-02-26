@@ -1,0 +1,81 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = require('react-redux');
+
+var _reduxForm = require('redux-form');
+
+var _Forms = require('components/Forms');
+
+var _errors = require('utils/form_validation/errors');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CreateClubForm = function CreateClubForm(_ref) {
+  var handleSubmit = _ref.handleSubmit,
+      createForm = _ref.createForm;
+
+
+  var slugString = createForm && createForm.values && createForm.values.slug ? createForm.values.slug : '<your id here>';
+
+  return _react2.default.createElement(
+    'form',
+    { className: 'form-horizontal', onSubmit: handleSubmit },
+    _react2.default.createElement(
+      _Forms.FieldSet,
+      null,
+      _react2.default.createElement(_reduxForm.Field, {
+        name: 'club.name',
+        label: 'Club Name',
+        type: 'text',
+        help: 'What is the name of your club?',
+        validate: [_errors.required, (0, _errors.maxLength)(64)],
+        component: _Forms.Input
+      })
+    ),
+    _react2.default.createElement(
+      _Forms.FieldSet,
+      null,
+      _react2.default.createElement(_reduxForm.Field, {
+        name: 'slug',
+        label: 'Club Link',
+        type: 'text',
+        help: 'Enter a unique link for your club to use (http://openclub.co/' + slugString + ').',
+        validate: [_errors.required, _errors.slug],
+        component: _Forms.Input
+      })
+    ),
+    _react2.default.createElement(
+      _Forms.FieldSet,
+      null,
+      _react2.default.createElement(_reduxForm.Field, {
+        name: 'club.images.square',
+        label: 'Club Profile Image',
+        help: 'Select an image to use as the clubs profile picture.',
+        component: _Forms.ImageUpload
+      })
+    ),
+    _react2.default.createElement(
+      'button',
+      { type: 'submit' },
+      'Submit'
+    )
+  );
+};
+
+var CreateClubReduxForm = (0, _reduxForm.reduxForm)({
+  form: 'create_club'
+})(CreateClubForm);
+
+exports.default = (0, _reactRedux.connect)(function (state) {
+  return {
+    createForm: state.form.create_club
+  };
+})(CreateClubReduxForm);

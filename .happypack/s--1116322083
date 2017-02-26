@@ -1,0 +1,16 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _code_splitting = require('utils/code_splitting');
+
+exports.default = function (store) {
+  return {
+    path: 'members',
+    getComponent: function getComponent(nextState, cb) {
+      import('./components/MembersView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+    }
+  };
+};

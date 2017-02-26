@@ -1,0 +1,82 @@
+/**
+ * Material Lists
+ */
+.notification-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+  .notification-list > .notification-list-item {
+    padding: 0 22px; }
+    .notification-list > .notification-list-item:before, .notification-list > .notification-list-item:after {
+      content: " ";
+      display: table; }
+    .notification-list > .notification-list-item:after {
+      clear: both; }
+    .notification-list > .notification-list-item.unread {
+      background-color: rgba(0, 91, 195, 0.1); }
+    .notification-list > .notification-list-item > .notification-list-item-img,
+    .notification-list > .notification-list-item > .notification-list-item-icon,
+    .notification-list > .notification-list-item > .notification-list-item-initial {
+      float: left;
+      width: 48px;
+      height: 48px;
+      margin-top: 14px;
+      margin-bottom: 8px;
+      margin-right: 20px;
+      border-radius: 20%; }
+    .notification-list > .notification-list-item > .notification-list-item-icon {
+      line-height: 42px;
+      text-align: center; }
+      .notification-list > .notification-list-item > .notification-list-item-icon > em, .notification-list > .notification-list-item > .notification-list-item-icon > i {
+        line-height: inherit; }
+    .notification-list > .notification-list-item > .notification-list-item-actions {
+      line-height: 75px;
+      width: auto;
+      display: inline-block;
+      text-align: right;
+      float: right; }
+      .notification-list > .notification-list-item > .notification-list-item-actions > em, .notification-list > .notification-list-item > .notification-list-item-actions > i {
+        line-height: inherit; }
+      .notification-list > .notification-list-item > .notification-list-item-actions span.caret {
+        content: '\f141';
+        font-family: FontAwesome; }
+    .notification-list > .notification-list-item > .notification-list-item-initial {
+      line-height: 50px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 300; }
+    .notification-list > .notification-list-item > .notification-list-item-text {
+      float: left;
+      padding: 20px 0;
+      display: inline-block;
+      width: auto; }
+      .notification-list > .notification-list-item > .notification-list-item-text.notification-2-line {
+        padding-top: 26px; }
+      .notification-list > .notification-list-item > .notification-list-item-text h3 {
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: .01em;
+        margin: 0 0 6px;
+        line-height: .75em; }
+      .notification-list > .notification-list-item > .notification-list-item-text h4 {
+        font-size: 14px;
+        letter-spacing: .01em;
+        font-weight: 400;
+        margin: 10px 0 5px;
+        line-height: .75em; }
+      .notification-list > .notification-list-item > .notification-list-item-text p {
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+        line-height: 1.6em; }
+    .notification-list > .notification-list-item > .notification-list-item-img + .notification-list-item-text,
+    .notification-list > .notification-list-item > .notification-list-item-initial + .notification-list-item-text {
+      width: auto;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden; }
+  .notification-list.notification-list-bordered > .notification-list-item {
+    border-bottom: 1px solid rgba(119, 119, 119, 0.16); }
+
+.card > .notification-list-bordered > .notification-list-item:last-child {
+  border-bottom: 0; }

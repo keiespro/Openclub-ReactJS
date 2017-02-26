@@ -1,0 +1,33 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRouter = require('react-router');
+
+var _code_splitting = require('utils/code_splitting');
+
+var _ClubsPage = require('./components/ClubsPage');
+
+var _ClubsPage2 = _interopRequireDefault(_ClubsPage);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (store) {
+  return {
+    path: 'clubs',
+    getComponent: function getComponent(nextState, cb) {
+      import('./components/ClubsView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+    },
+    indexRoute: {
+      component: _ClubsPage2.default
+    },
+    childRoutes: [{
+      path: 'create',
+      getComponent: function getComponent(nextState, cb) {
+        import('./components/create_club').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+      }
+    }]
+  };
+};

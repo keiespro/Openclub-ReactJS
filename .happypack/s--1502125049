@@ -1,0 +1,205 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _InfiniteCalendar = require('components/InfiniteCalendar');
+
+var _InfiniteCalendar2 = _interopRequireDefault(_InfiniteCalendar);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _CalendarItem = require('components/EventCalendar/CalendarItem');
+
+var _CalendarItem2 = _interopRequireDefault(_CalendarItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var EventsPage = function (_Component) {
+  (0, _inherits3.default)(EventsPage, _Component);
+
+  function EventsPage() {
+    (0, _classCallCheck3.default)(this, EventsPage);
+    return (0, _possibleConstructorReturn3.default)(this, (EventsPage.__proto__ || (0, _getPrototypeOf2.default)(EventsPage)).apply(this, arguments));
+  }
+
+  (0, _createClass3.default)(EventsPage, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'div',
+          { className: 'container-overlap bg-primary p0 pb-lg pt-lg' },
+          _react2.default.createElement(
+            'div',
+            { className: 'text-center' },
+            _react2.default.createElement(
+              'h5',
+              { className: 'mb-xl' },
+              'Registered Events'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'container-fluid' },
+          _react2.default.createElement(
+            _reactBootstrap.Col,
+            { xs: 12, md: 8 },
+            _react2.default.createElement(
+              _reactBootstrap.Row,
+              null,
+              _react2.default.createElement(_CalendarItem2.default, { date: new Date('12 Jan 2017'), attending: true, liked: true, title: 'Splended alcoholism and co' }),
+              _react2.default.createElement(_CalendarItem2.default, { date: new Date('19 Mar 2017'), attending: true, title: 'Ben tries to talk to strippers on the internet' }),
+              _react2.default.createElement(_CalendarItem2.default, { date: new Date('11 May 2017'), attending: true, title: 'Dance Party' })
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Row,
+              null,
+              _react2.default.createElement(
+                'h5',
+                { className: 'text-center' },
+                'Suggested events in your network'
+              ),
+              _react2.default.createElement(_CalendarItem2.default, { suggested: true, date: new Date('30 Jan 2017'), title: 'Drag Race' }),
+              _react2.default.createElement(_CalendarItem2.default, { suggested: true, date: new Date('12 Feb 2017'), liked: true, title: 'Lift it! \uD83D\uDCAA\uD83C\uDFFB' }),
+              _react2.default.createElement(_CalendarItem2.default, { suggested: true, date: new Date('16 Mar 2017'), liked: true, title: 'Annual Law Ball' }),
+              _react2.default.createElement(_CalendarItem2.default, { suggested: true, date: new Date('12 Apr 2017'), title: 'Drinks! Drinks! Drinks!' }),
+              _react2.default.createElement(_CalendarItem2.default, { suggested: true, date: new Date('29 Apr 2017'), title: 'Celebrating 50 Years' }),
+              _react2.default.createElement(_CalendarItem2.default, { suggested: true, date: new Date('25 Dec 2017'), title: 'Christmas Party' })
+            )
+          ),
+          _react2.default.createElement(
+            _reactBootstrap.Col,
+            { xsHidden: true, smHidden: true, md: 4 },
+            _react2.default.createElement(
+              'div',
+              { className: 'card' },
+              _react2.default.createElement(
+                'div',
+                { className: 'card-body m0 text-center' },
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn btn-success btn-lg fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-plus' }),
+                  ' Create Event'
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'card-body' },
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn btn-default btn-lg fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-calendar' }),
+                  ' Add to iCal'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  'URL for other calendars:',
+                  _react2.default.createElement('br', null),
+                  _react2.default.createElement('input', { type: 'text', className: 'form-control fw', defaultValue: 'https://calendar.openclub.co/c2b3847tf89c73fg783c4f78i34cg8f' })
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'card-body' },
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn-flat btn-primary text-left fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-fw fa-picture-o' }),
+                  ' Art / Photography / Film'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn-flat btn-primary text-left fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-fw fa-book' }),
+                  ' Books & Literature'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn-flat btn-primary text-left fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-handshake-o' }),
+                  ' Charitable & Causes'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn-flat btn-primary text-left fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-fw fa-smile-o' }),
+                  ' Comedy'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn-flat btn-primary text-left fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-fw fa-cutlery' }),
+                  ' Food & Drink'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn-flat btn-primary text-left fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-fw fa-gamepad' }),
+                  ' Gaming'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn-flat btn-primary text-left fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-fw fa-medkit' }),
+                  ' Health & Fitness'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn-flat btn-primary text-left fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-fw fa-glass' }),
+                  ' Networking'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn-flat btn-primary text-left fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-fw fa-blind' }),
+                  ' Religion'
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { className: 'btn-flat btn-primary text-left fw' },
+                  _react2.default.createElement('i', { className: 'fa fa-fw fa-microphone' }),
+                  ' Theatre & Dance'
+                )
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+  return EventsPage;
+}(_react.Component);
+
+exports.default = EventsPage;

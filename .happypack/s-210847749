@@ -1,0 +1,55 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = require('express');
+
+var _express2 = _interopRequireDefault(_express);
+
+var _bodyParser = require('body-parser');
+
+var _bodyParser2 = _interopRequireDefault(_bodyParser);
+
+var _path = require('path');
+
+var _path2 = _interopRequireDefault(_path);
+
+var _methodOverride = require('method-override');
+
+var _methodOverride2 = _interopRequireDefault(_methodOverride);
+
+var _compression = require('compression');
+
+var _compression2 = _interopRequireDefault(_compression);
+
+var _helmet = require('helmet');
+
+var _helmet2 = _interopRequireDefault(_helmet);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (app) {
+  app.set('port', process.env.PORT || 3000);
+
+  if (process.env.NODE_ENV === 'production') {
+    app.use((0, _compression2.default)());
+    // Secure your Express apps by setting various HTTP headers. Documentation: https://github.com/helmetjs/helmet
+    app.use((0, _helmet2.default)());
+  }
+
+  app.use(_bodyParser2.default.json());
+  app.use(_bodyParser2.default.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+  app.use((0, _methodOverride2.default)());
+  app.use(_express2.default.static(_path2.default.join(process.cwd(), 'src/static')));
+  app.use(_express2.default.static(_path2.default.join(process.cwd(), 'dist/public')));
+
+  app.set('trust proxy', 'loopback');
+
+  console.log('--------------------------');
+  console.log('===> 😊  Starting Server . . .');
+  console.log('===>  Environment: ' + process.env.NODE_ENV);
+  console.log('===>  Listening on port: ' + app.get('port'));
+  console.log('--------------------------');
+};

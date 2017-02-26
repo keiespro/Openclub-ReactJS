@@ -1,0 +1,26 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRouter = require('react-router');
+
+var _code_splitting = require('utils/code_splitting');
+
+exports.default = function (store) {
+  return {
+    onEnter: function onEnter(nextState, replace, cb) {
+      // as a child this route will only run once user login stuff has been completed
+      var state = store.getState();
+      console.log(state.auth.token);
+      if (state.auth.token) {
+        replace('/feed');
+      }
+      cb();
+    },
+    getComponent: function getComponent(nextState, cb) {
+      import('./components/Home').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+    }
+  };
+};

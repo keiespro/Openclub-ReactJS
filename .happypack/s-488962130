@@ -1,0 +1,310 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _reactRouter = require('react-router');
+
+var _ClubSectionTitle = require('../../../components/ClubSectionTitle');
+
+var _ClubSectionTitle2 = _interopRequireDefault(_ClubSectionTitle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var FeedView = function FeedView() {
+  var textBox = null;
+  function highlightTextBox() {
+    textBox.focus();
+  }
+
+  return _react2.default.createElement(
+    _reactBootstrap.Row,
+    null,
+    _react2.default.createElement(
+      _reactBootstrap.Col,
+      { lg: 9, xs: 12 },
+      _react2.default.createElement(_ClubSectionTitle2.default, { title: 'News Feed' }),
+      _react2.default.createElement(
+        'div',
+        { className: 'card-body' },
+        _react2.default.createElement(
+          'form',
+          { action: '', className: 'mt' },
+          _react2.default.createElement(
+            'div',
+            { className: 'input-group mda-input-group' },
+            _react2.default.createElement(
+              'div',
+              { className: 'mda-form-group' },
+              _react2.default.createElement(
+                'div',
+                { className: 'mda-form-control' },
+                _react2.default.createElement('textarea', { ref: function ref(input) {
+                    textBox = input;
+                  }, rows: '1', 'aria-multiline': 'true', tabIndex: '0', 'aria-invalid': 'false', className: 'no-resize form-control' }),
+                _react2.default.createElement('div', { className: 'mda-form-control-line' }),
+                _react2.default.createElement(
+                  'label',
+                  { className: 'm0', onClick: highlightTextBox.bind(undefined) },
+                  'Write a message or post a link'
+                )
+              ),
+              _react2.default.createElement(
+                'span',
+                { className: 'mda-form-msg right' },
+                'Click anywhere to start typing'
+              )
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'input-group-btn' },
+              _react2.default.createElement(
+                'button',
+                { type: 'button', className: 'btn btn-success btn-circle' },
+                _react2.default.createElement('i', { className: 'fa fa-camera' })
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'input-group' },
+            _react2.default.createElement(
+              _reactBootstrap.Dropdown,
+              { id: 'potato' },
+              _react2.default.createElement(
+                _reactBootstrap.Dropdown.Toggle,
+                { bsStyle: 'link', noCaret: true, className: 'btn btn-default' },
+                _react2.default.createElement('i', { className: 'fa fa-globe' }),
+                ' Privacy: Public'
+              ),
+              _react2.default.createElement(
+                _reactBootstrap.Dropdown.Menu,
+                { className: 'md-dropdown-menu' },
+                _react2.default.createElement(
+                  _reactBootstrap.MenuItem,
+                  { header: true },
+                  'Options'
+                ),
+                _react2.default.createElement(
+                  _reactBootstrap.MenuItem,
+                  { eventKey: '2' },
+                  _react2.default.createElement('i', { className: 'fa fa-times' }),
+                  ' Unfollow'
+                ),
+                _react2.default.createElement(_reactBootstrap.MenuItem, { divider: true }),
+                _react2.default.createElement(
+                  _reactBootstrap.MenuItem,
+                  { eventKey: '3' },
+                  _react2.default.createElement('i', { className: 'fa fa-trash' }),
+                  ' Delete'
+                ),
+                _react2.default.createElement(
+                  _reactBootstrap.MenuItem,
+                  { eventKey: '3' },
+                  _react2.default.createElement('i', { className: 'fa fa-flag' }),
+                  ' Report'
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'button',
+              { type: 'button', className: 'btn btn-primary pull-right' },
+              _react2.default.createElement('i', { className: 'fa fa-paper-plane' }),
+              ' Post'
+            )
+          )
+        )
+      ),
+      _react2.default.createElement('div', { className: 'card-divider' }),
+      _react2.default.createElement(
+        'div',
+        { className: 'card-body' },
+        _react2.default.createElement(
+          'div',
+          { className: 'card' },
+          _react2.default.createElement(
+            'div',
+            { className: 'card-heading' },
+            _react2.default.createElement(
+              'div',
+              { className: 'pull-right' },
+              _react2.default.createElement(
+                _reactBootstrap.Dropdown,
+                { pullRight: true, id: 'other' },
+                _react2.default.createElement(
+                  _reactBootstrap.Dropdown.Toggle,
+                  { bsStyle: 'link', noCaret: true, className: 'btn-flat btn-flat-icon' },
+                  _react2.default.createElement('i', { className: 'fa fa-globe' })
+                ),
+                _react2.default.createElement(
+                  _reactBootstrap.Dropdown.Menu,
+                  { className: 'md-dropdown-menu' },
+                  _react2.default.createElement(
+                    _reactBootstrap.MenuItem,
+                    { header: true },
+                    'Change privacy'
+                  ),
+                  _react2.default.createElement(
+                    _reactBootstrap.MenuItem,
+                    { eventKey: '1' },
+                    _react2.default.createElement('i', { className: 'fa fa-globe' }),
+                    ' Public'
+                  ),
+                  _react2.default.createElement(
+                    _reactBootstrap.MenuItem,
+                    { eventKey: '2' },
+                    _react2.default.createElement('i', { className: 'fa fa-users' }),
+                    ' Members only'
+                  ),
+                  _react2.default.createElement(
+                    _reactBootstrap.MenuItem,
+                    { eventKey: '3' },
+                    _react2.default.createElement('i', { className: 'fa fa-user-secret' }),
+                    ' Admins only'
+                  )
+                )
+              ),
+              _react2.default.createElement(
+                _reactBootstrap.Dropdown,
+                { pullRight: true, id: 'other' },
+                _react2.default.createElement(
+                  _reactBootstrap.Dropdown.Toggle,
+                  { bsStyle: 'link', noCaret: true, className: 'btn-flat btn-flat-icon' },
+                  _react2.default.createElement('i', { className: 'fa fa-ellipsis-v' })
+                ),
+                _react2.default.createElement(
+                  _reactBootstrap.Dropdown.Menu,
+                  { className: 'md-dropdown-menu' },
+                  _react2.default.createElement(
+                    _reactBootstrap.MenuItem,
+                    { header: true },
+                    'Options'
+                  ),
+                  _react2.default.createElement(
+                    _reactBootstrap.MenuItem,
+                    { eventKey: '2' },
+                    _react2.default.createElement('i', { className: 'fa fa-times' }),
+                    ' Unfollow'
+                  ),
+                  _react2.default.createElement(_reactBootstrap.MenuItem, { divider: true }),
+                  _react2.default.createElement(
+                    _reactBootstrap.MenuItem,
+                    { eventKey: '3' },
+                    _react2.default.createElement('i', { className: 'fa fa-trash' }),
+                    ' Delete'
+                  ),
+                  _react2.default.createElement(
+                    _reactBootstrap.MenuItem,
+                    { eventKey: '3' },
+                    _react2.default.createElement('i', { className: 'fa fa-flag' }),
+                    ' Report'
+                  )
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'media m0' },
+              _react2.default.createElement(
+                'div',
+                { className: 'media-left' },
+                _react2.default.createElement(
+                  'a',
+                  { href: '#' },
+                  _react2.default.createElement('img', { src: '/img/user/05.jpg', alt: 'User', className: 'media-object img-circle thumb48' })
+                )
+              ),
+              _react2.default.createElement(
+                'div',
+                { className: 'media-body media-middle pt-sm' },
+                _react2.default.createElement(
+                  'p',
+                  { className: 'media-heading m0 text-bold' },
+                  'John Appleseed'
+                ),
+                _react2.default.createElement(
+                  'small',
+                  { className: 'text-muted' },
+                  _react2.default.createElement('i', { className: 'fa fa-globe text-muted mr-sm' }),
+                  _react2.default.createElement(
+                    'span',
+                    { className: 'mr-sm' },
+                    'Public'
+                  ),
+                  _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \u2022 '
+                  ),
+                  _react2.default.createElement('i', { className: 'fa fa-clock-o text-muted mr-sm' }),
+                  _react2.default.createElement(
+                    'span',
+                    { className: 'mr-sm' },
+                    '2 hours ago'
+                  ),
+                  _react2.default.createElement(
+                    'span',
+                    null,
+                    ' \u2022 '
+                  ),
+                  _react2.default.createElement('i', { className: 'fa fa-users text-muted mr-sm ml-sm' }),
+                  _react2.default.createElement(
+                    'span',
+                    null,
+                    'BMW Club Queensland'
+                  )
+                )
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'card-item' },
+            _react2.default.createElement('img', { src: 'http://blog.caranddriver.com/wp-content/uploads/2014/05/2015-BMW-i8-PLACEMENT2-626x382.jpg', alt: 'MaterialImg', className: 'fw img-responsive' }),
+            _react2.default.createElement(
+              'div',
+              { className: 'card-item-text bg-transparent' },
+              _react2.default.createElement(
+                'p',
+                null,
+                'What do we think of the new BMW i8?'
+              )
+            )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'card-footer' },
+            _react2.default.createElement(
+              'button',
+              { type: 'button', className: 'btn btn-flat btn-primary' },
+              _react2.default.createElement('i', { className: 'fa fa-heart-o' }),
+              ' (14)'
+            ),
+            _react2.default.createElement(
+              'button',
+              { type: 'button', className: 'btn btn-flat btn-primary' },
+              _react2.default.createElement('i', { className: 'fa fa-comments' }),
+              ' (9)'
+            )
+          )
+        )
+      )
+    ),
+    _react2.default.createElement(
+      _reactBootstrap.Col,
+      { xsHidden: true, lg: 3 },
+      'Feed Sidebar'
+    )
+  );
+};
+
+FeedView.propTypes = {};
+
+exports.default = FeedView;

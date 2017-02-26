@@ -1,0 +1,84 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+require('./styles/SidebarMenuLink.scss');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SidebarMenuItem = function SidebarMenuItem(_ref) {
+  var children = _ref.children,
+      _ref$active = _ref.active,
+      active = _ref$active === undefined ? false : _ref$active,
+      link = _ref.link,
+      iconImage = _ref.iconImage,
+      iconClasses = _ref.iconClasses,
+      _ref$badgeCount = _ref.badgeCount,
+      badgeCount = _ref$badgeCount === undefined ? 0 : _ref$badgeCount;
+
+  var iconStyle = {};
+  if (iconImage) {
+    iconStyle.backgroundImage = 'url(' + iconImage + ')';
+  }
+  var iClasses = (0, _classnames2.default)((0, _defineProperty3.default)({
+    'img-icon': iconImage
+  }, iconClasses, iconClasses));
+
+  var liClasses = (0, _classnames2.default)({
+    'active': active
+  });
+
+  return _react2.default.createElement(
+    'li',
+    { className: liClasses },
+    _react2.default.createElement(
+      _reactRouter.Link,
+      { to: link, className: 'ripple' },
+      _react2.default.createElement(
+        'span',
+        { className: 'pull-right nav-label' },
+        badgeCount > 0 && _react2.default.createElement(
+          'span',
+          { className: 'badge bg-success' },
+          badgeCount
+        )
+      ),
+      _react2.default.createElement(
+        'span',
+        { className: 'nav-icon' },
+        _react2.default.createElement('i', { className: iClasses, style: iconStyle })
+      ),
+      _react2.default.createElement(
+        'span',
+        null,
+        children
+      )
+    )
+  );
+};
+
+SidebarMenuItem.propTypes = {
+  location: _react.PropTypes.object.isRequired,
+  link: _react.PropTypes.string.isRequired,
+  iconImage: _react.PropTypes.string,
+  iconClasses: _react.PropTypes.string,
+  badgeCount: _react.PropTypes.number
+};
+
+exports.default = SidebarMenuItem;

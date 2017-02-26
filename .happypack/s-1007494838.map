@@ -1,0 +1,1 @@
+{"version":3,"sources":["src/components/Pages/ObjectPage/index.js"],"names":["ObjectPageHeader"],"mappings":";;;;;;;AAAA;;;;;;QAGEA,gB","file":"index.js","sourceRoot":"/Volumes/Git HD/Code/openclub","sourcesContent":["import ObjectPageHeader from './ObjectPageHeader';\n\nexport {\n  ObjectPageHeader\n}\n"]}

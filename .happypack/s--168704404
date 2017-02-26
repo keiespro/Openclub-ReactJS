@@ -1,0 +1,15 @@
+fieldset {
+  border: none;
+  padding: 0px;
+  margin-bottom: 10px;
+  padding-bottom: 20px;
+  border-bottom: 1px dashed rgba(163, 163, 163, 0.25);
+  margin-bottom: 20px; }
+
+.oc-fieldset .control-label {
+  padding-top: 0px;
+  margin-left: 1px;
+  margin-bottom: 3px; }
+
+.form-control {
+  border-radius: 0; }

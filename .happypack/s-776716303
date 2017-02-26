@@ -1,0 +1,112 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _definitions = require('./definitions');
+
+var _definitions2 = _interopRequireDefault(_definitions);
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var formValidation = function () {
+  function formValidation() {
+    (0, _classCallCheck3.default)(this, formValidation);
+
+    this.inputs = {};
+  }
+
+  (0, _createClass3.default)(formValidation, [{
+    key: 'test',
+    value: function test(value, validation) {
+      var maxTest = validation.match(/max([\d]+)/);
+      var minTest = validation.match(/min([\d]+)/);
+
+      if (maxTest) {
+        var conditions = {
+          name: name,
+          type: 'error',
+          message: 'The input must be less than ' + maxTest[1] + ' characters.'
+        };
+        return value.length > maxTest[1] ? conditions : false;
+      }
+      if (minTest) {
+        var _conditions = {
+          name: name,
+          type: 'error',
+          message: 'This input must be more than ' + minTest[1] + ' characters.'
+        };
+        return value.length < minTest[1] ? _conditions : false;
+      }
+      return _definitions2.default[validation].expression.test(value) === false ? _lodash2.default.assign(_definitions2.default[validation], { name: name }) : false;
+    }
+  }, {
+    key: 'check',
+    value: function check(name, validations, value) {
+      var _this = this;
+
+      if (validations.indexOf('blank') > -1 && value === '') {
+        return false;
+      }
+      if (validations instanceof Array === false) {
+        throw new Error("Validations must be an array.");
+      }
+      this.inputs[name] = {
+        validations: validations,
+        value: value
+      };
+      try {
+        validations.map(function (validation) {
+          var test = _this.test(value, validation);
+          if (test) {
+            throw test;
+          }
+          return false;
+        });
+        return false;
+      } catch (e) {
+        return e;
+      }
+    }
+  }, {
+    key: 'checkAll',
+    value: function checkAll() {
+      var _this2 = this;
+
+      try {
+        (0, _keys2.default)(this.inputs).map(function (value) {
+          var input = _this2.inputs[value];
+          var test = _this2.check(value, input.validations, input.value);
+          if (test) {
+            throw test;
+          }
+          return false;
+        });
+        return false;
+      } catch (e) {
+        document.body.scrollTop = document.getElementById('formcontrol-' + e.name).getBoundingClientRect() + document.body.scrollTop;
+        return e;
+      }
+    }
+  }]);
+  return formValidation;
+}();
+
+exports.default = formValidation;

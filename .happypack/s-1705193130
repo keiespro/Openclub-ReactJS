@@ -1,0 +1,15 @@
+'use strict';
+
+var javascript = require('./javascript');
+var css = require('./css');
+var sass = require('./sass');
+
+module.exports = function () {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref$production = _ref.production,
+      production = _ref$production === undefined ? false : _ref$production,
+      _ref$browser = _ref.browser,
+      browser = _ref$browser === undefined ? false : _ref$browser;
+
+  return [javascript({ production: production, browser: browser }), css({ production: production, browser: browser }), sass({ production: production, browser: browser }), { test: /\.woff(\?.*)?$/, loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff' }, { test: /\.woff2(\?.*)?$/, loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/font-woff2' }, { test: /\.otf(\?.*)?$/, loader: 'file-loader?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=font/opentype' }, { test: /\.ttf(\?.*)?$/, loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=application/octet-stream' }, { test: /\.eot(\?.*)?$/, loader: 'file-loader?prefix=fonts/&name=[path][name].[ext]' }, { test: /\.svg(\?.*)?$/, loader: 'url-loader?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' }, { test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192' }];
+};

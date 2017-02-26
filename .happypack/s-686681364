@@ -1,0 +1,19 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function createAnalyticsSnippet(id) {
+  return '<script>\n  window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;\n  ga(\'create\', \'' + id + '\', \'auto\');\n  ga(\'send\', \'pageview\');\n  </script>\n  <script async src=\'https://www.google-analytics.com/analytics.js\'></script>';
+}
+
+function createAppScript() {
+  return '\n  <script type="text/javascript" charset="utf-8" src="/assets/vendor.js"></script>\n  <script type="text/javascript" charset="utf-8" src="/assets/app.js"></script>\n  ';
+}
+
+var createTrackingScript = function createTrackingScript() {
+  return 'ANALYTICS_ID' in process.env ? createAnalyticsSnippet(process.env.ANALYTICS_ID) : '';
+};
+
+exports.createTrackingScript = createTrackingScript;
+exports.createAppScript = createAppScript;

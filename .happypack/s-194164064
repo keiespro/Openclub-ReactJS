@@ -1,0 +1,300 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _Forms = require('components/Forms');
+
+var _lodash = require('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Privacy = function (_Component) {
+  (0, _inherits3.default)(Privacy, _Component);
+
+  function Privacy(props) {
+    (0, _classCallCheck3.default)(this, Privacy);
+
+    var _this = (0, _possibleConstructorReturn3.default)(this, (Privacy.__proto__ || (0, _getPrototypeOf2.default)(Privacy)).call(this, props));
+
+    _this.state = {
+      club: {
+        name: 'BMW Motor Club',
+        slug: 'bmwmotorclub'
+      }
+    };
+
+    _this.toggleSelect = _this.toggleSelect.bind(_this);
+    return _this;
+  }
+
+  (0, _createClass3.default)(Privacy, [{
+    key: 'toggleSelect',
+    value: function toggleSelect(e) {
+      e.preventDefault();
+      this.setState({
+        select: this.state.select === false
+      });
+    }
+  }, {
+    key: 'changeInput',
+    value: function changeInput(field, e) {
+      var change = {};
+      change[field] = e.target.value;
+      this.setState(change);
+    }
+  }, {
+    key: 'setClubState',
+    value: function setClubState(state) {
+      this.setState({ club: _lodash2.default.assign(this.state.club, state) });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _reactBootstrap.Row,
+        null,
+        _react2.default.createElement(
+          _reactBootstrap.Col,
+          { xs: 12 },
+          _react2.default.createElement(
+            'div',
+            { className: 'card' },
+            _react2.default.createElement(
+              'div',
+              { className: 'card-item' },
+              _react2.default.createElement('img', { src: '/img/banners/privacy.png', alt: 'Privacy background', className: 'fw img-responsive' }),
+              _react2.default.createElement(
+                'div',
+                { className: 'col-xs-8 card-item-text bg-transparent' },
+                _react2.default.createElement(
+                  'h3',
+                  { className: 'pl-lg text-primary' },
+                  'Privacy',
+                  _react2.default.createElement('br', null),
+                  _react2.default.createElement(
+                    'small',
+                    { className: 'ml0' },
+                    'Configure what people can see within your club.'
+                  )
+                )
+              )
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'card-body' },
+              _react2.default.createElement(
+                _Forms.Form,
+                { state: this.state.club, setState: this.setClubState.bind(this), horizontal: true },
+                _react2.default.createElement(
+                  'h5',
+                  null,
+                  'Feed privacy',
+                  _react2.default.createElement('br', null),
+                  _react2.default.createElement(
+                    'small',
+                    { className: 'm0' },
+                    "The feed includes announcements and posts by members. The feed is visible to public by default."
+                  )
+                ),
+                _react2.default.createElement(
+                  _Forms.FieldSet,
+                  null,
+                  _react2.default.createElement(
+                    _Forms.FormGroup,
+                    { controlId: 'name' },
+                    _react2.default.createElement(
+                      'div',
+                      null,
+                      _react2.default.createElement(
+                        _Forms.Radio,
+                        { name: 'feed_privacy', value: 'public', checked: true },
+                        _react2.default.createElement('i', { className: 'fa fa-globe' }),
+                        ' Public',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                          'span',
+                          { className: 'help-block ml-lg' },
+                          'Search engines and users from the internet can see your club posts.'
+                        )
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'div',
+                      null,
+                      _react2.default.createElement(
+                        _Forms.Radio,
+                        { name: 'feed_privacy', value: 'private' },
+                        _react2.default.createElement('i', { className: 'fa fa-unlock-alt' }),
+                        ' Private',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                          'span',
+                          { className: 'help-block ml-lg' },
+                          'Only members can see your club posts.'
+                        )
+                      )
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'h5',
+                  null,
+                  'Community directory',
+                  _react2.default.createElement('br', null),
+                  _react2.default.createElement(
+                    'small',
+                    { className: 'm0' },
+                    "The directory provides a place for people to discover members in the club."
+                  )
+                ),
+                _react2.default.createElement(
+                  _Forms.FieldSet,
+                  null,
+                  _react2.default.createElement(
+                    _Forms.FormGroup,
+                    { controlId: 'name' },
+                    _react2.default.createElement(
+                      'div',
+                      null,
+                      _react2.default.createElement(
+                        _Forms.Radio,
+                        { name: 'directory_privacy', value: 'public', checked: true },
+                        _react2.default.createElement('i', { className: 'fa fa-globe' }),
+                        ' Public',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                          'span',
+                          { className: 'help-block ml-lg' },
+                          'Search engines and users from the internet can see your club directory.'
+                        )
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'div',
+                      null,
+                      _react2.default.createElement(
+                        _Forms.Radio,
+                        { name: 'directory_privacy', value: 'private' },
+                        _react2.default.createElement('i', { className: 'fa fa-unlock-alt' }),
+                        ' Private',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                          'span',
+                          { className: 'help-block ml-lg' },
+                          'Only members can see your club directory.'
+                        )
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'div',
+                      null,
+                      _react2.default.createElement(
+                        _Forms.Radio,
+                        { name: 'directory_privacy', value: 'private' },
+                        _react2.default.createElement('i', { className: 'fa fa-ban' }),
+                        ' Off',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                          'span',
+                          { className: 'help-block ml-lg' },
+                          'Turn off the community directory.'
+                        )
+                      )
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'h5',
+                  null,
+                  'Events',
+                  _react2.default.createElement('br', null),
+                  _react2.default.createElement(
+                    'small',
+                    { className: 'm0' },
+                    "Your club events are displayed publicly by default. Hidden events are only visible to people who are invited."
+                  )
+                ),
+                _react2.default.createElement(
+                  _Forms.FieldSet,
+                  null,
+                  _react2.default.createElement(
+                    _Forms.FormGroup,
+                    { controlId: 'name' },
+                    _react2.default.createElement(
+                      'div',
+                      null,
+                      _react2.default.createElement(
+                        _Forms.Radio,
+                        { name: 'event_privacy', value: 'public', checked: true },
+                        _react2.default.createElement('i', { className: 'fa fa-globe' }),
+                        ' Public',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                          'span',
+                          { className: 'help-block ml-lg' },
+                          'Search engines and users from the internet can see your club events.'
+                        )
+                      )
+                    ),
+                    _react2.default.createElement(
+                      'div',
+                      null,
+                      _react2.default.createElement(
+                        _Forms.Radio,
+                        { name: 'event_privacy', value: 'private' },
+                        _react2.default.createElement('i', { className: 'fa fa-unlock-alt' }),
+                        ' Private',
+                        _react2.default.createElement('br', null),
+                        _react2.default.createElement(
+                          'span',
+                          { className: 'help-block ml-lg' },
+                          'Only members can see your club events.'
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+  return Privacy;
+}(_react.Component);
+
+Privacy.propTypes = {
+  params: _react.PropTypes.object
+};
+exports.default = Privacy;

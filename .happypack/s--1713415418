@@ -1,0 +1,26 @@
+'use strict';
+
+var path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var postcssImport = require('postcss-import');
+var postcssCssnext = require('postcss-cssnext');
+var postcssReporter = require('postcss-reporter');
+var PATHS = require('../paths');
+
+module.exports = function () {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref$production = _ref.production,
+      production = _ref$production === undefined ? false : _ref$production,
+      _ref$browser = _ref.browser,
+      browser = _ref$browser === undefined ? false : _ref$browser;
+
+  var CSS_LOADER = production ? 'happypack/loader?id=css-loader' : 'happypack/loader?id=css-loader?sourceMap&-minimize';
+  return {
+    test: /\.css$/,
+    use: ExtractTextPlugin.extract({
+      fallback: "style-loader",
+      use: ['happypack/loader?id=style-loader', '' + CSS_LOADER, 'happypack/loader?id=postcss-loader']
+    }),
+    include: [PATHS.src]
+  };
+};

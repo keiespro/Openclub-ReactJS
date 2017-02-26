@@ -1,0 +1,55 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+require('./styles/SidebarProfileWidget.scss');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SidebarProfileWidget = function SidebarProfileWidget(_ref) {
+  var user = _ref.user;
+
+  var timeOfDay = function timeOfDay() {
+    var date = new Date();
+    if (date.getHours() < 12) {
+      return 'Good morning';
+    }
+    if (date.getHours() >= 12 && date.getHours() <= 17) {
+      return 'Good afternoon';
+    }
+    if (date.getHours() > 17 && date.getHours() <= 24) {
+      return 'Good evening';
+    }
+    return 'Hello';
+  };
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'profile-widget text-center' },
+    _react2.default.createElement(
+      'a',
+      { href: '' },
+      _react2.default.createElement('img', { src: user.images.square, alt: 'Profile', className: 'profile-widget--img thumb64' })
+    ),
+    _react2.default.createElement(
+      'div',
+      { className: 'mt' },
+      user.name
+    )
+  );
+};
+
+SidebarProfileWidget.propTypes = {
+  user: _react.PropTypes.shape({
+    images: _react.PropTypes.object.isRequired,
+    name: _react.PropTypes.string
+  }).isRequired
+};
+
+exports.default = SidebarProfileWidget;

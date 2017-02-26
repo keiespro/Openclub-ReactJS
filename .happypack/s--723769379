@@ -1,0 +1,139 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+require('./styles/ClubCard.scss');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MiniClubCard = function (_Component) {
+  (0, _inherits3.default)(MiniClubCard, _Component);
+
+  function MiniClubCard() {
+    (0, _classCallCheck3.default)(this, MiniClubCard);
+    return (0, _possibleConstructorReturn3.default)(this, (MiniClubCard.__proto__ || (0, _getPrototypeOf2.default)(MiniClubCard)).apply(this, arguments));
+  }
+
+  (0, _createClass3.default)(MiniClubCard, [{
+    key: 'renderDetails',
+    value: function renderDetails() {
+      if (this.props.nested) {
+        return _react2.default.createElement(
+          'div',
+          null,
+          _react2.default.createElement(
+            'h5',
+            null,
+            'Some Club Queensland'
+          ),
+          _react2.default.createElement(
+            'p',
+            null,
+            'This is some text about this club.'
+          )
+        );
+      }
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'h5',
+          null,
+          'Some Club Queensland'
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          _react2.default.createElement(
+            'span',
+            { className: 'label label-success' },
+            'Active'
+          ),
+          ' Standard Membership'
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          'Valid until 26/07/2018 \u2014 Automatically renewing'
+        )
+      );
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var containerClasses = (0, _classnames2.default)({
+        'col-xs-12 p0': !this.props.nested
+      });
+      var cardClasses = (0, _classnames2.default)({
+        'card': !this.props.nested
+      });
+      return _react2.default.createElement(
+        'div',
+        { className: containerClasses },
+        _react2.default.createElement(
+          'div',
+          { className: cardClasses },
+          _react2.default.createElement(
+            'div',
+            { className: 'club-card' },
+            _react2.default.createElement(
+              'div',
+              { className: 'club-card-square' },
+              _react2.default.createElement('img', { src: '/img/user/01.jpg', className: 'img-responsive', alt: 'Club Name' })
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'club-card-details' },
+              this.renderDetails()
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'club-card-buttons' },
+              _react2.default.createElement(
+                'button',
+                { className: 'btn btn-flat btn-primary' },
+                _react2.default.createElement('i', { className: 'fa fa-fw fa-2x fa-caret-right' })
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
+  return MiniClubCard;
+}(_react.Component);
+
+MiniClubCard.propTypes = {
+  nested: _react.PropTypes.bool
+};
+exports.default = MiniClubCard;

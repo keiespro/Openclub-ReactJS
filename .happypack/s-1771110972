@@ -1,0 +1,76 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
+
+var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
+
+var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n  mutation createEvent($slug: String!, $hosting_club_id: MongoID!, $event: eventInput!){\n    createEvent(slug: $slug, hosting_club_id: $hosting_club_id, event: $event){\n      _id\n      slug\n    }\n  }\n'], ['\n  mutation createEvent($slug: String!, $hosting_club_id: MongoID!, $event: eventInput!){\n    createEvent(slug: $slug, hosting_club_id: $hosting_club_id, event: $event){\n      _id\n      slug\n    }\n  }\n']),
+    _templateObject2 = (0, _taggedTemplateLiteral3.default)(['\n  query currentViewer {\n    user {\n      clubs {\n        _id\n        slug\n        name\n        images {\n          thumb\n        }\n      }\n    }\n  }\n'], ['\n  query currentViewer {\n    user {\n      clubs {\n        _id\n        slug\n        name\n        images {\n          thumb\n        }\n      }\n    }\n  }\n']);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactApollo = require('react-apollo');
+
+var _graphqlTag = require('graphql-tag');
+
+var _graphqlTag2 = _interopRequireDefault(_graphqlTag);
+
+var _PageLayout = require('layouts/PageLayout');
+
+var _reactRouter = require('react-router');
+
+var _create_event_form = require('./create_event_form');
+
+var _create_event_form2 = _interopRequireDefault(_create_event_form);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var CreateEvent = function CreateEvent(_ref) {
+  var mutate = _ref.mutate;
+
+
+  var createTheEvent = function createTheEvent(values) {
+    console.log(values);
+    mutate({
+      variables: values
+    }).then(function (_ref2) {
+      var data = _ref2.data;
+
+      _reactRouter.browserHistory.push('/event/' + values.slug);
+    }).catch(function (err) {
+      console.log('Error creating event');
+      console.log(err);
+    });
+  };
+
+  var clubs = [];
+
+  return _react2.default.createElement(
+    'div',
+    { className: 'card' },
+    _react2.default.createElement(
+      'div',
+      { className: 'card-body' },
+      _react2.default.createElement(_PageLayout.PageHeader, { title: 'Create Event' }),
+      _react2.default.createElement(_create_event_form2.default, { clubs: clubs, onSubmit: createTheEvent })
+    )
+  );
+};
+
+CreateEvent.propTypes = {
+  mutate: _react.PropTypes.func.isRequired
+};
+
+var createMutation = (0, _graphqlTag2.default)(_templateObject);
+
+var clubList = (0, _graphqlTag2.default)(_templateObject2);
+
+var CreateEventWithApollo = (0, _reactApollo.graphql)(clubList)((0, _reactApollo.graphql)(createMutation)(CreateEvent));
+
+exports.default = CreateEventWithApollo;

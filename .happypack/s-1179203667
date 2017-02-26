@@ -1,0 +1,35 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _code_splitting = require('utils/code_splitting');
+
+var _Members = require('./routes/Members');
+
+var _Members2 = _interopRequireDefault(_Members);
+
+var _Profile = require('./routes/Profile');
+
+var _Profile2 = _interopRequireDefault(_Profile);
+
+var _Settings = require('./routes/Settings');
+
+var _Settings2 = _interopRequireDefault(_Settings);
+
+var _Finances = require('./routes/Finances');
+
+var _Finances2 = _interopRequireDefault(_Finances);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (store) {
+  return {
+    path: 'admin',
+    getComponent: function getComponent(nextState, cb) {
+      import('./components/AdminView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+    },
+    childRoutes: [(0, _Members2.default)(store), (0, _Settings2.default)(store), (0, _Profile2.default)(store), (0, _Finances2.default)(store)]
+  };
+};

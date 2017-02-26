@@ -1,0 +1,78 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _classnames = require('classnames');
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _reactBootstrap = require('react-bootstrap');
+
+var _reactSelect = require('react-select');
+
+var _reactSelect2 = _interopRequireDefault(_reactSelect);
+
+require('react-select/dist/react-select.css');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Select = function Select(_ref) {
+  var input = _ref.input,
+      meta = _ref.meta,
+      label = _ref.label,
+      help = _ref.help,
+      _ref$options = _ref.options,
+      options = _ref$options === undefined ? [] : _ref$options,
+      value = _ref.value;
+
+
+  var wrapClasses = (0, _classnames2.default)('form-group', {
+    'has-error': meta.touched && meta.error,
+    'has-warning': meta.touched && meta.warning
+  });
+
+  return _react2.default.createElement(
+    'div',
+    { className: wrapClasses },
+    label && _react2.default.createElement(
+      _reactBootstrap.ControlLabel,
+      { className: 'text-uppercase' },
+      label
+    ),
+    _react2.default.createElement(_reactSelect2.default, (0, _extends3.default)({
+      floatingLabelText: label,
+      errorText: meta.touched && meta.error
+    }, input, {
+      onChange: function onChange(value) {
+        return input.onChange(value.value);
+      },
+      onBlur: function onBlur() {
+        input.onBlur(input.value);
+      },
+      value: value,
+      options: options
+    })),
+    meta.touched && meta.error && _react2.default.createElement(
+      _reactBootstrap.HelpBlock,
+      { bsStyle: 'danger' },
+      meta.error
+    ),
+    (!meta.touched || !meta.error) && help && _react2.default.createElement(
+      _reactBootstrap.HelpBlock,
+      null,
+      help
+    )
+  );
+};
+
+exports.default = Select;

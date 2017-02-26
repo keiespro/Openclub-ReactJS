@@ -1,0 +1,125 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _possibleConstructorReturn2 = require('babel-runtime/helpers/possibleConstructorReturn');
+
+var _possibleConstructorReturn3 = _interopRequireDefault(_possibleConstructorReturn2);
+
+var _inherits2 = require('babel-runtime/helpers/inherits');
+
+var _inherits3 = _interopRequireDefault(_inherits2);
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Debug = function (_Component) {
+  (0, _inherits3.default)(Debug, _Component);
+
+  function Debug() {
+    (0, _classCallCheck3.default)(this, Debug);
+    return (0, _possibleConstructorReturn3.default)(this, (Debug.__proto__ || (0, _getPrototypeOf2.default)(Debug)).apply(this, arguments));
+  }
+
+  (0, _createClass3.default)(Debug, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      console.debug('Debug', this.props.component);
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      console.debug('Debug', nextProps.component);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var blobStyle = {
+        background: 'white',
+        border: '2px solid red',
+        position: 'fixed',
+        zIndex: 500,
+        width: 400,
+        height: 250,
+        right: 25,
+        bottom: 25,
+        overflowY: 'scroll',
+        overflowX: 'hidden',
+        padding: 5
+      };
+      var debugStyle = {
+        textAlign: 'center',
+        fontSize: 16,
+        padding: 0,
+        margin: 0,
+        fontWeight: 600
+      };
+      return _react2.default.createElement(
+        'div',
+        { style: blobStyle },
+        _react2.default.createElement(
+          'h1',
+          { style: debugStyle },
+          'DEBUG'
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          'State'
+        ),
+        _react2.default.createElement(
+          'pre',
+          null,
+          (0, _stringify2.default)(this.props.component.state, undefined, 2)
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          'Props'
+        ),
+        _react2.default.createElement(
+          'pre',
+          null,
+          (0, _stringify2.default)(this.props.component.props, undefined, 2)
+        ),
+        _react2.default.createElement(
+          'p',
+          null,
+          'Context'
+        ),
+        _react2.default.createElement(
+          'pre',
+          null,
+          (0, _stringify2.default)(this.props.component.context, undefined, 2)
+        )
+      );
+    }
+  }]);
+  return Debug;
+}(_react.Component);
+
+Debug.propTypes = {
+  component: _react.PropTypes.object
+};
+exports.default = Debug;

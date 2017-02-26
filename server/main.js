@@ -36,6 +36,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use((req, res, next) => {
     fs.readFile(config.paths.dist + '/stats.json', (err, data) => {
       if (err) console.error(err);
+      console.log(data);
       global.hash = JSON.parse(data).hash;
       next();
     });

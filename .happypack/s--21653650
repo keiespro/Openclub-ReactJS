@@ -1,0 +1,62 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRouter = require('react-router');
+
+var _code_splitting = require('utils/code_splitting');
+
+var _Admin = require('./routes/Admin');
+
+var _Admin2 = _interopRequireDefault(_Admin);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (store) {
+  return {
+    path: ':club_id',
+    getComponent: function getComponent(nextState, cb) {
+      import('./components/ClubView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+    },
+    indexRoute: {
+      onEnter: function onEnter(nextState, replace) {
+        var state = store.getState();
+        var path = state.auth.token ? 'feed' : 'about';
+        replace('/' + nextState.params.club_id + '/' + path);
+      }
+    },
+    childRoutes: [{
+      path: 'feed',
+      getComponent: function getComponent(nextState, cb) {
+        import('./routes/Feed/components/FeedView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+      }
+    }, {
+      path: 'about',
+      getComponent: function getComponent(nextState, cb) {
+        import('./routes/About/components/AboutView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+      }
+    }, {
+      path: 'events',
+      getComponent: function getComponent(nextState, cb) {
+        import('./routes/Events/components/EventsView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+      }
+    }, {
+      path: 'community',
+      getComponent: function getComponent(nextState, cb) {
+        import('./routes/Community/components/CommunityView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+      }
+    }, {
+      path: 'membership',
+      getComponent: function getComponent(nextState, cb) {
+        import('./routes/Membership/components/MembershipView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+      }
+    }, {
+      path: 'join',
+      getComponent: function getComponent(nextState, cb) {
+        import('./routes/Join/components/JoinView').then((0, _code_splitting.loadcb)(cb)).catch(_code_splitting.splitError);
+      }
+    }, (0, _Admin2.default)(store)]
+  };
+};
