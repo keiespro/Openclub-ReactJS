@@ -1,1 +1,0 @@
-{"version":3,"sources":["src/utils/emptyFunction.js"],"names":[],"mappings":";;;;;;kBAAe,YAAY;AACzB,SAAO,IAAP;AACD,C","file":"emptyFunction.js","sourceRoot":"/Volumes/Git HD/Code/openclub","sourcesContent":["export default function () {\n  return true;\n}\n"]}

@@ -1,1 +1,0 @@
-{"version":3,"sources":["src/components/ClubCard/index.js"],"names":["MiniClubCard"],"mappings":";;;;;;;AAAA;;;;AACA;;;;;;QAGEA,Y","file":"index.js","sourceRoot":"/Volumes/Git HD/Code/openclub","sourcesContent":["import ClubCard from './ClubCard';\nimport MiniClubCard from './MiniClubCard';\n\nexport {\n  MiniClubCard\n}\n\nexport default ClubCard;\n"]}

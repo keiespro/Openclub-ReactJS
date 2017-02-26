@@ -1,1 +1,0 @@
-{"version":3,"sources":["build/paths.js"],"names":["require","paths","module","exports"],"mappings":";;eAAkBA,QAAQ,iBAAR,C;IAAVC,K,YAAAA,K;;AAERC,OAAOC,OAAP,GAAiBF,KAAjB","file":"paths.js","sourceRoot":"/Volumes/Git HD/Code/openclub","sourcesContent":["const { paths } = require('../config/index');\n\nmodule.exports = paths;\n"]}
