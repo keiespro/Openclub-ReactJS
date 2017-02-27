@@ -10,41 +10,36 @@ import config from '../config';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-if (process.env.NODE_ENV !== 'production') {
+// initial express middleware setup
+setupExpress(app);
+
+if(process.env.NODE_ENV !== 'production'){
   dotenv.config();
-  // enable webpack hot module replacement
-  const webpackDevMiddleware = require('webpack-dev-middleware');
-  const webpackHotMiddleware = require('webpack-hot-middleware');
-  const webpackConfig = require('../build/webpack.config');
-  const devBrowserConfig = webpackConfig('browser');
-  const compiler = webpack(devBrowserConfig);
+
+  const webpackDevMiddleware = require('webpack-dev-middleware')
+  const webpackHotMiddleware = require('webpack-hot-middleware')
+  const webpackConfig = require('../build/webpack.config')
+
+  const devBrowserConfig = webpackConfig('browser')
+  const compiler = webpack(devBrowserConfig)
   app.use(webpackDevMiddleware(compiler, {
-    hot: true,
-    stats: {
-      hash: true
-    },
-    publicPath: devBrowserConfig.output.publicPath,
-    filename: devBrowserConfig.output.filename
-  }));
+    publicPath: devBrowserConfig.output.publicPath
+  }))
 
   app.use(webpackHotMiddleware(compiler, {
     log: console.log,
     path: '/__webpack_hmr',
     heartbeat: 10 * 1000,
-  }));
-
-  app.use((req, res, next) => {
-    fs.readFile(config.paths.dist + '/stats.json', (err, data) => {
-      if (err) console.error(err);
-      console.log(data);
-      global.hash = JSON.parse(data).hash;
-      next();
-    });
-  });
+  }))
 }
 
-setupExpress(app);
+// get the correct hash/asset list to do ssr
+fs.readFile(config.paths.dist + '/stats.json', 'utf-8', (err, data) => {
+  if (err) { return console.error(err) }
+  const stats = JSON.parse(data)
+  console.log(stats)
+  app.use(middleware(stats.assets))
 
-app.get('*', middleware);
-
-app.listen(PORT);
+  // finally start the server listening
+  app.listen(PORT)
+})

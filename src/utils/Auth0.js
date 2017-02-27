@@ -2,8 +2,8 @@ import Auth0Lock from 'auth0-lock'
 
 // const { __AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__ } = Env
 
-let lock = () => ({ on: () => true });
-let inlineLock = () => ({ on: () => true });
+let lock = { on: () => true }
+let inlineLock = { on: () => true }
 
 if (typeof window !== 'undefined') {
   // singleton Auth0 lock
@@ -65,7 +65,7 @@ const hashParsed = new Promise((resolve, reject) => {
     }
   }
 
-  lock.on('hash_parsed', resolveToken);
+  lock.on('hash_parsed', resolveToken)
   inlineLock.on('hash_parsed', resolveToken)
 })
 

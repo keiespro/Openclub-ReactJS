@@ -17,6 +17,7 @@ export default (app) => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
   app.use(methodOverride());
+  console.log(process.cwd())
   app.use(express.static(path.join(process.cwd(), 'src/static')));
   app.use(express.static(path.join(process.cwd(), 'dist/public')));
 

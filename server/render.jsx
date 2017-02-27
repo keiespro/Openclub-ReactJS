@@ -4,12 +4,11 @@ import Helmet from 'react-helmet';
 import { createAppScript, createTrackingScript } from './createScripts';
 import AppContainer from '../src/containers/AppContainer';
 
-const createApp = (store, props) => renderToString(
+const createApp = (store, props, assets) => renderToString(
   <AppContainer store={store} {...props} server/>
 );
 
-function buildPage({ componentHTML, initialState, headAssets }) {
-  return `
+const buildPage = ({ componentHTML, initialState, headAssets, assets }) => `
   <!doctype html>
   <html>
     <head>
@@ -21,16 +20,16 @@ function buildPage({ componentHTML, initialState, headAssets }) {
     <body>
       <div id="root">${componentHTML}</div>
       <script>window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}</script>
-      ${createAppScript()}
+      ${createAppScript(assets)}
     </body>
-  </html>`;
-}
+  </html>
+`
 
-function setup(store, routes, history) {
+const setup = (store, routes, history, assets) => {
   const initialState = store.getState();
   const componentHTML = createApp(store, routes, history);
   const headAssets = Helmet.rewind();
-  return buildPage({ componentHTML, initialState, headAssets });
+  return buildPage({ componentHTML, initialState, headAssets, assets });
 }
 
 export default setup;

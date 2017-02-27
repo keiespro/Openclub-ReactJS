@@ -1,9 +1,8 @@
 {
     "verbose": false,
     "watch": [
-      "src",
       "server",
       "build"
     ],
-    "exec": "npm run build:dev && node dist/server.dev.js"
+    "exec": "npm run clean && npm run build:dev && node dist/server.dev.js"
 }
