@@ -1,8 +1,8 @@
-const PATHS = require('./paths');
-const rules = require('./rules');
-const plugins = require('./plugins');
-const externals = require('./externals');
-const resolve = require('./resolve');
+const PATHS = require('./paths')
+const rules = require('./rules')
+const plugins = require('./plugins')
+const externals = require('./externals')
+const resolve = require('./resolve')
 
 module.exports = (env = '') => {
   const isProduction = process.env.NODE_ENV === 'production';
@@ -16,7 +16,7 @@ module.exports = (env = '') => {
     'react-redux',
     'react-router',
     'react-router-redux'
-  ];
+  ]
 
   const prodServerRender = {
     devtool: 'source-map',
@@ -34,13 +34,13 @@ module.exports = (env = '') => {
     module: { rules: rules({ production: true, browser: false }) },
     resolve,
     plugins: plugins({ production: true, browser: false })
-  };
+  }
 
   const prodBrowserRender = {
     devtool: 'cheap-module-source-map',
     context: PATHS.src,
     entry: {
-      app: ['./main'],
+      app: ['./main.jsx'],
       vendor
     },
     node,
@@ -52,7 +52,7 @@ module.exports = (env = '') => {
     module: { rules: rules({ production: true, browser: true }) },
     resolve,
     plugins: plugins({ production: true, browser: true })
-  };
+  }
 
   const devServerRender = {
     devtool: 'sourcemap',
@@ -70,34 +70,34 @@ module.exports = (env = '') => {
     module: { rules: rules({ production: false, browser: false }) },
     resolve,
     plugins: plugins({ production: false, browser: false })
-  };
+  }
 
   const devBrowserRender = {
-    devtool: 'inline-source-map',
+    devtool: 'cheap-module-source-map',
     context: PATHS.src,
     entry: {
       app: [
         'react-hot-loader/patch',
         'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
-        './main'
+        './main.jsx'
       ],
       vendor
     },
     node,
     output: {
       path: PATHS.assets,
-      filename: '[hash].[name].js',
-      chunkFilename: '[hash].[name].js',
+      filename: '[name].[hash].js',
+      chunkFilename: '[name].[hash].js',
       publicPath: PATHS.public
     },
     module: { rules: rules({ production: false, browser: true }) },
     resolve,
     plugins: plugins({ production: false, browser: true })
-  };
+  }
 
-  const prodConfig = [prodBrowserRender, prodServerRender];
-  const devConfig = isBrowser ? devBrowserRender : devServerRender;
-  const configuration = isProduction ? prodConfig : devConfig;
+  const prodConfig = [prodBrowserRender, prodServerRender]
+  const devConfig = isBrowser ? devBrowserRender : [devBrowserRender, devServerRender]
+  const configuration = isProduction ? prodConfig : devConfig
 
-  return configuration;
+  return configuration
 };

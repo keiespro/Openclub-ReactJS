@@ -1,30 +1,33 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
+import { Link } from 'react-router'
 import './styles/DetailsHeader.scss'
 
-class DetailsHeader extends Component {
-  render() {
-    const headingClasses = classNames({
-      active: this.props.active
-    }, 'panel-heading')
+const DetailsHeader = ({ location, active, children, pageId }) => {
+  const headingClasses = classNames({
+    active
+  }, 'panel-heading')
 
-    return (
+  return (
+    <Link to={{ pathname: location.pathname, query: { page: pageId }}}>
       <div className="b0 panel panel-default details-header">
         <div className={headingClasses}>
           <h4 className="panel-title">
             <small>
               <em className="fa fa-angle-double-right text-muted mr icon-lg"></em>
             </small>
-            {this.props.children}
+            {children}
           </h4>
         </div>
       </div>
-    )
-  }
+    </Link>
+  )
 }
 
 DetailsHeader.propTypes = {
-  active: PropTypes.bool
+  location: PropTypes.object.isRequired,
+  active: PropTypes.bool,
+  pageId: PropTypes.string.isRequired
 }
 
 export default DetailsHeader

@@ -3,7 +3,6 @@ import { checkAuthentication } from 'modules/auth/actions'
 import { loadcb, splitError } from 'utils/code_splitting'
 
 import CoreLayout from 'layouts/CoreLayout/CoreLayout';
-
 import Home from './Home'
 import FeedRoute from './Feed'
 import ClubRoute from './Club'
@@ -22,7 +21,9 @@ export default (store) => {
 
   return {
     path: '/',
-    component: CoreLayout,
+    getComponent: (nextState, cb) => {
+      import('layouts/CoreLayout/CoreLayout').then(loadcb(cb)).catch(splitError)
+    },
     onEnter: checkAuth,
     indexRoute: Home(store),
     childRoutes: [

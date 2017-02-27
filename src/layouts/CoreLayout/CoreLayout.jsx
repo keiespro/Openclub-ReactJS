@@ -9,7 +9,7 @@ import Header from '../../components/Header'
 import Sidebar from '../../components/Sidebar'
 import './styles'
 
-const CoreLayout = ({ data, children, logoutUser }) => {
+const CoreLayout = ({ data = {}, children, location, logoutUser }) => {
   const user = data.user
   const containerClasses = classNames('layout-container', {
     'sidebar-offcanvas': !user,
@@ -22,7 +22,7 @@ const CoreLayout = ({ data, children, logoutUser }) => {
   return (
     <div className={containerClasses}>
       <Header user={user} />
-      { user && <Sidebar user={user} /> }
+      { user && <Sidebar user={user} location={location} /> }
       { user && <div className="sidebar-layout-obfuscator" /> }
 
       <div className={contentClasses}>
@@ -51,6 +51,14 @@ const currentViewer = gql`
       images {
         thumb
         square
+      }
+      clubs {
+        _id
+        slug
+        name
+        images {
+          thumb
+        }
       }
     }
   }

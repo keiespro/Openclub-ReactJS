@@ -7,12 +7,9 @@ function createAnalyticsSnippet(id) {
   <script async src='https://www.google-analytics.com/analytics.js'></script>`;
 }
 
-function createAppScript() {
-  return `
-  <script type="text/javascript" charset="utf-8" src="/assets/${global.hash}.vendor.js"></script>
-  <script type="text/javascript" charset="utf-8" src="/assets/${global.hash}.app.js"></script>
-  `;
-}
+const createAppScript = assets => assets.app.concat(assets.vendor)
+  .filter(path => path.endsWith('.js'))
+  .map(path => `<script type="text/javascript" charset="utf-8" src="/assets/${path}"></script>`)
 
 const createTrackingScript = () => 'ANALYTICS_ID' in process.env ? createAnalyticsSnippet(process.env.ANALYTICS_ID) : '';
 

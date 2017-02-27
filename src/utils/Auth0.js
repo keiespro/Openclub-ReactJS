@@ -1,8 +1,8 @@
-import Auth0Lock from 'auth0-lock';
+import Auth0Lock from 'auth0-lock'
 
-// I do apologise for this... like really... holy shit.
-// But, isomorphic is isomorphic and this shit's running on server...
+// const { __AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__ } = Env
 
+<<<<<<< HEAD
 //__AUTH0_CLIENT_ID__ = __AUTH0_CLIENT_ID__ || process.env.OCA_AUTH0_CLIENT_ID
 //__AUTH0_DOMAIN__ = __AUTH0_DOMAIN__ || process.env.OCA_AUTH0_DOMAIN
 
@@ -10,6 +10,10 @@ let lock = () => true;
 let inlineLock = {
   on: () => true
 }
+=======
+let lock = { on: () => true }
+let inlineLock = { on: () => true }
+>>>>>>> fuu
 
 if (typeof window !== 'undefined') {
   let { __AUTH0_CLIENT_ID__, __AUTH0_DOMAIN__ } = window.globalConfig;
@@ -23,9 +27,6 @@ if (typeof window !== 'undefined') {
     languageDictionary: {
       title: 'Log In to OpenClub'
     },
-    // auth: {
-    //   redirectUrl: location.origin
-    // },
     closable: false
   })
 
@@ -34,24 +35,35 @@ if (typeof window !== 'undefined') {
     theme: {
       primaryColor: '#008fcc'
     },
-    // auth: {
-    //   redirectUrl: location.origin
-    // }
+    additionalSignUpFields: [
+      {
+        name: "address",
+        placeholder: "enter where your babies live",
+      },
+      {
+        name: "full_name",
+        placeholder: "Enter your full name"
+      },
+      {
+        name: ""
+      }
+    ]
+    /* auth: {
+      redirectUrl: location.origin
+    }*/
   });
-
-  /**
-   * Due to Auth0s stupid choice to use events, and the fact that they
-   * emit the event with setTimeout(emit, 0), you need to subscribe
-   * immediately after lock creation.
-   *
-   * We use the 'hash_parsed' event instead because it triggers whether
-   * there is a hash or not, which allows us to link auth properly into redux.
-   * We convert the event into a promise that is consumable by actions
-   */
 }
 
+/**
+ * Due to Auth0s stupid choice to use events, and the fact that they
+ * emit the event with setTimeout(emit, 0), you need to subscribe
+ * immediately after lock creation.
+ *
+ * We use the 'hash_parsed' event instead because it triggers whether
+ * there is a hash or not, which allows us to link auth properly into redux.
+ * We convert the event into a promise that is consumable by actions
+ */
 const hashParsed = new Promise((resolve, reject) => {
-  if (typeof window === 'undefined') resolve(null);
   // catch hash parse event because of all the problems with the authentication event
   const resolveToken = result => {
     if (result && result.accessToken) {
@@ -65,8 +77,13 @@ const hashParsed = new Promise((resolve, reject) => {
     }
   }
 
+<<<<<<< HEAD
   lock.on('hash_parsed', resolveToken);
   //inlineLock.on('hash_parsed', resolveToken)
+=======
+  lock.on('hash_parsed', resolveToken)
+  inlineLock.on('hash_parsed', resolveToken)
+>>>>>>> fuu
 })
 
 
