@@ -9,7 +9,8 @@ module.exports = ({ production = false, browser = false } = {}) => {
 
   const ExtractText = new ExtractTextPlugin({ filename: '[name].[hash].css', allChunks: true })
   const CommonChunks = new webpack.optimize.CommonsChunkPlugin({
-    names: ['vendor']
+    name: 'vendor',
+    filename: 'vendor.[hash].js'
   })
 
   function BuildStats() {

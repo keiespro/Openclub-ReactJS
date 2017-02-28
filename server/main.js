@@ -23,6 +23,7 @@ if(process.env.NODE_ENV !== 'production'){
   const devBrowserConfig = webpackConfig('browser')
   const compiler = webpack(devBrowserConfig)
   app.use(webpackDevMiddleware(compiler, {
+    hot: true,
     publicPath: devBrowserConfig.output.publicPath
   }))
 

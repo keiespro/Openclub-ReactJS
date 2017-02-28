@@ -9,7 +9,7 @@ function createAnalyticsSnippet(id) {
 
 const createAppScript = assets => assets.app.concat(assets.vendor)
   .filter(path => path.endsWith('.js'))
-  .map(path => `<script type="text/javascript" charset="utf-8" src="/assets/${path}"></script>`)
+  .reverse().map(path => `<script type="text/javascript" charset="utf-8" src="/assets/${path}"></script>`)
 
 const createTrackingScript = () => 'ANALYTICS_ID' in process.env ? createAnalyticsSnippet(process.env.ANALYTICS_ID) : '';
 
