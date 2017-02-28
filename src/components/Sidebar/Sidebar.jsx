@@ -31,7 +31,7 @@ class Sidebar extends Component {
   }*/
 
   render() {
-    const { user } = this.props;
+    const { user, location } = this.props;
 
     return (
       <aside className="sidebar-container">
