@@ -6,11 +6,10 @@ import AppContainer from '../src/containers/AppContainer';
 
 const createApp = (store, props) => {
   let componentHTML = renderToString(<AppContainer store={store} {...props} server />);
-  let componentCSS = global.__STYLE_COLLECTOR__;
-  return { componentHTML, componentCSS };
+  return { componentHTML };
 }
 
-const buildPage = ({ componentHTML, componentCSS, initialState, headAssets, assets }) => `
+const buildPage = ({ componentHTML, initialState, headAssets, assets }) => `
   <!doctype html>
   <html>
     <head>
@@ -18,9 +17,7 @@ const buildPage = ({ componentHTML, componentCSS, initialState, headAssets, asse
       ${headAssets.meta.toString()}
       ${headAssets.link.toString()}
       ${createTrackingScript()}
-      <style>
-        ${componentCSS}
-      </style>
+      <link rel="stylesheet" href="/assets/${assets.app.filter(path => path.endsWith('.css'))[0]}" />
     </head>
     <body>
       <div id="root">${componentHTML}</div>
@@ -32,9 +29,9 @@ const buildPage = ({ componentHTML, componentCSS, initialState, headAssets, asse
 
 const setup = (store, routes, history, assets) => {
   const initialState = store.getState();
-  const { componentHTML, componentCSS } = createApp(store, routes);
+  const { componentHTML } = createApp(store, routes);
   const headAssets = Helmet.rewind();
-  return buildPage({ componentHTML, componentCSS, initialState, headAssets, assets });
+  return buildPage({ componentHTML, initialState, headAssets, assets });
 }
 
 export default setup;

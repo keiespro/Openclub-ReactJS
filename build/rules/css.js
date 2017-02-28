@@ -12,7 +12,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
       fallback: "style-loader",
-      use: ['style-collector-loader', 'style-loader', `${CSS_LOADER}`, 'postcss-loader']
+      use: ['style-loader', `${CSS_LOADER}`, 'postcss-loader']
     }),
     include: [
       PATHS.src
