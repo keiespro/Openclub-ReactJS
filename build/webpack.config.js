@@ -78,8 +78,8 @@ module.exports = (env = '') => {
     context: PATHS.src,
     entry: {
       app: [
-        'react-hot-loader/patch',
-        'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr&timeout=20000&reload=true',
+        // 'react-hot-loader/patch',
+        // 'webpack-hot-middleware/client',
         './main.jsx'
       ],
       vendor
