@@ -66,7 +66,7 @@ const hashParsed = new Promise((resolve, reject) => {
   }
 
   lock.on('hash_parsed', resolveToken)
-  inlineLock.on('hash_parsed', resolveToken)
+  //inlineLock.on('hash_parsed', resolveToken)
 })
 
 
