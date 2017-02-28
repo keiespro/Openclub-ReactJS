@@ -7,6 +7,10 @@ const config = {
 }
 const CURRENT_WORKING_DIR = process.cwd()
 
+if (config.env === 'development') {
+  require('dotenv').config();
+}
+
 config.globals = {
   'process.env': {
     'NODE_ENV': JSON.stringify(config.env)
