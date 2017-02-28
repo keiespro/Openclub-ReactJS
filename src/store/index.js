@@ -5,7 +5,7 @@ import { browserHistory } from 'react-router'
 import makeRootReducer from './reducers'
 import { updateLocation } from '../modules/location/actions'
 
-const __CLIENT__ = typeof window !== 'undefined';
+const __CLIENT__ = typeof window === 'object';
 
 let store
 
@@ -13,19 +13,24 @@ export default (history, initialState = {}) => {
   // singleton store
   if (store) { return store }
 
-  // setup middlewares
-  let middleware = applyMiddleware(thunk, routerMiddleware(history));
+  let middleware = [thunk];
+  let enhancers = [];
 
-  // setup enhancers
   if (__DEV__ && __CLIENT__) {
-    const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__
+    const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__;
     if (typeof devToolsExtension === 'function') {
-      middleware = compose(middleware, devToolsExtension);
+      enhancers.push(devToolsExtension());
     }
   }
 
-  // create the store
-  store = middleware(createStore)(makeRootReducer(), initialState);
+  store = createStore(
+    makeRootReducer(),
+    initialState,
+    compose(
+      applyMiddleware(...middleware),
+      ...enhancers
+    )
+  )
 
   store.asyncReducers = {}
 

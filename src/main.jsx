@@ -17,6 +17,10 @@ const App = <AppContainer store={store} routes={createRoutes(store)} history={hi
 
 match({ history, routes }, (error, redirectLocation, renderProps) => {
   if (!__DEV__) {
+    if (window.devToolsExtension) {
+      window.devToolsExtension.open()
+    }
+
     ReactDOM.render(
       <AppContainer store={store} routes={createRoutes(store)} history={history} {...renderProps} client/>,
       MOUNT_NODE
