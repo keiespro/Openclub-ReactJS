@@ -7,11 +7,12 @@ const PATHS = require('../paths');
 
 module.exports = ({ production = false, browser = false } = {}) => {
   const CSS_LOADER = production ? 'css-loader' : 'css-loader?sourceMap&-minimize';
+
   return {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
       fallback: "style-loader",
-      use: ['style-loader', `${CSS_LOADER}`, 'postcss-loader']
+      use: ['style-collector-loader', 'style-loader', `${CSS_LOADER}`, 'postcss-loader']
     }),
     include: [
       PATHS.src

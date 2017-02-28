@@ -31,6 +31,7 @@ config.paths = {
   public: 'assets/',
   dist: path.resolve(CURRENT_WORKING_DIR, 'dist'),
   assets: path.resolve(CURRENT_WORKING_DIR, 'dist/public/assets'),
+  build: path.resolve(CURRENT_WORKING_DIR, 'build'),
   modules: path.resolve(CURRENT_WORKING_DIR, 'node_modules')
 }
 //console.log(config);

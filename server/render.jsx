@@ -4,11 +4,13 @@ import Helmet from 'react-helmet';
 import { createAppScript, createTrackingScript } from './createScripts';
 import AppContainer from '../src/containers/AppContainer';
 
-const createApp = (store, props, assets) => renderToString(
-  <AppContainer store={store} {...props} server/>
-);
+const createApp = (store, props) => {
+  let componentHTML = renderToString(<AppContainer store={store} {...props} server />);
+  let componentCSS = global.__STYLE_COLLECTOR__;
+  return { componentHTML, componentCSS };
+}
 
-const buildPage = ({ componentHTML, initialState, headAssets, assets }) => `
+const buildPage = ({ componentHTML, componentCSS, initialState, headAssets, assets }) => `
   <!doctype html>
   <html>
     <head>
@@ -16,6 +18,9 @@ const buildPage = ({ componentHTML, initialState, headAssets, assets }) => `
       ${headAssets.meta.toString()}
       ${headAssets.link.toString()}
       ${createTrackingScript()}
+      <style>
+        ${componentCSS}
+      </style>
     </head>
     <body>
       <div id="root">${componentHTML}</div>
@@ -27,9 +32,9 @@ const buildPage = ({ componentHTML, initialState, headAssets, assets }) => `
 
 const setup = (store, routes, history, assets) => {
   const initialState = store.getState();
-  const componentHTML = createApp(store, routes, history);
+  const { componentHTML, componentCSS } = createApp(store, routes);
   const headAssets = Helmet.rewind();
-  return buildPage({ componentHTML, initialState, headAssets, assets });
+  return buildPage({ componentHTML, componentCSS, initialState, headAssets, assets });
 }
 
 export default setup;
