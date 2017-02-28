@@ -15,7 +15,8 @@ module.exports = (env = '') => {
     'redux',
     'react-redux',
     'react-router',
-    'react-router-redux'
+    'react-router-redux',
+    'react-bootstrap'
   ]
 
   const prodServerRender = {
