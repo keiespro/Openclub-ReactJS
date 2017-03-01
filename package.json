@@ -12,7 +12,7 @@
     "lint:fix": "eslint --ext .js,.jsx app server --fix",
     "clean": "rimraf public && rimraf dist",
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
-    "dev": "http-server ./build",
+    "dev": "webpack-dev-server --config config/webpack.config.babel.js",
     "build:dev": "cross-env NODE_ENV=development webpack --debug --colors --progress --display-error-details --profile --config ./config/webpack.config.babel.js",
     "build": "npm run clean && cross-env NODE_ENV=production webpack --colors --display-error-details --config ./build/webpack.config.js",
     "test": "cross-env NODE_ENV=test karma start ./app/tests/karma.conf.js",
@@ -47,7 +47,9 @@
     "babel-preset-stage-0": "^6.22.0",
     "cross-env": "^3.1.4",
     "html-webpack-plugin": "^2.28.0",
+    "react-hot-loader": "^3.0.0-beta.6",
     "uglify-loader": "^1.4.0",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
   }
 }

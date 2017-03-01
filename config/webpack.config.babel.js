@@ -1,27 +1,25 @@
+import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 export default {
   name: 'openclub',
   target: 'web',
-  entry: './src/main.jsx',
+  entry: [
+    'react-hot-loader/patch',
+    'webpack-dev-server/client?http://localhost:8080',
+    'webpack/hot/only-dev-server',
+    './src/main.jsx'
+  ],
   resolve: {
     modules: ['node_modules'],
     extensions: ['.js', '.jsx', '.json']
   },
   output: {
-    path: 'build',
+    path: __dirname + '/dist',
     filename: '[name].[hash].js',
     publicPath: '/'
   },
-  devtool: 'source-map',
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: 'src/index.html',
-      hash: false,
-      inject: 'body',
-      favicon: 'src/static/favicon.ico'
-    })
-  ],
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
@@ -31,5 +29,20 @@ export default {
         loader: 'babel-loader'
       }
     ]
-  }
+  },
+  devServer: {
+    //hot: true,
+    contentBase: 'dist',
+    publicPath: '/'
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+      hash: false,
+      inject: 'body',
+      favicon: 'src/static/favicon.ico'
+    }),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin()
+  ]
 }

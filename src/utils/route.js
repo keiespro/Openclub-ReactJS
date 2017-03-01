@@ -13,6 +13,10 @@ const mixStoreWithRoute = (store, route) => {
     output.childRoutes = route.childRoutes.map(r => mixStoreWithRoute(store, r))
   }
 
+  if(route.indexRoute){
+    output.indexRoute = mixStoreWithRoute(store, output.indexRoute)
+  }
+
   if(route.onEnter){
     output.onEnter = (props, replaceState, cb) => {
       Promise.resolve(route.onEnter(props, replaceState, store))

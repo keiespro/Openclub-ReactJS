@@ -1,5 +1,5 @@
-import App from './app'
-import CoreLayout from './core_layout'
+import App from './App'
+import CoreLayout from './CoreLayout'
 
 export {
   App,

@@ -1,7 +1,8 @@
 import { browserHistory } from 'react-router'
 import { loadcb, splitError } from 'utils/code_splitting'
+import Home from './components/Home'
 
-export default (store) => ({
+export default {
   onEnter: (nextState, replace, store) => {
     // as a child this route will only run once user login stuff has been completed
     /*const state = store.getState()
@@ -11,7 +12,8 @@ export default (store) => ({
     }
     cb()*/
   },
-  getComponent: (nextState, cb) => {
+  component: Home
+  /*getComponent: (nextState, cb) => {
     import('./components/Home').then(loadcb(cb)).catch(splitError)
-  }
-})
+  }*/
+}

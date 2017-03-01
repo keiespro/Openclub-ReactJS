@@ -6,6 +6,7 @@
     "syntax-dynamic-import",
     ["module-resolver", {
       "root": ["./src"]
-    }]
+    }],
+    "react-hot-loader/babel"
   ]
 }
