@@ -2,15 +2,21 @@
  * Apollo integration with openclub for graphql API
  */
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
-import { logCreator } from 'utils/logger'
+import { createLog } from 'utils/logger'
 
-const log = logCreator('apollo')
+const log = createLog('apollo')
 
-export default store => {
-  const networkInterface = createNetworkInterface({
-    uri: 'http://localhost:5000/v1/graphql'
-  })
+const networkInterface = createNetworkInterface({
+  uri: 'http://localhost:5000/v1/graphql'
+})
 
+export default new ApolloClient({
+  networkInterface,
+  dataIdFromObject: obj => obj._id
+})
+
+// adds store utilising middlewares to the apollo client
+const initMiddlewares = store => {
   networkInterface.use([{
     applyMiddleware: ({ options }, next) => {
       // check if a token is available
@@ -41,9 +47,8 @@ export default store => {
   }
 
   networkInterface.useAfter([errorLog])
+}
 
-  return new ApolloClient({
-    networkInterface,
-    dataIdFromObject: obj => obj._id
-  })
+export {
+  initMiddlewares
 }

@@ -1,0 +1,8 @@
+
+const checkAuthentication = () => {
+
+}
+
+export {
+  checkAuthentication
+}
