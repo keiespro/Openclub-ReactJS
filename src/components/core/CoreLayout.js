@@ -1,21 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class CoreLayout extends Component {
-  render() {
-    const { children } = this.props
-    return (
-      <div>
-        {children}
-      </div>
-    )
-  }
-}
-
-/*
-const CoreLayout = props => (
+const CoreLayout = ({ children }) => (
   <div>
-  THIS IS THE CORE!@
+    <div>CORE ME</div>
+    {children}
   </div>
-)*/
+)
 
 export default CoreLayout
