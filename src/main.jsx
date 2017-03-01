@@ -36,7 +36,6 @@ render(AppInst)
 
 if (module.hot) {
   module.hot.accept('./components/core/App', () => {
-    const NextApp = require('components/core/App').default
-    render(<NextApp {...props}/>)
+    return render(AppInst)
   })
 }
