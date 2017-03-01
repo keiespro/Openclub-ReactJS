@@ -1,4 +1,5 @@
 import { checkAuthentication } from 'modules/auth/actions'
+import { CoreLayout } from 'components/core'
 import homeRoute from './home'
 import feedRoute from './feed'
 

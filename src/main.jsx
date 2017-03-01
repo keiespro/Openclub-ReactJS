@@ -3,6 +3,7 @@ import createStore from 'store/create_store'
 import { browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import createApolloClient from 'modules/apollo'
+import { App } from 'components/core'
 
 const INITIAL_STATE = window.__INITIAL_STATE__
 const MOUNT_NODE = document.getElementById('root')
