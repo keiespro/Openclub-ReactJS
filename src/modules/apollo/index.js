@@ -2,46 +2,48 @@
  * Apollo integration with openclub for graphql API
  */
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
-import store from '../../store'
+import { logCreator } from 'utils/logger'
 
-const networkInterface = createNetworkInterface({
-  uri: 'http://localhost:5000/v1/graphql'
-})
+const log = logCreator('apollo')
 
-networkInterface.use([{
-  applyMiddleware: ({ options }, next) => {
-    // check if a token is available
-    const { token } = store().getState().auth
+export default store => {
+  const networkInterface = createNetworkInterface({
+    uri: 'http://localhost:5000/v1/graphql'
+  })
 
-    if (token) {
-      // create headers if needed
-      if (!options.headers) {
-        options.headers = {};
+  networkInterface.use([{
+    applyMiddleware: ({ options }, next) => {
+      // check if a token is available
+      const { token } = store().getState().auth
+
+      if (token) {
+        // create headers if needed
+        if (!options.headers) {
+          options.headers = {}
+        }
+
+        options.headers.authorization = `Bearer ${token}`
       }
 
-      options.headers.authorization = `Bearer ${token}`
+      next()
     }
+  }])
 
-    next();
+  const errorLog = {
+    applyAfterware({ response }, next) {
+      response.clone().json().then(({ errors }) => {
+        if (errors) {
+          log.error(errors.map(e => e.message))
+        }
+        next()
+      })
+    }
   }
-}]);
 
-const errorLog = {
-  applyAfterware({ response }, next) {
-    response.clone().json().then(({ errors }) => {
-      if (errors) {
-        console.error('GraphQL Errors:', errors.map(e => e.message));
-      }
-      next();
-    })
-  }
+  networkInterface.useAfter([errorLog])
+
+  return new ApolloClient({
+    networkInterface,
+    dataIdFromObject: obj => obj._id
+  })
 }
-
-networkInterface.useAfter([errorLog])
-
-const apolloClient = new ApolloClient({
-  networkInterface,
-  dataIdFromObject: obj => obj._id
-})
-
-export default apolloClient
