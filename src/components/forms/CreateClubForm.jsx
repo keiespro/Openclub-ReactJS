@@ -8,7 +8,8 @@ import {
   Input,
   Button,
   Checkbox,
-  CheckboxGroup
+  CheckboxGroup,
+  DatePicker
 } from 'components/form_controls'
 
 const CreateClubForm = ({ handleSubmit, createForm }) => {
@@ -51,6 +52,11 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
           component={CheckboxGroup}
         />
         <FieldLabel>Test Date Selector</FieldLabel>
+        <Field
+          name="singledate"
+          component={DatePicker}
+          size="large"
+        />
         <FieldLabel>Test Multi Date Selector</FieldLabel>
         <FieldLabel>Test Switch</FieldLabel>
         <FieldLabel>Test Radio Button</FieldLabel>
