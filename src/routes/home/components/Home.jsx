@@ -1,11 +1,19 @@
 import React from 'react'
-import { DatePicker } from 'antd'
+import CreateClubForm from 'components/forms/CreateClubForm'
+import PageHeader from 'components/layout/PageHeader'
 
-const Home = props => (
-  <div>
-    <div>HOME!!@!</div>
-    <DatePicker />
-  </div>
-)
+const Home = props => {
+
+  const createTheClub = values => {
+    console.log(values)
+  }
+
+  return (
+    <div>
+      <PageHeader></PageHeader>
+      <CreateClubForm onSubmit={createTheClub}/>
+    </div>
+  )
+}
 
 export default Home
