@@ -1,8 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { FieldSet, FieldLabel, Input, Button } from 'components/form_controls'
 import { required, maxLength, slug } from 'utils/form_validation/errors'
+import {
+  FieldSet,
+  FieldLabel, 
+  Input,
+  Button,
+  Checkbox
+} from 'components/form_controls'
 
 const CreateClubForm = ({ handleSubmit, createForm }) => {
 
@@ -28,7 +34,21 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
           validate={[required, slug]}
           component={Input}
         />
-      <FieldLabel>Test Checkbox</FieldLabel>
+        <FieldLabel>Test Checkbox</FieldLabel>
+        <Field
+          name="checker"
+          label="Check this box darnit"
+          component={Checkbox}
+        />
+        <FieldLabel>Test Checkbox Group</FieldLabel>
+        <FieldLabel>Test Date Selector</FieldLabel>
+        <FieldLabel>Test Multi Date Selector</FieldLabel>
+        <FieldLabel>Test Switch</FieldLabel>
+        <FieldLabel>Test Radio Button</FieldLabel>
+        <FieldLabel>Test Image Uploader</FieldLabel>
+        <FieldLabel>Test File Uploader</FieldLabel>
+        <FieldLabel>Test Dropdown</FieldLabel>
+        <FieldLabel>Test Dropdown Multiselect</FieldLabel>
         <Button type="primary">Submit</Button>
       </FieldSet>
     </form>

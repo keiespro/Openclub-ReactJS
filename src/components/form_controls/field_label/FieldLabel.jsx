@@ -8,7 +8,9 @@ const FieldLabel = ({ required, children }) => {
   })
 
   return (
-    <label className={className} title={children}>{children}</label>
+    <div>
+      <label className={className} title={children}>{children}</label>
+    </div>    
   )
 }
 
