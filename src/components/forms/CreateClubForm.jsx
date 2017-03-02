@@ -4,7 +4,7 @@ import { Field, reduxForm } from 'redux-form'
 import { required, maxLength, slug } from 'utils/form_validation/errors'
 import {
   FieldSet,
-  FieldLabel, 
+  FieldLabel,
   Input,
   Button,
   Checkbox
@@ -49,7 +49,7 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
         <FieldLabel>Test File Uploader</FieldLabel>
         <FieldLabel>Test Dropdown</FieldLabel>
         <FieldLabel>Test Dropdown Multiselect</FieldLabel>
-        <Button type="primary">Submit</Button>
+        <Button type="primary" htmlType="submit">Submit</Button>
       </FieldSet>
     </form>
   )
