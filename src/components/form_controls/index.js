@@ -6,6 +6,8 @@ import Checkbox from './checkbox/Checkbox'
 import CheckboxGroup from './checkbox/CheckboxGroup'
 import DatePicker from './datepicker/DatePicker'
 import RangePicker from './datepicker/RangePicker'
+import Switch from './switch/Switch'
+import Select from './select/Select'
 
 export {
   Input,
@@ -15,5 +17,7 @@ export {
   Checkbox,
   CheckboxGroup,
   DatePicker,
-  RangePicker
+  RangePicker,
+  Switch,
+  Select
 }

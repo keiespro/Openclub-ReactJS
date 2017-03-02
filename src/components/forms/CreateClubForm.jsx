@@ -10,7 +10,9 @@ import {
   Checkbox,
   CheckboxGroup,
   DatePicker,
-  RangePicker
+  RangePicker,
+  Switch,
+  Select
 } from 'components/form_controls'
 
 const CreateClubForm = ({ handleSubmit, createForm }) => {
@@ -61,14 +63,36 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
         <FieldLabel>Test Multi Date Selector</FieldLabel>
         <Field
           name="rangedate"
+          size="large"
           component={RangePicker}
         />
         <FieldLabel>Test Switch</FieldLabel>
+        <Field
+          name="switchy"
+          component={Switch}
+        />
         <FieldLabel>Test Radio Button</FieldLabel>
         <FieldLabel>Test Image Uploader</FieldLabel>
         <FieldLabel>Test File Uploader</FieldLabel>
-        <FieldLabel>Test Dropdown</FieldLabel>
-        <FieldLabel>Test Dropdown Multiselect</FieldLabel>
+        <FieldLabel>Test Select</FieldLabel>
+        <Field
+          name="someselect"
+          component={Select}
+          options={[
+            { key: 'shiftyfive', value: 'Select Option One' },
+            { key: 'wotwot', value: 'Another option' }
+          ]}
+        />
+        <FieldLabel>Test MultiSelect</FieldLabel>
+        <Field
+          name="multime"
+          component={Select}
+          multiple
+          options={[
+            { key: 'mary', value: 'Mary' },
+            { key: 'john', value: 'John' }
+          ]}
+        />
         <Button type="primary" htmlType="submit">Submit</Button>
       </FieldSet>
     </form>
