@@ -61,5 +61,8 @@ const CreateClubReduxForm = reduxForm({
 
 // connect the current form data so we can use it to display the slug name
 export default connect(state => ({
-  createForm: state.form.create_club
+  createForm: state.form.create_club,
+  initialValues: {
+    checker: false
+  }
 }))(CreateClubReduxForm)
