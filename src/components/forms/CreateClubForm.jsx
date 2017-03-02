@@ -9,7 +9,8 @@ import {
   Button,
   Checkbox,
   CheckboxGroup,
-  DatePicker
+  DatePicker,
+  RangePicker
 } from 'components/form_controls'
 
 const CreateClubForm = ({ handleSubmit, createForm }) => {
@@ -58,6 +59,10 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
           size="large"
         />
         <FieldLabel>Test Multi Date Selector</FieldLabel>
+        <Field
+          name="rangedate"
+          component={RangePicker}
+        />
         <FieldLabel>Test Switch</FieldLabel>
         <FieldLabel>Test Radio Button</FieldLabel>
         <FieldLabel>Test Image Uploader</FieldLabel>

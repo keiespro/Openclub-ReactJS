@@ -5,6 +5,7 @@ import Button from './button/Button'
 import Checkbox from './checkbox/Checkbox'
 import CheckboxGroup from './checkbox/CheckboxGroup'
 import DatePicker from './datepicker/DatePicker'
+import RangePicker from './datepicker/RangePicker'
 
 export {
   Input,
@@ -13,5 +14,6 @@ export {
   Button,
   Checkbox,
   CheckboxGroup,
-  DatePicker
+  DatePicker,
+  RangePicker
 }
