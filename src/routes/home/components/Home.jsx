@@ -3,7 +3,7 @@ import { DatePicker } from 'antd'
 
 const Home = props => (
   <div>
-    HOME!!@!
+    <div>HOME!!@!</div>
     <DatePicker />
   </div>
 )
