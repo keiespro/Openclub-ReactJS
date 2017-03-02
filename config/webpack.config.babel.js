@@ -27,6 +27,10 @@ export default {
         exclude: /node_modules/,
         //loader: 'babel-loader?cacheDirectory=true'
         loader: 'babel-loader'
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
