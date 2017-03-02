@@ -7,7 +7,8 @@ import {
   FieldLabel,
   Input,
   Button,
-  Checkbox
+  Checkbox,
+  CheckboxGroup
 } from 'components/form_controls'
 
 const CreateClubForm = ({ handleSubmit, createForm }) => {
@@ -41,6 +42,14 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
           component={Checkbox}
         />
         <FieldLabel>Test Checkbox Group</FieldLabel>
+        <Field
+          name="checkergroup"
+          options={[
+            { label: 'Option One', value: 'option_one' },
+            { label: 'Option Two', value: 'option_two' }
+          ]}
+          component={CheckboxGroup}
+        />
         <FieldLabel>Test Date Selector</FieldLabel>
         <FieldLabel>Test Multi Date Selector</FieldLabel>
         <FieldLabel>Test Switch</FieldLabel>
@@ -63,6 +72,9 @@ const CreateClubReduxForm = reduxForm({
 export default connect(state => ({
   createForm: state.form.create_club,
   initialValues: {
-    checker: false
+    checker: false,
+    checkergroup: {
+      option_one: true
+    }
   }
 }))(CreateClubReduxForm)
