@@ -13,7 +13,8 @@ import {
   RangePicker,
   Switch,
   Select,
-  RadioGroup
+  RadioGroup,
+  TimePicker
 } from 'components/form_controls'
 
 const CreateClubForm = ({ handleSubmit, createForm }) => {
@@ -66,6 +67,11 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
           name="rangedate"
           size="large"
           component={RangePicker}
+        />
+        <FieldLabel>Test Time Picker</FieldLabel>
+        <Field
+          name="thetime"
+          component={TimePicker}
         />
         <FieldLabel>Test Switch</FieldLabel>
         <Field

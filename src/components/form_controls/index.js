@@ -9,6 +9,7 @@ import RangePicker from './datepicker/RangePicker'
 import Switch from './switch/Switch'
 import Select from './select/Select'
 import RadioGroup from './radio/RadioGroup'
+import TimePicker from './timepicker/TimePicker'
 
 export {
   Input,
@@ -21,5 +22,6 @@ export {
   RangePicker,
   Switch,
   Select,
-  RadioGroup
+  RadioGroup,
+  TimePicker
 }
