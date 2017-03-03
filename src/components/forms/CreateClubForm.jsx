@@ -12,7 +12,8 @@ import {
   DatePicker,
   RangePicker,
   Switch,
-  Select
+  Select,
+  RadioGroup
 } from 'components/form_controls'
 
 const CreateClubForm = ({ handleSubmit, createForm }) => {
@@ -72,6 +73,14 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
           component={Switch}
         />
         <FieldLabel>Test Radio Button</FieldLabel>
+        <Field
+          name="radiogo"
+          component={RadioGroup}
+          options={[
+            { label: 'First Radio', value: 3 },
+            { label: 'Second Radio', value: 'yes' }
+          ]}
+        />
         <FieldLabel>Test Image Uploader</FieldLabel>
         <FieldLabel>Test File Uploader</FieldLabel>
         <FieldLabel>Test Select</FieldLabel>
