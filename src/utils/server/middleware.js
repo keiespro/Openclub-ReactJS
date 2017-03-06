@@ -1,7 +1,7 @@
 import { createMemoryHistory, match } from 'react-router';
-import createStore from '../src/store';
-import createRoutes from '../src/routes';
-import renderPage from './render';
+import createStore from '../../store';
+import createRoutes from '../../routes';
+import serverRender from './serverRender';
 
 const middleware = assets => (req, res) => {
   const memoryHistory = createMemoryHistory();
@@ -17,7 +17,7 @@ const middleware = assets => (req, res) => {
     } else if (redirect) {
       res.redirect(302, redirect.pathname + redirect.search)
     } else if (props) {
-      res.status(200).send(renderPage(store, props, {}, assets))
+      res.status(200).send(serverRender(store, props, {}, assets))
     } else {
       res.sendStatus(404)
     }

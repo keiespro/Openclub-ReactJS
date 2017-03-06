@@ -2,22 +2,25 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import Helmet from 'react-helmet';
 import { createAppScript, createTrackingScript } from './createScripts';
-import AppContainer from '../src/containers/AppContainer';
+import AppContainer from '../../containers/AppContainer';
 
 const createApp = (store, props) => {
   let componentHTML = renderToString(<AppContainer store={store} {...props} server />);
   return { componentHTML };
 }
+console.log(__universal__, global.__universal__);
+
+const Styles = global.__universal__.reactStyles(React);
 
 const buildPage = ({ componentHTML, initialState, headAssets, assets }) => `
   <!doctype html>
   <html>
     <head>
+      ${renderToString(Styles)}
       ${headAssets.title.toString()}
       ${headAssets.meta.toString()}
       ${headAssets.link.toString()}
       ${createTrackingScript()}
-      <link rel="stylesheet" href="/assets/${assets.app.filter(path => path.endsWith('.css'))[0]}" />
     </head>
     <body>
       <div id="root">${componentHTML}</div>
