@@ -10,6 +10,8 @@ import Switch from './switch/Switch'
 import Select from './select/Select'
 import RadioGroup from './radio/RadioGroup'
 import TimePicker from './timepicker/TimePicker'
+import FileUploader from './uploaders/FileUploader'
+import ImageUploader from './uploaders/ImageUploader'
 
 export {
   Input,
@@ -23,5 +25,7 @@ export {
   Switch,
   Select,
   RadioGroup,
-  TimePicker
+  TimePicker,
+  FileUploader,
+  ImageUploader
 }

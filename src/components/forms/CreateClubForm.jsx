@@ -14,7 +14,9 @@ import {
   Switch,
   Select,
   RadioGroup,
-  TimePicker
+  TimePicker,
+  ImageUploader,
+  FileUploader
 } from 'components/form_controls'
 
 const CreateClubForm = ({ handleSubmit, createForm }) => {
@@ -88,7 +90,15 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
           ]}
         />
         <FieldLabel>Test Image Uploader</FieldLabel>
+        <Field
+          name="profiletest"
+          component={ImageUploader}
+        />
         <FieldLabel>Test File Uploader</FieldLabel>
+        <Field
+          name="regfiles"
+          component={FileUploader}
+        />
         <FieldLabel>Test Select</FieldLabel>
         <Field
           name="someselect"

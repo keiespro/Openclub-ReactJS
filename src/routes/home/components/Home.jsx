@@ -1,17 +1,17 @@
 import React from 'react'
-import CreateClubForm from 'components/forms/CreateClubForm'
+import TestForm from 'components/forms/TestForm'
 import PageHeader from 'components/layout/PageHeader'
 
 const Home = props => {
 
-  const createTheClub = values => {
+  const testTheForm = values => {
     console.log(values)
   }
 
   return (
     <div>
       <PageHeader></PageHeader>
-      <CreateClubForm onSubmit={createTheClub}/>
+      <TestForm onSubmit={testTheForm}/>
     </div>
   )
 }
