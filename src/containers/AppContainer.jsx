@@ -16,7 +16,7 @@ class AppContainer extends Component {
     return (
       <ApolloProvider store={store} client={apolloClient}>
         <div style={{ height: '100%' }}>
-          <Router {...this.props} />
+          <Router {...this.props.routes} />
         </div>
       </ApolloProvider>
     )
@@ -27,7 +27,7 @@ class AppContainer extends Component {
     return (
       <ApolloProvider store={store} client={apolloClient}>
         <div style={{ height: '100%' }}>
-          <RouterContext {...this.props} />
+          <RouterContext {...this.props.routes} />
         </div>
       </ApolloProvider>
     )
