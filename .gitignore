@@ -5,3 +5,6 @@ ncp-debug.log
 npm-debug.log
 coverage
 .env
+
+newrelic_agent.log
+
