@@ -1,4 +1,4 @@
-import apolloClient from 'modules/apollo'
+import apolloClient from '../apollo'
 import gql from 'graphql-tag'
 import { browserHistory } from 'react-router'
 import { lock, inlineLock, hashParsed } from '../../utils/Auth0'
