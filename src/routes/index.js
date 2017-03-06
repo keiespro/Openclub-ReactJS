@@ -1,8 +1,6 @@
 import { injectReducer } from 'store/reducers'
 import { checkAuthentication } from 'modules/auth/actions'
 import { loadcb, splitError } from 'utils/code_splitting'
-
-import CoreLayout from 'layouts/CoreLayout/CoreLayout';
 import Home from './Home'
 import FeedRoute from './Feed'
 import ClubRoute from './Club'
