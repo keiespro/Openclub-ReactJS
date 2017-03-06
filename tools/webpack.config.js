@@ -13,11 +13,15 @@ const isAnalyze = process.argv.includes('--analyze') || process.argv.includes('-
 
 const globals = {
   'process.env.NODE_ENV': isDebug ? '"development"' : '"production"',
-  'process.env.BROWSER': true,
   'process.env.OCA_GRAPH_SERVER': JSON.stringify(process.env.OCA_GRAPH_SERVER),
   'process.env.OCA_AUTH0_CLIENT_ID': JSON.stringify(process.env.OCA_AUTH0_CLIENT_ID || ''),
   'process.env.OCA_AUTH0_DOMAIN': JSON.stringify(process.env.OCA_AUTH0_DOMAIN || ''),
   __DEV__: isDebug,
+}
+
+const resolve = {
+  modules: [path.resolve(__dirname, "../src"), "node_modules"],
+  extensions: ['.js', '.jsx', '.scss'],
 }
 
 //
@@ -69,12 +73,19 @@ const config = {
             ...isDebug ? [] : ['react-optimize'],
           ],
           plugins: [
+            "transform-object-rest-spread",
+            "transform-runtime",
             // Adds component stack to warning messages
             // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-source
             ...isDebug ? ['transform-react-jsx-source'] : [],
             // Adds __self attribute to JSX which React will use for some warnings
             // https://github.com/babel/babel/tree/master/packages/babel-plugin-transform-react-jsx-self
             ...isDebug ? ['transform-react-jsx-self'] : [],
+            "syntax-dynamic-import",
+            ["module-resolver", {
+              "root": ["./src"],
+              "extensions": [".js", ".jsx", ".scss", ".css"]
+            }]
           ],
         },
       },
@@ -82,7 +93,7 @@ const config = {
         test: /\.css/,
         use: [
           {
-            loader: 'universal-style-loader',
+            loader: 'simple-universal-style-loader',
           },
           {
             loader: 'css-loader',
@@ -91,7 +102,7 @@ const config = {
               importLoaders: 1,
               sourceMap: isDebug,
               // CSS Modules https://github.com/css-modules/css-modules
-              modules: true,
+              modules: false,
               localIdentName: isDebug ? '[name]-[local]-[hash:base64:5]' : '[hash:base64:5]',
               // CSS Nano http://cssnano.co/options/
               minimize: !isDebug,
@@ -110,7 +121,7 @@ const config = {
         test: /\.scss/,
         use: [
           {
-            loader: 'universal-style-loader',
+            loader: 'simple-universal-style-loader',
           },
           {
             loader: 'css-loader',
@@ -119,7 +130,7 @@ const config = {
               importLoaders: 1,
               sourceMap: isDebug,
               // CSS Modules https://github.com/css-modules/css-modules
-              modules: true,
+              modules: false,
               localIdentName: isDebug ? '[name]-[local]-[hash:base64:5]' : '[hash:base64:5]',
               // CSS Nano http://cssnano.co/options/
               minimize: !isDebug,
@@ -170,10 +181,6 @@ const config = {
       },
     ],
   },
-  resolve: {
-    modules: [path.resolve(__dirname, '../src'), path.resolve(__dirname, '../node_modules')],
-    extensions: ['.js', '.jsx', '.css', '.scss'],
-  },
 
   // Don't attempt to continue if there are any errors.
   bail: !isDebug,
@@ -212,11 +219,14 @@ const clientConfig = {
     filename: isDebug ? '[name].js' : '[name].[chunkhash:8].js',
     chunkFilename: isDebug ? '[name].chunk.js' : '[name].[chunkhash:8].chunk.js',
   },
-
+  resolve,
   plugins: [
     // Define free variables
     // https://webpack.github.io/docs/list-of-plugins.html#defineplugin
-    new webpack.DefinePlugin(globals),
+    new webpack.DefinePlugin({
+      'process.env.BROWSER': true,
+      ...globals
+    }),
 
     // Emit a file with assets paths
     // https://github.com/sporto/assets-webpack-plugin#options
@@ -313,7 +323,7 @@ const serverConfig = {
       },
     })),
   },
-
+  resolve,
   externals: [
     /^\.\/assets\.json$/,
     (context, request, callback) => {
@@ -323,14 +333,12 @@ const serverConfig = {
       callback(null, Boolean(isExternal));
     },
   ],
-
   plugins: [
     // Define free variables
     // https://webpack.github.io/docs/list-of-plugins.html#defineplugin
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': isDebug ? '"development"' : '"production"',
       'process.env.BROWSER': false,
-      __DEV__: isDebug,
+      ...globals
     }),
 
     // Do not create separate chunks of the server bundle
