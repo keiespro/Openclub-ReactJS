@@ -9,6 +9,11 @@
   "env": {
     "browser" : true
   },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
+  },
   "globals": {
     "__DEV__"      : false,
     "__TEST__"     : false,
