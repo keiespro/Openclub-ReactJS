@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import apolloClient from 'modules/apollo'
+import apolloClient from '../modules/apollo'
 import { reducer as form } from 'redux-form'
 import auth from '../modules/auth/reducer'
 import location from '../modules/location/reducer'

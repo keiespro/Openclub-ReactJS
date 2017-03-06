@@ -20,7 +20,7 @@ export default (store) => {
   return {
     path: '/',
     getComponent: (nextState, cb) => {
-      import('layouts/CoreLayout/CoreLayout').then(loadcb(cb)).catch(splitError)
+      import('../layouts/CoreLayout/CoreLayout.jsx').then(loadcb(cb)).catch(splitError)
     },
     onEnter: checkAuth,
     indexRoute: Home(store),
