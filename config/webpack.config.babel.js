@@ -1,5 +1,6 @@
 import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
+import env from './env'
 
 export default {
   name: 'openclub',
@@ -60,6 +61,7 @@ export default {
       favicon: 'src/static/favicon.ico'
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin()
+    new webpack.NamedModulesPlugin(),
+    new webpack.DefinePlugin(env)
   ]
 }
