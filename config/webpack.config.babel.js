@@ -31,6 +31,19 @@ export default {
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', {
+          loader: 'sass-loader?sourceMap',
+          options: {
+            includePaths: ['node_modules', 'src']
+          }
+        }]
+      },
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader?sourceMap']
       }
     ]
   },

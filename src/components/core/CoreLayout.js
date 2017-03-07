@@ -1,10 +1,15 @@
 import React from 'react'
+import { Layout } from 'antd'
+import Header from 'components/layout/Header'
+const { Content } = Layout
 
 const CoreLayout = ({ children }) => (
-  <div>
-    <div>CORE ME</div>
-    {children}
-  </div>
+  <Layout>
+    <Header/>
+    <Content>
+      {children}
+    </Content>
+  </Layout>
 )
 
 export default CoreLayout
