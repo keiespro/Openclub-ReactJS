@@ -2,6 +2,7 @@ import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import env from './env'
 
+console.log(env)
 export default {
   name: 'openclub',
   target: 'web',
@@ -54,6 +55,7 @@ export default {
     publicPath: '/'
   },
   plugins: [
+    new webpack.DefinePlugin(env),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
       hash: false,
@@ -61,7 +63,6 @@ export default {
       favicon: 'src/static/favicon.ico'
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new webpack.DefinePlugin(env)
+    new webpack.NamedModulesPlugin()
   ]
 }
