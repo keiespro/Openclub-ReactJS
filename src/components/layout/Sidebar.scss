@@ -1,0 +1,22 @@
+@import 'styles/Variables';
+
+.oc-sidebar {
+  width: $sidebar-wd;
+  background-color: $sidebar-bg;
+  height: 100%;
+  color: #fff;
+}
+.oc-sidebar-profile {
+  padding: 30px 20px;
+  text-align: center;
+}
+.oc-sidebar-profile--img {
+  border-radius: 5px;
+}
+.thumb64 {
+  width: 64px;
+  height: 64px;
+}
+.oc-sidebar-menu {
+  width: $sidebar-wd;
+}
