@@ -47,7 +47,6 @@ function requestLogout() {
 export function inlineLogin(id) {
   return dispatch => {
     dispatch(showInlineLock())
-    console.log('inlineLogin', id);
     inlineLock(id).show()
   }
 }
