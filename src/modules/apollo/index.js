@@ -20,7 +20,7 @@ const initMiddlewares = store => {
   networkInterface.use([{
     applyMiddleware: ({ options }, next) => {
       // check if a token is available
-      const { token } = store().getState().auth
+      const { token } = store.getState().auth
 
       if (token) {
         // create headers if needed
