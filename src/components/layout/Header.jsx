@@ -23,6 +23,7 @@ const Header = ({ user, showSearch }) => (
     <IndexLink to="/" className="oc-header-logo">
       <Logo color="#008FCC"/>
     </IndexLink>
+    { user &&
     <div className="oc-header-context">
       <div className="oc-header-usermenu">
         <Dropdown overlay={userMenu} trigger={['click']}>
@@ -30,6 +31,7 @@ const Header = ({ user, showSearch }) => (
         </Dropdown>
       </div>
     </div>
+    }
   </div>
 )
 

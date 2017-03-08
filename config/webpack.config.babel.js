@@ -2,7 +2,6 @@ import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import env from './env'
 
-console.log(env)
 export default {
   name: 'openclub',
   target: 'web',

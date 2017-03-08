@@ -4,7 +4,7 @@ import { mixStoreWithRoute } from 'utils/route'
 import homeRoute from './home'
 import feedRoute from './feed'
 
-const checkAuth = (nextState, replace, store) => {}//store.dispatch(checkAuthentication())
+const checkAuth = (nextState, replace, store) => store.dispatch(checkAuthentication())
 
 export default store => mixStoreWithRoute(store, {
   path: '/',
