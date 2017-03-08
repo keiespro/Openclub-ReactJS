@@ -3,20 +3,12 @@ import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { required, maxLength, slug } from 'utils/form_validation/errors'
 import {
+  Form,
   FieldSet,
-  FieldLabel,
+  FieldContainer,
   Input,
   Button,
-  Checkbox,
-  CheckboxGroup,
-  DatePicker,
-  RangePicker,
-  Switch,
-  Select,
-  RadioGroup,
-  TimePicker,
-  ImageUploader,
-  FileUploader
+  ImageUploader
 } from 'components/form_controls'
 
 const CreateClubForm = ({ handleSubmit, createForm }) => {
@@ -25,9 +17,8 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
     createForm.values.slug : '<your id here>'
 
   return (
-    <form className="form-horizontal" onSubmit={handleSubmit}>
-      <FieldSet>
-        <FieldLabel required={true}>Club Name</FieldLabel>
+    <Form onSubmit={handleSubmit}>
+      <FieldContainer required={true} title="Name">
         <Field
           name="club.name"
           type="text"
@@ -35,7 +26,8 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
           validate={[required, maxLength(64)]}
           component={Input}
         />
-        <FieldLabel required={true}>Club Link</FieldLabel>
+      </FieldContainer>
+      <FieldContainer required={true} title="Link">
         <Field
           name="slug"
           type="text"
@@ -43,84 +35,21 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
           validate={[required, slug]}
           component={Input}
         />
-        <FieldLabel>Test Checkbox</FieldLabel>
+      </FieldContainer>
+      <FieldContainer title="Profile Image">
         <Field
-          name="checker"
-          label="Check this box darnit"
-          component={Checkbox}
-        />
-        <FieldLabel>Test Checkbox Group</FieldLabel>
-        <Field
-          name="checkergroup"
-          options={[
-            { label: 'Option One', value: 'option_one' },
-            { label: 'Option Two', value: 'option_two' }
-          ]}
-          component={CheckboxGroup}
-        />
-        <FieldLabel>Test Date Selector</FieldLabel>
-        <Field
-          name="singledate"
-          component={DatePicker}
-          size="large"
-        />
-        <FieldLabel>Test Multi Date Selector</FieldLabel>
-        <Field
-          name="rangedate"
-          size="large"
-          component={RangePicker}
-        />
-        <FieldLabel>Test Time Picker</FieldLabel>
-        <Field
-          name="thetime"
-          component={TimePicker}
-        />
-        <FieldLabel>Test Switch</FieldLabel>
-        <Field
-          name="switchy"
-          component={Switch}
-        />
-        <FieldLabel>Test Radio Button</FieldLabel>
-        <Field
-          name="radiogo"
-          component={RadioGroup}
-          options={[
-            { label: 'First Radio', value: 3 },
-            { label: 'Second Radio', value: 'yes' }
-          ]}
-        />
-        <FieldLabel>Test Image Uploader</FieldLabel>
-        <Field
-          name="profiletest"
+          name="club.images.profile"
           component={ImageUploader}
         />
-        <FieldLabel>Test File Uploader</FieldLabel>
+      </FieldContainer>
+      <FieldContainer title="Background Image">
         <Field
-          name="regfiles"
-          component={FileUploader}
+          name="club.images.background"
+          component={ImageUploader}
         />
-        <FieldLabel>Test Select</FieldLabel>
-        <Field
-          name="someselect"
-          component={Select}
-          options={[
-            { key: 'shiftyfive', value: 'Select Option One' },
-            { key: 'wotwot', value: 'Another option' }
-          ]}
-        />
-        <FieldLabel>Test MultiSelect</FieldLabel>
-        <Field
-          name="multime"
-          component={Select}
-          multiple
-          options={[
-            { key: 'mary', value: 'Mary' },
-            { key: 'john', value: 'John' }
-          ]}
-        />
-        <Button type="primary" htmlType="submit">Submit</Button>
-      </FieldSet>
-    </form>
+      </FieldContainer>
+      <Button type="primary" htmlType="submit">Create</Button>
+    </Form>
   )
 }
 

@@ -9,6 +9,8 @@ import Drawer from 'rc-drawer'
 import { logoutUser } from 'modules/auth/actions'
 import 'rc-drawer/assets/index.css'
 
+import './CoreLayout.scss'
+
 const { Content } = Layout
 
 const CoreLayout = ({ data = {}, children }) => (

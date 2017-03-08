@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { required, maxLength, slug } from 'utils/form_validation/errors'
 import {
+  Form,
   FieldSet,
-  FieldLabel,
+  FieldContainer,
   Input,
   Button,
   Checkbox,
@@ -20,9 +21,8 @@ import {
 } from 'components/form_controls'
 
 const TestForm = ({ handleSubmit, createForm, show }) => (
-  <form className="form-horizontal" onSubmit={handleSubmit}>
-    <FieldSet>
-      <FieldLabel required={true}>Name</FieldLabel>
+  <Form onSubmit={handleSubmit}>
+    <FieldContainer required={true} title="Input">
       <Field
         name="somename"
         type="text"
@@ -30,7 +30,8 @@ const TestForm = ({ handleSubmit, createForm, show }) => (
         validate={[required, maxLength(32)]}
         component={Input}
       />
-      <FieldLabel required={true}>Link</FieldLabel>
+    </FieldContainer>
+    <FieldContainer required={true} title="Input Two">
       <Field
         name="linko"
         type="text"
@@ -38,13 +39,15 @@ const TestForm = ({ handleSubmit, createForm, show }) => (
         validate={[required, slug]}
         component={Input}
       />
-      <FieldLabel>Test Checkbox</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="Checkbox">
       <Field
         name="checker"
         label="Check this box darnit"
         component={Checkbox}
       />
-      <FieldLabel>Test Checkbox Group</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="Checkbox Group">
       <Field
         name="checkergroup"
         options={[
@@ -53,29 +56,34 @@ const TestForm = ({ handleSubmit, createForm, show }) => (
         ]}
         component={CheckboxGroup}
       />
-      <FieldLabel>Test Date Selector</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="Date Selector">
       <Field
         name="singledate"
         component={DatePicker}
         size="large"
       />
-      <FieldLabel>Test Multi Date Selector</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="Multi Date Selector">
       <Field
         name="rangedate"
         size="large"
         component={RangePicker}
       />
-      <FieldLabel>Test Time Picker</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="Time Picker">
       <Field
         name="thetime"
         component={TimePicker}
       />
-      <FieldLabel>Test Switch</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="Switch">
       <Field
         name="switchy"
         component={Switch}
       />
-      <FieldLabel>Test Radio Button</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="Radio Button">
       <Field
         name="radiogo"
         component={RadioGroup}
@@ -84,18 +92,21 @@ const TestForm = ({ handleSubmit, createForm, show }) => (
           { label: 'Second Radio', value: 'yes' }
         ]}
       />
-      <FieldLabel>Test Image Uploader</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="Image Uploader">
       <Field
         name="profiletest"
         action="test.com/tester"
         component={ImageUploader}
       />
-      <FieldLabel>Test File Uploader</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="File Uploader">
       <Field
         name="regfiles"
         component={FileUploader}
       />
-      <FieldLabel>Test Select</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="Select">
       <Field
         name="someselect"
         component={Select}
@@ -104,7 +115,8 @@ const TestForm = ({ handleSubmit, createForm, show }) => (
           { key: 'wotwot', value: 'Another option' }
         ]}
       />
-      <FieldLabel>Test MultiSelect</FieldLabel>
+    </FieldContainer>
+    <FieldContainer title="Multi Select">
       <Field
         name="multime"
         component={Select}
@@ -114,9 +126,9 @@ const TestForm = ({ handleSubmit, createForm, show }) => (
           { key: 'john', value: 'John' }
         ]}
       />
-      <Button type="primary" htmlType="submit">Submit</Button>
-    </FieldSet>
-  </form>
+    </FieldContainer>
+    <Button type="primary" htmlType="submit">Submit</Button>
+  </Form>
 )
 
 const TestReduxForm = reduxForm({
