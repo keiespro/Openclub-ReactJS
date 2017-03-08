@@ -1,7 +1,7 @@
 /**
  * Util functions for making routing more pleasant
  */
-import { log } from 'utils/logger'
+import { logger } from 'utils/logger'
 
 // updates route functions to have access to the store
 const mixStoreWithRoute = (store, route) => {
@@ -22,7 +22,7 @@ const mixStoreWithRoute = (store, route) => {
       Promise.resolve(route.onEnter(props, replaceState, store))
         .then(() => cb(null))
         .catch(e => {
-          log.error('onEnter mix error:', e)
+          logger.error('onEnter mix error:', e)
         })
     }
   }

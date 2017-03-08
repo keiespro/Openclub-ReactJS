@@ -9,28 +9,28 @@ const buildPrefix = (prefix, options) => {
   return ''
 }
 
-const createLog = (prefix, options = {}) => {
+const createLogger = (prefix, options = {}) => {
 
   const prefixStr = buildPrefix(prefix, options)
 
-  const logger = () => {
+  function log() {
     const args = Array.prototype.slice.call(arguments)
     args.unshift(prefixStr)
     console.log.apply(console, args)
   }
 
-  logger.error = () => {
+  function error() {
     const args = Array.prototype.slice.call(arguments)
     args.unshift(prefixStr)
     console.error.apply(console, args)
   }
 
-  return logger
+  return { log, error }
 }
 
-const log = createLog()
+const logger = createLogger()
 
 export {
-  log,
-  createLog
+  logger,
+  createLogger
 }

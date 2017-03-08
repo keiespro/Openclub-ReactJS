@@ -2,9 +2,9 @@
  * Apollo integration with openclub for graphql API
  */
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
-import { createLog } from 'utils/logger'
+import { createLogger } from 'utils/logger'
 
-const log = createLog('apollo')
+const logger = createLogger('apollo')
 
 const networkInterface = createNetworkInterface({
   uri: 'http://localhost:5000/v1/graphql'
@@ -39,7 +39,7 @@ const initMiddlewares = store => {
     applyAfterware({ response }, next) {
       response.clone().json().then(({ errors }) => {
         if (errors) {
-          log.error(errors.map(e => e.message))
+          logger.error(errors.map(e => e.message))
         }
         next()
       })
