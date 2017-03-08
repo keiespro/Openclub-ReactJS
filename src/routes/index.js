@@ -3,6 +3,7 @@ import { CoreLayout } from 'components/core'
 import { mixStoreWithRoute } from 'utils/route'
 import homeRoute from './home'
 import feedRoute from './feed'
+import clubsRoute from './clubs'
 
 const checkAuth = (nextState, replace, store) => store.dispatch(checkAuthentication())
 
@@ -12,6 +13,7 @@ export default store => mixStoreWithRoute(store, {
   onEnter: checkAuth,
   indexRoute: homeRoute,
   childRoutes: [
-    feedRoute
+    feedRoute,
+    clubsRoute
   ]
 })

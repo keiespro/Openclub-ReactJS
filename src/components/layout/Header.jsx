@@ -27,7 +27,7 @@ const Header = ({ user, showSearch }) => (
     <div className="oc-header-context">
       <div className="oc-header-usermenu">
         <Dropdown overlay={userMenu} trigger={['click']}>
-          <img src="https://s-media-cache-ak0.pinimg.com/736x/51/d6/e3/51d6e3dcccd3bdac300202a5a3e99de0.jpg" alt="Profile" className="oc-header-userimage"/>
+          <img src={user.images.thumb} alt="Profile" className="oc-header-userimage"/>
         </Dropdown>
       </div>
     </div>

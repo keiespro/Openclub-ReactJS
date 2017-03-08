@@ -34,7 +34,7 @@ const Sidebar = ({ user }) => {
             {user && user.clubs && user.clubs.map((c, index) =>
               <Menu.Item
                 key={`/${c.slug}`}
-              >{c.name}</Menu.Item>
+              ><img className="oc-sidebar-clubimage" src={c.images.thumb}/> {c.name}</Menu.Item>
             )}
           </SubMenu>
         </Menu>

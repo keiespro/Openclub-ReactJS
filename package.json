@@ -12,7 +12,7 @@
     "lint:fix": "eslint --ext .js,.jsx app server --fix",
     "clean": "rimraf public && rimraf dist",
     "start": "npm run build && cross-env NODE_ENV=production node dist/server.js",
-    "dev": "webpack-dev-server --port 3000 --config config/webpack.config.babel.js",
+    "dev": "webpack-dev-server --history-api-fallback --port 3000 --config config/webpack.config.babel.js",
     "build:dev": "cross-env NODE_ENV=development webpack --debug --colors --progress --display-error-details --profile --config ./config/webpack.config.babel.js",
     "build": "npm run clean && cross-env NODE_ENV=production webpack --colors --display-error-details --config ./build/webpack.config.js",
     "test": "cross-env NODE_ENV=test karma start ./app/tests/karma.conf.js",
