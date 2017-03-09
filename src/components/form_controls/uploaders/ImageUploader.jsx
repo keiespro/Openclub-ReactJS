@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Icon, message } from 'antd'
+import { Icon, Spin, message } from 'antd'
 import Upload from 'rc-upload'
 import ImageCropper from 'components/modals/ImageCropper'
 import { bindActionCreators } from 'redux'
@@ -8,11 +8,17 @@ import { show } from 'redux-modal'
 import classnames from 'classnames'
 import './ImageUploader.css'
 
+const uploadState = {
+  WAITING: 0,
+  UPLOADING: 1,
+  COMPLETE: 2
+}
+
 class ImageUploader extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      imageLoaded: false
+      uploading: uploadState.WAITING
     }
   }
 
@@ -62,14 +68,14 @@ class ImageUploader extends Component {
 
   handleStart = file => {
     this.setState({
-      imageLoaded: true
+      uploading: uploadState.UPLOADING
     })
   }
 
   handleError = err => {
     message.error('Upload Failed:' + err, 3)
     this.setState({
-      imageLoaded: false
+      uploading: uploadState.WAITING
     })
   }
 
@@ -77,14 +83,18 @@ class ImageUploader extends Component {
     console.log('success!!')
     console.log(result)
     console.log(this.props)
+
+    this.setState({
+      uploading: uploadState.COMPLETE
+    })
   }
 
   render() {
     const { input, meta, show, token, aspect, postname, ...rest } = this.props
-    const { imageLoaded } = this.state
+    const { uploading } = this.state
 
     const canvasClasses = classnames('preview-canvas avatar-uploader', {
-      'preview-canvas-show': imageLoaded
+      'preview-canvas-show': uploading === uploadState.COMPLETE
     })
 
     // add jwt header if token supplied
@@ -103,9 +113,16 @@ class ImageUploader extends Component {
           name={postname}
           {...rest}
         >
-          { !imageLoaded &&
+          { uploading !== uploadState.COMPLETE &&
           <div className="avatar-uploader">
-            <Icon type="plus" className="avatar-uploader-trigger" />
+            { uploading === uploadState.WAITING &&
+              <Icon type="plus" className="avatar-uploader-trigger" />
+            }
+            { uploading === uploadState.UPLOADING &&
+              <div className="avatar-uploader-spinner">
+                <Spin/>
+              </div>
+            }
           </div>
           }
           <canvas className={canvasClasses} ref="previewCanvas"/>

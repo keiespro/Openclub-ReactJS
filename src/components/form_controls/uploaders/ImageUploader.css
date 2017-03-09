@@ -1,5 +1,6 @@
 .avatar-uploader,
 .avatar-uploader-trigger,
+.avatar-uploader-spinner,
 .avatar {
   width: 150px;
   height: 150px;
@@ -15,6 +16,11 @@
   vertical-align: middle;
   font-size: 28px;
   color: #999;
+}
+.avatar-uploader-spinner {
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
 }
 .preview-canvas {
   max-width: 150px;
