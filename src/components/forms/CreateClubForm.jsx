@@ -39,7 +39,7 @@ const CreateClubForm = ({ handleSubmit, createForm, token }) => {
       </FieldContainer>
       <FieldContainer title="Profile Image">
         <Field
-          name="club.images.profile"
+          name="club.images.square"
           component={ImageUploader}
           token={token}
           postname="square"

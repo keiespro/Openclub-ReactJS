@@ -7,11 +7,21 @@ import {
   ContentPage,
   PageHeader
 } from 'components/layout'
+import { message } from 'antd'
 
-const CreateClub = props => {
+const CreateClub = ({ mutate }) => {
 
   const createTheClub = values => {
-    console.log(values)
+    mutate({
+      variables: {
+        slug: values.slug,
+        club: values.club
+      }
+    }).then(({ data }) => {
+      browserHistory.push(`/${values.slug}`)
+    }).catch(err => {
+      message('Error creating club: ' + err, 4)
+    })
   }
 
   return (

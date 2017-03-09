@@ -36,7 +36,6 @@ class ImageUploader extends Component {
     const sHeight = Math.floor(sWidth * cropDetails.aspect)
 
     const c = this.refs.previewCanvas
-    console.log(c)
     const ctx = c.getContext('2d')
     c.width = sWidth
     c.height = sHeight
@@ -80,13 +79,10 @@ class ImageUploader extends Component {
   }
 
   handleSuccess = result => {
-    console.log('success!!')
-    console.log(result)
-    console.log(this.props)
-
     this.setState({
       uploading: uploadState.COMPLETE
     })
+    this.props.input.onChange(result.token)
   }
 
   render() {

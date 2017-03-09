@@ -14,7 +14,10 @@ class FileUploader extends Component {
     this.setState({
       currentFiles: fileList
     })
-    console.log(fileList)
+    if(fileList.length > 0 && fileList[0].response){
+      console.log(fileList[0].response.token)
+      this.props.input.onChange(fileList[0].response.token)
+    }
   }
 
   render() {
