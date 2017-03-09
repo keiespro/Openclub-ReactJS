@@ -33,7 +33,7 @@ class ImageUploader extends Component {
     const sx = Math.floor((cropDetails.x / 100.0) * iWidth)
     const sy = Math.floor((cropDetails.y / 100.0) * iHeight)
     const sWidth = Math.floor((cropDetails.width / 100.0) * iWidth)
-    const sHeight = Math.floor(((cropDetails.width * cropDetails.aspect) / 100.0) * iHeight)
+    const sHeight = Math.floor(sWidth * cropDetails.aspect)
 
     const c = this.refs.previewCanvas
     console.log(c)

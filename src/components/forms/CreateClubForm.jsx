@@ -8,7 +8,8 @@ import {
   FieldContainer,
   Input,
   Button,
-  ImageUploader
+  ImageUploader,
+  FileUploader
 } from 'components/form_controls'
 
 const CreateClubForm = ({ handleSubmit, createForm, token }) => {
@@ -48,7 +49,11 @@ const CreateClubForm = ({ handleSubmit, createForm, token }) => {
       <FieldContainer title="Background Image">
         <Field
           name="club.images.background"
-          component={ImageUploader}
+          token={token}
+          postname="background"
+          action="http://localhost:5010/upload/image/background"
+          component={FileUploader}
+          listType="picture"
         />
       </FieldContainer>
       <Button type="primary" htmlType="submit">Create</Button>
