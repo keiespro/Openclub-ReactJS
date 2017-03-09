@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Icon } from 'antd'
+import { Icon, message } from 'antd'
 import Upload from 'rc-upload'
 import ImageCropper from 'components/modals/ImageCropper'
 import { bindActionCreators } from 'redux'
@@ -7,30 +7,6 @@ import { connect } from 'react-redux'
 import { show } from 'redux-modal'
 import classnames from 'classnames'
 import './ImageUploader.css'
-
-const cropImage = (baseImage, cropDetails) => new Promise((resolve, reject) => {
-  // setup the actual image
-  const image = new Image()
-  image.src = baseImage
-  const iWidth = image.width
-  const iHeight = image.height
-
-  // create the canvas
-  const c = document.createElement('canvas')
-  const ctx = c.getContext('2d')
-  c.width = iWidth
-  c.height = iHeight
-
-  // do the actual crop
-  const sx = cropDetails.x / iWidth
-  const sy = cropDetails.y / iHeight
-  const sWidth = cropDetails.width / iWidth
-  const sHeight = cropDetails.height / iHeight
-  ctx.drawImage(image, 0, 0, iWidth, iHeight, sx, sy, sWidth, sHeight)
-  const output = c.toBlob(blob => {
-    resolve(blob)
-  }, 'image/jpeg')
-})
 
 class ImageUploader extends Component {
   constructor(props) {
@@ -85,27 +61,36 @@ class ImageUploader extends Component {
   })
 
   handleStart = file => {
-    console.log('starting')
     this.setState({
       imageLoaded: true
     })
   }
 
   handleError = err => {
-    console.log('got error', err)
+    message.error('Upload Failed:' + err, 3)
+    this.setState({
+      imageLoaded: false
+    })
   }
 
-  handleSuccess = () => {
+  handleSuccess = result => {
     console.log('success!!')
+    console.log(result)
+    console.log(this.props)
   }
 
   render() {
-    const { input, meta, show, ...rest } = this.props
+    const { input, meta, show, token, aspect, postname, ...rest } = this.props
     const { imageLoaded } = this.state
 
     const canvasClasses = classnames('preview-canvas avatar-uploader', {
       'preview-canvas-show': imageLoaded
     })
+
+    // add jwt header if token supplied
+    const headers = token ? {
+      'Authorization': `Bearer ${token}`
+    } : {}
 
     return (
       <div>
@@ -114,6 +99,9 @@ class ImageUploader extends Component {
           onStart={this.handleStart}
           onError={this.handleError}
           onSuccess={this.handleSuccess}
+          headers={headers}
+          name={postname}
+          {...rest}
         >
           { !imageLoaded &&
           <div className="avatar-uploader">
@@ -122,7 +110,7 @@ class ImageUploader extends Component {
           }
           <canvas className={canvasClasses} ref="previewCanvas"/>
         </Upload>
-        <ImageCropper/>
+        <ImageCropper aspect={aspect}/>
       </div>
     )
   }
