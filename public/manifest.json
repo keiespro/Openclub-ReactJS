@@ -1,7 +1,7 @@
 {
-	"name": "React Universally",
-	"short_name": "Rct-Unvrslly",
-	"description": "A starter kit giving you the minimum requirements for a production ready universal react application.",
+	"name": "OpenClub",
+	"short_name": "openclub",
+	"description": "Connecting you with clubs and communities.",
 	"lang": "en",
 	"start_url": "./",
 	"icons": [
@@ -31,7 +31,7 @@
 			"type": "image\/png"
 		}
 	],
-	"theme_color": "#2b2b2b",
+	"theme_color": "#008FCC",
 	"background_color": "#ffffff",
 	"display": "standalone"
 }
