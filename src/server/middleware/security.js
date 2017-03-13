@@ -5,7 +5,10 @@ import config from '../../../config';
 
 const cspConfig = {
   directives: {
-    childSrc: ["'self'"],
+    childSrc: [
+      "'self'",
+      'www.youtube.com'
+    ],
     // Note: Setting this to stricter than * breaks the service worker. :(
     // I can't figure out how to get around this, so if you know of a safer
     // implementation that is kinder to service workers please let me know.
@@ -13,9 +16,10 @@ const cspConfig = {
     defaultSrc: ["'self'"],
     imgSrc: [
       "'self'",
+      'cdn.auth0.com',
       // If you use Base64 encoded images (i.e. inlined images), then you will
       // need the following:
-      // 'data:',
+      'data:',
     ],
     fontSrc: ["'self'"],
     objectSrc: ["'self'"],
@@ -26,6 +30,12 @@ const cspConfig = {
       "'self'",
       // Allow scripts from https://cdn.polyfill.io so that we can import the polyfill.
       'https://cdn.polyfill.io',
+      // Allow scripts from Auth0
+      'cdn.auth0.com',
+      'cdn.au.auth0.com',
+      // Allow YouTube,
+      'www.youtube.com',
+      '*.ytimg.com',
       // Note: We will execution of any inline scripts that have the following
       // nonce identifier attached to them.
       // This is useful for guarding your application whilst allowing an inline
@@ -34,7 +44,7 @@ const cspConfig = {
       (req, res) => `'nonce-${res.locals.nonce}'`,
       // This is a know workaround for browsers that don't support nonces.
       // It will be ignored by browsers that do support nonces as they will
-      // recognise that we have also provided a nonce configuration and 
+      // recognise that we have also provided a nonce configuration and
       // use the stricter rule.
       "'unsafe-inline'",
     ],
