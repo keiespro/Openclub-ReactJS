@@ -156,12 +156,12 @@ const config = {
   // @see https://github.com/nfl/react-helmet
   htmlPage: {
     htmlAttributes: { lang: 'en' },
-    titleTemplate: 'React, Universally - %s',
-    defaultTitle: 'React, Universally',
+    titleTemplate: 'OpenClub - %s',
+    defaultTitle: 'OpenClub',
     meta: [
       {
         name: 'description',
-        content: 'A starter kit giving you the minimum requirements for a production ready universal react application.',
+        content: 'We\'re a platform for digital club management—connecting it to the social web. Events, ticketing, reporting, scheduling...',
       },
       // Default content encoding.
       { name: 'charset', content: 'utf-8' },
@@ -171,7 +171,7 @@ const config = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       // Providing a theme color is good if you are doing a progressive
       // web application.
-      { name: 'theme-color', content: '#2b2b2b' },
+      { name: 'theme-color', content: '#008FCC' },
     ],
     links: [
       // When building a progressive web application you need to supply

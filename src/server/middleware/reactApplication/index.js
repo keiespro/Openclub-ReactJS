@@ -56,7 +56,7 @@ function reactApplicationMiddleware(request, response) {
     <CodeSplitProvider context={codeSplitContext}>
       <ApolloProvider store={store} client={apolloClient}>
         <ServerRouter location={request.url} context={reactRouterContext}>
-          <App />
+          <App store={store} />
         </ServerRouter>
       </ApolloProvider>
     </CodeSplitProvider>,
@@ -76,6 +76,7 @@ function reactApplicationMiddleware(request, response) {
     // html, and then the client bundle can use this data to know which chunks/
     // modules need to be rehydrated prior to the application being rendered.
     codeSplitState: codeSplitContext.getState(),
+    initialState: store.getState()
   });
 
   // Get the render result from the server render context.

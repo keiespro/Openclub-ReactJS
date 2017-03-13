@@ -14,7 +14,7 @@ import apolloClient from '../shared/modules/apollo';
 const container = document.querySelector('#app');
 
 function renderApp(TheApp) {
-  const store = createStore();
+  const store = createStore('__APP_STATE__' in window ? window.__APP_STATE__ : {});
 
   rehydrateState().then(codeSplitState =>
     render(
@@ -22,7 +22,7 @@ function renderApp(TheApp) {
         <CodeSplitProvider state={codeSplitState}>
           <ApolloProvider client={apolloClient} store={store}>
             <BrowserRouter>
-              <TheApp />
+              <TheApp store={store}/>
             </BrowserRouter>
           </ApolloProvider>
         </CodeSplitProvider>

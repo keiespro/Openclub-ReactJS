@@ -46,6 +46,7 @@ function requestLogout() {
 
 export function inlineLogin() {
   return dispatch => {
+    localStorage.setItem('auth_location', location.pathname)
     dispatch(showInlineLock())
     inlineLock.show()
   }
@@ -54,6 +55,7 @@ export function inlineLogin() {
 // Opens the Lock widget and dispatches actions along the way
 export function login() {
   return dispatch => {
+    localStorage.setItem('auth_location', location.pathname)
     dispatch(showLock())
     lock.show()
   }
@@ -68,7 +70,7 @@ const authMutation = gql`
 `
 
 // checks current authentication status of the lock
-export function checkAuthentication() {
+export function checkAuthentication(success) {
   return dispatch => hashParsed.then(accessToken => {
     if (accessToken) {
       return apolloClient.mutate({
@@ -78,6 +80,8 @@ export function checkAuthentication() {
         console.log(data);
         const { token } = data.signin
         localStorage.setItem('openclub_token', token)
+        success(localStorage.getItem('auth_location') || '')
+        localStorage.removeItem('auth_location');
         dispatch(lockSuccess(token))
       }).catch(error => {
         dispatch(lockError(error))

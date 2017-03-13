@@ -1,5 +1,13 @@
 import Auth0Lock from 'auth0-lock';
 
+const origin = process.env.IS_CLIENT ? location.origin : 'http://app.openclub.co';
+
+const auth = {
+  redirectUrl: `${origin}/auth`,
+  responseType: 'token',
+  sso: true
+}
+
 // singleton Auth0 lock
 const lock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN, {
   theme: {
@@ -10,9 +18,7 @@ const lock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, 
     title: 'Log In to OpenClub'
   },
   closable: false,
-  auth: {
-    redirectUrl: `${location.origin}/auth`
-  }
+  auth // set above
 }) : () => true
 
 const inlineLock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN, {
@@ -33,10 +39,7 @@ const inlineLock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIEN
       name: ""
     }
   ],
-  auth: {
-    redirectUrl: `${location.origin}/auth`
-  }
-
+  auth // set above
 }) : () => true
 
 /**

@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
-import { Match, Miss } from 'react-router';
+import { Match, Miss, Redirect } from 'react-router';
 import Helmet from 'react-helmet';
 import { CodeSplit } from 'code-split-component';
 import cx from 'classnames';
 import gql from 'graphql-tag';
-import * as authActions from 'modules/auth/actions';
+import authActions, { checkAuthentication } from 'modules/auth/actions';
 
 import 'styles/core.scss';
 import 'App.css';
@@ -17,6 +17,7 @@ import Sidebar from 'components/Sidebar';
 import { safeConfigGet } from 'utils/config';
 
 const App = ({ data, store }) =>  {
+  console.log(arguments);
   const user = data.user;
   const containerClasses = cx('layout-container', {
     'sidebar-offcanvas loggeout': !user,
@@ -40,6 +41,19 @@ const App = ({ data, store }) =>  {
       { user && <div className="sidebar-layout-obfuscator" /> }
 
       <div className={contentClasses}>
+
+        { process.env.IS_CLIENT ? <Match
+          pattern="/auth"
+          render={(args) => {
+            store.dispatch(checkAuthentication((redirect) => {
+              if (redirect) {
+                return <Redirect to={redirect} push />;
+              }
+            }));
+            return <div />;
+          }}
+        /> : <div /> }
+
         <Match
           exactly
           pattern="/"
@@ -49,15 +63,6 @@ const App = ({ data, store }) =>  {
             </CodeSplit>
           }
         />
-
-        <Match
-          pattern="/auth"
-          render={(args) => {
-            store.dispatch(checkAuthentication());
-            return <div />;
-          }}
-        />
-
         <Match
           pattern="/feed"
           render={routerProps =>
