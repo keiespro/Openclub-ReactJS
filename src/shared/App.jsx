@@ -16,7 +16,7 @@ import Header from 'components/Header';
 import Sidebar from 'components/Sidebar';
 import { safeConfigGet } from 'utils/config';
 
-const App = ({ data }) =>  {
+const App = ({ data, store }) =>  {
   const user = data.user;
   const containerClasses = cx('layout-container', {
     'sidebar-offcanvas loggeout': !user,
@@ -48,6 +48,14 @@ const App = ({ data }) =>  {
               { ({ Home }) => Home && <Home {...routerProps} /> }
             </CodeSplit>
           }
+        />
+
+        <Match
+          pattern="/auth"
+          render={(args) => {
+            store.dispatch(checkAuthentication());
+            return <div />;
+          }}
         />
 
         <Match

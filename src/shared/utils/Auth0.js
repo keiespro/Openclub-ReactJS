@@ -9,7 +9,10 @@ const lock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, 
   languageDictionary: {
     title: 'Log In to OpenClub'
   },
-  closable: false
+  closable: false,
+  auth: {
+    redirectUrl: `${location.origin}/auth`
+  }
 }) : () => true
 
 const inlineLock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN, {
@@ -29,7 +32,11 @@ const inlineLock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIEN
     {
       name: ""
     }
-  ]
+  ],
+  auth: {
+    redirectUrl: `${location.origin}/auth`
+  }
+
 }) : () => true
 
 /**
@@ -46,7 +53,8 @@ const hashParsed = new Promise((resolve, reject) => {
     resolve(false);
   }
 
-  const resolveToken = result => {
+  const resolveToken = (result, one, two) => {
+    console.log(result, one, two);
     if (result && result.accessToken) {
       resolve(result.accessToken)
     } else if (result) {

@@ -75,6 +75,7 @@ export function checkAuthentication() {
         mutation: authMutation,
         variables: { accessToken }
       }).then(({ data }) => {
+        console.log(data);
         const { token } = data.signin
         localStorage.setItem('openclub_token', token)
         dispatch(lockSuccess(token))
