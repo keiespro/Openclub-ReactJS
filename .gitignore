@@ -43,3 +43,5 @@ flow-coverage/
 .happypack
 
 .DS_Store
+
+dist
