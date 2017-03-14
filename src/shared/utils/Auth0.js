@@ -34,9 +34,6 @@ const inlineLock = process.env.IS_CLIENT ? container => new Auth0Lock(process.en
     {
       name: "full_name",
       placeholder: "Enter your full name"
-    },
-    {
-      name: ""
     }
   ],
   auth // set above
