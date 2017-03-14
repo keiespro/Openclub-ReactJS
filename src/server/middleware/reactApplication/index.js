@@ -6,7 +6,7 @@ import { CodeSplitProvider, createRenderContext } from 'code-split-component';
 import { ApolloProvider } from 'react-apollo';
 import Helmet from 'react-helmet';
 import generateHTML from './generateHTML';
-import createStore from '../../../shared/store';
+import createStore from '../../../shared/store/create_store';
 import apolloClient from '../../../shared/modules/apollo';
 import App from '../../../shared/App';
 import config from '../../../../config';

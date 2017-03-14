@@ -14,7 +14,7 @@ export default (initialState = {}) => {
   }
 
   // create the store
-  store = createStore(
+  const store = createStore(
     makeRootReducer(),
     initialState,
     compose(applyMiddleware(...middleware), ...enhancers)

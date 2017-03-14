@@ -6,9 +6,10 @@ import Helmet from 'react-helmet'
 import { CodeSplit } from 'code-split-component'
 import cx from 'classnames'
 import gql from 'graphql-tag'
-import authActions, { checkAuthentication } from 'modules/auth/actions'
+import Drawer from 'rc-drawer'
+import { Layout } from 'antd'
+import { logoutUser, checkAuthentication } from 'modules/auth/actions'
 
-import 'styles/core.scss'
 import 'App.scss'
 
 import Error404 from 'components/Error404/Error404'
@@ -24,9 +25,9 @@ class App extends Component {
   }
 
   render() {
-    const { data = {} } = this.props
+    const { data = {}, auth0Loaded } = this.props
 
-    return auth.auth0Loaded ? (
+    return auth0Loaded ? (
       <Drawer sidebar={<Sidebar user={data.user}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
         <Layout>
           <Helmet
@@ -272,7 +273,6 @@ const AppWithApollo = graphql(currentViewer, {
 })(App)
 
 export default connect(state => ({
-  token: state.auth.token,
   auth0Loaded: state.auth.auth0Loaded
 }), { checkAuthentication, logoutUser })(AppWithApollo)
 
