@@ -9,6 +9,7 @@ import ReactHotLoader from './components/ReactHotLoader';
 import App from '../shared/App';
 import createStore from '../shared/store';
 import apolloClient from '../shared/modules/apollo';
+import enUS from 'antd/lib/locale-provider/en_US'
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
@@ -20,11 +21,13 @@ function renderApp(TheApp) {
     render(
       <ReactHotLoader>
         <CodeSplitProvider state={codeSplitState}>
-          <ApolloProvider client={apolloClient} store={store}>
-            <BrowserRouter>
-              <TheApp store={store}/>
-            </BrowserRouter>
-          </ApolloProvider>
+          <LocaleProvider locale={enUS}>
+            <ApolloProvider client={apolloClient} store={store}>
+              <BrowserRouter>
+                <TheApp store={store}/>
+              </BrowserRouter>
+            </ApolloProvider>
+          </LocaleProvider>
         </CodeSplitProvider>
       </ReactHotLoader>,
       container,
