@@ -1,20 +1,20 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
-import { Match, Miss, Redirect } from 'react-router';
-import Helmet from 'react-helmet';
-import { CodeSplit } from 'code-split-component';
-import cx from 'classnames';
-import gql from 'graphql-tag';
-import authActions, { checkAuthentication } from 'modules/auth/actions';
+import { Match, Miss, Redirect } from 'react-router'
+import Helmet from 'react-helmet'
+import { CodeSplit } from 'code-split-component'
+import cx from 'classnames'
+import gql from 'graphql-tag'
+import authActions, { checkAuthentication } from 'modules/auth/actions'
 
-import 'styles/core.scss';
-import 'App.css';
+import 'styles/core.scss'
+import 'App.scss'
 
-import Error404 from 'components/Error404';
-import Header from 'components/layout/Header';
-import Sidebar from 'components/layout/Sidebar';
-import { safeConfigGet } from 'utils/config';
+import Error404 from 'components/Error404/Error404'
+import Header from 'components/layout/Header'
+import Sidebar from 'components/layout/Sidebar'
+import { safeConfigGet } from 'utils/config'
 
 const { Content } = Layout
 
@@ -44,7 +44,7 @@ class App extends Component {
               exactly
               pattern="/"
               render={routerProps =>
-                <CodeSplit chunkName="home" modules={{ Home: require('./routes/Home') }}>
+                <CodeSplit chunkName="home" modules={{ Home: require('routes/home/components/Home') }}>
                   { ({ Home }) => Home && <Home {...routerProps} /> }
                 </CodeSplit>
               }
@@ -269,13 +269,13 @@ const currentViewer = gql`
 
 const AppWithApollo = graphql(currentViewer, {
   skip: ownProps => !ownProps.token
-})(App);
+})(App)
 
 export default connect(state => ({
   token: state.auth.token,
   auth0Loaded: state.auth.auth0Loaded
-}), { checkAuthentication, logoutUser })(AppWithApollo);
+}), { checkAuthentication, logoutUser })(AppWithApollo)
 
 export {
   App
-};
+}

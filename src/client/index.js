@@ -7,7 +7,7 @@ import { CodeSplitProvider, rehydrateState } from 'code-split-component';
 import { ApolloProvider } from 'react-apollo';
 import ReactHotLoader from './components/ReactHotLoader';
 import App from '../shared/App';
-import createStore from '../shared/store';
+import createStore from '../shared/store/create_store';
 import apolloClient from '../shared/modules/apollo';
 import enUS from 'antd/lib/locale-provider/en_US'
 

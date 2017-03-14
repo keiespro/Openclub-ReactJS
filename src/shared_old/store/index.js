@@ -3,16 +3,9 @@ import thunk from 'redux-thunk'
 import makeRootReducer from './reducers'
 import { updateLocation } from '../modules/location/actions'
 
-let store
-
 export default (initialState = {}) => {
-  // singleton store
-  if (store) { return store }
-
-  // setup middlewares
+  // setup middlewares and enhancers
   const middleware = [thunk]
-
-  // setup enhancers
   const enhancers = []
   if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
     const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION__
@@ -25,10 +18,7 @@ export default (initialState = {}) => {
   store = createStore(
     makeRootReducer(),
     initialState,
-    compose(
-      applyMiddleware(...middleware),
-      ...enhancers
-    )
+    compose(applyMiddleware(...middleware), ...enhancers)
   )
   store.asyncReducers = {}
 
