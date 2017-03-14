@@ -21,8 +21,8 @@ const lock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, 
   auth // set above
 }) : () => true
 
-const inlineLock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN, {
-  container: 'inline-lock-container',
+const inlineLock = process.env.IS_CLIENT ? container => new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN, {
+  container,
   theme: {
     primaryColor: '#008fcc'
   },
@@ -69,7 +69,7 @@ const hashParsed = new Promise((resolve, reject) => {
   }
 
   lock.on('hash_parsed', resolveToken);
-  inlineLock.on('hash_parsed', resolveToken)
+  //inlineLock.on('hash_parsed', resolveToken)
 })
 
 export {

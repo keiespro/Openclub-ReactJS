@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, Menu, Dropdown, Icon } from 'antd'
-import { IndexLink } from 'react-router'
+import { Link } from 'react-router'
 import Logo from 'components/logo/Logo'
 import './Header.scss'
 
@@ -20,9 +20,9 @@ const userMenu = (
 
 const Header = ({ user, showSearch }) => (
   <div className="oc-header">
-    <IndexLink to="/" className="oc-header-logo">
+    <Link to="/" className="oc-header-logo">
       <Logo color="#008FCC"/>
-    </IndexLink>
+    </Link>
     { user &&
     <div className="oc-header-context">
       <div className="oc-header-usermenu">
