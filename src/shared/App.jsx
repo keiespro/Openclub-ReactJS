@@ -64,6 +64,24 @@ const App = ({ data = {} }) => (
             </CodeSplit>
           }
         />
+
+        <Match
+          pattern="/clubs"
+          render={routerProps =>
+            <CodeSplit chunkName="clubs" modules={{ Clubs: require('./routes/Clubs') }}>
+              { ({ Clubs }) => Clubs && <Clubs {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
+
+        <Match
+          pattern="/test"
+          render={routerProps =>
+            <CodeSplit chunkName="test" modules={{ Test: require('./routes/Test') }}>
+              { ({ Test }) => Test && <Test {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
         {/*
         <Match
           pattern="/notifications"
@@ -88,15 +106,6 @@ const App = ({ data = {} }) => (
           render={routerProps =>
             <CodeSplit chunkName="events" modules={{ Events: require('./routes/Events') }}>
               { ({ Events }) => Events && <Events {...routerProps} /> }
-            </CodeSplit>
-          }
-        />
-
-        <Match
-          pattern="/clubs"
-          render={routerProps =>
-            <CodeSplit chunkName="clubs" modules={{ Clubs: require('./routes/Clubs') }}>
-              { ({ Clubs }) => Clubs && <Clubs {...routerProps} /> }
             </CodeSplit>
           }
         />

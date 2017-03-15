@@ -3,8 +3,6 @@ import { formPrefix } from 'constants'
 import { Input as AntInput } from 'antd'
 import classNames from 'classnames'
 
-import 'antd/lib/form/style/css'
-
 const Input = ({ input, meta, help, type }) => {
 
   const wrapClasses = classNames(`${formPrefix}-item-control`, {

@@ -8,10 +8,11 @@ import {
   FieldContainer,
   Input,
   Button,
-  ImageUploader
+  ImageUploader,
+  FileUploader
 } from 'components/form_controls'
 
-const CreateClubForm = ({ handleSubmit, createForm }) => {
+const CreateClubForm = ({ handleSubmit, createForm, token }) => {
 
   const slugString = (createForm && createForm.values && createForm.values.slug) ?
     createForm.values.slug : '<your id here>'
@@ -38,14 +39,21 @@ const CreateClubForm = ({ handleSubmit, createForm }) => {
       </FieldContainer>
       <FieldContainer title="Profile Image">
         <Field
-          name="club.images.profile"
+          name="club.images.square"
           component={ImageUploader}
+          token={token}
+          postname="square"
+          action="http://localhost:5010/upload/image/square"
         />
       </FieldContainer>
       <FieldContainer title="Background Image">
         <Field
           name="club.images.background"
-          component={ImageUploader}
+          token={token}
+          postname="background"
+          action="http://localhost:5010/upload/image/background"
+          component={FileUploader}
+          listType="picture"
         />
       </FieldContainer>
       <Button type="primary" htmlType="submit">Create</Button>
@@ -59,6 +67,7 @@ const CreateClubReduxForm = reduxForm({
 
 // connect the current form data so we can use it to display the slug name
 export default connect(state => ({
+  token: state.auth.token,
   createForm: state.form.create_club,
   initialValues: {
     checker: false,

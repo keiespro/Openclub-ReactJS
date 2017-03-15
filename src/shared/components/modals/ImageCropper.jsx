@@ -5,27 +5,23 @@ import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
 
 class ImageCropper extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
       crop: {
         x: 5,
         y: 0,
         width: 90,
-        aspect: 1
+        aspect: props.aspect || 1
       }
     }
   }
 
   cropCompleted = crop => {
-    console.log('crop stuff updated')
-    console.log(crop)
     this.setState({ crop });
   }
 
   handleOk = (oker, hider) => {
-    console.log('doing ok')
-    console.log(this.state.crop)
     oker(this.state.crop)
     hider()
   }

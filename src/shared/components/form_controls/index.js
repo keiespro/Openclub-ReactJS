@@ -1,7 +1,7 @@
 import Form from './form/Form'
-import Input from './input/Input'
 import FieldSet from './fieldset/FieldSet'
 import FieldContainer from './field_container/FieldContainer'
+import Input from './input/Input'
 import Button from './button/Button'
 import Checkbox from './checkbox/Checkbox'
 import CheckboxGroup from './checkbox/CheckboxGroup'
@@ -16,9 +16,9 @@ import ImageUploader from './uploaders/ImageUploader'
 
 export {
   Form,
-  Input,
   FieldSet,
   FieldContainer,
+  Input,
   Button,
   Checkbox,
   CheckboxGroup,

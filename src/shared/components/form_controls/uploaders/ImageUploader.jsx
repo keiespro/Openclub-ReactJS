@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Icon } from 'antd'
+import { Icon, Spin, message } from 'antd'
 import Upload from 'rc-upload'
 import ImageCropper from 'components/modals/ImageCropper'
 import { bindActionCreators } from 'redux'
@@ -8,35 +8,17 @@ import { show } from 'redux-modal'
 import classnames from 'classnames'
 import './ImageUploader.css'
 
-const cropImage = (baseImage, cropDetails) => new Promise((resolve, reject) => {
-  // setup the actual image
-  const image = new Image()
-  image.src = baseImage
-  const iWidth = image.width
-  const iHeight = image.height
-
-  // create the canvas
-  const c = document.createElement('canvas')
-  const ctx = c.getContext('2d')
-  c.width = iWidth
-  c.height = iHeight
-
-  // do the actual crop
-  const sx = cropDetails.x / iWidth
-  const sy = cropDetails.y / iHeight
-  const sWidth = cropDetails.width / iWidth
-  const sHeight = cropDetails.height / iHeight
-  ctx.drawImage(image, 0, 0, iWidth, iHeight, sx, sy, sWidth, sHeight)
-  const output = c.toBlob(blob => {
-    resolve(blob)
-  }, 'image/jpeg')
-})
+const uploadState = {
+  WAITING: 0,
+  UPLOADING: 1,
+  COMPLETE: 2
+}
 
 class ImageUploader extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      imageLoaded: false
+      uploading: uploadState.WAITING
     }
   }
 
@@ -51,10 +33,9 @@ class ImageUploader extends Component {
     const sx = Math.floor((cropDetails.x / 100.0) * iWidth)
     const sy = Math.floor((cropDetails.y / 100.0) * iHeight)
     const sWidth = Math.floor((cropDetails.width / 100.0) * iWidth)
-    const sHeight = Math.floor(((cropDetails.width * cropDetails.aspect) / 100.0) * iHeight)
+    const sHeight = Math.floor(sWidth * cropDetails.aspect)
 
     const c = this.refs.previewCanvas
-    console.log(c)
     const ctx = c.getContext('2d')
     c.width = sWidth
     c.height = sHeight
@@ -85,27 +66,37 @@ class ImageUploader extends Component {
   })
 
   handleStart = file => {
-    console.log('starting')
     this.setState({
-      imageLoaded: true
+      uploading: uploadState.UPLOADING
     })
   }
 
   handleError = err => {
-    console.log('got error', err)
+    message.error('Upload Failed:' + err, 3)
+    this.setState({
+      uploading: uploadState.WAITING
+    })
   }
 
-  handleSuccess = () => {
-    console.log('success!!')
+  handleSuccess = result => {
+    this.setState({
+      uploading: uploadState.COMPLETE
+    })
+    this.props.input.onChange(result.token)
   }
 
   render() {
-    const { input, meta, show, ...rest } = this.props
-    const { imageLoaded } = this.state
+    const { input, meta, show, token, aspect, postname, ...rest } = this.props
+    const { uploading } = this.state
 
     const canvasClasses = classnames('preview-canvas avatar-uploader', {
-      'preview-canvas-show': imageLoaded
+      'preview-canvas-show': uploading === uploadState.COMPLETE
     })
+
+    // add jwt header if token supplied
+    const headers = token ? {
+      'Authorization': `Bearer ${token}`
+    } : {}
 
     return (
       <div>
@@ -114,15 +105,25 @@ class ImageUploader extends Component {
           onStart={this.handleStart}
           onError={this.handleError}
           onSuccess={this.handleSuccess}
+          headers={headers}
+          name={postname}
+          {...rest}
         >
-          { !imageLoaded &&
+          { uploading !== uploadState.COMPLETE &&
           <div className="avatar-uploader">
-            <Icon type="plus" className="avatar-uploader-trigger" />
+            { uploading === uploadState.WAITING &&
+              <Icon type="plus" className="avatar-uploader-trigger" />
+            }
+            { uploading === uploadState.UPLOADING &&
+              <div className="avatar-uploader-spinner">
+                <Spin/>
+              </div>
+            }
           </div>
           }
           <canvas className={canvasClasses} ref="previewCanvas"/>
         </Upload>
-        <ImageCropper/>
+        <ImageCropper aspect={aspect}/>
       </div>
     )
   }
