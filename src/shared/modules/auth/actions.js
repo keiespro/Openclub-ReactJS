@@ -4,6 +4,7 @@ import { browserHistory } from 'react-router'
 import { lock, inlineLock, hashParsed } from 'utils/Auth0'
 
 // Auth0 lock actions
+export const AUTH_INIT = 'AUTH_INIT'
 export const AUTH_LOADED = 'AUTH_LOADED'
 export const SHOW_INLINE_LOCK = 'SHOW_INLINE_LOCK'
 export const SHOW_LOCK = 'SHOW_LOCK'
@@ -12,6 +13,10 @@ export const LOCK_ERROR = 'LOCK_ERROR'
 // single logout action due to jwt (keep as request in case we add complexity)
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST'
 
+const authInit = token => ({
+  token,
+  type: AUTH_INIT
+})
 const authLoaded = () => ({ type: AUTH_LOADED })
 
 const showInlineLock = () => ({ type: SHOW_INLINE_LOCK })
@@ -53,24 +58,29 @@ const authMutation = gql`
 
 // checks current authentication status of the lock
 export function checkAuthentication() {
-  return dispatch => hashParsed.then(accessToken => {
-    if (accessToken) {
-      return apolloClient.mutate({
-        mutation: authMutation,
-        variables: { accessToken }
-      }).then(({ data }) => {
-        const { token } = data.signin
-        localStorage.setItem('openclub_token', token)
-        dispatch(lockSuccess(token))
-        dispatch(authLoaded())
-      }).catch(error => {
-        dispatch(lockError(error))
-        dispatch(authLoaded())
-      })
-    }else{
-      dispatch(authLoaded())
+  return dispatch => {
+    if(process.env.IS_CLIENT){
+      dispatch(authInit(localStorage.getItem('openclub_token')))
     }
-  })
+    return hashParsed.then(accessToken => {
+      if (accessToken) {
+        return apolloClient.mutate({
+          mutation: authMutation,
+          variables: { accessToken }
+        }).then(({ data }) => {
+          const { token } = data.signin
+          localStorage.setItem('openclub_token', token)
+          dispatch(lockSuccess(token))
+          dispatch(authLoaded())
+        }).catch(error => {
+          dispatch(lockError(error))
+          dispatch(authLoaded())
+        })
+      }else{
+        dispatch(authLoaded())
+      }
+    })
+  }
 }
 
 // Logs the user out

@@ -8,8 +8,13 @@ import cx from 'classnames'
 import gql from 'graphql-tag'
 import Drawer from 'rc-drawer'
 import { Layout } from 'antd'
-import { logoutUser, checkAuthentication } from 'modules/auth/actions'
 
+// ant theming
+import 'antd/dist/antd.css'
+import 'rc-drawer/assets/index.css'
+// centric theming
+
+// app component styles
 import 'App.scss'
 
 import Error404 from 'components/Error404/Error404'
@@ -19,109 +24,107 @@ import { safeConfigGet } from 'utils/config'
 
 const { Content } = Layout
 
-class App extends Component {
-  componentWillMount() {
-    this.props.checkAuthentication()
-  }
+const App = ({ data = {} }) => { console.log('rendering app'); return (
+  <Drawer sidebar={<Sidebar user={data.user}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
+    <Layout>
+      <Helmet
+        htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}
+        titleTemplate={safeConfigGet(['htmlPage', 'titleTemplate'])}
+        defaultTitle={safeConfigGet(['htmlPage', 'defaultTitle'])}
+        meta={safeConfigGet(['htmlPage', 'meta'])}
+        link={safeConfigGet(['htmlPage', 'links'])}
+        script={safeConfigGet(['htmlPage', 'scripts'])}
+      />
 
-  render() {
-    const { data = {}, auth0Loaded } = this.props
-
-    return auth0Loaded ? (
-      <Drawer sidebar={<Sidebar user={data.user}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
-        <Layout>
-          <Helmet
-            htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}
-            titleTemplate={safeConfigGet(['htmlPage', 'titleTemplate'])}
-            defaultTitle={safeConfigGet(['htmlPage', 'defaultTitle'])}
-            meta={safeConfigGet(['htmlPage', 'meta'])}
-            link={safeConfigGet(['htmlPage', 'links'])}
-            script={safeConfigGet(['htmlPage', 'scripts'])}
-          />
-
-          <Header user={data.user}/>
-          <Content>
-            <Match
-              exactly
-              pattern="/"
-              render={routerProps =>
-                <CodeSplit chunkName="home" modules={{ Home: require('routes/home/components/Home') }}>
+      <Header user={data.user}/>
+      <Content>
+        <Match
+          exactly
+          pattern="/"
+          render={routerProps => {
+            console.log('should be testing this')
+            if(data.user) {
+              console.log('did redirect')
+              return <Redirect to="/feed" push />;
+            }else{
+              console.log('no user found')
+              return (
+                <CodeSplit chunkName="home" modules={{ Home: require('routes/Home') }}>
                   { ({ Home }) => Home && <Home {...routerProps} /> }
                 </CodeSplit>
-              }
-            />
-          {/*
-            <Match
-              pattern="/feed"
-              render={routerProps =>
-                <CodeSplit chunkName="feed" modules={{ Feed: require('./routes/Feed') }}>
-                  { ({ Feed }) => Feed && <Feed {...routerProps} /> }
-                </CodeSplit>
-              }
-            />
+              )
+            }
+          }}
+        />
 
-            <Match
-              pattern="/notifications"
-              render={routerProps =>
-                <CodeSplit chunkName="notifications" modules={{ Notifications: require('./routes/Notifications') }}>
-                  { ({ Notifications }) => Notifications && <Notifications {...routerProps} /> }
-                </CodeSplit>
-              }
-            />
+        <Match
+          pattern="/feed"
+          render={routerProps =>
+            <CodeSplit chunkName="feed" modules={{ Feed: require('./routes/Feed') }}>
+              { ({ Feed }) => Feed && <Feed {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
+        {/*
+        <Match
+          pattern="/notifications"
+          render={routerProps =>
+            <CodeSplit chunkName="notifications" modules={{ Notifications: require('./routes/Notifications') }}>
+              { ({ Notifications }) => Notifications && <Notifications {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
 
-            <Match
-              pattern="/profile"
-              render={routerProps =>
-                <CodeSplit chunkName="profile" modules={{ Profile: require('./routes/Profile') }}>
-                  { ({ Profile }) => Profile && <Profile {...routerProps} /> }
-                </CodeSplit>
-              }
-            />
+        <Match
+          pattern="/profile"
+          render={routerProps =>
+            <CodeSplit chunkName="profile" modules={{ Profile: require('./routes/Profile') }}>
+              { ({ Profile }) => Profile && <Profile {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
 
-            <Match
-              pattern="/events"
-              render={routerProps =>
-                <CodeSplit chunkName="events" modules={{ Events: require('./routes/Events') }}>
-                  { ({ Events }) => Events && <Events {...routerProps} /> }
-                </CodeSplit>
-              }
-            />
+        <Match
+          pattern="/events"
+          render={routerProps =>
+            <CodeSplit chunkName="events" modules={{ Events: require('./routes/Events') }}>
+              { ({ Events }) => Events && <Events {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
 
-            <Match
-              pattern="/clubs"
-              render={routerProps =>
-                <CodeSplit chunkName="clubs" modules={{ Clubs: require('./routes/Clubs') }}>
-                  { ({ Clubs }) => Clubs && <Clubs {...routerProps} /> }
-                </CodeSplit>
-              }
-            />
+        <Match
+          pattern="/clubs"
+          render={routerProps =>
+            <CodeSplit chunkName="clubs" modules={{ Clubs: require('./routes/Clubs') }}>
+              { ({ Clubs }) => Clubs && <Clubs {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
 
-            <Match
-              pattern="/:club_id"
-              render={routerProps =>
-                <CodeSplit chunkName="club" modules={{ Club: require('./routes/Club') }}>
-                  { ({ Club }) => Club && <Club {...routerProps} /> }
-                </CodeSplit>
-              }
-            />
+        <Match
+          pattern="/:club_id"
+          render={routerProps =>
+            <CodeSplit chunkName="club" modules={{ Club: require('./routes/Club') }}>
+              { ({ Club }) => Club && <Club {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
 
-            <Match
-              pattern="/event/:event_id"
-              render={routerProps =>
-                <CodeSplit chunkName="event" modules={{ Event: require('./routes/Event') }}>
-                  { ({ Event }) => Event && <Event {...routerProps} /> }
-                </CodeSplit>
-              }
-            />
-            */}
-            <Miss component={Error404} />
-          </Content>
-        </Layout>
-      </Drawer>
-    ) : (
-      <div>Loading...</div>
-    )
-  }
+        <Match
+          pattern="/event/:event_id"
+          render={routerProps =>
+            <CodeSplit chunkName="event" modules={{ Event: require('./routes/Event') }}>
+              { ({ Event }) => Event && <Event {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
+        */}
+        <Miss component={Error404} />
+      </Content>
+    </Layout>
+  </Drawer>
+)
 }
 
 /*
@@ -269,12 +272,13 @@ const currentViewer = gql`
 `
 
 const AppWithApollo = graphql(currentViewer, {
-  skip: ownProps => !ownProps.token
+  skip: ownProps => { console.log('checking skip rule:', ownProps.token); return !ownProps.token }
 })(App)
 
 export default connect(state => ({
-  auth0Loaded: state.auth.auth0Loaded
-}), { checkAuthentication, logoutUser })(AppWithApollo)
+  auth0Loaded: state.auth.auth0Loaded,
+  token: state.auth.token
+}))(AppWithApollo)
 
 export {
   App

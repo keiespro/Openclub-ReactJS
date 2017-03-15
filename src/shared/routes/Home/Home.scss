@@ -47,9 +47,10 @@
       font-weight: 400;
       font-style: normal;
       text-decoration: none;
-      padding: 1em 1.75em;
       margin: 5px;
       text-transform: uppercase;
+      padding: 20px 20px;
+      font-size: 18px;
       &:hover {
         background-color: #ffffff;
         color: #181818;
@@ -63,6 +64,9 @@
 .home-login {
   margin-top: 100px;
   margin-bottom: 40px;
+}
+.auth0-lock-last-login-pane {
+  margin-top: 100px;
 }
 .login {
   .auth0-lock.auth0-lock.auth0-lock-opened-in-frame {

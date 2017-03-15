@@ -3,7 +3,7 @@ import Auth0Lock from 'auth0-lock';
 const origin = process.env.IS_CLIENT ? location.origin : 'http://app.openclub.co';
 
 const auth = {
-  redirectUrl: `${origin}/auth`,
+  redirectUrl: `${origin}/`,
   responseType: 'token',
   sso: true
 }

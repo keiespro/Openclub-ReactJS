@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router';
 import { CodeSplitProvider, rehydrateState } from 'code-split-component';
 import { ApolloProvider } from 'react-apollo';
 import ReactHotLoader from './components/ReactHotLoader';
+import AuthLoader from '../shared/components/auth/AuthLoader'
 import App from '../shared/App';
 import createStore from '../shared/store/create_store';
 import apolloClient from '../shared/modules/apollo';
@@ -25,7 +26,9 @@ function renderApp(TheApp) {
           <LocaleProvider locale={enUS}>
             <ApolloProvider client={apolloClient} store={store}>
               <BrowserRouter>
-                <TheApp store={store}/>
+                <AuthLoader>
+                  <TheApp/>
+                </AuthLoader>                
               </BrowserRouter>
             </ApolloProvider>
           </LocaleProvider>
