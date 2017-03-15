@@ -13,9 +13,9 @@ class AuthLoader extends Component {
 
   render() {
     const { auth0Loaded, children } = this.props
-    console.log('al token:', this.props.token)
-    console.log(this.context)
-    return auth0Loaded || process.env.IS_SERVER ? children : (
+    // only render the app if the auth0 process has completed
+    // or we are doing ssr
+    return (auth0Loaded || process.env.IS_SERVER) ? children : (
       <div>Loading...</div>
     )
   }
@@ -24,7 +24,7 @@ class AuthLoader extends Component {
 export default connect(state => ({
   auth0Loaded: state.auth.auth0Loaded,
   token: state.auth.token
-}))(AuthLoader)
+}), { checkAuthentication })(AuthLoader)
 
 export {
   AuthLoader

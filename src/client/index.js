@@ -9,16 +9,18 @@ import ReactHotLoader from './components/ReactHotLoader';
 import AuthLoader from '../shared/components/auth/AuthLoader'
 import App from '../shared/App';
 import createStore from '../shared/store/create_store';
-import apolloClient from '../shared/modules/apollo';
+import apolloClient, { initMiddlewares } from '../shared/modules/apollo';
 import { LocaleProvider } from 'antd'
 import enUS from 'antd/lib/locale-provider/en_US'
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
 
-function renderApp(TheApp) {
-  const store = createStore('__APP_STATE__' in window ? window.__APP_STATE__ : {});
+const store = createStore('__APP_STATE__' in window ? window.__APP_STATE__ : {});
+// setup the apollo middlewares once the store has been created
+initMiddlewares(store)
 
+function renderApp(TheApp) {
   rehydrateState().then(codeSplitState =>
     render(
       <ReactHotLoader>
@@ -28,7 +30,7 @@ function renderApp(TheApp) {
               <BrowserRouter>
                 <AuthLoader>
                   <TheApp/>
-                </AuthLoader>                
+                </AuthLoader>
               </BrowserRouter>
             </ApolloProvider>
           </LocaleProvider>

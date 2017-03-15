@@ -24,7 +24,7 @@ import { safeConfigGet } from 'utils/config'
 
 const { Content } = Layout
 
-const App = ({ data = {} }) => { console.log('rendering app'); return (
+const App = ({ data = {} }) => (
   <Drawer sidebar={<Sidebar user={data.user}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
     <Layout>
       <Helmet
@@ -42,17 +42,16 @@ const App = ({ data = {} }) => { console.log('rendering app'); return (
           exactly
           pattern="/"
           render={routerProps => {
-            console.log('should be testing this')
             if(data.user) {
-              console.log('did redirect')
               return <Redirect to="/feed" push />;
-            }else{
-              console.log('no user found')
+            }else if(!data.loading){
               return (
                 <CodeSplit chunkName="home" modules={{ Home: require('routes/Home') }}>
                   { ({ Home }) => Home && <Home {...routerProps} /> }
                 </CodeSplit>
               )
+            }else{
+              return null
             }
           }}
         />
@@ -125,7 +124,6 @@ const App = ({ data = {} }) => { console.log('rendering app'); return (
     </Layout>
   </Drawer>
 )
-}
 
 /*
 const App = ({ data, store }) =>  {
@@ -272,7 +270,7 @@ const currentViewer = gql`
 `
 
 const AppWithApollo = graphql(currentViewer, {
-  skip: ownProps => { console.log('checking skip rule:', ownProps.token); return !ownProps.token }
+  skip: ownProps => !ownProps.token
 })(App)
 
 export default connect(state => ({

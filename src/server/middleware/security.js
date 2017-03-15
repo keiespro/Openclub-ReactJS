@@ -20,8 +20,9 @@ const cspConfig = {
       // If you use Base64 encoded images (i.e. inlined images), then you will
       // need the following:
       'data:',
+      "*"
     ],
-    fontSrc: ["'self'"],
+    fontSrc: ["'self'", 'at.alicdn.com'],
     objectSrc: ["'self'"],
     mediaSrc: ["'self'"],
     manifestSrc: ["'self'"],
