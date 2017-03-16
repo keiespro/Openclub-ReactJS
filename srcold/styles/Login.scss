@@ -1,0 +1,21 @@
+.auth0-lock.auth0-lock-opened {
+  .auth0-lock-header {
+    height: auto;
+    border-radius: 2px 2px 0 0;
+  }
+  .auth0-lock-name {
+    display: none;
+  }
+  .auth0-lock-header-logo {
+    margin: 20px;
+  }
+  .auth0-lock-cred-pane {
+    border-radius: 2px;
+  }
+  .auth0-lock-submit {
+    border-radius: 0 0 2px 2px;
+  }
+  .auth0-lock-badge-bottom {
+    display: none;
+  }
+}

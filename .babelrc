@@ -6,9 +6,25 @@
 // It's nice not having to worry/think about what level of javascript syntax
 // is supported for each context.
 {
+<<<<<<< HEAD
   "presets": [
     ["env", { "targets": { "node": true } }],
     "stage-3",
     "react"
+=======
+  "presets": ["env", "react", "stage-0"],
+  "plugins": [
+    "transform-object-rest-spread",
+    "transform-runtime",
+    "syntax-dynamic-import",
+    ["module-resolver", {
+      "root": ["./src"]
+    }],
+    ["import", {
+      "libraryName": "antd",
+      "style": "css"
+    }],
+    "react-hot-loader/babel"
+>>>>>>> e8a73dcc2e73dee0172334f3d4e67a339cce9261
   ]
 }

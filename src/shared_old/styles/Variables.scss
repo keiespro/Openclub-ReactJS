@@ -31,7 +31,8 @@ $gray-base:				 #777;
 //== Scaffolding
 
 //** Background color for `<body>`.
-$body-bg:               #f1f2f3;
+$body-bg:               #ececec;
+//#f1f2f3;
 //** Global text color on `<body>`.
 $text-color:            #6C7177;
 //** Global textual link color.
@@ -49,11 +50,11 @@ $font-size-base:        16px;
 $header-hg:                     50px;
 $header-bg:                     #fff;
 $header-item-color:             #555;
-$header-shadow:                 0 0 1px 1px rgba(0, 0, 0, 0.14);
+$header-shadow:                 0 0 1px 1px rgba(200, 200, 200, 1);
 
 $sidebar-wd:                    240px;
 $sidebar-wd-collapsed:          70px;
-$sidebar-bg:                    #263238;
+$sidebar-bg:                    #333;
 $sidebar-header-hg:             $header-hg;
 $sidebar-header-bg:             $sidebar-bg;
 $sidebar-header-shadow:         $header-shadow;

@@ -1,0 +1,22 @@
+
+.details-container {
+  display: table;
+  width: 100%;
+}
+
+.details-headings {
+  display: table-cell;
+  vertical-align: top;
+  width: 250px;
+}
+
+.details-body-container {
+  display: table-cell;
+  vertical-align: top;
+}
+
+.details-body {
+  background-color: #fff;
+  min-height: 400px;
+  padding: 20px;
+}

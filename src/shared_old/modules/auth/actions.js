@@ -1,7 +1,7 @@
 import apolloClient from 'modules/apollo'
 import gql from 'graphql-tag'
 import { browserHistory } from 'react-router'
-import { lock, inlineLock, hashParsed } from '../../utils/Auth0'
+import { lock, inlineLock, hashParsed } from 'utils/Auth0'
 
 // Auth0 lock actions
 export const SHOW_INLINE_LOCK = 'SHOW_INLINE_LOCK'
@@ -48,7 +48,11 @@ export function inlineLogin() {
   return dispatch => {
     localStorage.setItem('auth_location', location.pathname)
     dispatch(showInlineLock())
+<<<<<<< HEAD:src/shared_old/modules/auth/actions.js
     inlineLock.show()
+=======
+    inlineLock(id).show()
+>>>>>>> e8a73dcc2e73dee0172334f3d4e67a339cce9261:src/modules/auth/actions.js
   }
 }
 

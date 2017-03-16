@@ -1,0 +1,58 @@
+@import '../../../styles/Variables.scss';
+.menu-bar {
+  background-color: white;
+  border-bottom: 1px solid #dbdbdb;
+  padding: 0 20px;
+  .btn-group {
+    width: 100%;
+    @media #{$min-desktop} {
+      width: calc(100% - 200px);
+    }
+  }
+}
+.scroll {
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  &::before, &::after {
+    display: block;
+    position: absolute;
+    width: 15px;
+    content: ' ';
+    height: 100%;
+    top: 0;
+    pointer-events: none;
+    font-family: 'FontAwesome';
+    line-height: 42px;
+  }
+  &::before {
+    background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
+    left: 0;
+    z-index: 1;
+  }
+  &::after {
+    background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
+    right: 0;
+  }
+}
+.menu-actions {
+  width: 100%;
+  align: center;
+  @media #{$max-desktop} {
+    .btn {
+      width: 100%;
+    }
+  }
+}
+.menu-btn {
+  float: none !important;
+  display: inline-block;
+}
+@media #{$min-desktop} {
+  .menu-actions {
+    float: right;
+    width: auto;
+    align: inherit;
+  }
+}
