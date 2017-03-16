@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
-//import { Button, Grid } from 'react-bootstrap'
-//import { MenuBar, MenuBarItem, MenuBarDropdown, MenuBarDropdownItem } from 'components/HorizontalMenuBar'
+import { Menu, Icon } from 'antd'
 import ProfileHeader from 'components/profile/ProfileHeader'
-
 import './Club.scss'
+
+const SubMenu = Menu.SubMenu
+const MenuItemGroup = Menu.ItemGroup
 
 const Club = ({ data, children }) => {
 
@@ -23,6 +24,10 @@ const Club = ({ data, children }) => {
     return <div>Club not found!</div>
   }
 
+  const handleClick = e => {
+    console.log('menu item clicked')
+  }
+
   return (
     <section>
       <ProfileHeader
@@ -31,6 +36,27 @@ const Club = ({ data, children }) => {
         images={club.images}
         collapsed={collapseHeader}
       />
+      <Menu
+        onClick={handleClick}
+        selectedKeys={['feed']}
+        mode="horizontal"
+      >
+        <Menu.Item key="feed">Feed</Menu.Item>
+        <Menu.Item key="events">Events</Menu.Item>
+        <Menu.Item key="about">About</Menu.Item>
+        <Menu.Item key="community">Community</Menu.Item>
+        <Menu.Item key="mymembership">My Membership</Menu.Item>
+
+        <Menu.Item key="divider" disabled={true}> | </Menu.Item>
+
+        <Menu.Item key="clubprofile">Club Profile</Menu.Item>
+        <Menu.Item key="members">Members</Menu.Item>
+        <Menu.Item key="approvals">Approvals</Menu.Item>
+        <Menu.Item key="invoices">Invoice</Menu.Item>
+        <Menu.Item key="finances">Fincances</Menu.Item>
+        <Menu.Item key="settings"><Icon type="setting"/></Menu.Item>
+      </Menu>
+      {children}
     {/*}
       <MenuBar routePrefix={`/${params.club_id}`} route={location}>
         <MenuBarItem label="Feed" to="/feed" />
