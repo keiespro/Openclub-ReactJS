@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Dropdown, MenuItem } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { LinkContainer } from 'teardrop-bootstrap'
 import { connect } from 'react-redux'
 import { logoutUser } from 'modules/auth/actions'
 

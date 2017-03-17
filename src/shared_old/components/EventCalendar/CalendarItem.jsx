@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { browserHistory } from 'react-router';
+import { browserHistory } from 'teardrop';
 import { Row, Col } from 'react-bootstrap';
 import cx from 'classnames';
 import m from 'moment';

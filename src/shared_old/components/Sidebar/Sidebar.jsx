@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { IndexLink } from 'react-router'
+import { IndexLink } from 'teardrop'
 import Logo from '../Logo';
 import SidebarProfileWidget from './SidebarProfileWidget'
 import SidebarMenu from './SidebarMenu'

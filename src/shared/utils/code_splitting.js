@@ -1,5 +1,5 @@
 /**
- * Convenience functions for code splitting react-router routes
+ * Convenience functions for code splitting teardrop routes
  */
 
 // run a callback after loading a split route

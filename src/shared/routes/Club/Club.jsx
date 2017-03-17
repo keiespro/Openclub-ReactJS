@@ -56,7 +56,8 @@ const Club = ({ data, children }) => {
         <Menu.Item key="finances">Fincances</Menu.Item>
         <Menu.Item key="settings"><Icon type="setting"/></Menu.Item>
       </Menu>
-      {children}
+
+      
     {/*}
       <MenuBar routePrefix={`/${params.club_id}`} route={location}>
         <MenuBarItem label="Feed" to="/feed" />

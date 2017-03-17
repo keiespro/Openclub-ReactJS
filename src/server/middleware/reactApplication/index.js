@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { ServerRouter, createServerRenderContext } from 'react-router';
+import { ServerRouter, createServerRenderContext } from 'teardrop';
 import { CodeSplitProvider, createRenderContext } from 'code-split-component';
 import { ApolloProvider } from 'react-apollo';
 import Helmet from 'react-helmet';

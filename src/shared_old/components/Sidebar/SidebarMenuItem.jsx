@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { Link, IndexLink } from 'react-router'
+import { Link, IndexLink } from 'teardrop'
 import cx from 'classnames'
 import './styles/SidebarMenuLink.scss'
 

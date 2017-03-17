@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'teardrop';
 import { Row, Col, Jumbotron } from 'react-bootstrap';
 
 class Error extends Component {

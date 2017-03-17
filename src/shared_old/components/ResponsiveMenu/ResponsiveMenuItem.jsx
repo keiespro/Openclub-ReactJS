@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'teardrop';
 import cx from 'classnames';
 
 class ResponsiveMenuItem extends Component {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Match } from 'react-router'
+import { Match } from 'teardrop'
 import { CodeSplit } from 'code-split-component'
 import { RoutePage } from 'components/layout'
 

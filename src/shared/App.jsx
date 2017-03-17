@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
-import { Match, Miss, Redirect } from 'react-router'
+import { Match, Miss, Redirect } from 'teardrop'
 import Helmet from 'react-helmet'
 import { CodeSplit } from 'code-split-component'
 import cx from 'classnames'
@@ -9,6 +9,8 @@ import gql from 'graphql-tag'
 import Drawer from 'rc-drawer'
 import { Layout } from 'antd'
 
+// base styling including bootstrap
+import 'styles/_base.scss'
 // ant theming
 import 'antd/dist/antd.css'
 import 'rc-drawer/assets/index.css'

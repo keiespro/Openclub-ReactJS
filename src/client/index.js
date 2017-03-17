@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter } from 'teardrop';
 import { CodeSplitProvider, rehydrateState } from 'code-split-component';
 import { ApolloProvider } from 'react-apollo';
 import ReactHotLoader from './components/ReactHotLoader';

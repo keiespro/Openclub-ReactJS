@@ -1,6 +1,6 @@
 import React, { Component, Children, PropTypes } from 'react'
 import { Collapse } from 'react-bootstrap'
-import { Link } from 'react-router'
+import { Link } from 'teardrop'
 import DetailsHeader from './DetailsHeader'
 import './styles/DetailsItem.scss'
 

@@ -18,7 +18,7 @@ export const createRoutes = (store) => ({
   getComponent: (nextState, cb) => require.ensure([], require =>
     cb(null, require('layouts/CoreLayout/CoreLayout').default), 'core'),
   onEnter: (nextState, replace, cb) => {
-    // this should only be run once, and so seems like a bug in react-router
+    // this should only be run once, and so seems like a bug in teardrop
     // TODO: figure out a proper fix
     if (!ran) {
       // enforce auth hash completion before loading root route

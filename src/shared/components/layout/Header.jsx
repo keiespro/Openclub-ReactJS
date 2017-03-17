@@ -1,6 +1,6 @@
 import React from 'react'
 import { Layout, Menu, Dropdown, Icon } from 'antd'
-import { Link } from 'react-router'
+import { Link } from 'teardrop'
 import Logo from 'components/logo/Logo'
 import './Header.scss'
 

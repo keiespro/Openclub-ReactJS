@@ -1,4 +1,4 @@
-import { browserSync } from 'react-router';
+import { browserSync } from 'teardrop';
 import { loadcb, splitError } from 'utils/code_splitting'
 import RoutePage from 'components/layout/RoutePage'
 

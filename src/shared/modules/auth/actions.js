@@ -1,6 +1,6 @@
 import apolloClient from 'modules/apollo'
 import gql from 'graphql-tag'
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'teardrop'
 import { lock, inlineLock, hashParsed } from 'utils/Auth0'
 
 // Auth0 lock actions

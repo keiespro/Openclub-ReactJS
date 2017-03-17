@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Row, Col, Dropdown, MenuItem, ButtonGroup } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { Link } from 'teardrop';
 
 import ClubSectionTitle from '../../../components/ClubSectionTitle';
 

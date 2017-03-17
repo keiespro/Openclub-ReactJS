@@ -234,7 +234,7 @@ const config = {
           'react',
           'react-dom',
           'react-helmet',
-          'react-router',
+          'teardrop',
         ],
 
         // The name of the vendor DLL.

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { MenuItem } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import { LinkContainer } from 'teardrop-bootstrap'
 
 class MenuBarDropdownItem extends Component {
   render() {

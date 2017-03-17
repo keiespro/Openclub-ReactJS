@@ -1,7 +1,7 @@
 import React from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'teardrop'
 import CreateClubForm from 'components/forms/CreateClubForm'
 import {
   ContentPage,

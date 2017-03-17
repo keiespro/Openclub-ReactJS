@@ -1,4 +1,4 @@
-import { browserSync } from 'react-router';
+import { browserSync } from 'teardrop';
 
 import ClubsPage from './components/ClubsPage';
 

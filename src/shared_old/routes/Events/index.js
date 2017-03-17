@@ -1,4 +1,4 @@
-import { browserSync } from 'react-router'
+import { browserSync } from 'teardrop'
 
 export default (store) => ({
   path: 'events',
