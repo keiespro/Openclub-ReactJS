@@ -26,8 +26,8 @@ import { safeConfigGet } from 'utils/config'
 
 const { Content } = Layout
 
-const App = ({ data = {} }) => (
-  <Drawer sidebar={<Sidebar user={data.user}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
+const App = ({ data = {}, location }) => (
+  <Drawer sidebar={<Sidebar user={data.user} location={location}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
     <Layout>
       <Helmet
         htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}

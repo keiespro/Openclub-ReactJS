@@ -12,12 +12,12 @@ class AuthLoader extends Component {
   }
 
   render() {
-    const { auth0Loaded, children } = this.props
+    const { auth0Loaded, children, ...rest } = this.props
     // only render the app if the auth0 process has completed
     // or we are doing ssr
-    return (auth0Loaded || process.env.IS_SERVER) ? children : (
+    return (auth0Loaded || process.env.IS_SERVER) ?
+      React.cloneElement(this.props.children, {...this.props}) :
       <div>Loading...</div>
-    )
   }
 }
 

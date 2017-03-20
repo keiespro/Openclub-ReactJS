@@ -3,6 +3,7 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Menu, Icon } from 'antd'
 import ProfileHeader from 'components/profile/ProfileHeader'
+import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
 import './Club.scss'
 
 const SubMenu = Menu.SubMenu
@@ -56,8 +57,8 @@ const Club = ({ data, children }) => {
         <Menu.Item key="finances">Fincances</Menu.Item>
         <Menu.Item key="settings"><Icon type="setting"/></Menu.Item>
       </Menu>
+      <ClubHeroHelper/>
 
-      
     {/*}
       <MenuBar routePrefix={`/${params.club_id}`} route={location}>
         <MenuBarItem label="Feed" to="/feed" />

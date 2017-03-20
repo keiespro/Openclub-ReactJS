@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { Menu, Icon } from 'antd'
 import './Sidebar.scss'
 
 const SubMenu = Menu.SubMenu
 
-const Sidebar = ({ user }) => {
+const Sidebar = ({ user, location }, { router }) => {
+
+  const handleClick = e => {
+    router.transitionTo(e.key)
+  }
+
   if(user) {
     return (
       <aside className="oc-sidebar">
@@ -15,8 +20,9 @@ const Sidebar = ({ user }) => {
         <Menu
           theme="dark"
           className="oc-sidebar-menu"
-          selectedKeys={['1']}
+          selectedKeys={[location.pathname]}
           mode="inline"
+          onClick={handleClick}
           defaultOpenKeys={['sub1', 'sub2', 'sub3']}
         >
           <SubMenu key="sub1" title={<span>OpenClub</span>}>
@@ -43,6 +49,10 @@ const Sidebar = ({ user }) => {
   }else{
     return <div/>
   }
+}
+
+Sidebar.contextTypes = {
+  router: PropTypes.object
 }
 
 export default Sidebar
