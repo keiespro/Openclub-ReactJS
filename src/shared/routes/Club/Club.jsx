@@ -2,14 +2,17 @@ import React, { Component, PropTypes } from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Menu, Icon } from 'antd'
+import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
+import { CodeSplit } from 'code-split-component'
 import ProfileHeader from 'components/profile/ProfileHeader'
 import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
+import Error404 from 'components/Error404/Error404'
 import './Club.scss'
 
 const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
 
-const Club = ({ data, children }) => {
+const Club = ({ data, children, params }) => {
 
   const { club, loading } = data
   //const { params, location } = this.props
@@ -58,7 +61,22 @@ const Club = ({ data, children }) => {
         <Menu.Item key="settings"><Icon type="setting"/></Menu.Item>
       </Menu>
       <ClubHeroHelper/>
-
+      <MatchGroup>
+        <Match
+          exactly
+          pattern={`/${params.club_id}`}
+          render={routerProps => <Redirect to={`/${params.club_id}/feed`} push />}
+        />
+        <Match
+          pattern={`/${params.club_id}/feed`}
+          render={routerProps =>
+            <CodeSplit chunkName="clubfeed" modules={{ Feed: require('./Feed') }}>
+              { ({ Feed }) => Feed && <Feed {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
+        <Miss component={Error404}></Miss>
+      </MatchGroup>
     {/*}
       <MenuBar routePrefix={`/${params.club_id}`} route={location}>
         <MenuBarItem label="Feed" to="/feed" />
