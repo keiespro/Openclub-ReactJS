@@ -9,7 +9,7 @@ import {
 } from 'components/layout'
 import { message } from 'antd'
 
-const CreateClub = ({ mutate }) => {
+const CreateClub = ({ mutate }, { router }) => {
 
   const createTheClub = values => {
     mutate({
@@ -18,7 +18,7 @@ const CreateClub = ({ mutate }) => {
         club: values.club
       }
     }).then(({ data }) => {
-      browserHistory.push(`/${values.slug}`)
+      router.transitionTo(`/${values.slug}`)
     }).catch(err => {
       message('Error creating club: ' + err, 4)
     })
