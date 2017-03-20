@@ -7,7 +7,7 @@ import { createLogger } from 'utils/logger'
 const logger = createLogger('apollo')
 
 const networkInterface = createNetworkInterface({
-  uri: 'http://localhost:5000/v1/graphql'
+  uri: process.env.GRAPH_URL
 })
 
 export default new ApolloClient({

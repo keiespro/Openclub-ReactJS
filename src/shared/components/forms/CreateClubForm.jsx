@@ -43,7 +43,7 @@ const CreateClubForm = ({ handleSubmit, createForm, token }) => {
           component={ImageUploader}
           token={token}
           postname="square"
-          action="http://localhost:5010/upload/image/square"
+          action={`${process.env.ICEPICK_URL}/upload/image/square`}
         />
       </FieldContainer>
       <FieldContainer title="Background Image">
@@ -51,7 +51,7 @@ const CreateClubForm = ({ handleSubmit, createForm, token }) => {
           name="club.images.background"
           token={token}
           postname="background"
-          action="http://localhost:5010/upload/image/background"
+          action={`${process.env.ICEPICK_URL}/upload/image/background`}
           component={FileUploader}
           listType="picture"
         />
