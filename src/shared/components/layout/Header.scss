@@ -1,0 +1,32 @@
+@import 'styles/Variables';
+@import 'styles/Mixins';
+
+.oc-header {
+  position: relative;
+  background-color: $header-bg;
+  height: $header-hg;
+  box-shadow: $header-shadow;
+  text-align: center;
+  z-index: 2;
+}
+.oc-header-logo {
+  @include vcenter;
+  svg {
+    @include vcenter;
+    max-width: 128px;
+  }
+}
+.oc-header-context {
+  float: right;
+  height: $header-hg;
+  margin-right: 20px;
+}
+.oc-header-usermenu {
+  line-height: $header-hg;
+}
+.oc-header-userimage {
+  vertical-align: middle;
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
+}
