@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { browserHistory } from 'teardrop'
@@ -20,6 +20,7 @@ const CreateClub = ({ mutate }, { router }) => {
     }).then(({ data }) => {
       router.transitionTo(`/${values.slug}`)
     }).catch(err => {
+      console.log(err)
       message('Error creating club: ' + err, 4)
     })
   }
@@ -32,16 +33,34 @@ const CreateClub = ({ mutate }, { router }) => {
   )
 }
 
+CreateClub.contextTypes = {
+  router: PropTypes.object
+}
+
 const createMutation = gql`
   mutation createClub($slug: String!, $club: clubInput!){
     createClub(slug: $slug, club: $club){
       _id
+      name
+      images{
+        thumb
+        background
+        square
+      }
       slug
     }
   }
 `
 
-const CreateClubWithApollo = graphql(createMutation)(CreateClub)
+const CreateClubWithApollo = graphql(createMutation, {
+  options: {
+    updateQueries: {
+      currentViewer: (prev, { mutationResult }) => {
+
+      }
+    }
+  }
+})(CreateClub)
 
 export default CreateClubWithApollo
 
