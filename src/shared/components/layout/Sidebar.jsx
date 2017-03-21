@@ -11,6 +11,7 @@ const Sidebar = ({ user, location }, { router }) => {
   }
 
   if(user) {
+    if(!user.images){ user.images = {} }
     return (
       <aside className="oc-sidebar">
         <div className="oc-sidebar-profile">
@@ -40,7 +41,9 @@ const Sidebar = ({ user, location }, { router }) => {
             {user && user.clubs && user.clubs.map((c, index) =>
               <Menu.Item
                 key={`/${c.slug}`}
-              ><img className="oc-sidebar-clubimage" src={c.images.thumb}/> {c.name}</Menu.Item>
+              >
+                <img className="oc-sidebar-clubimage" src={c.images ? c.images.thumb : null}/> {c.name}
+              </Menu.Item>
             )}
           </SubMenu>
         </Menu>

@@ -58,7 +58,10 @@ const CreateClubWithApollo = graphql(createMutation, {
       currentViewer: (prev, { mutationResult }) => {
         const newClub = mutationResult.data.createClub
         return {
-          clubs: [...prev.clubs, newClub]
+          user: {
+            ...prev.user,
+            clubs: [...prev.user.clubs, newClub]
+          }
         }
       }
     }
