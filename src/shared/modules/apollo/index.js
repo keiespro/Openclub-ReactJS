@@ -5,9 +5,6 @@ import ApolloClient, { createNetworkInterface } from 'apollo-client'
 import { createLogger } from 'utils/logger'
 
 const logger = createLogger('apollo')
-if (`GRAPH_URL` in process.env === false) {
-  throw new Error('Uh oh! No Graph URL. Can\'t start the server.');
-}
 const networkInterface = createNetworkInterface({
   uri: process.env.GRAPH_URL
 })
