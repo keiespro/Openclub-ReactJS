@@ -48,7 +48,7 @@ const Club = ({ data, children, params }) => {
         <Menu.Item key="feed">Feed</Menu.Item>
         <Menu.Item key="events">Events</Menu.Item>
         <Menu.Item key="about">About</Menu.Item>
-        <Menu.Item key="community">Community</Menu.Item>
+        <Menu.Item key="community">Members</Menu.Item>
         <Menu.Item key="mymembership">My Membership</Menu.Item>
 
         <Menu.Item key="divider" disabled={true}> | </Menu.Item>
