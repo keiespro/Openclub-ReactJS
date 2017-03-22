@@ -1,5 +1,4 @@
 /* eslint-disable global-require */
-
 import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter } from 'teardrop';
@@ -9,16 +8,9 @@ import ReactHotLoader from './components/ReactHotLoader';
 import AuthLoader from '../shared/components/auth/AuthLoader'
 import App from '../shared/App';
 import createStore from '../shared/store/create_store';
-import { initApollo, initMiddlewares } from '../shared/modules/apollo';
+import apolloClient, { initMiddlewares } from '../shared/modules/apollo';
 import { LocaleProvider } from 'antd'
 import enUS from 'antd/lib/locale-provider/en_US'
-import _ from 'lodash';
-
-const env_vars = '__ENV_VARS__' in window ? window.__ENV_VARS__ : {};
-
-Object.keys(env_vars).map((key) => {
-  _.set(window, key, JSON.parse(env_vars[key]));
-});
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
@@ -26,7 +18,6 @@ const container = document.querySelector('#app');
 const store = createStore('__APP_STATE__' in window ? window.__APP_STATE__ : {});
 
 // setup the apollo middlewares once the store has been created
-const apolloClient = initApollo();
 initMiddlewares(store);
 
 function renderApp(TheApp) {

@@ -4,7 +4,6 @@ import { reducer as modal } from 'redux-modal'
 import auth from 'modules/auth/reducer'
 import apolloClient from 'modules/apollo'
 
-
 const makeRootReducer = asyncReducers => combineReducers({
   apollo: apolloClient.reducer(),
   form,

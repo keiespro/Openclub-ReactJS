@@ -6,23 +6,14 @@ import { createLogger } from 'utils/logger'
 
 const logger = createLogger('apollo')
 
-let networkInterface;
-let apolloClient;
+const networkInterface = createNetworkInterface({
+  uri: process.env.GRAPH_URL
+})
 
-const initNetworkInterface = () => {
-  networkInterface = createNetworkInterface({
-    uri: process.env.GRAPH_URL
-  })
-}
-
-const initApollo = () => {
-  initNetworkInterface();
-  apolloClient = new ApolloClient({
-    networkInterface,
-    dataIdFromObject: obj => obj._id
-  });
-  return apolloClient;
-}
+export default new ApolloClient({
+  networkInterface,
+  dataIdFromObject: obj => obj._id
+});
 
 // adds store utilising middlewares to the apollo client
 const initMiddlewares = store => {
@@ -59,7 +50,5 @@ const initMiddlewares = store => {
 }
 
 export {
-  initMiddlewares,
-  initApollo
+  initMiddlewares
 }
-export default apolloClient;

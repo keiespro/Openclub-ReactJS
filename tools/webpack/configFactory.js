@@ -233,15 +233,15 @@ export default function webpackConfigFactory(buildOptions) {
       // use in each respective bundle.  For example, don't accidentally
       // expose a database connection string within your client bundle src!
       new webpack.DefinePlugin({
-        // Adding the NODE_ENV key is especially important as React relies
-        // on it to optimize production builds.
         'process.env.NODE_ENV': JSON.stringify(mode),
-        // Is this the "client" bundle?
         'process.env.IS_CLIENT': JSON.stringify(isClient),
-        // Is this the "server" bundle?
         'process.env.IS_SERVER': JSON.stringify(isServer),
-        // Is this a node bundle?
         'process.env.IS_NODE': JSON.stringify(isNode),
+        'process.env.AUTH0_CLIENT_ID': isServer ? JSON.stringify(process.env.AUTH0_CLIENT_ID) : 'window.__ENV_VARS__.AUTH0_CLIENT_ID',
+        'process.env.AUTH0_DOMAIN': isServer ? JSON.stringify(process.env.AUTH0_DOMAIN) :  'window.__ENV_VARS__.AUTH0_DOMAIN',
+        'process.env.GRAPH_URL': isServer ? JSON.stringify(process.env.GRAPH_URL) :  'window.__ENV_VARS__.GRAPH_URL',
+        'process.env.ICEPICK_URL': isServer ? JSON.stringify(process.env.ICEPICK_URL) :  'window.__ENV_VARS__.ICEPICK_URL'
+
       }),
 
       // Generates a JSON file containing a map of all the output files for

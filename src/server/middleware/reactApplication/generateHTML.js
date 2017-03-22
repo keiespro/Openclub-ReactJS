@@ -86,8 +86,9 @@ export default function generateHTML(args) {
             : ''
         }
         ${
-          // Env vars.
-          initialState
+          // Bind the initial application state based on the server render
+          // so the client can register the correct initial state for the view.
+          env_vars
             ? inlineScript(`window.__ENV_VARS__=${serialize(env_vars)};`)
             : ''
         }
