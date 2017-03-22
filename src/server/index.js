@@ -12,6 +12,8 @@ import offlinePage from './middleware/offlinePage';
 import errorHandlers from './middleware/errorHandlers';
 import config from '../../config';
 
+console.log(process.env);
+
 // Create our express based server.
 const app = express();
 
