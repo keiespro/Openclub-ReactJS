@@ -9,7 +9,7 @@ RUN npm install
 COPY . /usr/app
 RUN npm install && npm run build
 
-ENV PORT 80
+ENV SERVER_PORT 80
 EXPOSE 80
 
 CMD [ "node", "build/server" ]
