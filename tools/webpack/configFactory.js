@@ -242,10 +242,6 @@ export default function webpackConfigFactory(buildOptions) {
         'process.env.IS_SERVER': JSON.stringify(isServer),
         // Is this a node bundle?
         'process.env.IS_NODE': JSON.stringify(isNode),
-        'process.env.AUTH0_CLIENT_ID': JSON.stringify(process.env.AUTH0_CLIENT_ID),
-        'process.env.AUTH0_DOMAIN': JSON.stringify(process.env.AUTH0_DOMAIN),
-        'process.env.GRAPH_URL': JSON.stringify(process.env.GRAPH_URL),
-        'process.env.ICEPICK_URL': JSON.stringify(process.env.ICEPICK_URL)
       }),
 
       // Generates a JSON file containing a map of all the output files for

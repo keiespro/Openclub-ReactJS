@@ -7,7 +7,7 @@ import { ApolloProvider } from 'react-apollo';
 import Helmet from 'react-helmet';
 import generateHTML from './generateHTML';
 import createStore from '../../../shared/store/create_store';
-import apolloClient from '../../../shared/modules/apollo';
+import apolloClient, { initApollo } from '../../../shared/modules/apollo';
 import App from '../../../shared/App';
 import config from '../../../../config';
 
@@ -51,6 +51,9 @@ function reactApplicationMiddleware(request, response) {
   // Setup redux
   const store = createStore();
 
+  // Setup apollo
+  initApollo();
+
   // Create our React application and render it into a string.
   const reactAppString = renderToString(
     <CodeSplitProvider context={codeSplitContext}>
@@ -62,12 +65,24 @@ function reactApplicationMiddleware(request, response) {
     </CodeSplitProvider>,
   );
 
+  const env_vars = {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    'process.env.IS_CLIENT': JSON.stringify(true),
+    'process.env.IS_SERVER': JSON.stringify(false),
+    'process.env.IS_NODE': JSON.stringify(false),
+    'process.env.AUTH0_CLIENT_ID': JSON.stringify(process.env.AUTH0_CLIENT_ID),
+    'process.env.AUTH0_DOMAIN': JSON.stringify(process.env.AUTH0_DOMAIN),
+    'process.env.GRAPH_URL': JSON.stringify(process.env.GRAPH_URL),
+    'process.env.ICEPICK_URL': JSON.stringify(process.env.ICEPICK_URL)
+  }
+
   // Generate the html response.
   const html = generateHTML({
     // Provide the full app react element.
     reactAppString,
     // Nonce which allows us to safely declare inline scripts.
     nonce,
+    env_vars,
     // Running this gets all the helmet properties (e.g. headers/scripts/title etc)
     // that need to be included within our html.  It's based on the rendered app.
     // @see https://github.com/nfl/react-helmet
