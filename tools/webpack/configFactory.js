@@ -237,11 +237,10 @@ export default function webpackConfigFactory(buildOptions) {
         'process.env.IS_CLIENT': JSON.stringify(isClient),
         'process.env.IS_SERVER': JSON.stringify(isServer),
         'process.env.IS_NODE': JSON.stringify(isNode),
-        'process.env.AUTH0_CLIENT_ID': isServer ? JSON.stringify(process.env.AUTH0_CLIENT_ID) : 'window.__ENV_VARS__.AUTH0_CLIENT_ID',
-        'process.env.AUTH0_DOMAIN': isServer ? JSON.stringify(process.env.AUTH0_DOMAIN) :  'window.__ENV_VARS__.AUTH0_DOMAIN',
-        'process.env.GRAPH_URL': isServer ? JSON.stringify(process.env.GRAPH_URL) :  'window.__ENV_VARS__.GRAPH_URL',
-        'process.env.ICEPICK_URL': isServer ? JSON.stringify(process.env.ICEPICK_URL) :  'window.__ENV_VARS__.ICEPICK_URL'
-
+        'process.env.AUTH0_CLIENT_ID': isServer ? 'process.env.AUTH0_CLIENT_ID' : 'window.__ENV_VARS__.AUTH0_CLIENT_ID',
+        'process.env.AUTH0_DOMAIN': isServer ? 'process.env.AUTH0_DOMAIN' :  'window.__ENV_VARS__.AUTH0_DOMAIN',
+        'process.env.GRAPH_URL': isServer ? 'process.env.GRAPH_URL' :  'window.__ENV_VARS__.GRAPH_URL',
+        'process.env.ICEPICK_URL': isServer ? 'process.env.ICEPICK_URL' :  'window.__ENV_VARS__.ICEPICK_URL'
       }),
 
       // Generates a JSON file containing a map of all the output files for
