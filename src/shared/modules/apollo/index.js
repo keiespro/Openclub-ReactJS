@@ -13,7 +13,9 @@ const networkInterface = createNetworkInterface({
 })
 
 export default new ApolloClient({
-  networkInterface,
+  process.env.IS_SERVER ? createNetworkInterface({
+    uri: process.env.GRAPH_URL
+  }) : networkInterface,
   dataIdFromObject: obj => obj._id
 });
 
