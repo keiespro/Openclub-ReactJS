@@ -12,7 +12,7 @@ import './Club.scss'
 const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
 
-const Club = ({ data, children, params }, { router }) => {
+const Club = ({ data, children, location, params }, { router }) => {
 
   const { club, loading } = data
   //const { params, location } = this.props
@@ -30,8 +30,17 @@ const Club = ({ data, children, params }, { router }) => {
 
   const handleClick = e => {
     console.log('menu item clicked')
-    router.transitionTo(`${club.slug}/${e.key}`)
+    router.transitionTo(`/${club.slug}/${e.key}`)
   }
+
+  // get the location key fragment used to show currently selected route
+  // TODO: add the below to the router when generating the location (i.e. a fragment array)
+  const path = location.pathname.endsWith('/') ?
+    location.pathname.slice(0, -1) :
+    location.pathname
+  const slashIndex = path.lastIndexOf('/')
+  const locationKey = path.substr(slashIndex + 1)
+  console.log(locationKey)
 
   return (
     <section>
@@ -43,7 +52,7 @@ const Club = ({ data, children, params }, { router }) => {
       />
       <Menu
         onClick={handleClick}
-        selectedKeys={['feed']}
+        selectedKeys={[locationKey]}
         mode="horizontal"
       >
         <Menu.Item key="feed">Feed</Menu.Item>
@@ -58,7 +67,7 @@ const Club = ({ data, children, params }, { router }) => {
         <Menu.Item key="members">Members</Menu.Item>
         <Menu.Item key="approvals">Approvals</Menu.Item>
         <Menu.Item key="invoices">Invoice</Menu.Item>
-        <Menu.Item key="finances">Fincances</Menu.Item>*/
+        <Menu.Item key="finances">Fincances</Menu.Item>*/}
         <Menu.Item key="settings"><Icon type="setting"/> Settings</Menu.Item>
       </Menu>
       <ClubHeroHelper/>
@@ -80,7 +89,7 @@ const Club = ({ data, children, params }, { router }) => {
           pattern={`/${params.club_id}/settings`}
           render={routerProps =>
             <CodeSplit chunkName="clubsettings" modules={{ Settings: require('./Settings') }}>
-              { ({ Feed }) => Feed && <Feed {...routerProps} /> }
+              { ({ Settings }) => Settings && <Settings {...routerProps} /> }
             </CodeSplit>
           }
         />
@@ -108,6 +117,10 @@ const Club = ({ data, children, params }, { router }) => {
       */}
     </section>
   )
+}
+
+Club.contextTypes = {
+  router: PropTypes.object
 }
 
 const clubQuery = gql`
