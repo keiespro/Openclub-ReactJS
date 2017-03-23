@@ -12,7 +12,7 @@ import './Club.scss'
 const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
 
-const Club = ({ data, children, params }) => {
+const Club = ({ data, children, params }, { router }) => {
 
   const { club, loading } = data
   //const { params, location } = this.props
@@ -30,6 +30,7 @@ const Club = ({ data, children, params }) => {
 
   const handleClick = e => {
     console.log('menu item clicked')
+    router.transitionTo(`${club.slug}/${e.key}`)
   }
 
   return (
@@ -53,12 +54,12 @@ const Club = ({ data, children, params }) => {
 
         <Menu.Item key="divider" disabled={true}> | </Menu.Item>
 
-        <Menu.Item key="clubprofile">Club Profile</Menu.Item>
+        {/*}<Menu.Item key="clubprofile">Club Profile</Menu.Item>
         <Menu.Item key="members">Members</Menu.Item>
         <Menu.Item key="approvals">Approvals</Menu.Item>
         <Menu.Item key="invoices">Invoice</Menu.Item>
-        <Menu.Item key="finances">Fincances</Menu.Item>
-        <Menu.Item key="settings"><Icon type="setting"/></Menu.Item>
+        <Menu.Item key="finances">Fincances</Menu.Item>*/
+        <Menu.Item key="settings"><Icon type="setting"/> Settings</Menu.Item>
       </Menu>
       <ClubHeroHelper/>
       <MatchGroup>
@@ -71,6 +72,14 @@ const Club = ({ data, children, params }) => {
           pattern={`/${params.club_id}/feed`}
           render={routerProps =>
             <CodeSplit chunkName="clubfeed" modules={{ Feed: require('./Feed') }}>
+              { ({ Feed }) => Feed && <Feed {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
+        <Match
+          pattern={`/${params.club_id}/settings`}
+          render={routerProps =>
+            <CodeSplit chunkName="clubsettings" modules={{ Settings: require('./Settings') }}>
               { ({ Feed }) => Feed && <Feed {...routerProps} /> }
             </CodeSplit>
           }
