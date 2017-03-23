@@ -1,5 +1,4 @@
 /* eslint-disable global-require */
-
 import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter } from 'teardrop';
@@ -17,8 +16,9 @@ import enUS from 'antd/lib/locale-provider/en_US'
 const container = document.querySelector('#app');
 
 const store = createStore('__APP_STATE__' in window ? window.__APP_STATE__ : {});
+
 // setup the apollo middlewares once the store has been created
-initMiddlewares(store)
+initMiddlewares(store);
 
 function renderApp(TheApp) {
   rehydrateState().then(codeSplitState =>

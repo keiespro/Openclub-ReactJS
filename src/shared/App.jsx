@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import { Match, Miss, Redirect } from 'teardrop'
+import { loadNotifications } from 'modules/notifications/actions'
 import Helmet from 'react-helmet'
 import { CodeSplit } from 'code-split-component'
 import cx from 'classnames'
@@ -26,7 +27,13 @@ import { safeConfigGet } from 'utils/config'
 
 const { Content } = Layout
 
-const App = ({ data = {} }) => (
+const App = ({ data = {}, ...props }) => {
+
+  if (data.user) {
+    props.loadNotifications(data.user._id, data.user.notification_token);
+  }
+
+  return (
   <Drawer sidebar={<Sidebar user={data.user}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
     <Layout>
       <Helmet
@@ -72,6 +79,15 @@ const App = ({ data = {} }) => (
           render={routerProps =>
             <CodeSplit chunkName="clubs" modules={{ Clubs: require('./routes/Clubs') }}>
               { ({ Clubs }) => Clubs && <Clubs {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
+
+        <Match
+          pattern="/notifications"
+          render={routerProps =>
+            <CodeSplit chunkName="notifications" modules={{ Notifications: require('./routes/Notifications') }}>
+              { ({ Notifications }) => Notifications && <Notifications {...routerProps} /> }
             </CodeSplit>
           }
         />
@@ -134,7 +150,7 @@ const App = ({ data = {} }) => (
       </Content>
     </Layout>
   </Drawer>
-)
+)}
 
 /*
 const App = ({ data, store }) =>  {
@@ -264,6 +280,7 @@ const currentViewer = gql`
       _id
       email
       name
+      notification_token
       images {
         thumb
         square
@@ -287,7 +304,7 @@ const AppWithApollo = graphql(currentViewer, {
 export default connect(state => ({
   auth0Loaded: state.auth.auth0Loaded,
   token: state.auth.token
-}))(AppWithApollo)
+}), { loadNotifications })(AppWithApollo)
 
 export {
   App

@@ -1,6 +1,19 @@
 import stream from 'getstream';
 
-const initStream = () => stream.connect(process.env.STREAM_API_KEY, null, process.env.STREAM_APP_ID);
+console.log(stream.connect.toString, process.env.STREAM_API_KEY);
+
+export default stream.connect(process.env.STREAM_API_KEY, null, process.env.STREAM_APP_ID);
+
+let client;
+
+async function initStream() {
+  if (!client) client = await stream.connect(process.env.STREAM_API_KEY, null, process.env.STREAM_APP_ID);
+  return client;
+}
+
+async function request(run) {
+  run(await initStream());
+}
 
 const feedGroups = {
   CLUB: 'club',
@@ -11,15 +24,7 @@ const feedGroups = {
   NOTIFICATIONS: 'notifications'
 }
 
-const subscribe = (feedContext, callback) => feedContext.subscribe(callback);
-const unsubscribe = (subscription) => subscription.cancel();
-
-const getFeed = (client, feedGroup, subscriberId, feedToken) => client.feed(feedGroup, subscriberId, feedToken);
-
 export {
-  initStream,
   feedGroups,
-  subscribe,
-  unsubscribe,
-  getFeed
+  request
 }
