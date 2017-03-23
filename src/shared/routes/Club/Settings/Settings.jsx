@@ -1,7 +1,10 @@
 import React from 'react'
+import { ContentPage, PageHeader } from 'components/layout'
 
 const Settings = props => (
-  <div>Settings Page</div>
+  <ContentPage>
+    <PageHeader title="Settings"/>
+  </ContentPage>
 )
 
 export default Settings

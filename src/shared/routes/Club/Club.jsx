@@ -29,7 +29,6 @@ const Club = ({ data, children, location, params }, { router }) => {
   }
 
   const handleClick = e => {
-    console.log('menu item clicked')
     router.transitionTo(`/${club.slug}/${e.key}`)
   }
 
@@ -40,7 +39,6 @@ const Club = ({ data, children, location, params }, { router }) => {
     location.pathname
   const slashIndex = path.lastIndexOf('/')
   const locationKey = path.substr(slashIndex + 1)
-  console.log(locationKey)
 
   return (
     <section>
