@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import { Match, Miss, Redirect } from 'teardrop'
-import { loadNotifications } from 'modules/notifications/actions'
 import Helmet from 'react-helmet'
 import { CodeSplit } from 'code-split-component'
 import cx from 'classnames'
@@ -15,10 +14,11 @@ import 'styles/_base.scss'
 // ant theming
 import 'antd/dist/antd.css'
 import 'rc-drawer/assets/index.css'
-// centric theming
 
 // app component styles
 import 'App.scss'
+
+import { LoadNotifications } from 'components/Notifications'
 
 import Error404 from 'components/Error404/Error404'
 import Header from 'components/layout/Header'
@@ -27,12 +27,7 @@ import { safeConfigGet } from 'utils/config'
 
 const { Content } = Layout
 
-const App = ({ data = {}, ...props }) => {
-
-  if (data.user) {
-    props.loadNotifications(data.user._id, data.user.notification_token);
-  }
-
+const App = ({ data = {} }) => {
   return (
   <Drawer sidebar={<Sidebar user={data.user}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
     <Layout>
@@ -44,7 +39,8 @@ const App = ({ data = {}, ...props }) => {
         link={safeConfigGet(['htmlPage', 'links'])}
         script={safeConfigGet(['htmlPage', 'scripts'])}
       />
-
+    
+      <LoadNotifications user={data.user} />
       <Header user={data.user}/>
       <Content>
         <Match
@@ -304,7 +300,7 @@ const AppWithApollo = graphql(currentViewer, {
 export default connect(state => ({
   auth0Loaded: state.auth.auth0Loaded,
   token: state.auth.token
-}), { loadNotifications })(AppWithApollo)
+}))(AppWithApollo)
 
 export {
   App

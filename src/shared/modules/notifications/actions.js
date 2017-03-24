@@ -7,17 +7,19 @@ export const LOAD_NOTIFICATIONS = 'LOAD_NOTIFICATIONS';
 export const CLEAR_NOTIFICATIONS = 'CLEAR_NOTIFICATIONS';
 export const NEW_NOTIFICATIONS = 'NEW_NOTIFICATIONS';
 
-export const reduceLoadNotifications = (notifications) => ({
-  notifications,
+const reduceLoadNotifications = ({ results, unread, unseen}) => ({
+  results,
+  unread,
+  unseen,
   type: LOAD_NOTIFICATIONS
 })
 
-export const reduceClearNotifications = () => ({
+const reduceClearNotifications = () => ({
   type: CLEAR_NOTIFICATIONS
 })
 
-export const reduceNewNotifications = (notifications) => ({
-  notifications,
+const reduceNewNotifications = results => ({
+  results,
   type: NEW_NOTIFICATIONS
 })
 
@@ -25,11 +27,9 @@ export function loadNotifications(userId, tokenId) {
   return dispatch => {
       const notifications = stream.feed(feedGroups.NOTIFICATIONS, userId, tokenId);
       notifications.get({ limit: 20 }).then((result) => {
-        console.log('Le result', result);
-        dispatch(reduceLoadNotifcations(result.results))
+        dispatch(reduceLoadNotifications(result))
       })
       notifications.subscribe((notification) => {
-        console.log('Le notification', notification);
         dispatch(reduceNewNotifications(notification))
       })
   }

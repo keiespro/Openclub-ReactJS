@@ -5,8 +5,9 @@ import auth from 'modules/auth/reducer'
 import notifications from 'modules/notifications'
 import apolloClient from 'modules/apollo'
 
+ 
+
 const makeRootReducer = asyncReducers => combineReducers({
-  apollo: apolloClient.reducer(),
   form,
   modal,
   auth,

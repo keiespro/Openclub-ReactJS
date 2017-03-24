@@ -1,23 +1,40 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import gql from 'graphql-tag'
+import apolloClient from 'modules/apollo'
 import { RoutePage } from 'components/layout'
 
-const Notifications = ({ data }) => (
-  <RoutePage>
-    Notifications
-    {data.count}
-    {JSON.stringify(data.notifications)}
-  </RoutePage>
-);
+const testNotificationMutation = gql`
+mutation testNotification{
+  testNotifications
+}
+`
 
-Notifications.propTypes = {
-  data: PropTypes.object
+class Notifications extends Component {
+  static propTypes = {
+    data: PropTypes.object,
+    _id: PropTypes.string,
+    notifications_token: PropTypes.string
+  }
+  runTest() {
+    return apolloClient.mutate({
+      mutation: testNotificationMutation
+    })
+  }
+  render() {
+    const { data } = this.props
+    return (
+      <RoutePage>
+        Notifications
+        <a href="#" onClick={this.runTest.bind(this)}>TEST</a>
+        {data.unread}
+        {data.unseen}
+        {JSON.stringify(data.notifications)}
+      </RoutePage>
+    );
+  }
 }
 
 export default connect(state => ({
   data: state.notifications
 }))(Notifications);
-
-export {
-  Notifications
-}
