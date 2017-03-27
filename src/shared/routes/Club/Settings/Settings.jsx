@@ -27,14 +27,14 @@ const Settings = props => {
   ]
 
   const priceColumns = [
-    { key: 'price', customDataRender: (table, price) => `$${price}` },
+    { key: 'price', size: '50%', customDataRender: (table, price) => `$${price}` },
     { key: 'duration', customDataRender: (table, duration) => durations.lookup[duration] }
   ]
 
   const columns = [
     { title: 'Name', key: 'name' },
     { title: 'Description', key: 'description' },
-    { title: 'Prices', key: 'prices', customDataRender: (table, prices) => <Table data={prices} columns={priceColumns}/> },
+    { title: 'Prices', tdclasses: 'no-padding', key: 'prices', customDataRender: (table, prices) => <Table data={prices} columns={priceColumns}/> },
     { title: 'Actions', customDataRender: (table, cellData, rowData) => {
       if(table.state.expandedKeys[rowData.id]){
         return (
