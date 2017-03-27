@@ -1,40 +1,52 @@
 import React from 'react'
 import { Field, FieldArray, reduxForm } from 'redux-form'
+import { Icon, Col } from 'antd'
 import {
   Form,
   FieldContainer,
   Input,
+  InputNumber,
   Select,
   Button,
   InputGroup
 } from 'components/form_controls'
 import { required, maxLength } from 'utils/form_validation/errors'
 
+import './MembershipPlanForm.css'
+
 const MembershipPlanForm = ({ handleSubmit, createForm }) => {
 
   const renderPrices = ({ fields, meta: { touched, error } }) => (
     <div>
       {fields.map((price, index) =>
-        <InputGroup key={index} compact>
-          <Field
-            style={{ width: '25%' }}
-            name="duration"
-            component={Select}
-            options={[
-              { key: 'YEARLY', value: 'Yearly' },
-              { key: 'MONTHLY', value: 'Monthly' },
-              { key: 'FORTNIGHTLY', value: 'Fortnightly' },
-              { key: 'WEEKLY', value: 'Weekly' }
-            ]}
-          />
-          <Field
-            style={{ width: '25%' }}
-            name="price"
-            type="text"
-            prefix={<Icon type="dollars"/>}
-            validate={[required, maxLength(64)]}
-            component={Input}
-          />
+        <InputGroup key={index} className="membership-price-item" compact>
+          <Col span="5">
+            <Field
+              name={`prices[${index}].price`}
+              type="text"
+              placeholder="Price"
+              basic={true}
+              prefix="$"
+              validate={[required, maxLength(64)]}
+              component={Input}
+            />
+          </Col>
+          <Col span="5">
+            <Field
+              name={`prices[${index}].duration`}
+              component={Select}
+              placeholder="Duration"
+              options={[
+                { key: 'YEARLY', value: 'Yearly' },
+                { key: 'MONTHLY', value: 'Monthly' },
+                { key: 'FORTNIGHTLY', value: 'Fortnightly' },
+                { key: 'WEEKLY', value: 'Weekly' }
+              ]}
+            />
+          </Col>
+          <Col span="2">
+            <Button type="danger" icon="delete" ghost onClick={() => fields.remove(index)}/>
+          </Col>
         </InputGroup>
       )}
       <Button icon="plus" onClick={() => fields.push({})}>Add</Button>

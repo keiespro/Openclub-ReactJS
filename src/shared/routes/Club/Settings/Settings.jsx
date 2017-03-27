@@ -29,9 +29,20 @@ const Settings = props => {
     { title: 'Name', key: 'name' },
     { title: 'Description', key: 'description' },
     { title: 'Prices', key: 'prices', customDataRender: (table, prices) => prices.length },
-    { title: 'Actions', customDataRender: (table, cellData, rowData) => (
-      <Button icon="edit" onClick={() => table.updateExpanded({[rowData.id]: true})}>Edit</Button>
-    )}
+    { title: 'Actions', customDataRender: (table, cellData, rowData) => {
+      if(table.state.expandedKeys[rowData.id]){
+        return (
+          <div>
+            <Button className="btn-rightgap" type="primary" icon="save" onClick={() => table.updateExpanded({[rowData.id]: true})}>Save</Button>
+            <Button onClick={() => table.updateExpanded({[rowData.id]: false})}>Cancel</Button>
+          </div>
+        )
+      }else{
+        return (
+          <Button icon="edit" onClick={() => table.updateExpanded({[rowData.id]: true})}>Edit</Button>
+        )
+      }
+    }}
   ]
 
   const expander = rowData => (
