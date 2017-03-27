@@ -11,6 +11,7 @@ import {
   InputGroup
 } from 'components/form_controls'
 import { required, maxLength } from 'utils/form_validation/errors'
+import { durations } from 'constants/index'
 
 import './MembershipPlanForm.css'
 
@@ -36,12 +37,7 @@ const MembershipPlanForm = ({ handleSubmit, createForm }) => {
               name={`prices[${index}].duration`}
               component={Select}
               placeholder="Duration"
-              options={[
-                { key: 'YEARLY', value: 'Yearly' },
-                { key: 'MONTHLY', value: 'Monthly' },
-                { key: 'FORTNIGHTLY', value: 'Fortnightly' },
-                { key: 'WEEKLY', value: 'Weekly' }
-              ]}
+              options={durations.list.map(d => ({ key: d, value: durations.lookup[d] }))}
             />
           </Col>
           <Col span="2">

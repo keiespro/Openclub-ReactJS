@@ -3,6 +3,7 @@ import { Menu, Button, Icon, Row, Col } from 'antd'
 import { ContentPage, PageHeader } from 'components/layout'
 import Table from 'components/table'
 import MembershipPlanForm from 'components/forms/MembershipPlanForm'
+import { durations } from 'constants/index'
 
 import './Settings.css'
 
@@ -25,10 +26,15 @@ const Settings = props => {
     ]}
   ]
 
+  const priceColumns = [
+    { key: 'price', customDataRender: (table, price) => `$${price}` },
+    { key: 'duration', customDataRender: (table, duration) => durations.lookup[duration] }
+  ]
+
   const columns = [
     { title: 'Name', key: 'name' },
     { title: 'Description', key: 'description' },
-    { title: 'Prices', key: 'prices', customDataRender: (table, prices) => prices.length },
+    { title: 'Prices', key: 'prices', customDataRender: (table, prices) => <Table data={prices} columns={priceColumns}/> },
     { title: 'Actions', customDataRender: (table, cellData, rowData) => {
       if(table.state.expandedKeys[rowData.id]){
         return (

@@ -23,16 +23,19 @@ class Table extends Component {
   render() {
     const { data, columns, rowKey, expander } = this.props
     const { expandedKeys } = this.state
+
     return (
       <table className="oc-table">
         <tbody>
-          <tr className="oc-table-header-row">
-            {columns.map((c, i) => (
-              <th key={`tableheader${i}`} className="oc-table-header-cell">
-                {c.customHeaderRender ? c.customHeaderRender() : c.title }
-              </th>
-            ))}
-          </tr>
+          {coumns.filter(c => c.title).length > 0 &&
+            <tr className="oc-table-header-row">
+              {columns.map((c, i) => (
+                <th key={`tableheader${i}`} className="oc-table-header-cell">
+                  {c.customHeaderRender ? c.customHeaderRender() : c.title }
+                </th>
+              ))}
+            </tr>
+          }          
           {data.map((d, i) => {
             const row = <tr key={`tablerow${i}`} className="oc-table-data-row">
               {columns.map((c, j) => (

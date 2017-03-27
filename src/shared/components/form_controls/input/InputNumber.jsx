@@ -1,5 +1,5 @@
 import React from 'react'
-import { formPrefix } from 'constants'
+import { formPrefix } from 'constants/index'
 import { InputNumber as AntInputNumber } from 'antd'
 import classNames from 'classnames'
 
