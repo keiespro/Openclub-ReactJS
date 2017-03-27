@@ -53,7 +53,6 @@ const MembershipPlans = props => {
       data={data}
       columns={columns}
       rowKey="id"
-      expandedKeys={{'1': true}}
       expander={expander}
     />
   )
