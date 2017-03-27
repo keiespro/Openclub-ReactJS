@@ -1,6 +1,6 @@
 import React from 'react'
 import { formPrefix } from 'constants'
-import { Input as AntInput } from 'antd'
+import { InputNumber as AntInputNumber } from 'antd'
 import classNames from 'classnames'
 
 const Input = ({ input, meta, help, type, ...rest }) => {
@@ -13,7 +13,7 @@ const Input = ({ input, meta, help, type, ...rest }) => {
 
   return (
     <div className={wrapClasses}>
-      <AntInput {...input} type={type} {...rest}/>
+      <AntInputNumber {...input} type={type} {...rest}/>
       <div className={`${formPrefix}-explain`} key="help">
         {meta.touched && meta.error && meta.error}
         {(!meta.touched || !meta.error) && help}

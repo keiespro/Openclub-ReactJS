@@ -15,11 +15,13 @@ const Settings = props => {
   // setup dummy table data for testing
   const data = [
     { id: '1', name: 'Plan A', description: 'This is a plan man', prices: [
-      { duration: 'monthly', price: 1500 }
+      { duration: 'MONTHLY', price: 1500 },
+      { duration: 'WEEKLY', price: 1300 },
+      { duration: 'YEARLY', price: 1000 }
     ]},
     { id: '2', name: 'Second Plan', description: 'Here is another plan', prices: [
-      { duration: 'monthly', price: 1500 },
-      { duration: 'yearly', price: 14000 }
+      { duration: 'MONTHLY', price: 1500 },
+      { duration: 'YEARLY', price: 14000 }
     ]}
   ]
 
@@ -33,7 +35,7 @@ const Settings = props => {
   ]
 
   const expander = rowData => (
-    <MembershipPlanForm initialValues={rowData}></MembershipPlanForm>
+    <MembershipPlanForm form={`membership_form_${rowData.id}`} initialValues={rowData}></MembershipPlanForm>
   )
 
   return (
