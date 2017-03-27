@@ -87,7 +87,7 @@ const Club = ({ data, children, location, params }, { router }) => {
           pattern={`/${params.club_id}/settings`}
           render={routerProps =>
             <CodeSplit chunkName="clubsettings" modules={{ Settings: require('./Settings') }}>
-              { ({ Settings }) => Settings && <Settings {...routerProps} /> }
+              { ({ Settings }) => Settings && <Settings {...routerProps} club={club} /> }
             </CodeSplit>
           }
         />

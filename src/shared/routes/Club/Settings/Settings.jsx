@@ -1,15 +1,32 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { Menu, Icon, Row, Col } from 'antd'
 import { ContentPage, PageHeader } from 'components/layout'
-import MembershipPlans from './MembershipPlans'
+import { Match, Miss, Redirect } from 'teardrop'
+import { CodeSplit } from 'code-split-component'
 
 import './Settings.css'
 
-const Settings = props => {
+const routeDefs = [
+  { key: 'membership-plans', render: routerProps =>
+    <CodeSplit chunkName="membership-plans" modules={{ MembershipPlans: require('./MembershipPlans') }}>
+      { ({ MembershipPlans }) => MembershipPlans && <MembershipPlans {...routerProps} /> }
+    </CodeSplit>
+  },
+  { key: 'bank-details', render: routerProps =>
+    <CodeSplit chunkName="bank-details" modules={{ BankDetails: require('./BankDetails') }}>
+      { ({ BankDetails }) => BankDetails && <BankDetails {...routerProps} /> }
+    </CodeSplit>
+  }
+]
+
+const Settings = ({ club, location, pattern }, { router }) => {
 
   const handleClick = e => {
-    console.log('menu item clicked')
+    router.transitionTo(`/${club.slug}/settings/${e.key}`)
   }
+
+  const postPath = location.pathname.substr(pattern.length + 1)
+  const selectedPath = routeDefs.map(r => r.key).filter(key => postPath.startsWith(key))
 
   return (
     <ContentPage>
@@ -18,21 +35,25 @@ const Settings = props => {
         <Col xs={{span: 0}} md={{span:6}}>
           <Menu
             onClick={handleClick}
-            selectedKeys={['1']}
+            selectedKeys={selectedPath}
             mode="inline"
           >
-            <Menu.Item key="1">Membership Plans</Menu.Item>
-            <Menu.Item key="2">Bank Details</Menu.Item>
+            <Menu.Item key="membership-plans">Membership Plans</Menu.Item>
+            <Menu.Item key="bank-details">Bank Details</Menu.Item>
           </Menu>
         </Col>
         <Col xs={{span: 24}} md={{span: 18}}>
           <div className="oc-club-settings-content">
-            <MembershipPlans/>
+            {routeDefs.map(r => <Match key={r.key} pattern={r.key} render={r.render}/>)}
           </div>
         </Col>
       </Row>
     </ContentPage>
   )
+}
+
+Settings.contextTypes = {
+  router: PropTypes.object
 }
 
 export default Settings
