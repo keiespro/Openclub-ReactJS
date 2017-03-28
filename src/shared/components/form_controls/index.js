@@ -2,7 +2,7 @@ import Form from './form/Form'
 import FieldSet from './fieldset/FieldSet'
 import FieldContainer from './field_container/FieldContainer'
 import Input from './input/Input'
-import InputNumber from './input/InputNumber'
+import MoneyField from './input/MoneyField'
 import Button from './button/Button'
 import Checkbox from './checkbox/Checkbox'
 import CheckboxGroup from './checkbox/CheckboxGroup'
@@ -21,7 +21,7 @@ export {
   FieldSet,
   FieldContainer,
   Input,
-  InputNumber,
+  MoneyField,
   Button,
   Checkbox,
   CheckboxGroup,
