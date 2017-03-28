@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { graphql, compose } from 'react-apollo'
+import gql from 'graphql-tag'
 import { Button, Icon, Col } from 'antd'
 import Table from 'components/table'
 import MembershipPlanForm from 'components/forms/MembershipPlanForm'
@@ -90,4 +92,60 @@ class MembershipPlans extends Component {
   }
 }
 
-export default MembershipPlans
+const addMutation = gql`
+  mutation addMembershipPlan($slug: String!, $plan: membershipPlanInput!){
+    addMembershipPlan(slug: $slug, plan: $plan){
+      _id
+      name
+      description
+      prices{
+        _id
+        duration
+        price
+      }
+    }
+  }
+`
+
+const updateMutation = gql`
+  mutation updateMembershipPlan($slug: String!, $plan: membershipPlanUpdate!){
+    updateMembershipPlan(slug: $slug, plan: $plan){
+      _id
+      name
+      description
+      prices{
+        _id
+        duration
+        price
+      }
+    }
+  }
+`
+
+const MembershipPlansWithApollo = compose(
+  graphql(addMutation, {
+    name: 'addMutation',
+    options: {
+      updateQueries: {
+        club: (prev, { mutationResult }) => {
+          const newPlan = mutationResult.data.addMembershipPlan
+          return {
+            club: {
+              ...prev.club,
+              membership_plans: [...prev.club.membership_plans, newPlan]
+            }
+          }
+        }
+      }
+    }
+  }),
+  graphql(updateMutation, {
+    name: 'updateMutation'
+  })
+)(MembershipPlans)
+
+export default MembershipPlansWithApollo
+
+export {
+  MembershipPlans
+}
