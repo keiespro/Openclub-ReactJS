@@ -1,6 +1,6 @@
 import React from 'react'
 import { Field, FieldArray, reduxForm } from 'redux-form'
-import { Icon, Col } from 'antd'
+import { Icon, Col, Alert } from 'antd'
 import {
   Form,
   FieldContainer,
@@ -18,6 +18,9 @@ import './MembershipPlanForm.css'
 
 const renderPrices = ({ fields, meta: { touched, error } }) => (
   <div>
+    {fields.length <= 0 &&
+      <Alert showIcon message="This plan is free to join until pricing options are added." type="info" />
+    }
     {fields.map((price, index) =>
       <InputGroup key={index} className="membership-price-item" compact>
         <Col span="5">
@@ -44,7 +47,7 @@ const renderPrices = ({ fields, meta: { touched, error } }) => (
         </Col>
       </InputGroup>
     )}
-    <Button icon="plus" onClick={() => fields.push({})}>Add</Button>
+    <Button icon="plus" onClick={() => fields.push({})}>Add Price Option</Button>
   </div>
 )
 
@@ -73,6 +76,7 @@ const MembershipPlanForm = ({ handleSubmit, createForm }) => {
       <FieldContainer required={true} title="Prices">
         <FieldArray name="prices" component={renderPrices}/>
       </FieldContainer>
+      <Button className="btn-rightgap" type="primary" icon="save" htmlType="submit">Save Plan</Button>
     </Form>
   )
 }
