@@ -21,7 +21,7 @@ class Table extends Component {
   }
 
   render() {
-    const { data, columns, rowKey, expander } = this.props
+    const { data = [], columns, rowKey, expander } = this.props
     const { expandedKeys } = this.state
 
     const showHeader = columns.filter(c => c.title).length > 0

@@ -25,7 +25,7 @@ const renderPrices = ({ fields, meta: { touched, error } }) => (
       <InputGroup key={index} className="membership-price-item" compact>
         <Col span="5">
           <Field
-            name={`prices[${index}].price`}
+            name={`prices[${index}].price.amount`}
             type="text"
             placeholder="Price"
             basic={true}
@@ -51,7 +51,7 @@ const renderPrices = ({ fields, meta: { touched, error } }) => (
   </div>
 )
 
-const MembershipPlanForm = ({ handleSubmit, createForm }) => {
+const MembershipPlanForm = ({ handleSubmit, createForm, submitting }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -76,7 +76,7 @@ const MembershipPlanForm = ({ handleSubmit, createForm }) => {
       <FieldContainer required={true} title="Prices">
         <FieldArray name="prices" component={renderPrices}/>
       </FieldContainer>
-      <Button className="btn-rightgap" type="primary" icon="save" htmlType="submit">Save Plan</Button>
+      <Button className="btn-rightgap" type="primary" icon="save" htmlType="submit" loading={submitting}>Save Plan</Button>
     </Form>
   )
 }

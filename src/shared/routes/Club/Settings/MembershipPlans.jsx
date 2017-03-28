@@ -1,26 +1,13 @@
 import React, { Component } from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Button, Icon, Col } from 'antd'
+import { Button, Icon, Col, message } from 'antd'
 import Table from 'components/table'
 import MembershipPlanForm from 'components/forms/MembershipPlanForm'
 import { durations } from 'constants/index'
 
-// setup dummy table data for testing
-const data = [
-  { id: '1', name: 'Plan A', description: 'This is a plan man', prices: [
-    { duration: 'MONTHLY', price: '15.00' },
-    { duration: 'WEEKLY', price: '13.00' },
-    { duration: 'YEARLY', price: '10.00' }
-  ]},
-  { id: '2', name: 'Second Plan', description: 'Here is another plan', prices: [
-    { duration: 'MONTHLY', price: '15.00' },
-    { duration: 'YEARLY', price: '140.00' }
-  ]}
-]
-
 const priceColumns = [
-  { key: 'price', size: '50%', customDataRender: (table, price) => `$${price}` },
+  { key: 'price', size: '50%', customDataRender: (table, price) => `$${price.amount}` },
   { key: 'duration', customDataRender: (table, duration) => durations.lookup[duration] }
 ]
 
@@ -50,12 +37,15 @@ class MembershipPlans extends Component {
   }
 
   savePlan = values => {
-    /*mutate({
+    return this.props.createMutation({
       variables: {
-
+        slug: this.props.club.slug,
+        plan: values
       }
-    })*/
-    console.log(values)
+    }).then(() => this.setState({ showAdd: false }))
+      .catch(err => {
+        message('Error creating plan: ' + err, 4)
+      })
   }
 
   render() {
@@ -72,7 +62,7 @@ class MembershipPlans extends Component {
     return (
       <div>
         <Table
-          data={data}
+          data={this.props.club.plans}
           columns={columns}
           rowKey="id"
           expander={expander}
@@ -92,16 +82,18 @@ class MembershipPlans extends Component {
   }
 }
 
-const addMutation = gql`
-  mutation addMembershipPlan($slug: String!, $plan: membershipPlanInput!){
-    addMembershipPlan(slug: $slug, plan: $plan){
+const createMutation = gql`
+  mutation createMembershipPlan($slug: String!, $plan: membershipPlanInput!){
+    createMembershipPlan(slug: $slug, plan: $plan){
       _id
       name
       description
       prices{
         _id
         duration
-        price
+        price{
+          amount
+        }
       }
     }
   }
@@ -116,19 +108,21 @@ const updateMutation = gql`
       prices{
         _id
         duration
-        price
+        price{
+          amount
+        }
       }
     }
   }
 `
 
 const MembershipPlansWithApollo = compose(
-  graphql(addMutation, {
-    name: 'addMutation',
+  graphql(createMutation, {
+    name: 'createMutation',
     options: {
       updateQueries: {
         club: (prev, { mutationResult }) => {
-          const newPlan = mutationResult.data.addMembershipPlan
+          const newPlan = mutationResult.data.createMembershipPlan
           return {
             club: {
               ...prev.club,
