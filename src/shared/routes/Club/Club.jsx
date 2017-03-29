@@ -68,7 +68,7 @@ const Club = ({ data, children, location, params }, { router }) => {
         <Menu.Item key="finances">Fincances</Menu.Item>*/}
         <Menu.Item key="settings"><Icon type="setting"/> Settings</Menu.Item>
       </Menu>
-      <ClubHeroHelper/>
+      <ClubHeroHelper club={club}/>
       <MatchGroup>
         <Match
           exactly
@@ -134,6 +134,19 @@ const clubQuery = gql`
       slug
       settings{
         privacy
+      }
+      membership_plans{
+        _id
+        name
+        description
+        prices{
+          _id
+          duration
+          price{
+            amount
+            amount_float
+          }
+        }
       }
     }
   }

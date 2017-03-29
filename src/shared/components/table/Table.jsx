@@ -38,10 +38,10 @@ class Table extends Component {
               ))}
             </tr>
           }
-          {data.map((d, i) => {
+          {(data || []).map((d, i) => {
             const row = <tr key={`tablerow${i}`} className="oc-table-data-row">
               {columns.map((c, j) => (
-                <td key={`tablecell${i}-${j}`} style={{width: c.size || 'auto'}} className={`oc-table-data-cell ${c.tdclasses}`} data-th={c.title}>
+                <td key={`tablecell${i}-${j}`} style={{width: c.size || 'auto'}} className={`oc-table-data-cell ${c.tdclasses || ''}`} data-th={c.title}>
                   {this.renderCell(d, c)}
                 </td>
               ))}

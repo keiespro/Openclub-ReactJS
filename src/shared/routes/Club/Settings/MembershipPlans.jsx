@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Button, Icon, Col, message } from 'antd'
+import { Button, Icon, Col, message, Alert } from 'antd'
 import Table from 'components/table'
 import MembershipPlanForm from 'components/forms/MembershipPlanForm'
 import { durations } from 'constants/index'
@@ -14,15 +14,17 @@ const priceColumns = [
 const columns = [
   { title: 'Name', key: 'name' },
   { title: 'Description', key: 'description' },
-  { title: 'Prices', tdclasses: 'no-padding', key: 'prices', customDataRender: (table, prices) => <Table data={prices} columns={priceColumns}/> },
+  { title: 'Prices', tdclasses: 'no-padding', key: 'prices', customDataRender: (table, prices) => {
+    return prices ? <Table data={prices} columns={priceColumns}/> : <div style={{padding:'1em'}}>Free to join</div>
+  }},
   { title: 'Actions', customDataRender: (table, cellData, rowData) => {
-    if(table.state.expandedKeys[rowData.id]){
+    if(table.state.expandedKeys[rowData._id]){
       return (
-        <Button onClick={() => table.updateExpanded({[rowData.id]: false})}>Cancel</Button>
+        <Button onClick={() => table.updateExpanded({[rowData._id]: false})}>Cancel</Button>
       )
     }else{
       return (
-        <Button icon="edit" onClick={() => table.updateExpanded({[rowData.id]: true})}>Edit</Button>
+        <Button icon="edit" onClick={() => table.updateExpanded({[rowData._id]: true})}>Edit</Button>
       )
     }
   }}
@@ -42,18 +44,21 @@ class MembershipPlans extends Component {
         slug: this.props.club.slug,
         plan: values
       }
-    }).then(() => this.setState({ showAdd: false }))
-      .catch(err => {
-        message('Error creating plan: ' + err, 4)
-      })
+    }).then(() => {
+      this.setState({ showAdd: false })
+      message.success('Plan added successfully', 4)
+    }).catch(err => {
+      message.error('Error creating plan: ' + err, 4)
+    })
   }
 
   render() {
     const { showAdd } = this.state
+    const { club } = this.props
 
     const expander = rowData => (
       <MembershipPlanForm
-        form={`membership_form_${rowData.id}`}
+        form={`membership_form_${rowData._id}`}
         initialValues={rowData}
         onSubmit={this.savePlan}
       />
@@ -61,10 +66,13 @@ class MembershipPlans extends Component {
 
     return (
       <div>
+        {club.membership_plans && club.membership_plans.length > 0 && !club.bank_details &&
+          <Alert message="No bank details have been entered. If you have plans that require payment, signup won't be available until bank details have been setup." type="warning" showIcon />
+        }
         <Table
-          data={this.props.club.plans}
+          data={club.membership_plans}
           columns={columns}
-          rowKey="id"
+          rowKey="_id"
           expander={expander}
         />
         {showAdd ? (
@@ -123,10 +131,11 @@ const MembershipPlansWithApollo = compose(
       updateQueries: {
         club: (prev, { mutationResult }) => {
           const newPlan = mutationResult.data.createMembershipPlan
+          const oldPlans = prev.club.membership_plans || []
           return {
             club: {
               ...prev.club,
-              membership_plans: [...prev.club.membership_plans, newPlan]
+              membership_plans: [...oldPlans, newPlan]
             }
           }
         }
