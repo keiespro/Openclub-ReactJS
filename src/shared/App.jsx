@@ -90,7 +90,7 @@ const App = ({ data = {}, location }) => (
             pattern="/:club_id"
             render={routerProps =>
               <CodeSplit chunkName="club" modules={{ Club: require('./routes/Club') }}>
-                { ({ Club }) => Club && <Club {...routerProps} /> }
+                { ({ Club }) => Club && <Club {...routerProps} viewer={data.user}/> }
               </CodeSplit>
             }
           />

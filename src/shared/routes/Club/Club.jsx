@@ -12,7 +12,7 @@ import './Club.scss'
 const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
 
-const Club = ({ data, children, location, params }, { router }) => {
+const Club = ({ data, children, location, params, viewer }, { router }) => {
 
   const { club, loading } = data
   //const { params, location } = this.props
@@ -73,7 +73,21 @@ const Club = ({ data, children, location, params }, { router }) => {
         <Match
           exactly
           pattern={`/${params.club_id}`}
-          render={routerProps => <Redirect to={`/${params.club_id}/feed`} push />}
+          render={routerProps => {
+            if(viewer && viewer.clubs && viewer.clubs.some(c => c.slug === params.club_id)){
+              return <Redirect to={`/${params.club_id}/feed`} push />
+            }else{
+              return <Redirect to={`/${params.club_id}/about`} push />
+            }
+          }}
+        />
+        <Match
+          pattern={`/${params.club_id}/about`}
+          render={routerProps =>
+            <CodeSplit chunkName="clubabout" modules={{ About: require('./About') }}>
+              { ({ About }) => About && <About {...routerProps} /> }
+            </CodeSplit>
+          }
         />
         <Match
           pattern={`/${params.club_id}/feed`}
