@@ -61,6 +61,7 @@
     "moment": "^2.17.1",
     "normalize.css": "5.0.0",
     "numeral": "^2.0.4",
+    "oembed-auto": "0.0.3",
     "offline-plugin": "4.5.4",
     "qrcodesvg": "^1.0.2",
     "rc-drawer": "^0.4.9",
