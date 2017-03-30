@@ -4,10 +4,9 @@
  * but on mobile it fills the page.
  */
 import React from 'react'
-
 import './ContentArea.css'
 
-const ContentArea = ({ children }) => (
+const ContentArea = ({ largeFont, children }) => (
   <div className="oc-content-area">
     {children}
   </div>

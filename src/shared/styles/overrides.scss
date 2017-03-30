@@ -6,6 +6,11 @@ body {
   font-size: $font-size-base;
 }
 
-.ant-menu-inline .ant-menu-item {
+.ant-menu-inline .ant-menu-item,
+.ant-menu-item {
+  font-size: 14px;
+}
+
+.ant-alert {
   font-size: 14px;
 }

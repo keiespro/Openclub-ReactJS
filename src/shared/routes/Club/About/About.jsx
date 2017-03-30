@@ -6,11 +6,11 @@ import { TextInfoIcon } from 'components/display'
 const About = ({ club }) => (
   <Row gutter={20}>
     <Col xs={24} md={15}>
-      <ContentPage>
+      <ContentPage largeFont>
         <PageHeader title="About"/>
         <div>My Club was started in the 90s and was created to be the best club for people just like you. It caters to everyone and holds frequent events that are great to attend. We reward our members by providing them the best service a club possibly can.</div>
       </ContentPage>
-      <ContentPage>
+      <ContentPage largeFont>
         <PageHeader title="Extra Details"/>
         <TextInfoIcon icon="calendar" title="Founded">
           Club was founded in <b>1992</b>
@@ -21,7 +21,7 @@ const About = ({ club }) => (
       </ContentPage>
     </Col>
     <Col xs={24} md={9}>
-      <ContentPage>
+      <ContentPage largeFont>
         <PageHeader title="Contact Details"/>
           <TextInfoIcon icon="mail" title="Club Enquiries Email">
             <a href="mailto:test@test.com">enquiries@myclub.com</a>
