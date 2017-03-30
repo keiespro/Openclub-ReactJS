@@ -21,7 +21,6 @@ const ACTION_HANDLERS = {
 }
 
 export default function streamReducer(state = initialState, action) {
-  console.log(arguments);
     const handler = ACTION_HANDLERS[action.type]
     return handler ? handler(state, action) : state
 }
