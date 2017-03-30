@@ -44,6 +44,7 @@ class ProfileHeader extends Component {
   }
   render() {
 
+    const { onJoin } = this.props
     const { background } = this.props.images || {}
 
     const bgEle = typeof background === 'undefined' ? '#2b2b2b' : `url(${background})`
@@ -67,7 +68,9 @@ class ProfileHeader extends Component {
               {this.renderProfileBackdrop()}
               {this.renderHeading()}
             </div>
-            <Button type="primary" icon="user-add" size="large" className="join-button">Join This Club</Button>
+            {onJoin &&
+              <Button type="primary" icon="user-add" size="large" className="join-button" onClick={onJoin}>Join This Club</Button>
+            }
           </div>
         </div>
       </div>

@@ -34,6 +34,10 @@ const Club = ({ data, children, location, params, viewer, pathname }, { router }
     router.transitionTo(`/${club.slug}/${e.key}`)
   }
 
+  const onJoin = () => {
+    router.transitionTo(`/${club.slug}/join`)
+  }
+
   const selectedKeys = keysFromFragments(location.pathname, pathname, [
     'feed', 'events', 'about', 'community', 'mymembership', 'settings'
   ])
@@ -45,6 +49,7 @@ const Club = ({ data, children, location, params, viewer, pathname }, { router }
         location={club.location}
         images={club.images}
         collapsed={collapseHeader}
+        onJoin={onJoin}
       />
       <Menu
         onClick={handleClick}
@@ -101,6 +106,14 @@ const Club = ({ data, children, location, params, viewer, pathname }, { router }
             render={routerProps =>
               <CodeSplit chunkName="clubsettings" modules={{ Settings: require('./Settings') }}>
                 { ({ Settings }) => Settings && <Settings {...routerProps} club={club} /> }
+              </CodeSplit>
+            }
+          />
+          <Match
+            pattern={`/${params.club_id}/join`}
+            render={routerProps =>
+              <CodeSplit chunkName="joinclub" modules={{ Join: require('./Join') }}>
+                { ({ Join }) => Join && <Join {...routerProps} club={club} /> }
               </CodeSplit>
             }
           />
