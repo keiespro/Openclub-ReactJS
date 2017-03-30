@@ -5,7 +5,7 @@ import { TextInfoIcon } from 'components/display'
 
 const About = ({ club }) => (
   <Row gutter={20}>
-    <Col xs={24} md={14}>
+    <Col xs={24} md={15}>
       <ContentPage>
         <PageHeader title="About"/>
         <div>My Club was started in the 90s and was created to be the best club for people just like you. It caters to everyone and holds frequent events that are great to attend. We reward our members by providing them the best service a club possibly can.</div>
@@ -20,7 +20,7 @@ const About = ({ club }) => (
         </TextInfoIcon>
       </ContentPage>
     </Col>
-    <Col xs={24} md={10}>
+    <Col xs={24} md={9}>
       <ContentPage>
         <PageHeader title="Contact Details"/>
           <TextInfoIcon icon="mail" title="Club Enquiries Email">
