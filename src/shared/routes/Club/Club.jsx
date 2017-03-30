@@ -6,6 +6,7 @@ import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
 import { CodeSplit } from 'code-split-component'
 import ProfileHeader from 'components/profile/ProfileHeader'
 import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
+import { ContentArea } from 'components/layout'
 import Error404 from 'components/Error404/Error404'
 import './Club.scss'
 
@@ -69,44 +70,47 @@ const Club = ({ data, children, location, params, viewer }, { router }) => {
         <Menu.Item key="settings"><Icon type="setting"/> Settings</Menu.Item>
       </Menu>
       {/*}<ClubHeroHelper club={club}/>*/}
-      <MatchGroup>
-        <Match
-          exactly
-          pattern={`/${params.club_id}`}
-          render={routerProps => {
-            if(viewer && viewer.clubs && viewer.clubs.some(c => c.slug === params.club_id)){
-              return <Redirect to={`/${params.club_id}/feed`} push />
-            }else{
-              return <Redirect to={`/${params.club_id}/about`} push />
+      <ContentArea>
+        <MatchGroup>
+          <Match
+            exactly
+            pattern={`/${params.club_id}`}
+            render={routerProps => {
+              if(viewer && viewer.clubs && viewer.clubs.some(c => c.slug === params.club_id)){
+                return <Redirect to={`/${params.club_id}/feed`} push />
+              }else{
+                return <Redirect to={`/${params.club_id}/about`} push />
+              }
+            }}
+          />
+          <Match
+            pattern={`/${params.club_id}/about`}
+            render={routerProps =>
+              <CodeSplit chunkName="clubabout" modules={{ About: require('./About') }}>
+                { ({ About }) => About && <About {...routerProps} /> }
+              </CodeSplit>
             }
-          }}
-        />
-        <Match
-          pattern={`/${params.club_id}/about`}
-          render={routerProps =>
-            <CodeSplit chunkName="clubabout" modules={{ About: require('./About') }}>
-              { ({ About }) => About && <About {...routerProps} /> }
-            </CodeSplit>
-          }
-        />
-        <Match
-          pattern={`/${params.club_id}/feed`}
-          render={routerProps =>
-            <CodeSplit chunkName="clubfeed" modules={{ Feed: require('./Feed') }}>
-              { ({ Feed }) => Feed && <Feed {...routerProps} /> }
-            </CodeSplit>
-          }
-        />
-        <Match
-          pattern={`/${params.club_id}/settings`}
-          render={routerProps =>
-            <CodeSplit chunkName="clubsettings" modules={{ Settings: require('./Settings') }}>
-              { ({ Settings }) => Settings && <Settings {...routerProps} club={club} /> }
-            </CodeSplit>
-          }
-        />
-        <Miss component={Error404}></Miss>
-      </MatchGroup>
+          />
+          <Match
+            pattern={`/${params.club_id}/feed`}
+            render={routerProps =>
+              <CodeSplit chunkName="clubfeed" modules={{ Feed: require('./Feed') }}>
+                { ({ Feed }) => Feed && <Feed {...routerProps} /> }
+              </CodeSplit>
+            }
+          />
+          <Match
+            pattern={`/${params.club_id}/settings`}
+            render={routerProps =>
+              <CodeSplit chunkName="clubsettings" modules={{ Settings: require('./Settings') }}>
+                { ({ Settings }) => Settings && <Settings {...routerProps} club={club} /> }
+              </CodeSplit>
+            }
+          />
+          <Miss component={Error404}></Miss>
+        </MatchGroup>
+      </ContentArea>
+
     {/*}
       <MenuBar routePrefix={`/${params.club_id}`} route={location}>
         <MenuBarItem label="Feed" to="/feed" />

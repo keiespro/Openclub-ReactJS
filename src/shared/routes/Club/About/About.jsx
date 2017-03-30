@@ -4,7 +4,7 @@ import { ContentPage, PageHeader } from 'components/layout'
 import { TextInfoIcon } from 'components/display'
 
 const About = ({ club }) => (
-  <Row>
+  <Row gutter={20}>
     <Col xs={24} md={14}>
       <ContentPage>
         <PageHeader title="About"/>
