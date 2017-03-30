@@ -6,6 +6,7 @@ import Join from './Join';
 import Like from './Like';
 import Post from './Post';
 import Remind from './Remind';
+import Renew from './Renew';
 import Warn from './Warn';
 
 export {
@@ -16,6 +17,7 @@ export {
   Join,
   Like,
   Post,
+  Renew,
   Remind,
   Warn
 }
