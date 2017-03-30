@@ -8,12 +8,13 @@ import ProfileHeader from 'components/profile/ProfileHeader'
 import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
 import { ContentArea } from 'components/layout'
 import Error404 from 'components/Error404/Error404'
+import { keysFromFragments } from 'utils/route'
 import './Club.scss'
 
 const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
 
-const Club = ({ data, children, location, params, viewer }, { router }) => {
+const Club = ({ data, children, location, params, viewer, pathname }, { router }) => {
 
   const { club, loading } = data
   //const { params, location } = this.props
@@ -33,13 +34,9 @@ const Club = ({ data, children, location, params, viewer }, { router }) => {
     router.transitionTo(`/${club.slug}/${e.key}`)
   }
 
-  // get the location key fragment used to show currently selected route
-  // TODO: add the below to the router when generating the location (i.e. a fragment array)
-  const path = location.pathname.endsWith('/') ?
-    location.pathname.slice(0, -1) :
-    location.pathname
-  const slashIndex = path.lastIndexOf('/')
-  const locationKey = path.substr(slashIndex + 1)
+  const selectedKeys = keysFromFragments(location.pathname, pathname, [
+    'feed', 'events', 'about', 'community', 'mymembership', 'settings'
+  ])
 
   return (
     <section>
@@ -51,7 +48,7 @@ const Club = ({ data, children, location, params, viewer }, { router }) => {
       />
       <Menu
         onClick={handleClick}
-        selectedKeys={[locationKey]}
+        selectedKeys={selectedKeys}
         mode="horizontal"
       >
         <Menu.Item key="feed">Feed</Menu.Item>
