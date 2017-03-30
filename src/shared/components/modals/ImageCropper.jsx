@@ -18,7 +18,11 @@ class ImageCropper extends Component {
   }
 
   cropCompleted = crop => {
-    this.setState({ crop });
+    this.setState({ crop })
+  }
+
+  imageLoaded = crop => {
+    this.setState({ crop })
   }
 
   handleOk = (oker, hider) => {
@@ -42,6 +46,7 @@ class ImageCropper extends Component {
           src={src}
           crop={this.state.crop}
           onComplete={this.cropCompleted}
+          onImageLoaded={this.imageLoaded}
         />
       </Modal>
     )

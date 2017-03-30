@@ -4,7 +4,7 @@ import './PageHeader.scss'
 
 const PageHeader = ({ title, subtitle }) => (
   <div className="oc-page-header">
-    <h2>{title}</h2><small>{subtitle}</small>
+    <h3>{title}</h3><small>{subtitle}</small>
   </div>
 )
 

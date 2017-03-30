@@ -28,9 +28,11 @@ function renderApp(TheApp) {
           <LocaleProvider locale={enUS}>
             <ApolloProvider client={apolloClient} store={store}>
               <BrowserRouter>
-                <AuthLoader>
-                  <TheApp/>
-                </AuthLoader>
+                {routerProps => (
+                  <AuthLoader>
+                    <TheApp {...routerProps}/>
+                  </AuthLoader>
+                )}
               </BrowserRouter>
             </ApolloProvider>
           </LocaleProvider>

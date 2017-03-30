@@ -1,6 +1,6 @@
 {
-  "name": "Feed",
-  "main": "./Feed.jsx",
+  "name": "About",
+  "main": "./About.jsx",
   "version": "0.0.0",
   "private": true
 }
