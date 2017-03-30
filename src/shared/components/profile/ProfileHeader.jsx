@@ -5,7 +5,7 @@ import './ProfileHeader.scss'
 class ProfileHeader extends Component {
   renderProfileBackdrop() {
     const { images, name, collapsed } = this.props
-    if (typeof images.square === 'undefined' && typeof name !== 'undefined') {
+    if((!images || !images.square) && name){
       return <div />
     }
     const classes = cx({
@@ -42,7 +42,8 @@ class ProfileHeader extends Component {
     )
   }
   render() {
-    const { background } = this.props.images;
+
+    const { background } = this.props.images || {}
 
     const bgEle = typeof background === 'undefined' ? '#2b2b2b' : `url(${background})`
 

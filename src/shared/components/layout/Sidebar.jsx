@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { Menu, Icon } from 'antd'
 import './Sidebar.scss'
 
 const SubMenu = Menu.SubMenu
 
-const Sidebar = ({ user }) => {
+const Sidebar = ({ user, location }, { router }) => {
+
+  const handleClick = e => {
+    router.transitionTo(e.key)
+  }
+
   if(user) {
+    if(!user.images){ user.images = {} }
     return (
       <aside className="oc-sidebar">
         <div className="oc-sidebar-profile">
@@ -15,8 +21,9 @@ const Sidebar = ({ user }) => {
         <Menu
           theme="dark"
           className="oc-sidebar-menu"
-          selectedKeys={['1']}
+          selectedKeys={[location.pathname]}
           mode="inline"
+          onClick={handleClick}
           defaultOpenKeys={['sub1', 'sub2', 'sub3']}
         >
           <SubMenu key="sub1" title={<span>OpenClub</span>}>
@@ -34,7 +41,9 @@ const Sidebar = ({ user }) => {
             {user && user.clubs && user.clubs.map((c, index) =>
               <Menu.Item
                 key={`/${c.slug}`}
-              ><img className="oc-sidebar-clubimage" src={c.images.thumb}/> {c.name}</Menu.Item>
+              >
+                <img className="oc-sidebar-clubimage" src={c.images ? c.images.thumb : null}/> {c.name}
+              </Menu.Item>
             )}
           </SubMenu>
         </Menu>
@@ -43,6 +52,10 @@ const Sidebar = ({ user }) => {
   }else{
     return <div/>
   }
+}
+
+Sidebar.contextTypes = {
+  router: PropTypes.object
 }
 
 export default Sidebar
