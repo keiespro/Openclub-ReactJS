@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Button } from 'antd'
 import cx from 'classnames'
 import './ProfileHeader.scss'
 
@@ -66,6 +67,7 @@ class ProfileHeader extends Component {
               {this.renderProfileBackdrop()}
               {this.renderHeading()}
             </div>
+            <Button type="primary" icon="user-add" size="large" className="join-button">Join This Club</Button>
           </div>
         </div>
       </div>
