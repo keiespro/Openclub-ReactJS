@@ -24,7 +24,7 @@ const Sidebar = ({ user, location }, { router }) => {
           selectedKeys={[location.pathname]}
           mode="inline"
           onClick={handleClick}
-          defaultOpenKeys={['sub1', 'sub2', 'sub3']}
+          defaultOpenKeys={['sub2', 'sub3']}
         >
           <SubMenu key="sub1" title={<span>OpenClub</span>}>
             <Menu.Item key="/"><Icon type="home"/> Home</Menu.Item>
