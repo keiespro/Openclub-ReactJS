@@ -8,7 +8,16 @@ const About = ({ club }) => (
     <Col xs={24} md={14}>
       <ContentPage>
         <PageHeader title="About"/>
-        <div>My Club was </div>
+        <div>My Club was started in the 90s and was created to be the best club for people just like you. It caters to everyone and holds frequent events that are great to attend. We reward our members by providing them the best service a club possibly can.</div>
+      </ContentPage>
+      <ContentPage>
+        <PageHeader title="Extra Details"/>
+        <TextInfoIcon icon="calendar" title="Founded">
+          Club was founded in <b>1992</b>
+        </TextInfoIcon>
+        <TextInfoIcon icon="user" title="Minimum Age">
+          This club has an 18+ restriction
+        </TextInfoIcon>
       </ContentPage>
     </Col>
     <Col xs={24} md={10}>
@@ -28,106 +37,7 @@ const About = ({ club }) => (
           </TextInfoIcon>
       </ContentPage>
     </Col>
-    <Col xs={24} md={14}>
-      <ContentPage>
-        <PageHeader title="Extra Details"/>
-        <div>Other club deets</div>
-      </ContentPage>
-    </Col>
   </Row>
 )
-  /*}
-  <ContentPage>
-    <PageHeader title="About"/>
-      <Row>
-        <Col xs={24} lg={12}>
-          <div className="card">
-            <div className="card-heading">
-              <div className="card-title">
-                Contact Details
-              </div>
-            </div>
-            <div className="card-body">
-              <div className="mda-list">
-
-                <div className="mda-list-item">
-                  <div className="mda-list-item-icon bg-info">
-                    <i className="fa fa-envelope" />
-                  </div>
-                  <div className="mda-list-item-text mda-2-line">
-                    <h3>Club enquiries email</h3>
-                    <h4>cheese@openclub.io</h4>
-                  </div>
-                </div>
-
-                <div className="mda-list-item">
-                  <div className="mda-list-item-icon bg-info">
-                    <i className="fa fa-phone" />
-                  </div>
-                  <div className="mda-list-item-text mda-2-line">
-                    <h3>Club enquiries phone</h3>
-                    <h4>1800 696 969</h4>
-                  </div>
-                </div>
-
-                <div className="mda-list-item">
-                  <div className="mda-list-item-icon bg-info">
-                    <i className="fa fa-instagram" />
-                  </div>
-                  <div className="mda-list-item-text mda-2-line">
-                    <h3>Instagram</h3>
-                    <h4><a href="http://www.instagram.com/cheese" target="_blank">@cheese</a></h4>
-                  </div>
-                </div>
-
-                <div className="mda-list-item">
-                  <div className="mda-list-item-icon bg-info">
-                    <i className="fa fa-globe" />
-                  </div>
-                  <div className="mda-list-item-text mda-2-line">
-                    <h3>Website</h3>
-                    <h4><a href="http://www.cheese.com.au/" target="_blank">{"http://www.cheese.com.au/"}</a></h4>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <div className="card-heading">
-              <div className="card-title">
-                More details
-              </div>
-            </div>
-            <div className="card-body">
-              <div className="mda-list">
-
-                <div className="mda-list-item">
-                  <div className="mda-list-item-icon bg-info">
-                    <i className="fa fa-calendar" />
-                  </div>
-                  <div className="mda-list-item-text mda-2-line">
-                    <h3>Founded</h3>
-                    <h4>1969</h4>
-                  </div>
-                </div>
-
-
-                <div className="mda-list-item">
-                  <div className="mda-list-item-icon bg-info">
-                    <i className="fa fa-user" />
-                  </div>
-                  <div className="mda-list-item-text mda-2-line">
-                    <h3>Minimum age</h3>
-                    <h4>18+</h4>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </Col>
-
-    </Row>
-  </ContentPage>*/
-
 
 export default About
