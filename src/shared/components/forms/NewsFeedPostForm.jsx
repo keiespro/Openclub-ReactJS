@@ -1,7 +1,8 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import gql from 'graphql-tag'
 import { Field, reduxForm } from 'redux-form'
-import { Form, Input, FieldContainer } from 'components/form_controls';
+import { Form, Input, FieldContainer } from 'components/form_controls'
 import { maxLength } from 'utils/form_validation/errors'
 const URLexpression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/
 
@@ -12,57 +13,33 @@ class NewsFeedPost extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      input: '',
+      embed: {}
+    }
+
     this.handleInput = this.handleInput.bind(this);
   }
   handleInput(e) {
-    const { value } = e.target;
-    let matches = [];
-    if (URLexpression.test(value)) {
-      matches = value.match(URLexpression);
-    }
-    console.log(matches);
-    return value;
-  }
-  componentWillReceiveProps(nextProps) {
-    const { createForm } = nextProps;
-    if (!createForm && !createForm.values) {
-      return;
-    }
-    const { text } = createForm.values;
+    console.log(e);
+    if (e.keyCode === 36 || (e.keyCode === 91)) {
 
-    let matches = [];
-
-    if (URLexpression.test(text)) {
-      matches = text.match(URLexpression);
     }
-
-    console.log(matches);
+    this.setState({ input: e.target.value });
   }
   render() {
-
-
-    const { handleSubmit } = this.props;
+    const embed = 'html' in this.embed.state ? this.state.embed.html : '';
     return (
-      <Form onSubmit={handleSubmit}>
-        <FieldContainer required title="Post">
-          <Field
-            name="text"
-            type="text"
-            help="Post text?"
-            validate={[maxLength(255)]}
-            component={Input}
-          />
-        </FieldContainer>
-      </Form>
+      <div className="newsfeed-post">
+        <input type="text" value={this.state.input} onChange={this.handleInput} />
+        <div dangerouslySetInnerHTML={{ __html: embed }} />
+      </div>
     );
   }
 }
-const NewsFeed = reduxForm({
-  form: 'newsfeed_post'
-})(NewsFeedPost);
+const urlQuery = gql`
 
+`
 export default connect(state => ({
-  token: state.auth.token,
-  createForm: state.form.newsfeed_post,
-  initialValues: {}
-}))(NewsFeed)
+  token: state.auth.token
+}))(NewsFeedPost)

@@ -15,14 +15,14 @@ class NewsFeed extends Component {
   render() {
     return (
       <Row gutter={16}>
-        <Col span={9}>
+        <Col span={16}>
           <Content className="newsfeed-container">
             <div className="newsfeed">
               <NewsFeedPostForm onSubmit={this.handleSubmit} />
             </div>
           </Content>
         </Col>
-        <Col span={3}>Hello</Col>
+        <Col span={8}>Hello</Col>
       </Row>
     );
   }
