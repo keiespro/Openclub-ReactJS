@@ -1,14 +1,17 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 import { Field, reduxForm } from 'redux-form'
 import { Form, Input, FieldContainer } from 'components/form_controls'
 import { maxLength } from 'utils/form_validation/errors'
 const URLexpression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/
+import { message } from 'antd'
 
 class NewsFeedPost extends Component {
   static propTypes = {
-    handleSubmit: PropTypes.func
+    handleSubmit: PropTypes.func,
+    mutate: PropTypes.func
   }
   constructor(props) {
     super(props);
@@ -19,16 +22,40 @@ class NewsFeedPost extends Component {
     }
 
     this.handleInput = this.handleInput.bind(this);
+    this.timeout = null;
+    this.activeRequest = null;
+  }
+  async getEmbed(url) {
+    if (this.activeRequest === true) return;
+    this.activeRequest = true;
+    console.log(`getting ${url}`)
+    const { mutate } = this.props;
+
+    try {
+      const data = await mutate({
+        variables: { url }
+      });
+      console.log(data);
+      this.setState({
+        embed: data.data.embed
+      });
+      this.activeRequest = false;
+    } catch (err) {
+      console.error('Error with embed' + err, 4); //eslint-disable-line
+      this.activeRequest = false;
+    }
   }
   handleInput(e) {
-    console.log(e);
-    if (e.keyCode === 36 || (e.keyCode === 91)) {
-
-    }
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      if (this.state.input !== '' && this.state.input.match(URLexpression)) {
+        this.getEmbed(this.state.input.match(URLexpression)[0]);
+      }
+    }, 1000); // Just ensuring that we don't run this on every click.
     this.setState({ input: e.target.value });
   }
   render() {
-    const embed = 'html' in this.embed.state ? this.state.embed.html : '';
+    const embed = 'html' in this.state.embed ? this.state.embed.html : '';
     return (
       <div className="newsfeed-post">
         <input type="text" value={this.state.input} onChange={this.handleInput} />
@@ -37,9 +64,19 @@ class NewsFeedPost extends Component {
     );
   }
 }
-const urlQuery = gql`
-
+const embedMutation = gql`
+mutation embedMutation($url: String!) {
+  embed(url: $url) {
+    html
+    title
+    provider_url
+    thumbnail_url
+    type
+  }
+}
 `
+const NewsFeedPostWithApollo = graphql(embedMutation)(NewsFeedPost)
+
 export default connect(state => ({
   token: state.auth.token
-}))(NewsFeedPost)
+}))(NewsFeedPostWithApollo)
