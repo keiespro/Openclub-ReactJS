@@ -10,56 +10,63 @@ import {
   Button,
   FileUploader
 } from 'components/form_controls'
+import { PlanCard } from 'components/display'
 
 const JoinClubForm = ({ handleSubmit }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <h4>Plans</h4>
-      <Row gutter={20}>
+      <h4 className="bottom-gap">Plans</h4>
+      <Row gutter={20} className="bottom-gap-large">
         <Col span={8}>
-          <Card title="Plan Name">
-            <p>Plan Description</p>
-            <p>Card content</p>
-            <p>Card content</p>
-          </Card>
+          <PlanCard
+            plan={{
+              name: 'Junior Member',
+              description: 'This plan will get you access to all member events for the regular price, as well as free entry to our end of year party.',
+              prices: [
+                { _id: '1', duration: 'Monthly', price: '5.00' },
+                { _id: '2', duration: 'Yearly', price: '50.00' }
+              ]
+            }}
+          />
         </Col>
         <Col span={8}>
-          <Card title="Plan Name">
-            <p>Plan Description</p>
-            <p>Card content</p>
-            <p>Card content</p>
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card title="Plan Name">
-            <p>Plan Description</p>
-            <p>Card content</p>
-            <p>Card content</p>
-          </Card>
+          <PlanCard
+            plan={{
+              name: 'Lifetime Member',
+              description: 'This plan will get you free access to every event, including the end big end of year party. You will also receive free merchandise!',
+              prices: [
+                { _id: '2', duration: 'Yearly', price: '100.00' }
+              ]
+            }}
+          />
         </Col>
       </Row>
-      <h4>Member Details</h4>
-        <FieldContainer required={true} title="Name">
-          <Field
-            name="name"
-            type="text"
-            help="What is your name?"
-            validate={[required, maxLength(64)]}
-            component={Input}
-          />
-        </FieldContainer>
-        <FieldContainer required={true} title="Address">
-          <Field
-            name="address"
-            type="text"
-            help="What is your address?"
-            validate={[required, maxLength(64)]}
-            component={Input}
-          />
-        </FieldContainer>
-      <h4>Payment</h4>
-      <Button type="primary" htmlType="submit">Join</Button>
+      <Row>
+        <Col span={10}>
+          <h4 className="bottom-gap">Member Details</h4>
+            <FieldContainer required={true} title="Name">
+              <Field
+                name="name"
+                type="text"
+                help="What is your name?"
+                validate={[required, maxLength(64)]}
+                component={Input}
+              />
+            </FieldContainer>
+            <FieldContainer required={true} title="Address">
+              <Field
+                name="address"
+                type="text"
+                help="What is your address?"
+                validate={[required, maxLength(64)]}
+                component={Input}
+              />
+            </FieldContainer>
+          <h4 className="bottom-gap">Payment</h4>
+          <Button type="primary" htmlType="submit">Join</Button>
+        </Col>
+      </Row>
     </Form>
   )
 }

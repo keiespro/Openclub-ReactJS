@@ -5,7 +5,7 @@ import JoinClubForm from 'components/forms/JoinClubForm'
 
 const Join = ({ club }) => (
   <ContentPage>
-    <PageHeader title={`Join ${club.name}`}/>
+    <PageHeader classNames="bottom-gap-large" title={`Join ${club.name}`}/>
     <JoinClubForm club={club}/>
   </ContentPage>
 )

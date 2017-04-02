@@ -71,8 +71,8 @@ const Club = ({ data, children, location, params, viewer, pathname }, { router }
         <Menu.Item key="finances">Fincances</Menu.Item>*/}
         <Menu.Item key="settings"><Icon type="setting"/> Settings</Menu.Item>
       </Menu>
-      {/*}<ClubHeroHelper club={club}/>*/}
       <ContentArea>
+        <ClubHeroHelper club={club}/>
         <MatchGroup>
           <Match
             exactly
