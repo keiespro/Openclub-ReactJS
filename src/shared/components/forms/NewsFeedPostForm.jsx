@@ -26,8 +26,10 @@ class NewsFeedPost extends Component {
       },
       activeRequest: false
     }
+    this.resetState = this.state;
 
     this.handleInput = this.handleInput.bind(this);
+    this.submit = this.submit.bind(this);
     this.timeout = null;
   }
   async getEmbed(url) {
@@ -48,9 +50,20 @@ class NewsFeedPost extends Component {
       this.setState({ activeRequest: false });
     }
   }
+  submit() {
+    let submission = {
+      text: this.state.input,
+      privacy: this.state.privacy.value
+    };
+    if ('html' in this.state.embed) {
+      submission.attachment = this.state.embed.html
+    }
+    this.handleSubmit(submission);
+    this.setState(this.resetState);
+  }
   handleInput(e) {
     if (e.keyCode === 13 && e.metaKey) {
-      this.props.handleSubmit();
+      this.submit();
       return true;
     }
     clearTimeout(this.timeout);
@@ -100,7 +113,7 @@ class NewsFeedPost extends Component {
           <Dropdown overlay={privacyMenu}>
             <Button><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
           </Dropdown>
-          <Button type="primary" onClick={this.props.handleSubmit}>Post</Button>
+          <Button type="primary" onClick={this.submit}>Post</Button>
         </div>
       </div>
     );
