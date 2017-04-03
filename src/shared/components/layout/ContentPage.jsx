@@ -1,8 +1,15 @@
 import React from 'react'
+import classNames from 'classnames'
 import './ContentPage.scss'
 
-const ContentPage = ({ children }) => (
-  <div className="oc-content-page">{children}</div>
-)
+const ContentPage = ({ largeFont, children }) => {
+  const cls = classNames('oc-content-page', {
+    'oc-content-page-lg-font': largeFont
+  })
+
+  return (
+    <div className={cls}>{children}</div>
+  )
+}
 
 export default ContentPage

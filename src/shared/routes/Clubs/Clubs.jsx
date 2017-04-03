@@ -1,10 +1,10 @@
 import React from 'react'
 import { Match } from 'teardrop'
 import { CodeSplit } from 'code-split-component'
-import { RoutePage } from 'components/layout'
+import { ContentArea } from 'components/layout'
 
 const ClubsView = props => (
-  <RoutePage>
+  <ContentArea>
     <Match
       pattern="/clubs/create"
       render={routerProps =>
@@ -13,7 +13,7 @@ const ClubsView = props => (
         </CodeSplit>
       }
     />
-  </RoutePage>
+</ContentArea>
 )
 
 export default ClubsView
