@@ -1,0 +1,30 @@
+.newsfeed-post {
+  textarea {
+    width: 100%;
+    resize: none;
+    outline: none;
+    border: none;
+  }
+  .ant-spin, .embed {
+    width: 100%;
+    background-color: #f6fbfe;
+    padding: 7px;
+    border-radius: 2px;
+  }
+  .ant-spin-dot {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .embed {
+    iframe {
+      width: 100%;
+      height: auto;
+    }
+    iframe:before {
+      display: block;
+      content: "";
+      width: 100%;
+      padding-top: calc((16 / 9) * 100%);
+    }
+  }
+}

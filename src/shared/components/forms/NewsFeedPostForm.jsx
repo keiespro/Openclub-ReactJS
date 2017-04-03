@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component, PropTypes, findDOMNode } from 'react'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
@@ -6,7 +6,9 @@ import { Field, reduxForm } from 'redux-form'
 import { Form, Input, FieldContainer } from 'components/form_controls'
 import { maxLength } from 'utils/form_validation/errors'
 const URLexpression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/
-import { message } from 'antd'
+import { Spin, message } from 'antd'
+
+import './NewsFeedPostForm.scss';
 
 class NewsFeedPost extends Component {
   static propTypes = {
@@ -18,7 +20,8 @@ class NewsFeedPost extends Component {
 
     this.state = {
       input: '',
-      embed: {}
+      embed: null,
+      height: 'auto'
     }
 
     this.handleInput = this.handleInput.bind(this);
@@ -53,13 +56,15 @@ class NewsFeedPost extends Component {
       }
     }, 1000); // Just ensuring that we don't run this on every click.
     this.setState({ input: e.target.value });
+    console.log(e);
   }
   render() {
     const embed = 'html' in this.state.embed ? this.state.embed.html : '';
     return (
       <div className="newsfeed-post">
-        <input type="text" value={this.state.input} onChange={this.handleInput} />
-        <div dangerouslySetInnerHTML={{ __html: embed }} />
+        <textarea value={this.state.input} onChange={this.handleInput} rows="1" placeholder="Share something..." ref={(textarea) => { this.textarea = textarea }} style={{ height: this.textarea ? this.textarea.scrollHeight : 'auto' }} />
+        {this.activeRequest && !this.state.embed ? <Spin tip="Loading attachment..." /> : <div />}
+        <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} />
       </div>
     );
   }
