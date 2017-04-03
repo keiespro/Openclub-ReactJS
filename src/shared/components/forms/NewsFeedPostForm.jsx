@@ -1,14 +1,11 @@
-import React, { Component, PropTypes, findDOMNode } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
-import { Field, reduxForm } from 'redux-form'
-import { Form, Input, FieldContainer } from 'components/form_controls'
-import { maxLength } from 'utils/form_validation/errors'
-const URLexpression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/
-import { Spin, message, Button, Dropdown, Menu, Icon } from 'antd'
-
+import { Spin, Button, Dropdown, Menu, Icon } from 'antd'
 import './NewsFeedPostForm.scss';
+
+const URLexpression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/
 
 class NewsFeedPost extends Component {
   static propTypes = {
@@ -26,34 +23,36 @@ class NewsFeedPost extends Component {
         title: 'Public',
         icon: 'global',
         value: 'public'
-      }
+      },
+      activeRequest: false
     }
 
     this.handleInput = this.handleInput.bind(this);
     this.timeout = null;
-    this.activeRequest = null;
   }
   async getEmbed(url) {
-    if (this.activeRequest === true) return;
-    this.activeRequest = true;
-    console.log(`getting ${url}`)
+    if (this.state.activeRequest === true) return;
+    this.setState({ activeRequest: true });
     const { mutate } = this.props;
 
     try {
       const data = await mutate({
         variables: { url }
       });
-      console.log(data);
       this.setState({
-        embed: data.data.embed
+        embed: data.data.embed,
+        activeRequest: false
       });
-      this.activeRequest = false;
     } catch (err) {
       console.error('Error with embed' + err, 4); //eslint-disable-line
-      this.activeRequest = false;
+      this.setState({ activeRequest: false });
     }
   }
   handleInput(e) {
+    if (e.keyCode === 13 && e.metaKey) {
+      this.props.handleSubmit();
+      return true;
+    }
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       if (this.state.input !== '' && this.state.input.match(URLexpression)) {
@@ -61,7 +60,6 @@ class NewsFeedPost extends Component {
       }
     }, 1000); // Just ensuring that we don't run this on every click.
     this.setState({ input: e.target.value });
-    console.log(e);
   }
   setPrivacy(privacy) {
     const { key, item } = privacy;
@@ -96,13 +94,13 @@ class NewsFeedPost extends Component {
     return (
       <div className="newsfeed-post">
         <textarea value={this.state.input} onChange={this.handleInput} rows="1" placeholder="Share something..." ref={(textarea) => { this.textarea = textarea }} style={{ height: this.textarea ? this.textarea.scrollHeight : 'auto' }} />
-        {this.activeRequest && embed === '' ? <Spin tip="Loading attachment..." /> : null}
+        {this.state.activeRequest ? <Spin tip="Loading attachment..." /> : null}
         {embed !== '' ? <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} /> : null}
         <div className="pull-right buttons">
           <Dropdown overlay={privacyMenu}>
             <Button><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
           </Dropdown>
-          <Button type="primary">Post</Button>
+          <Button type="primary" onClick={this.props.handleSubmit}>Post</Button>
         </div>
       </div>
     );
@@ -112,10 +110,6 @@ const embedMutation = gql`
 mutation embedMutation($url: String!) {
   embed(url: $url) {
     html
-    title
-    provider_url
-    thumbnail_url
-    type
   }
 }
 `
