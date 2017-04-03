@@ -62,12 +62,20 @@ function reactApplicationMiddleware(request, response) {
     </CodeSplitProvider>,
   );
 
+  const env_vars = {
+    'AUTH0_CLIENT_ID': process.env.AUTH0_CLIENT_ID,
+    'AUTH0_DOMAIN': process.env.AUTH0_DOMAIN,
+    'GRAPH_URL': process.env.GRAPH_URL,
+    'ICEPICK_URL': process.env.ICEPICK_URL
+  }
+
   // Generate the html response.
   const html = generateHTML({
     // Provide the full app react element.
     reactAppString,
     // Nonce which allows us to safely declare inline scripts.
     nonce,
+    env_vars,
     // Running this gets all the helmet properties (e.g. headers/scripts/title etc)
     // that need to be included within our html.  It's based on the rendered app.
     // @see https://github.com/nfl/react-helmet

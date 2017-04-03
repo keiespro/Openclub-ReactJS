@@ -17,7 +17,7 @@ const app = express();
 
 // Don't expose any software information to potential hackers.
 app.use(function (req, res, next) {
-  res.header("X-powered-by", "Prorbably apache or something")
+  res.header("X-powered-by", "Probably apache or something")
   next()
 });
 
