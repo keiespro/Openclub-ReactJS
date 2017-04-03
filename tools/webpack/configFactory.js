@@ -148,7 +148,7 @@ export default function webpackConfigFactory(buildOptions) {
         ifClient('regenerator-runtime/runtime'),
         // The source entry file for the bundle.
         path.resolve(appRootDir.get(), bundleConfig.srcEntryFile),
-      ]),
+      ])
     },
 
     // Bundle output configuration.
