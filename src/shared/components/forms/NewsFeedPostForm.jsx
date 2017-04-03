@@ -6,7 +6,7 @@ import { Field, reduxForm } from 'redux-form'
 import { Form, Input, FieldContainer } from 'components/form_controls'
 import { maxLength } from 'utils/form_validation/errors'
 const URLexpression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/
-import { Spin, message } from 'antd'
+import { Spin, message, Button, Dropdown, Menu, Icon } from 'antd'
 
 import './NewsFeedPostForm.scss';
 
@@ -21,7 +21,12 @@ class NewsFeedPost extends Component {
     this.state = {
       input: '',
       embed: {},
-      height: 'auto'
+      height: 'auto',
+      privacy: {
+        title: 'Public',
+        icon: 'global',
+        value: 'public'
+      }
     }
 
     this.handleInput = this.handleInput.bind(this);
@@ -58,13 +63,47 @@ class NewsFeedPost extends Component {
     this.setState({ input: e.target.value });
     console.log(e);
   }
+  setPrivacy(privacy) {
+    const { key, item } = privacy;
+    const { title, icon } = item.props;
+    this.setState({
+      privacy: {
+        title,
+        icon,
+        key
+      }
+    });
+  }
   render() {
     const embed = 'html' in this.state.embed ? this.state.embed.html : '';
+    const privacyOptions = [
+      {
+        title: 'Public',
+        icon: 'global',
+        key: 'public'
+      },
+      {
+        title: 'Members only',
+        icon: 'contacts',
+        key: 'members'
+      },
+    ]
+    const privacyMenu = (
+      <Menu onClick={this.setPrivacy.bind(this)}>
+        {privacyOptions.map((value, key) => <Menu.Item {...value}><Icon type={value.icon} /> {value.title}</Menu.Item>)}
+      </Menu>
+    );
     return (
       <div className="newsfeed-post">
         <textarea value={this.state.input} onChange={this.handleInput} rows="1" placeholder="Share something..." ref={(textarea) => { this.textarea = textarea }} style={{ height: this.textarea ? this.textarea.scrollHeight : 'auto' }} />
-        {this.activeRequest && embed === '' ? <Spin tip="Loading attachment..." /> : <div />}
-        <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} />
+        {this.activeRequest && embed === '' ? <Spin tip="Loading attachment..." /> : null}
+        {embed !== '' ? <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} /> : null}
+        <div className="pull-right buttons">
+          <Dropdown overlay={privacyMenu}>
+            <Button><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
+          </Dropdown>
+          <Button type="primary">Post</Button>
+        </div>
       </div>
     );
   }

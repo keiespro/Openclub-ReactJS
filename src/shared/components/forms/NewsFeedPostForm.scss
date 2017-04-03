@@ -27,4 +27,10 @@
       padding-top: calc((16 / 9) * 100%);
     }
   }
+  .buttons {
+    margin-top: 5px;
+    button {
+      margin-left: 10px;
+    }
+  }
 }
