@@ -3,12 +3,19 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Menu, Icon } from 'antd'
 import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
-import { CodeSplit } from 'code-split-component'
 import ProfileHeader from 'components/profile/ProfileHeader'
 import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
 import { ContentArea } from 'components/layout'
 import Error404 from 'components/Error404/Error404'
 import { keysFromFragments } from 'utils/route'
+// Async routes
+import AsyncAbout from './About'
+import AsyncCommunity from './Community'
+import AsyncEvents from './Events'
+import AsyncFeed from './Feed'
+import AsyncJoin from './Join'
+import AsyncSettings from './Settings'
+
 import './Club.scss'
 
 const SubMenu = Menu.SubMenu
@@ -74,9 +81,7 @@ const Club = ({ data, children, location, params, viewer, pathname }, { router }
       <ContentArea>
         <ClubHeroHelper club={club}/>
         <MatchGroup>
-          <Match
-            exactly
-            pattern={`/${params.club_id}`}
+          <Match exactly pattern={`/${params.club_id}`}
             render={routerProps => {
               if(viewer && viewer.clubs && viewer.clubs.some(c => c.slug === params.club_id)){
                 return <Redirect to={`/${params.club_id}/feed`} push />
@@ -85,37 +90,20 @@ const Club = ({ data, children, location, params, viewer, pathname }, { router }
               }
             }}
           />
-          <Match
-            pattern={`/${params.club_id}/about`}
-            render={routerProps =>
-              <CodeSplit chunkName="clubabout" modules={{ About: require('./About') }}>
-                { ({ About }) => About && <About {...routerProps} /> }
-              </CodeSplit>
-            }
+          <Match pattern={`/${params.club_id}/about`}
+            render={routerProps => <AsyncAbout {...routerProps} club={club}/>}
           />
-          <Match
-            pattern={`/${params.club_id}/feed`}
-            render={routerProps =>
-              <CodeSplit chunkName="clubfeed" modules={{ Feed: require('./Feed') }}>
-                { ({ Feed }) => Feed && <Feed {...routerProps} /> }
-              </CodeSplit>
-            }
+          <Match pattern={`/${params.club_id}/feed`}
+            render={routerProps => <AsyncFeed {...routerProps} club={club}/>}
           />
-          <Match
-            pattern={`/${params.club_id}/settings`}
-            render={routerProps =>
-              <CodeSplit chunkName="clubsettings" modules={{ Settings: require('./Settings') }}>
-                { ({ Settings }) => Settings && <Settings {...routerProps} club={club} /> }
-              </CodeSplit>
-            }
+          <Match pattern={`/${params.club_id}/settings`}
+            render={routerProps => <AsyncSettings {...routerProps} club={club}/>}
           />
-          <Match
-            pattern={`/${params.club_id}/join`}
-            render={routerProps =>
-              <CodeSplit chunkName="joinclub" modules={{ Join: require('./Join') }}>
-                { ({ Join }) => Join && <Join {...routerProps} club={club} /> }
-              </CodeSplit>
-            }
+          <Match pattern={`/${params.club_id}/join`}
+            render={routerProps => {
+              console.log('trying to get join')
+                return <AsyncJoin {...routerProps} club={club}/>
+            }}
           />
           <Miss component={Error404}></Miss>
         </MatchGroup>

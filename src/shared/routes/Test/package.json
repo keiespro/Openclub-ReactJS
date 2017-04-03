@@ -1,6 +1,6 @@
 {
   "name": "Test",
-  "main": "./Test.jsx",
+  "main": "./AsyncTest.jsx",
   "version": "0.0.0",
   "private": true
 }
