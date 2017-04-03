@@ -20,7 +20,7 @@ class NewsFeedPost extends Component {
 
     this.state = {
       input: '',
-      embed: null,
+      embed: {},
       height: 'auto'
     }
 
@@ -63,7 +63,7 @@ class NewsFeedPost extends Component {
     return (
       <div className="newsfeed-post">
         <textarea value={this.state.input} onChange={this.handleInput} rows="1" placeholder="Share something..." ref={(textarea) => { this.textarea = textarea }} style={{ height: this.textarea ? this.textarea.scrollHeight : 'auto' }} />
-        {this.activeRequest && !this.state.embed ? <Spin tip="Loading attachment..." /> : <div />}
+        {this.activeRequest && embed === '' ? <Spin tip="Loading attachment..." /> : <div />}
         <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} />
       </div>
     );

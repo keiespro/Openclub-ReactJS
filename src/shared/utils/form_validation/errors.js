@@ -38,6 +38,9 @@ const nzbn = val => !val.match(/^(\d *?){13}$/) ?
 const number = val => !val.match(/^[\d]+$/) ?
   'Please only enter numbers.' : undefined
 
+const money = val => !val.match(/^[+-]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/) ?
+  'Please enter a valid monetary amount' : undefined
+
 export {
   required,
   minLength,
@@ -50,5 +53,6 @@ export {
   abn,
   vat,
   nzbn,
-  number
+  number,
+  money
 }

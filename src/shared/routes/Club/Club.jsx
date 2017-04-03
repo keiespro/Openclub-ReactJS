@@ -2,13 +2,17 @@ import React, { Component, PropTypes } from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Menu, Icon } from 'antd'
+import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
+import { CodeSplit } from 'code-split-component'
 import ProfileHeader from 'components/profile/ProfileHeader'
+import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
+import Error404 from 'components/Error404/Error404'
 import './Club.scss'
 
 const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
 
-const Club = ({ data, children }) => {
+const Club = ({ data, children, location, params, viewer }, { router }) => {
 
   const { club, loading } = data
   //const { params, location } = this.props
@@ -25,8 +29,16 @@ const Club = ({ data, children }) => {
   }
 
   const handleClick = e => {
-    console.log('menu item clicked')
+    router.transitionTo(`/${club.slug}/${e.key}`)
   }
+
+  // get the location key fragment used to show currently selected route
+  // TODO: add the below to the router when generating the location (i.e. a fragment array)
+  const path = location.pathname.endsWith('/') ?
+    location.pathname.slice(0, -1) :
+    location.pathname
+  const slashIndex = path.lastIndexOf('/')
+  const locationKey = path.substr(slashIndex + 1)
 
   return (
     <section>
@@ -38,26 +50,63 @@ const Club = ({ data, children }) => {
       />
       <Menu
         onClick={handleClick}
-        selectedKeys={['feed']}
+        selectedKeys={[locationKey]}
         mode="horizontal"
       >
         <Menu.Item key="feed">Feed</Menu.Item>
         <Menu.Item key="events">Events</Menu.Item>
         <Menu.Item key="about">About</Menu.Item>
-        <Menu.Item key="community">Community</Menu.Item>
+        <Menu.Item key="community">Members</Menu.Item>
         <Menu.Item key="mymembership">My Membership</Menu.Item>
 
         <Menu.Item key="divider" disabled={true}> | </Menu.Item>
 
-        <Menu.Item key="clubprofile">Club Profile</Menu.Item>
+        {/*}<Menu.Item key="clubprofile">Club Profile</Menu.Item>
         <Menu.Item key="members">Members</Menu.Item>
         <Menu.Item key="approvals">Approvals</Menu.Item>
         <Menu.Item key="invoices">Invoice</Menu.Item>
-        <Menu.Item key="finances">Fincances</Menu.Item>
-        <Menu.Item key="settings"><Icon type="setting"/></Menu.Item>
+        <Menu.Item key="finances">Fincances</Menu.Item>*/}
+        <Menu.Item key="settings"><Icon type="setting"/> Settings</Menu.Item>
       </Menu>
-
-      
+      <ClubHeroHelper club={club}/>
+      <MatchGroup>
+        <Match
+          exactly
+          pattern={`/${params.club_id}`}
+          render={routerProps => {
+            if(viewer && viewer.clubs && viewer.clubs.some(c => c.slug === params.club_id)){
+              return <Redirect to={`/${params.club_id}/feed`} push />
+            }else{
+              return <Redirect to={`/${params.club_id}/about`} push />
+            }
+          }}
+        />
+        <Match
+          pattern={`/${params.club_id}/about`}
+          render={routerProps =>
+            <CodeSplit chunkName="clubabout" modules={{ About: require('./About') }}>
+              { ({ About }) => About && <About {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
+        <Match
+          pattern={`/${params.club_id}/feed`}
+          render={routerProps =>
+            <CodeSplit chunkName="clubfeed" modules={{ Feed: require('./Feed') }}>
+              { ({ Feed }) => Feed && <Feed {...routerProps} /> }
+            </CodeSplit>
+          }
+        />
+        <Match
+          pattern={`/${params.club_id}/settings`}
+          render={routerProps =>
+            <CodeSplit chunkName="clubsettings" modules={{ Settings: require('./Settings') }}>
+              { ({ Settings }) => Settings && <Settings {...routerProps} club={club} /> }
+            </CodeSplit>
+          }
+        />
+        <Miss component={Error404}></Miss>
+      </MatchGroup>
     {/*}
       <MenuBar routePrefix={`/${params.club_id}`} route={location}>
         <MenuBarItem label="Feed" to="/feed" />
@@ -82,6 +131,10 @@ const Club = ({ data, children }) => {
   )
 }
 
+Club.contextTypes = {
+  router: PropTypes.object
+}
+
 const clubQuery = gql`
   query club($slug: String!) {
     club(slug: $slug) {
@@ -95,6 +148,19 @@ const clubQuery = gql`
       slug
       settings{
         privacy
+      }
+      membership_plans{
+        _id
+        name
+        description
+        prices{
+          _id
+          duration
+          price{
+            amount
+            amount_float
+          }
+        }
       }
     }
   }

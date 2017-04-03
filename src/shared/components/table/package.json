@@ -1,6 +1,6 @@
 {
-  "name": "Feed",
-  "main": "./Feed.jsx",
+  "name": "Table",
+  "main": "./Table.jsx",
   "version": "0.0.0",
   "private": true
 }

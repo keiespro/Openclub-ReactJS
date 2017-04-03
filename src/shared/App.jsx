@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
-import { Match, Miss, Redirect } from 'teardrop'
+import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
 import Helmet from 'react-helmet'
 import { CodeSplit } from 'code-split-component'
 import cx from 'classnames'
@@ -27,9 +27,8 @@ import { safeConfigGet } from 'utils/config'
 
 const { Content } = Layout
 
-const App = ({ data = {} }) => {
-  return (
-  <Drawer sidebar={<Sidebar user={data.user}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
+const App = ({ data = {}, location }) => (
+  <Drawer sidebar={<Sidebar user={data.user} location={location}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
     <Layout>
       <Helmet
         htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}
@@ -39,45 +38,55 @@ const App = ({ data = {} }) => {
         link={safeConfigGet(['htmlPage', 'links'])}
         script={safeConfigGet(['htmlPage', 'scripts'])}
       />
-    
+
       <LoadNotifications user={data.user} />
       <Header user={data.user}/>
       <Content>
-        <Match
-          exactly
-          pattern="/"
-          render={routerProps => {
-            if(data.user) {
-              return <Redirect to="/feed" push />;
-            }else if(!data.loading){
-              return (
-                <CodeSplit chunkName="home" modules={{ Home: require('routes/Home') }}>
-                  { ({ Home }) => Home && <Home {...routerProps} /> }
-                </CodeSplit>
-              )
-            }else{
-              return null
+        <MatchGroup>
+          <Match
+            exactly
+            pattern="/"
+            render={routerProps => {
+              if(data.user) {
+                return <Redirect to="/feed" push />;
+              }else if(!data.loading){
+                return (
+                  <CodeSplit chunkName="home" modules={{ Home: require('routes/Home') }}>
+                    { ({ Home }) => Home && <Home {...routerProps} /> }
+                  </CodeSplit>
+                )
+              }else{
+                return null
+              }
+            }}
+          />
+
+          <Match
+            pattern="/feed"
+            render={routerProps =>
+              <CodeSplit chunkName="feed" modules={{ Feed: require('./routes/Feed') }}>
+                { ({ Feed }) => Feed && <Feed {...routerProps} /> }
+              </CodeSplit>
             }
-          }}
-        />
+          />
 
-        <Match
-          pattern="/feed"
-          render={routerProps =>
-            <CodeSplit chunkName="feed" modules={{ Feed: require('./routes/Feed') }}>
-              { ({ Feed }) => Feed && <Feed {...routerProps} /> }
-            </CodeSplit>
-          }
-        />
+          <Match
+            pattern="/clubs"
+            render={routerProps =>
+              <CodeSplit chunkName="clubs" modules={{ Clubs: require('./routes/Clubs') }}>
+                { ({ Clubs }) => Clubs && <Clubs {...routerProps} /> }
+              </CodeSplit>
+            }
+          />
 
-        <Match
-          pattern="/clubs"
-          render={routerProps =>
-            <CodeSplit chunkName="clubs" modules={{ Clubs: require('./routes/Clubs') }}>
-              { ({ Clubs }) => Clubs && <Clubs {...routerProps} /> }
-            </CodeSplit>
-          }
-        />
+          <Match
+            pattern="/test"
+            render={routerProps =>
+              <CodeSplit chunkName="test" modules={{ Test: require('./routes/Test') }}>
+                { ({ Test }) => Test && <Test {...routerProps} /> }
+              </CodeSplit>
+            }
+          />
 
         <Match
           pattern="/notifications"
@@ -96,15 +105,18 @@ const App = ({ data = {} }) => {
             </CodeSplit>
           }
         />
+          <Match
+            pattern="/:club_id"
+            render={routerProps =>
+              <CodeSplit chunkName="club" modules={{ Club: require('./routes/Club') }}>
+                { ({ Club }) => Club && <Club {...routerProps} viewer={data.user}/> }
+              </CodeSplit>
+            }
+          />
 
-        <Match
-          pattern="/:club_id"
-          render={routerProps =>
-            <CodeSplit chunkName="club" modules={{ Club: require('./routes/Club') }}>
-              { ({ Club }) => Club && <Club {...routerProps} /> }
-            </CodeSplit>
-          }
-        />
+          <Miss component={Error404} />
+        </MatchGroup>
+
         {/*
         <Match
           pattern="/notifications"
@@ -142,11 +154,10 @@ const App = ({ data = {} }) => {
           }
         />
         */}
-        <Miss component={Error404} />
       </Content>
     </Layout>
   </Drawer>
-)}
+)
 
 /*
 const App = ({ data, store }) =>  {

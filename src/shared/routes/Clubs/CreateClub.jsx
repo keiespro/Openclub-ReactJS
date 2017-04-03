@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { browserHistory } from 'teardrop'
@@ -9,7 +9,7 @@ import {
 } from 'components/layout'
 import { message } from 'antd'
 
-const CreateClub = ({ mutate }) => {
+const CreateClub = ({ mutate }, { router }) => {
 
   const createTheClub = values => {
     mutate({
@@ -18,8 +18,9 @@ const CreateClub = ({ mutate }) => {
         club: values.club
       }
     }).then(({ data }) => {
-      browserHistory.push(`/${values.slug}`)
+      router.transitionTo(`/${values.slug}`)
     }).catch(err => {
+      console.log(err)
       message('Error creating club: ' + err, 4)
     })
   }
@@ -32,16 +33,40 @@ const CreateClub = ({ mutate }) => {
   )
 }
 
+CreateClub.contextTypes = {
+  router: PropTypes.object
+}
+
 const createMutation = gql`
   mutation createClub($slug: String!, $club: clubInput!){
     createClub(slug: $slug, club: $club){
       _id
+      name
+      images{
+        thumb
+        background
+        square
+      }
       slug
     }
   }
 `
 
-const CreateClubWithApollo = graphql(createMutation)(CreateClub)
+const CreateClubWithApollo = graphql(createMutation, {
+  options: {
+    updateQueries: {
+      currentViewer: (prev, { mutationResult }) => {
+        const newClub = mutationResult.data.createClub
+        return {
+          user: {
+            ...prev.user,
+            clubs: [...prev.user.clubs, newClub]
+          }
+        }
+      }
+    }
+  }
+})(CreateClub)
 
 export default CreateClubWithApollo
 

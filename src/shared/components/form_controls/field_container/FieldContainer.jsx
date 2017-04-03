@@ -1,6 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-import { formPrefix } from 'constants'
+import { formPrefix } from 'constants/index'
 
 import './FieldContainer.scss'
 
