@@ -10,7 +10,8 @@ const URLexpression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-
 class NewsFeedPost extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func,
-    mutate: PropTypes.func
+    mutate: PropTypes.func,
+    activeRequest: PropTypes.bool
   }
   constructor(props) {
     super(props);
@@ -22,7 +23,7 @@ class NewsFeedPost extends Component {
       privacy: {
         title: 'Public',
         icon: 'global',
-        value: 'public'
+        key: 'public'
       },
       activeRequest: false
     }
@@ -53,13 +54,15 @@ class NewsFeedPost extends Component {
   submit() {
     let submission = {
       text: this.state.input,
-      privacy: this.state.privacy.value
+      privacy: this.state.privacy.key
     };
     if ('html' in this.state.embed) {
       submission.attachment = this.state.embed.html
     }
-    this.handleSubmit(submission);
-    this.setState(this.resetState);
+    const success = () => {
+      this.setState(this.resetState);
+    }
+    this.props.handleSubmit(submission, success.bind(this));
   }
   handleInput(e) {
     if (e.keyCode === 13 && e.metaKey) {
@@ -104,20 +107,27 @@ class NewsFeedPost extends Component {
         {privacyOptions.map((value, key) => <Menu.Item {...value}><Icon type={value.icon} /> {value.title}</Menu.Item>)}
       </Menu>
     );
-    return (
+    const comp = (
       <div className="newsfeed-post">
         <textarea value={this.state.input} onChange={this.handleInput} rows="1" placeholder="Share something..." ref={(textarea) => { this.textarea = textarea }} style={{ height: this.textarea ? this.textarea.scrollHeight : 'auto' }} />
         {this.state.activeRequest ? <Spin tip="Loading attachment..." /> : null}
         {embed !== '' ? <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} /> : null}
-        <div className="pull-right buttons">
+        <div className="buttons">
           <Dropdown overlay={privacyMenu}>
             <Button><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
           </Dropdown>
-          <Button type="primary" onClick={this.submit}>Post</Button>
+          <Button type="primary" onClick={this.submit} disabled={this.props.activeRequest}>Post</Button>
         </div>
       </div>
     );
+    if (this.props.activeRequest) {
+      return (<Spin tip="Posting...">
+        {comp}
+      </Spin>)
+    }
+    return comp;
   }
+
 }
 const embedMutation = gql`
 mutation embedMutation($url: String!) {

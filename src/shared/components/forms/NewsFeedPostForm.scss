@@ -1,4 +1,5 @@
 .newsfeed-post {
+  display: block;
   textarea {
     width: 100%;
     resize: none;
@@ -29,6 +30,7 @@
   }
   .buttons {
     margin-top: 5px;
+    text-align: right;
     button {
       margin-left: 10px;
     }

@@ -7,3 +7,48 @@
   min-height: 280px;
   width: 100%;
 }
+.posts-container {
+  margin-top: 10px;
+  .post {
+    position: relative;
+    border-radius: 3px;
+    background-color: #fff;
+    color: #4f5256;
+    border: 1px solid rgba(0,0,0,.12);
+    margin-top: 10px;
+    .post-content {
+      padding: 16px;
+      margin: 0;
+      .media {
+        overflow: hidden;
+        zoom: 1;
+        margin: 0;
+        .creator-image {
+          display: table-cell;
+          vertical-align: top;
+          padding-right: 10px;
+          a > img {
+            width: 48px!important;
+            height: 48px!important;
+            border-radius: 50%;
+          }
+        }
+        .creator-title {
+          padding-top: 4px!important;
+          vertical-align: middle;
+          display: table-cell;
+        }
+      }
+      .post-action-menu {
+        float: right;
+      }
+    }
+    .post-actions {
+      padding: 16px;
+      border-top: 1px solid hsla(0,0%,64%,.12);
+      button {
+        margin-right: 10px;
+      }
+    }
+  }
+}
