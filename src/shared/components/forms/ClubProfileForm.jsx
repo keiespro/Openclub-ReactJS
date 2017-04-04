@@ -6,13 +6,14 @@ import {
   Form,
   FieldSet,
   FieldContainer,
+  MonthPicker,
   Input,
   Button,
   ImageUploader,
   FileUploader
 } from 'components/form_controls'
 
-const CreateClubForm = ({ handleSubmit, createForm, token }) => {
+const ClubProfileForm = ({ handleSubmit, token }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -24,7 +25,6 @@ const CreateClubForm = ({ handleSubmit, createForm, token }) => {
           validate={[required, maxLength(64)]}
           component={Input}
         />
-      </FieldContainer>
       </FieldContainer>
       <FieldContainer title="Profile Image">
         <Field
@@ -49,7 +49,7 @@ const CreateClubForm = ({ handleSubmit, createForm, token }) => {
         <Field
           name="club.details.location"
           type="text"
-          help="What is the name of your club?"
+          help="Where is your club located?"
           validate={[required, maxLength(64)]}
           component={Input}
         />
@@ -57,8 +57,8 @@ const CreateClubForm = ({ handleSubmit, createForm, token }) => {
       <FieldContainer required={true} title="About">
         <Field
           name="club.details.about"
-          type="text"
-          help="What is the name of your club?"
+          type="textarea"
+           rows={6}
           validate={[required, maxLength(64)]}
           component={Input}
         />
@@ -69,23 +69,15 @@ const CreateClubForm = ({ handleSubmit, createForm, token }) => {
           component={MonthPicker}
         />
       </FieldContainer>
-      <Button type="primary" htmlType="submit">Create</Button>
+      <Button type="primary" htmlType="submit">Save Profile</Button>
     </Form>
   )
 }
 
-const CreateClubReduxForm = reduxForm({
+const ClubProfileReduxForm = reduxForm({
   form: 'create_club'
-})(CreateClubForm)
+})(ClubProfileForm)
 
-// connect the current form data so we can use it to display the slug name
 export default connect(state => ({
-  token: state.auth.token,
-  createForm: state.form.create_club,
-  initialValues: {
-    checker: false,
-    checkergroup: {
-      option_one: true
-    }
-  }
-}))(CreateClubReduxForm)
+  token: state.auth.token
+}))(ClubProfileReduxForm)
