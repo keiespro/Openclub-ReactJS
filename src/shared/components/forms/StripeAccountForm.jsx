@@ -12,6 +12,7 @@ import {
   StripeCountrySelector,
   DateOfBirth
 } from 'components/custom_form_fields'
+import { required, maxLength, email } from 'utils/form_validation/errors'
 
 const StripeAccountForm = ({ handleSubmit }) => {
 
@@ -46,7 +47,7 @@ const StripeAccountForm = ({ handleSubmit }) => {
           name="stripe_account.email"
           type="text"
           help="What is the email of the clubs account holder?"
-          validate={[required, isEmail, maxLength(256)]}
+          validate={[required, email, maxLength(256)]}
           component={Input}
         />
       </FieldContainer>

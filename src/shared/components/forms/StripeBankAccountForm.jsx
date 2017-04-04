@@ -6,12 +6,10 @@ import {
   FieldSet,
   FieldContainer,
   Input,
+  RadioGroup,
   Button
 } from 'components/form_controls'
-import {
-  StripeCountrySelector,
-  DateOfBirth
-} from 'components/custom_form_fields'
+import { required, maxLength } from 'utils/form_validation/errors'
 
 const StripeBankAccountForm = ({ handleSubmit }) => {
 

@@ -1,8 +1,9 @@
 import React from 'react'
 import { Field } from 'redux-form'
+import { Select } from 'components/form_controls'
 
 const countries = [
-  { key: 'US', value: 'United States' },
+  { key: 'AU', value: 'Australia' },
   { key: 'US', value: 'United States' },
 ]
 
@@ -14,4 +15,4 @@ const StripeCountrySelector = props => (
   />
 )
 
-export default DateOfBirth
+export default StripeCountrySelector

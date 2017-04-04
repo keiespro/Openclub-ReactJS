@@ -1,5 +1,6 @@
 import React from 'react'
 import { Field } from 'redux-form'
+import { DatePicker } from 'components/form_controls'
 
 const DateOfBirth = props => (
   <Field
