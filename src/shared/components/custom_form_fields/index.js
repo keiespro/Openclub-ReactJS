@@ -5,8 +5,10 @@
  */
 import DateOfBirth from './DateOfBirth'
 import StripeCountrySelector from './StripeCountrySelector'
+import MoneyField from './MoneyField'
 
 export {
   DateOfBirth,
-  StripeCountrySelector
+  StripeCountrySelector,
+  MoneyField
 }
