@@ -1,4 +1,4 @@
-Fimport React from 'react'
+import React from 'react'
 import { Field } from 'redux-form'
 import { money } from 'utils/form_validation/errors'
 

@@ -1,9 +1,18 @@
 /**
  * functions and init for stripe integration
  */
-Stripe.setPublishableKey(process.env.STRIPE_PUBLISHABLE_KEY)
+
+let initialised = false
+
+const init = () => {
+  if(!initialised){
+    Stripe.setPublishableKey(process.env.STRIPE_PUBLISHABLE_KEY)
+    initialised = true
+  }
+}
 
 const createBankAccount = details => new Promise((resolve, reject) => {
+  init()
   Stripe.bankAccount.createToken(details, (status, response) => {
     if(response.error){
       reject(response.error.message)

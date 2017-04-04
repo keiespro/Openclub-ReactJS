@@ -13,68 +13,43 @@ import {
   DateOfBirth
 } from 'components/custom_form_fields'
 
-const StripeAccountForm = ({ handleSubmit }) => {
+const StripeBankAccountForm = ({ handleSubmit }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-
-      <FieldContainer required={true} title="Bank Account Name">
+      <FieldContainer required={true} title="Account Holder Type">
         <Field
-          name="external_account.account_holder_name"
+          name="account_holder_type"
+          component={RadioGroup}
+          options={[
+            { label: 'Individual', value: 'individual' },
+            { label: 'Company', value: 'company' }
+          ]}
+        />
+      </FieldContainer>
+      <FieldContainer required={true} title="Account Holder Name">
+        <Field
+          name="account_holder_name"
           type="text"
           help="What is the name associated with the bank account?"
           validate={[required, maxLength(64)]}
           component={Input}
         />
       </FieldContainer>
-      <FieldContainer required={true} title="Bank Account Number">
+      <FieldContainer required={true} title="BSB">
         <Field
-          name="account.number"
-          type="text"
-          help="What is the name of the clubs account?"
+          name="routing_number"
+          type="number"
+          validate={[required, maxLength(24)]}
+          component={Input}
+        />
+      </FieldContainer>
+      <FieldContainer required={true} title="Account Number">
+        <Field
+          name="account_number"
+          type="number"
           validate={[required, maxLength(64)]}
           component={Input}
-        />
-      </FieldContainer>
-
-
-
-      <FieldContainer required={true} title="Country">
-        <StripeCountrySelector
-          name="stripe_account.country"
-          help="Where is this club based?"
-        />
-      </FieldContainer>
-      <FieldContainer required={true} title="Account Name">
-        <Field
-          name="stripe_account.name"
-          type="text"
-          help="What is the name of the clubs account?"
-          validate={[required, maxLength(64)]}
-          component={Input}
-        />
-      </FieldContainer>
-      <FieldContainer required={true} title="Account Address">
-        <Field
-          name="stripe_account.address"
-          type="text"
-          help="What is the address of the club or club account representative?"
-          validate={[required, maxLength(64)]}
-          component={Input}
-        />
-      </FieldContainer>
-      <FieldContainer required={true} title="Email">
-        <Field
-          name="stripe_account.email"
-          type="text"
-          help="What is the email of the clubs account holder?"
-          validate={[required, isEmail, maxLength(256)]}
-          component={Input}
-        />
-      </FieldContainer>
-      <FieldContainer required={true} title="Date of Birth of Account Representative">
-        <DateOfBirth
-          name="stripe_account.dob"
         />
       </FieldContainer>
       <Button type="primary" htmlType="submit">Save</Button>
@@ -82,8 +57,8 @@ const StripeAccountForm = ({ handleSubmit }) => {
   )
 }
 
-const StripeAccountReduxForm = reduxForm({
-  form: 'club_stripe_account'
-})(StripeAccountForm)
+const StripeBankAccountReduxForm = reduxForm({
+  form: 'stripe_bank_account'
+})(StripeBankAccountForm)
 
-export default StripeAccountReduxForm
+export default StripeBankAccountReduxForm

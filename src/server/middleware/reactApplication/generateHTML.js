@@ -108,8 +108,11 @@ export default function generateHTML(args) {
             : ''
         }
         ${
-          // Stripe - both versions must be loaded for adding bank accounts and stripe elements
+          // Stripe - version for saving bank accounts
           scriptTag('https://js.stripe.com/v2/')
+        }
+        ${
+          // Stripe - version for using payment elements
           scriptTag('https://js.stripe.com/v3/')
         }
         ${
