@@ -108,14 +108,6 @@ export default function generateHTML(args) {
             : ''
         }
         ${
-          // Stripe - version for saving bank accounts
-          scriptTag('https://js.stripe.com/v2/')
-        }
-        ${
-          // Stripe - version for using payment elements
-          scriptTag('https://js.stripe.com/v3/')
-        }
-        ${
           // When we are in development mode our development server will generate a
           // vendor DLL in order to dramatically reduce our compilation times.  Therefore
           // we need to inject the path to the vendor dll bundle below.
