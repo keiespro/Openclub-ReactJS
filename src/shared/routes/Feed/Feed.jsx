@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { Row, Col, Layout } from 'antd'
 import NewsFeed from 'components/newsfeed'
-import EventList from 'components/events/EventList'
+import NewsFeedPostForm from 'components/forms/NewsFeedPostForm'
+import { CalendarItem } from 'components/EventCalendar'
 
 import './Feed.scss';
 
@@ -11,13 +12,32 @@ class Feed extends Component {
   static propTypes = {
     data: PropTypes.object
   }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activeRequest: false,
+      posts: []
+    }
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  handleSubmit(submission, success) {
+    this.setState({ activeRequest: true });
+    let posts = this.state.posts;
+    posts.push(submission);
+    this.timeout = setTimeout(() => { this.setState({ activeRequest: false, posts }); success() }, 2000);
+    return true;
+  }
   render() {
     return (
       <Row gutter={16}>
         <Col span={16}>
           <div className="feed-container">
             <Content className="content">
-              <NewsFeed />
+              <NewsFeedPostForm handleSubmit={this.handleSubmit} activeRequest={this.state.activeRequest} />
+            </Content>
+            <Content className="content">
+              <NewsFeed posts={this.state.posts} />
             </Content>
           </div>
         </Col>
@@ -25,13 +45,29 @@ class Feed extends Component {
           <div className="feed-sidebar">
             <Content className="content">
               <div className="sponsored-content">
-                Your ad here
+                <h3>Featured Clubs</h3>
+                - Placeholder
+                - Placeholder
+                - Placeholder
               </div>
+            </Content>
+            <Content className="content">
               <div className="upcoming-events">
-                <EventList />
+                <h3>Suggested Events</h3>
+                <CalendarItem date={new Date('12 Jan 2017')} attending liked title="Splended alcoholism and co"/>
+                <CalendarItem date={new Date('19 Mar 2017')} attending title="How to use OpenClub"/>
+                <CalendarItem date={new Date('11 May 2017')} attending title="Dance Party"/>
               </div>
-              <div className="memer-list">
-                Depending where this is - member list
+            </Content>
+            <Content className="content">
+              <div className="company-details">
+                © OpenClub Pty Ltd.
+                <br />
+                <a href="https://www.openclub.co/legal/terms" target="_blank">
+                  Terms of Service
+                </a> | <a href="https://www.openclub.co/legal/privacy" target="_blank">
+                  Privacy Policy
+                </a>
               </div>
             </Content>
           </div>
