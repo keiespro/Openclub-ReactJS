@@ -31,62 +31,45 @@ class NewsFeed extends Component {
       </Menu>
     );
     return (
-      <Row gutter={16}>
-        <Col span={16}>
-          <Content className="newsfeed-container">
-            <div className="newsfeed">
-              <NewsFeedPostForm handleSubmit={this.handleSubmit} activeRequest={this.state.activeRequest} />
-              <div className="posts-container">
-                {this.state.posts.map((value, key) => (
-                  <div className="post" key={`post-${key}`}>
-                    <div className="post-content">
-                      <div className="media">
-                        <div className="creator-image">
-                          <a href="">
-                            <img src="" alt="" />
-                          </a>
-                        </div>
-                        <div className="creator-title">
-                          <p className="m0 text-bold">Dude's Name</p>
-                          <small className="text-muted">
-                            <Icon type={cx({ 'global': value.privacy === 'public', 'contacts': value.privacy === 'members' })} /> {cx({ 'Public': value.privacy === 'public', 'Members': value.privacy === 'members' })}
-                          </small>
-                        </div>
-                      </div>
-                      <div className="post-action-menu">
-                        <Dropdown overlay={postMenu}>
-                          <Button><Icon type="down" /></Button>
-                        </Dropdown>
-                      </div>
-                      <div className="p">
-                        {value.text}
-                        {'attachment' in value ? <div dangerouslySetInnerHTML={{ __html: value.attachment }} /> : null}
-                      </div>
-                    </div>
-                    <div className="post-actions">
-                      <Button type="primary"><Icon type="like-o" /> Like</Button>
-                      <Button type="primary"><Icon type="message" /> Comment</Button>
-                    </div>
+      <div className="newsfeed">
+        <NewsFeedPostForm handleSubmit={this.handleSubmit} activeRequest={this.state.activeRequest} />
+        <div className="posts-container">
+          {this.state.posts.map((value, key) => (
+            <div className="post" key={`post-${key}`}>
+              <div className="post-heading">
+                <div className="media">
+                  <div className="creator-image">
+                    <a href="">
+                      <img src="" alt="" />
+                    </a>
                   </div>
-                ))}
+                  <div className="creator-title">
+                    <p className="m0 text-bold">Dude's Name</p>
+                    <small className="text-muted">
+                      <Icon type={cx({ 'global': value.privacy === 'public', 'contacts': value.privacy === 'members' })} /> {cx({ 'Public': value.privacy === 'public', 'Members': value.privacy === 'members' })}
+                    </small>
+                  </div>
+                </div>
+                <div className="post-action-menu">
+                  <Dropdown overlay={postMenu}>
+                    <Button><Icon type="down" /></Button>
+                  </Dropdown>
+                </div>
+              </div>
+              <div className="post-content">
+                <div className="p">
+                  {value.text}
+                  {'attachment' in value ? <div className="attachment" dangerouslySetInnerHTML={{ __html: value.attachment }} /> : null}
+                </div>
+              </div>
+              <div className="post-actions">
+                <Button type="primary"><Icon type="like-o" /> Like</Button>
+                <Button type="primary"><Icon type="message" /> Comment</Button>
               </div>
             </div>
-          </Content>
-        </Col>
-        <Col span={8}>
-          <Content className="right-sidebar">
-            <div className="sponsored-content">
-              Your ad here
-            </div>
-            <div className="upcoming-events">
-              Upcoming events
-            </div>
-            <div className="memer-list">
-              Depending where this is - member list
-            </div>
-          </Content>
-        </Col>
-      </Row>
+          ))}
+        </div>
+      </div>
     );
   }
 }
