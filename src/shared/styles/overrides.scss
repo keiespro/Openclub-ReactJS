@@ -12,6 +12,11 @@ body {
   font-size: 14px;
 }
 
+.ant-radio-wrapper {
+  font-size: 13px;
+  font-weight: 400;
+}
+
 .ant-alert {
   font-size: 14px;
 }
@@ -22,4 +27,8 @@ body {
 
 .bottom-gap-large {
   margin-bottom: 25px;
+}
+
+.oc-form {
+  max-width: 400px;
 }

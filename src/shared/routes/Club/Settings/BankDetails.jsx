@@ -13,10 +13,13 @@ const BankDetails = props => {
   }
 
   return (
-    <div>
-      <h4>Club Account Details</h4>
+    <div className="oc-form">
+      <h4 className="bottom-gap-large">Club Account Details</h4>
       <StripeAccountForm onSubmit={saveAccount}/>
-      <h4>Bank Account</h4>
+      <div className="bottom-gap-large"/>
+      <hr/>
+      <div className="bottom-gap-large"/>
+      <h4 className="bottom-gap-large">Bank Account</h4>
       <StripeBankAccountForm onSubmit={saveBankAccount}/>
     </div>
   )
