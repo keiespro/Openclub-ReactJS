@@ -1,8 +1,9 @@
 import React from 'react'
+import { Alert } from 'antd'
 import StripeAccountForm from 'components/forms/StripeAccountForm'
 import StripeBankAccountForm from 'components/forms/StripeBankAccountForm'
 
-const BankDetails = props => {
+const BankDetails = ({ club }) => {
 
   const saveAccount = values => {
     console.log('saving account', values)
@@ -19,8 +20,17 @@ const BankDetails = props => {
       <div className="bottom-gap-large"/>
       <hr/>
       <div className="bottom-gap-large"/>
-      <h4 className="bottom-gap-large">Bank Account</h4>
-      <StripeBankAccountForm onSubmit={saveBankAccount}/>
+      <h4 className="bottom-gap-large">Bank Accounts</h4>
+      {club.stripe_account ? (
+        <StripeBankAccountForm onSubmit={saveBankAccount}/>
+      ) : (
+        <Alert
+          message="Club Account Not Setup"
+          description="Bank accounts cannot be added until the primary club account above is setup"
+          type="warning"
+          showIcon
+        />
+      )}
     </div>
   )
 }

@@ -21,7 +21,7 @@ const Settings = ({ club, location, pattern }, { router }) => {
     },
     { key: 'bank-details', render: routerProps =>
       <CodeSplit chunkName="bank-details" modules={{ BankDetails: require('./BankDetails') }}>
-        { ({ BankDetails }) => BankDetails && <BankDetails {...routerProps} /> }
+        { ({ BankDetails }) => BankDetails && <BankDetails {...routerProps} club={club}/> }
       </CodeSplit>
     }
   ]
