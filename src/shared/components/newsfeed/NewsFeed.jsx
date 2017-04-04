@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Layout, Row, Col, Icon, Button, Dropdown, Menu } from 'antd';
 import cx from 'classnames';
 import NewsFeedPostForm from 'components/forms/NewsFeedPostForm';
+import FeedItem from './FeedItem';
 import './NewsFeed.scss';
 
 const { Content } = Layout;
@@ -24,49 +25,12 @@ class NewsFeed extends Component {
     return true;
   }
   render() {
-    const postMenu = (
-      <Menu onClick={this.postMenuClick}>
-        <Menu.Item key="report"><Icon type="dislike" /> Report</Menu.Item>
-        <Menu.Item key="delete" style={{ color: 'red' }}><Icon type="delete" /> Delete</Menu.Item>
-      </Menu>
-    );
     return (
       <div className="newsfeed">
         <NewsFeedPostForm handleSubmit={this.handleSubmit} activeRequest={this.state.activeRequest} />
         <div className="posts-container">
           {this.state.posts.map((value, key) => (
-            <div className="post" key={`post-${key}`}>
-              <div className="post-heading">
-                <div className="media">
-                  <div className="creator-image">
-                    <a href="">
-                      <img src="" alt="" />
-                    </a>
-                  </div>
-                  <div className="creator-title">
-                    <p className="m0 text-bold">Dude's Name</p>
-                    <small className="text-muted">
-                      <Icon type={cx({ 'global': value.privacy === 'public', 'contacts': value.privacy === 'members' })} /> {cx({ 'Public': value.privacy === 'public', 'Members': value.privacy === 'members' })}
-                    </small>
-                  </div>
-                </div>
-                <div className="post-action-menu">
-                  <Dropdown overlay={postMenu}>
-                    <Button><Icon type="down" /></Button>
-                  </Dropdown>
-                </div>
-              </div>
-              <div className="post-content">
-                <div className="p">
-                  {value.text}
-                  {'attachment' in value ? <div className="attachment" dangerouslySetInnerHTML={{ __html: value.attachment }} /> : null}
-                </div>
-              </div>
-              <div className="post-actions">
-                <Button type="primary"><Icon type="like-o" /> Like</Button>
-                <Button type="primary"><Icon type="message" /> Comment</Button>
-              </div>
-            </div>
+            <FeedItem data={value} key={`post-${key}`}/>
           ))}
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag'
 import apolloClient from 'modules/apollo'
-import { RoutePage } from 'components/layout'
+import { ContentPage } from 'components/layout'
 
 const testNotificationMutation = gql`
 mutation testNotification{
@@ -24,13 +24,13 @@ class Notifications extends Component {
   render() {
     const { data } = this.props
     return (
-      <RoutePage>
+      <ContentPage>
         Notifications
         <a href="#" onClick={this.runTest.bind(this)}>TEST</a>
         {data.unread}
         {data.unseen}
         {JSON.stringify(data.notifications)}
-      </RoutePage>
+      </ContentPage>
     );
   }
 }
