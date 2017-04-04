@@ -1,6 +1,9 @@
-.feed-container {
-  padding: 20px;
-}
-.feed-sidebar {
-  padding: 20px;
+.feed-container, .feed-sidebar {
+  padding: 24px;
+  .content {
+    background: #fff;
+    min-height: 280px;
+    width: 100%;
+    padding: 20px;
+  }
 }

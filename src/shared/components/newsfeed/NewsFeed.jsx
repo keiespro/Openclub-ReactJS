@@ -26,7 +26,7 @@ class NewsFeed extends Component {
   }
   render() {
     return (
-      <div className="newsfeed">
+      <div>
         <NewsFeedPostForm handleSubmit={this.handleSubmit} activeRequest={this.state.activeRequest} />
         <div className="posts-container">
           {this.state.posts.map((value, key) => (

@@ -14,22 +14,26 @@ class Feed extends Component {
     return (
       <Row gutter={16}>
         <Col span={16}>
-          <Content className="feed-container">
-            <NewsFeed />
-          </Content>
+          <div className="feed-container">
+            <Content className="content">
+              <NewsFeed />
+            </Content>
+          </div>
         </Col>
         <Col span={8}>
-          <Content className="feed-sidebar">
-            <div className="sponsored-content">
-              Your ad here
-            </div>
-            <div className="upcoming-events">
-              Upcoming events
-            </div>
-            <div className="memer-list">
-              Depending where this is - member list
-            </div>
-          </Content>
+          <div className="feed-sidebar">
+            <Content className="content">
+              <div className="sponsored-content">
+                Your ad here
+              </div>
+              <div className="upcoming-events">
+                Upcoming events
+              </div>
+              <div className="memer-list">
+                Depending where this is - member list
+              </div>
+            </Content>
+          </div>
         </Col>
       </Row>
     );
