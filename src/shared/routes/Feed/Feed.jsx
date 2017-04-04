@@ -5,10 +5,6 @@ class Feed extends Component {
   static propTypes = {
     data: PropTypes.object
   }
-  constructor(props) {
-    super(props);
-  }
-  render() {
     return <NewsFeed />
   }
 }

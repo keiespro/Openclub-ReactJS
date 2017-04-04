@@ -1,0 +1,27 @@
+
+.plan-card-header {
+  //background-color: #e6e6e6;
+  background-color: #cee6ff;
+  padding: 10px;
+  font-weight: 500;
+  color: #171717;
+  text-align: center;
+  font-size: 14px;
+}
+
+.plan-card-content {
+  padding: 20px;
+  color: #555;
+  font-size: 14px;
+  border-bottom: 1px dashed #eee;
+  min-height: 120px;
+}
+
+.plan-card-pricing {
+  padding: 10px;
+  text-align: center;
+
+  .ant-checkbox-wrapper {
+    font-size: 15px;
+  }
+}

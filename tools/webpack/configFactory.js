@@ -8,7 +8,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import appRootDir from 'app-root-dir';
 import WebpackMd5Hash from 'webpack-md5-hash';
-import CodeSplitPlugin from 'code-split-component/webpack';
+//import CodeSplitPlugin from 'code-split-component/webpack';
 import { removeEmpty, ifElse, merge, happyPackPlugin } from '../utils';
 import config, { clientConfig } from '../../config';
 
@@ -148,7 +148,7 @@ export default function webpackConfigFactory(buildOptions) {
         ifClient('regenerator-runtime/runtime'),
         // The source entry file for the bundle.
         path.resolve(appRootDir.get(), bundleConfig.srcEntryFile),
-      ]),
+      ])
     },
 
     // Bundle output configuration.
@@ -203,7 +203,7 @@ export default function webpackConfigFactory(buildOptions) {
       // The code-split-component doesn't work nicely with React Hot Loader,
       // which we use in our development builds, so we will disable it (which
       // causes synchronous loading behaviour for the CodeSplit instances).
-      ifProd(() => new CodeSplitPlugin()),
+      //ifProd(() => new CodeSplitPlugin()),
 
       // We use this so that our generated [chunkhash]'s are only different if
       // the content for our respective chunks have changed.  This optimises
@@ -377,7 +377,7 @@ export default function webpackConfigFactory(buildOptions) {
                 //
                 // We only include it in production as this library does not support
                 // React Hot Loader, which we use in development.
-                ifElse(isProd && (isServer || isClient))(
+                /*ifElse(isProd && (isServer || isClient))(
                   [
                     'code-split-component/babel',
                     {
@@ -388,7 +388,7 @@ export default function webpackConfigFactory(buildOptions) {
                       mode: target,
                     },
                   ],
-                ),
+                ),*/
               ].filter(x => x != null),
             },
             buildOptions,

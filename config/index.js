@@ -230,7 +230,7 @@ const config = {
         // webpack loaders in order to be processed (e.g. CSS/SASS etc).
         // For these cases you don't want to include them in the Vendor DLL.
         include: [
-          'code-split-component',
+          'react-async-component',
           'react',
           'react-dom',
           'react-helmet',

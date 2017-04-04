@@ -1,6 +1,6 @@
 {
   "name": "Clubs",
-  "main": "./Clubs.jsx",
+  "main": "./AsyncClubs.jsx",
   "version": "0.0.0",
   "private": true
 }
