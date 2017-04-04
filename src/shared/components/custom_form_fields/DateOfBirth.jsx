@@ -4,7 +4,7 @@ import { Field } from 'redux-form'
 const DateOfBirth = props => (
   <Field
     {...props}
-    normalize={dateBreakup}
+    component={DatePicker}
   />
 )
 

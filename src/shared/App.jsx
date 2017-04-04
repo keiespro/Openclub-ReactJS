@@ -9,6 +9,9 @@ import gql from 'graphql-tag'
 import Drawer from 'rc-drawer'
 import { Layout } from 'antd'
 
+// import stripe for initialisation
+import 'utils/stripe'
+
 // base styling including bootstrap
 import 'styles/_base.scss'
 // ant theming
