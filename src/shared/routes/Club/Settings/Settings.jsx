@@ -9,11 +9,6 @@ import './Settings.css'
 const Settings = ({ club, location, pattern }, { router }) => {
 
   const routeDefs = [
-    { key: 'details', render: routerProps =>
-      <CodeSplit chunkName="club-details" modules={{ ClubDetails: require('./ClubDetails') }}>
-        { ({ ClubDetails }) => ClubDetails && <ClubDetails {...routerProps} club={club}/> }
-      </CodeSplit>
-    },
     { key: 'profile', render: routerProps =>
       <CodeSplit chunkName="club-profile" modules={{ ClubProfile: require('./ClubProfile') }}>
         { ({ ClubProfile }) => ClubProfile && <ClubProfile {...routerProps} club={club}/> }
@@ -48,7 +43,6 @@ const Settings = ({ club, location, pattern }, { router }) => {
             selectedKeys={selectedPath}
             mode="inline"
           >
-            <Menu.Item key="details">Club Details</Menu.Item>
             <Menu.Item key="profile">Profile</Menu.Item>
             <Menu.Item key="membership-plans">Membership Plans</Menu.Item>
             <Menu.Item key="bank-details">Bank Details</Menu.Item>

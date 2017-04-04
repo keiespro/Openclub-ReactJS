@@ -118,6 +118,7 @@ export default function generateHTML(args) {
             : ''
         }
         ${scriptTags(assetsForRender.js)}
+        ${scriptTag('https://js.stripe.com/v2/')}
         ${helmet ? helmet.script.toString() : ''}
       </body>
     </html>`;
