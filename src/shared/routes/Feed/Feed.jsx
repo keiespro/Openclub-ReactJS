@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
-import { Row, Col, Layout } from 'antd';
-import NewsFeed from 'components/newsfeed';
+import React, { Component, PropTypes } from 'react'
+import { Row, Col, Layout } from 'antd'
+import NewsFeed from 'components/newsfeed'
+import EventList from 'components/events/EventList'
 
 import './Feed.scss';
 
@@ -27,7 +28,7 @@ class Feed extends Component {
                 Your ad here
               </div>
               <div className="upcoming-events">
-                Upcoming events
+                <EventList />
               </div>
               <div className="memer-list">
                 Depending where this is - member list
