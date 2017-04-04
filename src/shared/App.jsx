@@ -73,7 +73,7 @@ const App = ({ data = {}, location }) => (
           <Match exactly pattern="/events" component={AsyncEvents} />
           <Match exactly pattern="/event/:event_id" render={routerProps => <AsyncEvent {...routerProps} viewer={data.user} />} /> */}
           {/* USER AGGREGATED FEED */}
-          <Match exactly pattern="/feed" component={AsyncFeed} />
+          <Match exactly pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
           {/* CLUB PAGES */}
           <Match exactly pattern="/clubs" component={AsyncClubs} />
           <Match exactly pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
