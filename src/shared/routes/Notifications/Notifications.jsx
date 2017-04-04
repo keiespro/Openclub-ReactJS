@@ -21,6 +21,29 @@ class Notifications extends Component {
       mutation: testNotificationMutation
     })
   }
+  formatVerb(value) {
+    const { verb } = value;
+    switch (verb) {
+      case 'like': return 'liked'; break;
+      case 'test': return 'tested'; break;
+      case 'comment': return 'commented on'; break;
+      case 'join': return 'joined'; break;
+      default: return 'performed an unknown activity'; break;
+    }
+  }
+  formatActors(value) {
+    if (value.activity_count === 1) {
+      return value.activities[0].actor
+    }
+    if (value.activity_count === 2) {
+      return `${value.activities[0].actor} and ${value.activities[0].actor}`
+    }
+    if (value.activity_count > 2) {
+      const remaining = value.activity_count - 2
+      const personOrPeople = remaining === 1 ? 'person' : 'people'
+      return `${value.activities[0].actor}, ${value.activities[0].actor} and ${remaining} other ${personOrPeople}`
+    }
+  }
   render() {
     const { data } = this.props
     return (
@@ -29,7 +52,14 @@ class Notifications extends Component {
         <a href="#" onClick={this.runTest.bind(this)}>TEST</a>
         {data.unread}
         {data.unseen}
-        {JSON.stringify(data.notifications)}
+        <pre>{JSON.stringify(data.notifications, undefined, 2)}</pre>
+        {data.notifications.map((value, key) => {
+          return (
+            <div>
+              <span>{this.formatActors(value)} {this.formatVerb(value)} .</span>
+            </div>
+          )
+        })}
       </ContentPage>
     );
   }
