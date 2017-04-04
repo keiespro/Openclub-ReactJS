@@ -1,12 +1,13 @@
 .newsfeed-post {
-  display: block;
   textarea {
-    width: 100%;
     resize: none;
     outline: none;
     border: none;
+    display: inline-block;
+    width: 100%;
   }
   .ant-spin, .embed {
+    display: inline-block;
     width: 100%;
     background-color: #f6fbfe;
     padding: 7px;

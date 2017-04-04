@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
-import { Spin, Button, Dropdown, Menu, Icon } from 'antd'
+import { Spin, Button, Dropdown, Menu, Icon, Input } from 'antd'
 import cx from 'classnames';
 import './NewsFeedPostForm.scss';
 
@@ -110,7 +110,7 @@ class NewsFeedPost extends Component {
     );
     const comp = (
       <div className="newsfeed-post">
-        <textarea value={this.state.input} onChange={this.handleInput} rows="1" placeholder="Share something..." ref={(textarea) => { this.textarea = textarea }} style={{ height: this.textarea ? this.textarea.scrollHeight : 'auto' }} />
+        <Input type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder="Share something..." />
         {this.state.activeRequest ? <Spin tip="Loading attachment..." /> : null}
         {embed !== '' ? <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} /> : null}
         <div className="buttons">
