@@ -1,11 +1,10 @@
 import React from 'react'
-import { Steps } from 'antd'
+import Steps, { Step } from 'antd/lib/steps'
 import { ContentPage } from 'components/layout'
 
 class ClubHeroHelper extends Component {
   render() {
     const { club } = this.props;
-    const { Step } = Steps
 
     let step = 0
     if(club.membership_plans && club.membership_plans.length > 0){
