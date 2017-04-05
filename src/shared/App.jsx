@@ -68,15 +68,15 @@ const App = ({ data = {}, location }) => (
               }
             } />
           {/* NOTIFICATIONS */}
-          <Match exactly pattern="/notifications" component={AsyncNotifications} />
+          <Match pattern="/notifications" component={AsyncNotifications} />
           {/* EVENT PAGES
           <Match exactly pattern="/events" component={AsyncEvents} />
           <Match exactly pattern="/event/:event_id" render={routerProps => <AsyncEvent {...routerProps} viewer={data.user} />} /> */}
           {/* USER AGGREGATED FEED */}
-          <Match exactly pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
+          <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
           {/* CLUB PAGES */}
-          <Match exactly pattern="/clubs" component={AsyncClubs} />
-          <Match exactly pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
+          <Match pattern="/clubs" component={AsyncClubs} />
+          <Match pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
           {/* 404 */}
           <Miss component={Error404} />
         </MatchGroup>
