@@ -242,7 +242,8 @@ export default function webpackConfigFactory(buildOptions) {
         'process.env.GRAPH_URL': isServer ? 'process.env.GRAPH_URL' :  'window.__ENV_VARS__.GRAPH_URL',
         'process.env.ICEPICK_URL': isServer ? 'process.env.ICEPICK_URL' :  'window.__ENV_VARS__.ICEPICK_URL',
         'process.env.STREAM_APP_ID': isServer ? 'process.env.STREAM_APP_ID' : 'window.__ENV_VARS__.STREAM_APP_ID',
-        'process.env.STREAM_API_KEY': isServer ? 'process.env.STREAM_API_KEY' : 'window.__ENV_VARS__.STREAM_API_KEY'
+        'process.env.STREAM_API_KEY': isServer ? 'process.env.STREAM_API_KEY' : 'window.__ENV_VARS__.STREAM_API_KEY',
+        'process.env.GOOGLE_API_KEY': isServer ? 'process.env.GOOGLE_API_KEY' : 'window.__ENV_VARS__.GOOGLE_API_KEY'
       }),
 
       // Generates a JSON file containing a map of all the output files for

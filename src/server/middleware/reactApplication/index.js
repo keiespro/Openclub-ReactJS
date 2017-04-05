@@ -74,7 +74,8 @@ function reactApplicationMiddleware(request, response) {
       'GRAPH_URL': process.env.GRAPH_URL,
       'ICEPICK_URL': process.env.ICEPICK_URL,
       'STREAM_APP_ID': process.env.STREAM_APP_ID,
-      'STREAM_API_KEY': process.env.STREAM_API_KEY
+      'STREAM_API_KEY': process.env.STREAM_API_KEY,
+      'GOOGLE_API_KEY': process.env.GOOGLE_API_KEY
     }
 
     // Generate the html response.
