@@ -1,0 +1,29 @@
+.oc-card-category {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  background-color: grey;
+  color: white;
+  display: table;
+  vertical-align: middle;
+  text-align: center;
+  font-size: 16px;
+  color: white;
+  font-weight: 600;
+  margin: 10px;
+  padding-top: 20%;
+  padding-bottom: 20%;
+
+  .sport {
+    background-color: blue;
+  }
+  .motorsport {
+    background-color: grey;
+  }
+  .university {
+    background-color: red;
+  }
+  .technology {
+    background-color: black;
+  }
+}
