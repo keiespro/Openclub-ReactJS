@@ -4,6 +4,7 @@ import apolloClient from 'modules/apollo'
 import { connect } from 'react-redux'
 import { formPrefix } from 'constants/index'
 import { Field, reduxForm } from 'redux-form'
+import union from 'lodash/union'
 import cx from 'classnames'
 import {
   Form,
@@ -12,6 +13,7 @@ import {
   Input,
   InputGroup,
   Select,
+  Address,
   Button
 } from 'components/form_controls'
 import {
@@ -49,9 +51,13 @@ const genderOptions = [
 ]
 
 class StripeAccountForm extends Component {
+  static defaultProps = {
+    additional_verifications: []
+  }
   static propTypes = {
     handleSubmit: PropTypes.func,
-    form_values: PropTypes.object
+    form_values: PropTypes.object,
+    additional_verifications: PropTypes.arrayOf(PropTypes.string)
   }
   constructor(props) {
     super(props);
@@ -63,15 +69,6 @@ class StripeAccountForm extends Component {
     }
 
     this.loadCountryValues = this.loadCountryValues.bind(this)
-  }
-  getVerifications(level = 'minimum') {
-    const { country_spec } = this.state
-
-    if (!country_spec) return [];
-
-    const { verification_fields } = country_spec;
-
-    return verification_fields[this.getType()][level];
   }
   async loadCountryValues(e, newValue, pastValue) {
     if (newValue !== pastValue) {
@@ -93,6 +90,15 @@ class StripeAccountForm extends Component {
         this.setState({ country_spec_query: false });
       }
     }
+  }
+  getVerifications(level = 'minimum') {
+    const { country_spec } = this.state
+
+    if (!country_spec) return [];
+
+    const { verification_fields } = country_spec;
+
+    return union(verification_fields[this.getType()][level], this.props.additional_verifications)
   }
   getType() {
     return this.props.form_values.type || 'company'
@@ -125,20 +131,19 @@ class StripeAccountForm extends Component {
           spinning={this.state.country_spec_query}
           >
           <FieldContainer required={true} title="Country">
-            Please select the country where you will be receiving funds.
             <StripeCountrySelector
               name="stripe_account.country"
-              help="You cannot change this later."
+              help="Please set your country. This cannot be changed later."
               onChange={this.loadCountryValues}
+              placeholder="Select your country"
               />
           </FieldContainer>
         </Spin>
         <FieldContainer required={true} title="Type">
-          Please select the type of legal entity you will be receiving funds as.
           <Field
             name="stripe_account.type"
             component={Select}
-            help="Accounts can be assigned to an individual or a company."
+            help="Please select the type of entity that will be reciving funds."
             options={accountTypeOptions}
             defaultValue="company"
             disabled={country_spec === null}
@@ -225,10 +230,9 @@ class StripeAccountForm extends Component {
         <FieldContainer required={this.isFieldRequired('legal_entity.address.city')} title="Account Address" deleted={this.isFieldDisabled('legal_entity.address.city')}>
           <Field
             name="stripe_account.legal_entity.address.city"
-            type="text"
             help="What is the address of the club or club account representative?"
             validate={[this.ifFieldRequired('legal_entity.address.city'), maxLength(64)]}
-            component={Input}
+            component={Address}
           />
         </FieldContainer>
         <FieldContainer required={this.isFieldRequired('legal_entity.dob.month')} title="Date of Birth" deleted={this.isFieldDisabled('legal_entity.dob.month')}>
@@ -236,9 +240,8 @@ class StripeAccountForm extends Component {
             name="stripe_account.legal_entity.dob"
           />
         </FieldContainer>
-        <FieldContainer required={true} title="Additional Owners"  deleted={this.isFieldDisabled('legal_entity.additional_owners')}>
-          In some regions, we require the details of any business owners that own more than a 25% stake in the business.
-          Some sort of field group...
+        <FieldContainer required={true} title="Additional Verifications"  deleted={this.isFieldDisabled('legal_entity.additional_owners')}>
+          Our payment provider has requested an additional verification. Please contact us at help@openclub.co to resolve.
         </FieldContainer>
         {
           this.formatAdditionalFields() !== '' ? <Alert
