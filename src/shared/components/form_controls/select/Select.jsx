@@ -6,6 +6,9 @@ import cx from 'classnames';
 const Option = AntSelect.Option
 
 const Select = ({ input, options, basic, meta, help, ...rest }) => {
+  const handleChange = (val) => {
+    input.onChange(val);
+  }
   const children = options.map(({ title, value }) => <Option key={value} value={value}>{title || value}</Option>)
   // console.log(input, options, basic, meta, help, rest);
 
@@ -15,8 +18,10 @@ const Select = ({ input, options, basic, meta, help, ...rest }) => {
     'has-warning': meta.touched && meta.warning
   })
 
+  console.log('INPUT', input, rest);
+
   const select = (
-    <AntSelect {...input} value={input.value || []} {...rest}>
+    <AntSelect {...input} {...rest} onChange={handleChange}>
       {children}
     </AntSelect>
   )

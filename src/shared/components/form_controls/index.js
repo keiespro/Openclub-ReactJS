@@ -15,11 +15,13 @@ import TimePicker from './timepicker/TimePicker'
 import FileUploader from './uploaders/FileUploader'
 import ImageUploader from './uploaders/ImageUploader'
 import InputGroup from './input_group/InputGroup'
+import Address from './address/Address'
 
 export {
   Form,
   FieldSet,
   FieldContainer,
+  Address,
   Input,
   Button,
   Checkbox,
