@@ -1,15 +1,37 @@
 import React from 'react'
+import { formPrefix } from 'constants/index'
 import { Select as AntSelect } from 'antd'
+import cx from 'classnames';
 
 const Option = AntSelect.Option
 
-const Select = ({ input, options, meta, ...rest }) => {
-  const children = options.map(({ key, value }) => <Option key={key}>{value}</Option>)
+const Select = ({ input, options, basic, meta, help, ...rest }) => {
+  const children = options.map(({ title, value }) => <Option key={value} value={value}>{title || value}</Option>)
+  // console.log(input, options, basic, meta, help, rest);
 
-  return (
+  const wrapClasses = cx(`${formPrefix}-item-control`, {
+    'has-feedback': meta.touched,
+    'has-error': meta.touched && meta.error,
+    'has-warning': meta.touched && meta.warning
+  })
+
+  const select = (
     <AntSelect {...input} value={input.value || []} {...rest}>
       {children}
     </AntSelect>
+  )
+  // return <div>help</div>
+
+  if (basic) return select
+
+  return (
+    <div className={wrapClasses}>
+      {select}
+      <div className={`${formPrefix}-explain`} key="help">
+        {meta.touched && meta.error && meta.error}
+        {(!meta.touched || !meta.error) && help}
+      </div>
+    </div>
   )
 }
 
