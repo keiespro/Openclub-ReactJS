@@ -26,11 +26,11 @@ const object_name = val => !val.match(/^[\w\s\d'-]+$/) ?
 const slug = val => !val.match(/^[\w\d]+(?:-[\w\d]+)*$/) ?
   'URLs can only contain lowercase letters (a-z), numbers (0-9) and hyphens (-), and cannot start or end with a hyphen (-).' : undefined
 
-const abn = val => !val.match(/^(\d *?){11}$/) ?
+const abn = val => !val.match(/^(\d *?){9,11}$/) ?
   'Please enter a valid Australian Business Number (ABN).' : undefined
 
-const vat = val => !val.match(/^(GB)?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$/) ?
-  'Please enter a valid United Kingdom VAT number.' : undefined
+const vat = val => !val.match(/^[\w]{2}?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$/) ?
+  'Please enter a valid VAT number.' : undefined
 
 const nzbn = val => !val.match(/^(\d *?){13}$/) ?
   'Please enter a valid New Zealand Business Number (NZBN).' : undefined
@@ -40,6 +40,8 @@ const number = val => !val.match(/^[\d]+$/) ?
 
 const money = val => !val.match(/^[+-]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/) ?
   'Please enter a valid monetary amount' : undefined
+
+const empty = val => undefined;
 
 export {
   required,
@@ -54,5 +56,6 @@ export {
   vat,
   nzbn,
   number,
-  money
+  money,
+  empty
 }
