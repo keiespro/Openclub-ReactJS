@@ -3,6 +3,7 @@ import { Menu, Icon, Row, Col } from 'antd'
 import { ContentPage, PageHeader } from 'components/layout'
 import { Match, Miss, Redirect } from 'teardrop'
 // Async pages
+import AsyncClubProfile from './ClubProfile'
 import AsyncBankDetails from './BankDetails'
 import AsyncMembershipPlans from './MembershipPlans'
 
