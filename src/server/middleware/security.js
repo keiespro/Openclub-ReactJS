@@ -37,6 +37,7 @@ const cspConfig = {
       // Allow YouTube,
       'www.youtube.com',
       '*.ytimg.com',
+      'faye.getstream.io',
       // Note: We will execution of any inline scripts that have the following
       // nonce identifier attached to them.
       // This is useful for guarding your application whilst allowing an inline

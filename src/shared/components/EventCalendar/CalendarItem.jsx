@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'teardrop';
-import { Row, Col } from 'react-bootstrap';
 import cx from 'classnames';
 import m from 'moment';
 
@@ -74,6 +73,10 @@ class CalendarItem extends Component {
         'btn-primary': this.state.expanded,
         'btn-default': !this.state.expanded
       })
+      const optionsClasses = cx({
+        'event-options': true,
+        'hidden': !this.props.full
+      })
       return (
         <div className={containerClass}>
           <div className={cardClasses}>
@@ -90,7 +93,7 @@ class CalendarItem extends Component {
                   <p>Some event host title here</p>
                   <p>8:00 pm &mdash; 10:30 pm</p>
                 </div>
-                <div className="event-options">
+                <div className={optionsClasses}>
                   {this.props.attending ? (<div>
                     <button className={buttonClasses}>
                       {this.state.expanded ? <i className="fa fa-fw fa-2x fa-caret-up" /> : <i className="fa fa-fw fa-2x fa-caret-down" />}

@@ -3,7 +3,6 @@ import thunk from 'redux-thunk'
 import makeRootReducer from './reducers'
 
 export default (initialState = {}) => {
-  console.log(initialState);
   // setup middlewares and enhancers
   const middleware = [thunk]
   const enhancers = []

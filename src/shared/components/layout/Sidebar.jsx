@@ -3,7 +3,7 @@ import { Menu, Icon } from 'antd'
 import { keysFromFragments } from 'utils/route'
 import './Sidebar.scss'
 
-const SubMenu = Menu.SubMenu
+const ItemGroup = Menu.ItemGroup
 
 const Sidebar = ({ user, location }, { router }) => {
 
@@ -22,7 +22,7 @@ const Sidebar = ({ user, location }, { router }) => {
     return (
       <aside className="oc-sidebar">
         <div className="oc-sidebar-profile">
-          <a href=""><img src={user.images.square} alt="Profile" className="oc-sidebar-profile--img thumb64" /></a>
+          <a href=""><img src={user.images.square || '/blank.gif'} alt="Profile" className="oc-sidebar-profile--img thumb64" /></a>
           <div className="mt">{user.name}</div>
         </div>
         <Menu
@@ -31,28 +31,27 @@ const Sidebar = ({ user, location }, { router }) => {
           selectedKeys={selectedKeys}
           mode="inline"
           onClick={handleClick}
-          defaultOpenKeys={['sub2', 'sub3']}
+          defaultOpenKeys={['sub1', 'sub2', 'sub3']}
         >
-          <SubMenu key="sub1" title={<span>OpenClub</span>}>
-            <Menu.Item key="home"><Icon type="home"/> Home</Menu.Item>
+          <ItemGroup key="sub1" title={<span>OpenClub</span>}>
+            <Menu.Item key="feed"><Icon type="layout"/> Feed</Menu.Item>
             <Menu.Item key="discover"><Icon type="global"/> Discover</Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub2" title={<span>Menu</span>}>
-            <Menu.Item key="feed"><Icon type="home"/> Home</Menu.Item>
+          </ItemGroup>
+          <ItemGroup key="sub2" title={<span>Menu</span>}>
             <Menu.Item key="profile"><Icon type="idcard"/> Profile</Menu.Item>
             <Menu.Item key="notifications"><Icon type="bell"/> Notifications</Menu.Item>
             <Menu.Item key="events"><Icon type="calendar"/> Events</Menu.Item>
             <Menu.Item key="clubs"><Icon type="team"/> Clubs</Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub3" title={<span>My Clubs</span>}>
+          </ItemGroup>
+          <ItemGroup key="sub3" title={<span>My Clubs</span>}>
             {myClubs.map((c, index) =>
               <Menu.Item
                 key={`${c.slug}`}
               >
-                <img className="oc-sidebar-clubimage" src={c.images ? c.images.thumb : null}/> {c.name}
+                <img className="oc-sidebar-clubimage" src={c.images ? c.images.thumb : '/empty-club.png'} /> {c.name}
               </Menu.Item>
             )}
-          </SubMenu>
+          </ItemGroup>
         </Menu>
       </aside>
     )

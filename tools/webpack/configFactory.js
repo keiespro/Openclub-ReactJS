@@ -8,7 +8,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import appRootDir from 'app-root-dir';
 import WebpackMd5Hash from 'webpack-md5-hash';
-import CodeSplitPlugin from 'code-split-component/webpack';
+//import CodeSplitPlugin from 'code-split-component/webpack';
 import { removeEmpty, ifElse, merge, happyPackPlugin } from '../utils';
 import config, { clientConfig } from '../../config';
 
@@ -148,7 +148,7 @@ export default function webpackConfigFactory(buildOptions) {
         ifClient('regenerator-runtime/runtime'),
         // The source entry file for the bundle.
         path.resolve(appRootDir.get(), bundleConfig.srcEntryFile),
-      ]),
+      ])
     },
 
     // Bundle output configuration.
@@ -203,7 +203,7 @@ export default function webpackConfigFactory(buildOptions) {
       // The code-split-component doesn't work nicely with React Hot Loader,
       // which we use in our development builds, so we will disable it (which
       // causes synchronous loading behaviour for the CodeSplit instances).
-      ifProd(() => new CodeSplitPlugin()),
+      //ifProd(() => new CodeSplitPlugin()),
 
       // We use this so that our generated [chunkhash]'s are only different if
       // the content for our respective chunks have changed.  This optimises
@@ -240,7 +240,9 @@ export default function webpackConfigFactory(buildOptions) {
         'process.env.AUTH0_CLIENT_ID': isServer ? 'process.env.AUTH0_CLIENT_ID' : 'window.__ENV_VARS__.AUTH0_CLIENT_ID',
         'process.env.AUTH0_DOMAIN': isServer ? 'process.env.AUTH0_DOMAIN' :  'window.__ENV_VARS__.AUTH0_DOMAIN',
         'process.env.GRAPH_URL': isServer ? 'process.env.GRAPH_URL' :  'window.__ENV_VARS__.GRAPH_URL',
-        'process.env.ICEPICK_URL': isServer ? 'process.env.ICEPICK_URL' :  'window.__ENV_VARS__.ICEPICK_URL'
+        'process.env.ICEPICK_URL': isServer ? 'process.env.ICEPICK_URL' :  'window.__ENV_VARS__.ICEPICK_URL',
+        'process.env.STREAM_APP_ID': isServer ? 'process.env.STREAM_APP_ID' : 'window.__ENV_VARS__.STREAM_APP_ID',
+        'process.env.STREAM_API_KEY': isServer ? 'process.env.STREAM_API_KEY' : 'window.__ENV_VARS__.STREAM_API_KEY'
       }),
 
       // Generates a JSON file containing a map of all the output files for
@@ -375,7 +377,7 @@ export default function webpackConfigFactory(buildOptions) {
                 //
                 // We only include it in production as this library does not support
                 // React Hot Loader, which we use in development.
-                ifElse(isProd && (isServer || isClient))(
+                /*ifElse(isProd && (isServer || isClient))(
                   [
                     'code-split-component/babel',
                     {
@@ -386,7 +388,7 @@ export default function webpackConfigFactory(buildOptions) {
                       mode: target,
                     },
                   ],
-                ),
+                ),*/
               ].filter(x => x != null),
             },
             buildOptions,

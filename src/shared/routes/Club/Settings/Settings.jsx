@@ -2,28 +2,18 @@ import React, { PropTypes } from 'react'
 import { Menu, Icon, Row, Col } from 'antd'
 import { ContentPage, PageHeader } from 'components/layout'
 import { Match, Miss, Redirect } from 'teardrop'
-import { CodeSplit } from 'code-split-component'
+// Async pages
+import AsyncBankDetails from './BankDetails'
+import AsyncMembershipPlans from './MembershipPlans'
 
 import './Settings.css'
 
 const Settings = ({ club, location, pattern }, { router }) => {
 
   const routeDefs = [
-    { key: 'profile', render: routerProps =>
-      <CodeSplit chunkName="club-profile" modules={{ ClubProfile: require('./ClubProfile') }}>
-        { ({ ClubProfile }) => ClubProfile && <ClubProfile {...routerProps} club={club}/> }
-      </CodeSplit>
-    },
-    { key: 'membership-plans', render: routerProps =>
-      <CodeSplit chunkName="membership-plans" modules={{ MembershipPlans: require('./MembershipPlans') }}>
-        { ({ MembershipPlans }) => MembershipPlans && <MembershipPlans {...routerProps} club={club}/> }
-      </CodeSplit>
-    },
-    { key: 'bank-details', render: routerProps =>
-      <CodeSplit chunkName="bank-details" modules={{ BankDetails: require('./BankDetails') }}>
-        { ({ BankDetails }) => BankDetails && <BankDetails {...routerProps} club={club}/> }
-      </CodeSplit>
-    }
+    { key: 'profile', render: routerProps => <AsyncClubProfile {...routerProps} club={club}/> },
+    { key: 'membership-plans', render: routerProps => <AsyncMembershipPlans {...routerProps} club={club}/> },
+    { key: 'bank-details', render: routerProps => <AsyncBankDetails {...routerProps} club={club} /> }
   ]
 
   const handleClick = e => {

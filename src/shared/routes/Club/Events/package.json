@@ -1,6 +1,6 @@
 {
   "name": "Events",
-  "main": "./Events.jsx",
+  "main": "./AsyncEvents.jsx",
   "version": "0.0.0",
   "private": true
 }
