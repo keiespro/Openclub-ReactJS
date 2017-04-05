@@ -4,7 +4,7 @@ import { ContentPage, PageHeader } from 'components/layout'
 import { Match, Miss, Redirect } from 'teardrop'
 // Async pages
 import AsyncClubProfile from './ClubProfile'
-import AsyncBankDetails from './BankDetails'
+import AsyncFinancialDetails from './FinancialDetails'
 import AsyncMembershipPlans from './MembershipPlans'
 
 import './Settings.css'
@@ -14,7 +14,7 @@ const Settings = ({ club, location, pattern }, { router }) => {
   const routeDefs = [
     { key: 'profile', render: routerProps => <AsyncClubProfile {...routerProps} club={club}/> },
     { key: 'membership-plans', render: routerProps => <AsyncMembershipPlans {...routerProps} club={club}/> },
-    { key: 'bank-details', render: routerProps => <AsyncBankDetails {...routerProps} club={club} /> }
+    { key: 'financial-details', render: routerProps => <AsyncFinancialDetails {...routerProps} club={club} /> }
   ]
 
   const handleClick = e => {
@@ -36,7 +36,7 @@ const Settings = ({ club, location, pattern }, { router }) => {
           >
             <Menu.Item key="profile">Profile</Menu.Item>
             <Menu.Item key="membership-plans">Membership Plans</Menu.Item>
-            <Menu.Item key="bank-details">Bank Details</Menu.Item>
+            <Menu.Item key="financial-details">Financial Details</Menu.Item>
           </Menu>
         </Col>
         <Col xs={{span: 24}} md={{span: 18}}>
