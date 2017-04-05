@@ -61,7 +61,7 @@ const App = ({ data = {}, location }) => (
 
           <Match exactly pattern="/test" component={AsyncTest}/>
 
-          <Match exactly pattern="/:club_id" render={routerProps =>
+          <Match pattern="/:club_id" render={routerProps =>
               <AsyncClub {...routerProps} viewer={data.user}/>
           }/>
           <Miss component={Error404} />

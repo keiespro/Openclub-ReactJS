@@ -2,7 +2,7 @@ import React from 'react'
 import { Steps } from 'antd'
 import { ContentPage } from 'components/layout'
 
-const Step = Steps.Step
+const { Step } = Steps
 
 const ClubHeroHelper = ({ club }) => {
   let step = 0
