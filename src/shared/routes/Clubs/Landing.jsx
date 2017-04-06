@@ -6,8 +6,14 @@ import { Row, Col, Button } from 'antd'
 import './Landing.scss'
 
 class ClubsLanding extends Component {
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
   constructor(props) {
     super(props)
+  }
+  goTo(link) {
+    this.context.router.transitionTo(link);
   }
   render() {
     return (
@@ -17,21 +23,21 @@ class ClubsLanding extends Component {
             <h4>Clubs</h4>
           </Col>
           <Col span={4}>
-            <Button type="primary" icon="plus" style={{ float: 'right' }}>Create a Club</Button>
+            <Button type="primary" icon="plus" style={{ float: 'right' }} onClick={this.goTo.bind(this, '/clubs/create')}>Create a Club</Button>
           </Col>
         </Row>
-        <div className="bottom-gap-large"/>
+        <div className="bottom-gap-large" />
         <Row>
-          <Col span={6}>
+          <Col xsHidden mdHidden lg={6}>
             <Category type="sport">Sport</Category>
           </Col>
-          <Col span={6}>
+          <Col xsHidden mdHidden lg={6}>
             <Category type="motorsport">Motorsport</Category>
           </Col>
-          <Col span={6}>
+          <Col xsHidden mdHidden lg={6}>
             <Category type="university">University</Category>
           </Col>
-          <Col span={6}>
+          <Col xsHidden mdHidden lg={6}>
             <Category type="technology">Technology</Category>
           </Col>
         </Row>
