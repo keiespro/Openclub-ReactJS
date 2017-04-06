@@ -32,7 +32,7 @@ class Club extends Component {
     //const { params, location } = this.props
 
     //const collapseHeader = location.pathname.includes('/feed') === false;
-    const collapseHeader = false
+    const collapseHeader = !location.pathname.match(/^.*\/.*\/(feed)/);
 
     if(loading){
       return <div>Loading Club...</div>
