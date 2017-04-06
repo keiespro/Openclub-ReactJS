@@ -1,8 +1,8 @@
 import React from 'react'
-import { Card } from 'antd'
+import { Card, RadioButton } from 'antd'
 import { Field } from 'redux-form'
 import {
-  CheckboxGroup
+  RadioGroup
 } from 'components/form_controls'
 import './PlanCard.scss'
 
@@ -13,7 +13,8 @@ const PlanCard = ({ plan }) => (
     <div className="plan-card-pricing">
       <Field
         name="selectedPlan"
-        component={CheckboxGroup}
+        size="large"
+        component={RadioGroup}
         options={plan.prices.map(p => ({
           label: `$${p.price} - ${p.duration}`,
           value: p._id
