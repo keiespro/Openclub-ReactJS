@@ -18,8 +18,6 @@ const Select = ({ input, options, basic, meta, help, ...rest }) => {
     'has-warning': meta.touched && meta.warning
   })
 
-  console.log('INPUT', input, rest);
-
   const select = (
     <AntSelect {...input} {...rest} onChange={handleChange}>
       {children}
