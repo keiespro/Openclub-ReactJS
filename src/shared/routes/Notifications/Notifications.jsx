@@ -55,7 +55,7 @@ class Notifications extends Component {
         <pre>{JSON.stringify(data.notifications, undefined, 2)}</pre>
         {data.notifications.map((value, key) => {
           return (
-            <div>
+            <div key={key}>
               <span>{this.formatActors(value)} {this.formatVerb(value)} .</span>
             </div>
           )
