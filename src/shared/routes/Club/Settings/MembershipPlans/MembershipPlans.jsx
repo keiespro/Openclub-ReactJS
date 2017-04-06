@@ -1,44 +1,26 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
-import { Button, Icon, Col, message, Alert } from 'antd'
+import { Button, message, Alert } from 'antd'
 import Table from 'components/table'
 import MembershipPlanForm from 'components/forms/MembershipPlanForm'
 import { durations } from 'constants/index'
 
-const priceColumns = [
-  { key: 'price', size: '50%', customDataRender: (table, price) => `$${price.amount}` },
-  { key: 'duration', customDataRender: (table, duration) => durations.lookup[duration] }
-]
-
-const columns = [
-  { title: 'Name', key: 'name' },
-  { title: 'Description', key: 'description' },
-  { title: 'Prices', tdclasses: 'no-padding', key: 'prices', customDataRender: (table, prices) => {
-    return prices ? <Table data={prices} columns={priceColumns}/> : <div style={{padding:'1em'}}>Free to join</div>
-  }},
-  { title: 'Actions', customDataRender: (table, cellData, rowData) => {
-    if(table.state.expandedKeys[rowData._id]){
-      return (
-        <Button onClick={() => table.updateExpanded({[rowData._id]: false})}>Cancel</Button>
-      )
-    }else{
-      return (
-        <Button icon="edit" onClick={() => table.updateExpanded({[rowData._id]: true})}>Edit</Button>
-      )
-    }
-  }}
-]
-
 class MembershipPlans extends Component {
+  static propTypes = {
+    createMutation: PropTypes.func,
+    club: PropTypes.object
+  }
   constructor(props) {
     super(props)
     this.state = {
       showAdd: false
     }
+
+    this.savePlan = this.savePlan.bind(this);
   }
 
-  savePlan = values => {
+  savePlan(values) {
     return this.props.createMutation({
       variables: {
         slug: this.props.club.slug,
@@ -53,6 +35,31 @@ class MembershipPlans extends Component {
   }
 
   render() {
+    const priceColumns = [
+      { key: 'price', customDataRender: (table, price) => `$${price.amount} ` },
+      { key: 'duration', customDataRender: (table, duration) => durations.lookup[duration] },
+      { key: 'setup_price', customDataRender: (table, setup_price) => `$${setup_price.amount} setup fee` }
+    ]
+
+    const columns = [
+      { title: 'Name', key: 'name' },
+      { title: 'Description', key: 'description' },
+      { title: 'Prices', tdclasses: 'no-padding', key: 'prices', customDataRender: (table, prices) => {
+        return prices ? <Table data={prices} columns={priceColumns}/> : <div style={{padding:'1em'}}>Free to join</div>
+      }},
+      { title: 'Actions', customDataRender: (table, cellData, rowData) => {
+        if (table.state.expandedKeys[rowData._id]) {
+          return (
+            <Button onClick={() => table.updateExpanded({[rowData._id]: false})}>Cancel</Button>
+          )
+        } else {
+          return (
+            <Button icon="edit" onClick={() => table.updateExpanded({[rowData._id]: true})}>Edit</Button>
+          )
+        }
+      }}
+    ]
+
     const { showAdd } = this.state
     const { club } = this.props
 
