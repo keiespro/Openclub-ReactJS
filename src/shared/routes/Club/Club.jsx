@@ -98,10 +98,7 @@ class Club extends Component {
               render={routerProps => <AsyncSettings {...routerProps} club={club}/>}
             />
             <Match pattern={`/${params.club_id}/join`}
-              render={routerProps => {
-                console.log('trying to get join')
-                  return <AsyncJoin {...routerProps} club={club}/>
-              }}
+              render={routerProps => <AsyncJoin {...routerProps} club={club}/>}
             />
             <Miss component={Error404}></Miss>
           </MatchGroup>
@@ -133,6 +130,10 @@ const clubQuery = gql`
           _id
           duration
           price{
+            amount
+            amount_float
+          },
+          setup_price{
             amount
             amount_float
           }
