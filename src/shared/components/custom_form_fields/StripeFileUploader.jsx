@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import { FileUploader } from 'components/form_controls'
 
-class StripeFileUplaoder extends Component {
+class StripeFileUploader extends Component {
   constructor(props) {
     super(props)
   }
@@ -14,4 +14,4 @@ class StripeFileUplaoder extends Component {
     )
   }
 }
-export default StripeFileUploader;
+export default StripeFileUploader
