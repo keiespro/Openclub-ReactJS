@@ -6,9 +6,11 @@
 import DateOfBirth from './DateOfBirth'
 import StripeCountrySelector from './StripeCountrySelector'
 import MoneyField from './MoneyField'
+import StripeFileUploader from './StripeFileUploader'
 
 export {
   DateOfBirth,
   StripeCountrySelector,
-  MoneyField
+  MoneyField,
+  StripeFileUploader
 }

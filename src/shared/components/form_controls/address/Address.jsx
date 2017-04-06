@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
-import Select, { Option } from 'antd/lib/select'
-import GoogleLocations from 'google-locations'
-import { Spin } from 'antd'
+import { findDOMNode } from 'react-dom'
+import Input from 'antd/lib/input'
+import loadGoogleMapsAPI from 'load-google-maps-api'
 
 class AddressField extends Component {
   static propTypes = {
@@ -11,67 +11,58 @@ class AddressField extends Component {
     super(props);
 
     this.state = {
-      fetching: false,
-      results: []
+      input: ''
     }
-    this.locations = new GoogleLocations(process.env.GOOGLE_API_KEY)
 
-    this.searchAddress = this.searchAddress.bind(this)
-    this.handleChange = this.handleChange.bind(this)
+    this.handleInput = this.handleInput.bind(this)
+
+    this.googleMaps = null;
+
+    if (typeof window !== 'undefined') {
+      this.googleMaps = 'google' in window ? window.google : null;
+    }
+    this.timeout = null;
   }
-  searchAddress(input) {
-    this.setState({ fetching: true })
-    this.locations.autocomplete({ input, types: 'address' }, (err, resp) => {
-      if(err) return
-      if ('predictions' in resp) {
-        let results = resp.predications.map(value => {
-          return {
-            address: value.description,
-            place_id: value.place_id
-          };
-        });
-      }
-      if (err) {
-        console.error(err)
-        return;
-      };
-      console.log(resp);
-      this.setState({
-        results: resp.predictions,
-        fetching: false
-      })
-    })
+  async getGoogleMaps() {
+    if (this.googleMaps) return this.googleMaps;
+    this.googleMaps = await loadGoogleMapsAPI({ key: process.env.GOOGLE_API_KEY, libraries: 'places' })
+    return this.googleMaps;
   }
-  handleChange(val) {
-    locations.details({ place_id: val.place_id}, (err, res) => {
-      if (err) return;
+  async searchAddress() {
+    const googleMaps = await this.getGoogleMaps();
+    const autocomplete = new googleMaps.maps.places.Autocomplete(findDOMNode(this.addressInput), { types: ['geocode'] });
+
+    autocomplete.addListener('place_changed', () => {
+      const place = autocomplete.getPlace();
+
       let addressObject = {}
-      res.result.address_components.forEach((comp) => {
+      place.address_components.forEach((comp) => {
+        this.setState({ input: place.formatted_address })
         comp.types.forEach(key => {
           addressObject[key] = comp.short_name;
         })
-        return
       })
-      this.props.onChange(addressObject)
+      this.props.input.onChange({}, addressObject)
     })
+  }
+  handleInput(e) {
+    this.setState({input: e.target.value})
+    clearTimeout(this.timeout);
+    this.timeout = setTimeout(() => {
+      this.searchAddress();
+    }, 500);
   }
   render() {
     const { input } = this.props;
-    const { fetching, results } = this.state;
 
-    const children = results.map(result => <Option key={result.place_id} value={result.place_id}>{result.address}</Option>)
     return (
-      <Select
-        placeholder="Start typing the address"
-        notFoundContent={fetching ? <Spin size="small" /> : null}
-        filterOption={false}
-        showArrow={false}
-        showSearch
-        onSearch={this.searchAddress}
-        onSelect={this.handleChange}
-      >
-        {results}
-      </Select>
+    <Input
+      {...input}
+      autoComplete={false}
+      onChange={this.handleInput}
+      value={this.state.input}
+      ref={addressInput => { this.addressInput = addressInput }}
+    />
     );
   }
 }

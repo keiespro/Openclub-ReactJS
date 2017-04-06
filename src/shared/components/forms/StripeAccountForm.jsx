@@ -18,7 +18,8 @@ import {
 } from 'components/form_controls'
 import {
   StripeCountrySelector,
-  DateOfBirth
+  DateOfBirth,
+  StripeFileUploader
 } from 'components/custom_form_fields'
 import { Alert, Col, message, Spin } from 'antd'
 import { required, maxLength, email, empty, number } from 'utils/form_validation/errors'
@@ -121,7 +122,7 @@ class StripeAccountForm extends Component {
 
   */
   render() {
-    const { handleSubmit } = this.props
+    const { handleSubmit, additional_verifications } = this.props
     const { country_spec } = this.state
 
     return (
@@ -156,6 +157,14 @@ class StripeAccountForm extends Component {
           <h4 className="bottom-gap-large">Verification Fields</h4>
           <p>Our payment provider may require additional information depending on the region you're operating in. We will notify you if any additional information is required.</p>
         </div>
+        {
+          additional_verifications.length > 0 ? <Alert
+            message="Additional Verifications Required"
+            description={`Our payment provider has requested additional information to verify your account or identity.`}
+            type="warning"
+            showIcon
+          /> : null
+        }
         <FieldContainer required={this.isFieldRequired('legal_entity.business_name')} title="Business Name" deleted={this.isFieldDisabled('legal_entity.business_name')}>
           <Field
             name="stripe_account.legal_entity.business_name"
@@ -240,17 +249,9 @@ class StripeAccountForm extends Component {
             name="stripe_account.legal_entity.dob"
           />
         </FieldContainer>
-        <FieldContainer required={true} title="Additional Verifications"  deleted={this.isFieldDisabled('legal_entity.additional_owners')}>
-          Our payment provider has requested an additional verification. Please contact us at help@openclub.co to resolve.
+        <FieldContainer required title="Additional Verifications"  deleted={this.isFieldDisabled('legal_entity.additional_owners')}>
+          Our payment provider has additional verification requirements in this region that may require that you contact us. Please email support@openclub.co if you have any difficulties.
         </FieldContainer>
-        {
-          this.formatAdditionalFields() !== '' ? <Alert
-            message="Additional Field Requirements"
-            description={`In some instances our payment facility may require additional fields, we will let you know if additional information is required. However, it is recommended that you provide the following: ${this.formatAdditionalFields()}.`}
-            type="warning"
-            showIcon
-          /> : null
-        }
         <div className="bottom-gap-large" />
         <Button type="primary" htmlType="submit" disabled={country_spec === null}>Save</Button>
       </Form>

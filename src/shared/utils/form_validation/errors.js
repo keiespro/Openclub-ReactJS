@@ -26,6 +26,9 @@ const object_name = val => !val.match(/^[\w\s\d'-]+$/) ?
 const slug = val => !val.match(/^[\w\d]+(?:-[\w\d]+)*$/) ?
   'URLs can only contain lowercase letters (a-z), numbers (0-9) and hyphens (-), and cannot start or end with a hyphen (-).' : undefined
 
+const reservedSlugs = val => val.match(/^(test|admin|openclub|feed|events|club|clubs|discover|notifications|profile|create|join|legal|privacy|terms|termsofservice|privacypolicy|index|default)$/) ?
+  'URLs cannot use reserved words.' : undefined
+
 const abn = val => !val.match(/^(\d *?){9,11}$/) ?
   'Please enter a valid Australian Business Number (ABN).' : undefined
 
@@ -51,6 +54,7 @@ export {
   phone,
   name,
   object_name,
+  reservedSlugs,
   slug,
   abn,
   vat,

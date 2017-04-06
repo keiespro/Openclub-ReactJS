@@ -98,6 +98,8 @@ class ImageUploader extends Component {
       'Authorization': `Bearer ${token}`
     } : {}
 
+    console.log(input)
+
     return (
       <div>
         <Upload
@@ -110,7 +112,11 @@ class ImageUploader extends Component {
           {...rest}
         >
           { uploading !== uploadState.COMPLETE &&
-          <div className="avatar-uploader">
+          //<div className="avatar-uploader" style={{backgroundImage: input.value}}>
+          <div className="avatar-uploader" style={{
+            backgroundImage: `url(${input.value})`,
+            backgroundSize: 'cover'  
+          }}>
             { uploading === uploadState.WAITING &&
               <Icon type="plus" className="avatar-uploader-trigger" />
             }

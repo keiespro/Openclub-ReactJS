@@ -9,6 +9,7 @@ class ProfileHeader extends Component {
     if((!images || !images.square) && name){
       return <div />
     }
+    const square = images.square ? images.square : '/empty-club.png'
     const classes = cx({
       'media-object': true,
       'img-rounded-corners': collapsed === false,
@@ -19,7 +20,7 @@ class ProfileHeader extends Component {
       <div className="media-left">
         <div className="profile-backdrop">
           <a href="#">
-            <img src={images.square} alt={name} className={classes} />
+            <img src={square} alt={name} className={classes} />
           </a>
         </div>
       </div>

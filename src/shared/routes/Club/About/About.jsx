@@ -36,6 +36,10 @@ const About = ({ club }) => (
             <a href="http://instagram.com/myclub">@myclub</a>
           </TextInfoIcon>
       </ContentPage>
+      <ContentPage largeFont>
+        <PageHeader title="Membership Details"/>
+        Paid membership options
+      </ContentPage>
     </Col>
   </Row>
 )

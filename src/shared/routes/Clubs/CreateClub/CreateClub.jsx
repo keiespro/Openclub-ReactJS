@@ -27,7 +27,10 @@ const CreateClub = ({ mutate }, { router }) => {
 
   return (
     <ContentPage>
-      <PageHeader title="Create New Club"/>
+      <PageHeader title="Create a Club"/>
+      <p>
+        Power your social group, sporting club, association or business with OpenClub. Connect within the communities that matter to you. OpenClub is free to setup.
+      </p>
       <CreateClubForm onSubmit={createTheClub}/>
     </ContentPage>
   )

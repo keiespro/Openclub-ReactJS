@@ -19,7 +19,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
     <Form onSubmit={handleSubmit}>
       <FieldContainer required={true} title="Name">
         <Field
-          name="club.name"
+          name="name"
           type="text"
           help="What is the name of your club?"
           validate={[required, maxLength(64)]}
@@ -28,7 +28,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
       </FieldContainer>
       <FieldContainer title="Profile Image">
         <Field
-          name="club.images.square"
+          name="images.square"
           component={ImageUploader}
           token={token}
           postname="square"
@@ -37,7 +37,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
       </FieldContainer>
       <FieldContainer title="Background Image">
         <Field
-          name="club.images.background"
+          name="images.background"
           token={token}
           postname="background"
           action={`${process.env.ICEPICK_URL}/upload/image/background`}
@@ -47,7 +47,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
       </FieldContainer>
       <FieldContainer required={true} title="Location">
         <Field
-          name="club.details.location"
+          name="details.location"
           type="text"
           help="Where is your club located?"
           validate={[required, maxLength(64)]}
@@ -56,7 +56,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
       </FieldContainer>
       <FieldContainer required={true} title="About">
         <Field
-          name="club.details.about"
+          name="details.about"
           type="textarea"
            rows={6}
           validate={[required, maxLength(64)]}
@@ -65,7 +65,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
       </FieldContainer>
       <FieldContainer required={true} title="Year Founded">
         <Field
-          name="club.details.founded"
+          name="details.founded"
           component={MonthPicker}
         />
       </FieldContainer>
