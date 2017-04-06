@@ -7,11 +7,9 @@ class StripeFileUploader extends Component {
     super(props)
   }
   render() {
-    return (
-      <FileUploader
+    return <FileUploader
         {...this.props}
         />
-    )
   }
 }
 export default StripeFileUploader
