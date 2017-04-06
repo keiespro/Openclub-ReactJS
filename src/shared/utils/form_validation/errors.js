@@ -41,6 +41,9 @@ const number = val => !val.match(/^[\d]+$/) ?
 const money = val => !val.match(/^[+-]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/) ?
   'Please enter a valid monetary amount' : undefined
 
+const url = val => !val.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi) ?
+  'Please enter a valid URL' : undefined
+
 const empty = val => undefined;
 
 export {
@@ -57,5 +60,6 @@ export {
   nzbn,
   number,
   money,
+  url,
   empty
 }

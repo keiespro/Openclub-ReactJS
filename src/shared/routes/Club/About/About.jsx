@@ -30,15 +30,14 @@ const About = ({ club }) => {
         </ContentPage>
         <ContentPage largeFont>
           <PageHeader title="Extra Details"/>
-            {club.details && club.details.founded &&
-              <TextInfoIcon icon="calendar" title="Founded">
-                Club was founded in <b>{club.details.founded}</b>
-              </TextInfoIcon>
-            }
-            <TextInfoIcon icon="user" title="Minimum Age">
-              {minAge}
+          {club.details && club.details.founded &&
+            <TextInfoIcon icon="calendar" title="Founded">
+              Club was founded in <b>{club.details.founded}</b>
             </TextInfoIcon>
           }
+          <TextInfoIcon icon="user" title="Minimum Age">
+            {minAge}
+          </TextInfoIcon>
         </ContentPage>
       </Col>
       <Col xs={24} md={9}>
