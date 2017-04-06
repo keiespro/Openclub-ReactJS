@@ -11,11 +11,12 @@ class FileUploader extends Component {
   }
 
   handleChange = ({ fileList }) => {
+    // enforce only single file selection
+    fileList = fileList.slice(-1)
     this.setState({
       currentFiles: fileList
     })
     if(fileList.length > 0 && fileList[0].response){
-      console.log(fileList[0].response.token)
       this.props.input.onChange(fileList[0].response.token)
     }
   }
@@ -29,18 +30,33 @@ class FileUploader extends Component {
       'Authorization': `Bearer ${token}`
     } : {}
 
+    const fileList = []
+    if(input.value){
+      fileList.push({
+        uid: 1,
+        url: input.value,
+        name: input.value
+      })
+    }
+
+    const uploadButtonText = (currentFiles.length > 0 || fileList.length > 0)
+      ? 'Click to Change'
+      : 'Click to Upload'
+
     return (
       <Upload
         {...input}
         name={postname}
         token={token}
         headers={headers}
+        showRemoveIcon={false}
+        fileList={fileList}
         {...rest}
         disabled={!multiple && currentFiles.length > 0}
         onChange={this.handleChange}
       >
         <Button>
-          <Icon type="upload" /> 'Click to Upload'
+          <Icon type="upload" /> {uploadButtonText}
         </Button>
       </Upload>
     )

@@ -45,7 +45,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
           listType="picture"
         />
       </FieldContainer>
-      <FieldContainer required={true} title="Location">
+      <FieldContainer title="Location">
         <Field
           name="details.location"
           type="text"
@@ -54,7 +54,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
           component={Input}
         />
       </FieldContainer>
-      <FieldContainer required={true} title="About">
+      <FieldContainer title="About">
         <Field
           name="details.about"
           type="textarea"
@@ -63,7 +63,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
           component={Input}
         />
       </FieldContainer>
-      <FieldContainer required={true} title="Year Founded">
+      <FieldContainer title="Year Founded">
         <Field
           name="details.founded"
           component={MonthPicker}
