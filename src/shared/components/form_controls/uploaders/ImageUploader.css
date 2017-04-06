@@ -11,6 +11,10 @@
   border-radius: 6px;
   cursor: pointer;
 }
+.avatar-uploader .anticon {
+  display: table-cell;
+  vertical-align: middle;
+}
 .avatar-uploader-trigger {
   display: table-cell;
   vertical-align: middle;
