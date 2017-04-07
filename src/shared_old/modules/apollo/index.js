@@ -2,6 +2,7 @@
  * Apollo integration with openclub for graphql API
  */
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
+import { notification } from 'antd'
 import store from 'store'
 
 const networkInterface = createNetworkInterface({
@@ -30,6 +31,7 @@ const errorLog = {
   applyAfterware({ response }, next) {
     response.clone().json().then(({ errors }) => {
       if (errors) {
+        errors.forEach(e => notification.error({ message: 'Connection Error', description: e.message }));
         console.error('GraphQL Errors:', errors.map(e => e.message));
       }
       next();

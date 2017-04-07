@@ -3,6 +3,7 @@
  */
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
 import { createLogger } from 'utils/logger'
+import { notification } from 'antd'
 
 const logger = createLogger('apollo')
 const networkInterface = createNetworkInterface({
@@ -38,6 +39,7 @@ const initMiddlewares = store => {
     applyAfterware({ response }, next) {
       response.clone().json().then(({ errors }) => {
         if (errors) {
+          errors.map(e => notification.error({ message: 'Uh oh!', description: e.message }));
           logger.error(errors.map(e => e.message))
         }
         next()
