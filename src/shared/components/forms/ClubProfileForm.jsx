@@ -17,6 +17,7 @@ import {
 const ClubProfileForm = ({ handleSubmit, token }) => {
 
   const minimumAgeOptions = [
+    { value: '0', title: 'All Ages' },
     { value: '13', title: '13' },
     { value: '18', title: '18' },
     { value: '21', title: '21' }

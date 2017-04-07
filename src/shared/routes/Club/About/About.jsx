@@ -7,7 +7,7 @@ import { TextInfoIcon } from 'components/display'
 const About = ({ club }) => {
 
   let minAge = 'This club has no age restrictions on members'
-  if(club.details && club.details.minimum_age){
+  if(club.details && club.details.minimum_age && club.details.minimum_age !== '0'){
     minAge = `This club has a ${club.details.minimum_age}+ age restriction`
   }
 
