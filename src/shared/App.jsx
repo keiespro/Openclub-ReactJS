@@ -10,11 +10,13 @@ import { Layout } from 'antd'
 
 // Async routes
 import AsyncHome from 'routes/Home'
+import AsyncLoginPage from 'routes/LoginPage'
 import AsyncFeed from 'routes/Feed'
 import AsyncClubs from 'routes/Clubs'
 import AsyncClub from 'routes/Club'
 import AsyncNotifications from 'routes/Notifications'
-//import AsyncEvents from 'routes/Events'
+import AsyncEvents from 'routes/Events'
+import AsyncTest from 'routes/Test'
 //import AsyncEvent from 'routes/Event'
 
 import { LoadNotifications } from 'components/Notifications'
@@ -67,14 +69,27 @@ const App = ({ data = {}, location }) => (
                 return null;
               }
             } />
+          <Match
+            pattern="/help"
+            render={routerProps => {
+              if (data.user) {
+                window.location = `https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`
+              }
+              if (!data.loading) {
+                return <AsyncLoginPage {...routerProps} />;
+              }
+              return null;
+            }}
+            />
           {/* NOTIFICATIONS */}
           <Match pattern="/notifications" component={AsyncNotifications} />
-          {/* EVENT PAGES
-          <Match exactly pattern="/events" component={AsyncEvents} />
-          <Match exactly pattern="/event/:event_id" render={routerProps => <AsyncEvent {...routerProps} viewer={data.user} />} /> */}
+          {/* EVENT PAGES */}
+          <Match pattern="/events" component={AsyncEvents} />
+          {/*<Match exactly pattern="/event/:event_id" render={routerProps => <AsyncEvent {...routerProps} viewer={data.user} />} /> */}
           {/* USER AGGREGATED FEED */}
           <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
           {/* CLUB PAGES */}
+          <Match pattern="/test" component={AsyncTest} />
           <Match pattern="/clubs" component={AsyncClubs} />
           <Match pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
           {/* 404 */}
@@ -97,6 +112,7 @@ const currentViewer = gql`
       email
       name
       notification_token
+      helpdesk_jwt
       images {
         thumb
         square

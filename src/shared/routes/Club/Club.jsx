@@ -139,6 +139,19 @@ const clubQuery = gql`
           }
         }
       }
+      details{
+        about
+        location
+        minimum_age
+        founded
+        email
+        phone
+        website
+        facebook
+        instagram
+        linkedin
+        twitter
+      }
     }
   }
 `

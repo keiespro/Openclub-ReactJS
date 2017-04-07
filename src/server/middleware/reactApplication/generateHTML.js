@@ -111,6 +111,8 @@ export default function generateHTML(args) {
             ? scriptTag(config.polyfillIO.url)
             : ''
         }
+        ${scriptTag('https://js.stripe.com/v2/')}
+        ${scriptTag('https://js.stripe.com/v3/')}
         ${
           // When we are in development mode our development server will generate a
           // vendor DLL in order to dramatically reduce our compilation times.  Therefore
