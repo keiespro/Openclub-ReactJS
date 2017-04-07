@@ -7,7 +7,8 @@ const cspConfig = {
   directives: {
     childSrc: [
       "'self'",
-      'www.youtube.com'
+      'www.youtube.com',
+      'js.stripe.com'
     ],
     // Note: Setting this to stricter than * breaks the service worker. :(
     // I can't figure out how to get around this, so if you know of a safer
@@ -39,6 +40,7 @@ const cspConfig = {
       '*.ytimg.com',
       'faye.getstream.io',
       'maps.googleapis.com',
+      'js.stripe.com',
       // Note: We will execution of any inline scripts that have the following
       // nonce identifier attached to them.
       // This is useful for guarding your application whilst allowing an inline
