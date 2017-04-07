@@ -5,29 +5,43 @@ import './FileUploader.scss'
 class FileUploader extends Component {
   constructor(props) {
     super(props)
+    const { input } = this.props
     this.state = {
-      currentFiles: []
+      fileList: []
+    }
+    if(input.value){
+      this.state.fileList.push({
+        uid: 1,
+        url: input.value,
+        name: input.value
+      })
     }
   }
 
   handleChange = ({ fileList }) => {
-    this.setState({
-      currentFiles: fileList
-    })
+    // enforce only single file selection
+    fileList = fileList.slice(-1)
+    console.log(fileList)
     if(fileList.length > 0 && fileList[0].response){
-      console.log(fileList[0].response.token)
       this.props.input.onChange(fileList[0].response.token)
     }
+    this.setState({
+      fileList: fileList
+    })
   }
 
   render() {
     const { input, postname, token, multiple, ...rest } = this.props
-    const { currentFiles } = this.state
+    const { fileList } = this.state
 
     // add jwt header if token supplied
     const headers = token ? {
       'Authorization': `Bearer ${token}`
     } : {}
+
+    const uploadButtonText = (fileList.length > 0)
+      ? 'Click to Change'
+      : 'Click to Upload'
 
     return (
       <Upload
@@ -35,12 +49,13 @@ class FileUploader extends Component {
         name={postname}
         token={token}
         headers={headers}
+        showRemoveIcon={false}
+        fileList={fileList}
         {...rest}
-        disabled={!multiple && currentFiles.length > 0}
         onChange={this.handleChange}
       >
         <Button>
-          <Icon type="upload" /> 'Click to Upload'
+          <Icon type="upload" /> {uploadButtonText}
         </Button>
       </Upload>
     )
