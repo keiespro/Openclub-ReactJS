@@ -20,6 +20,7 @@ import AsyncTest from 'routes/Test'
 //import AsyncEvent from 'routes/Event'
 
 import { LoadNotifications } from 'components/Notifications'
+import { logoutUser } from 'modules/auth/actions'
 
 import Error404 from 'components/Error404/Error404'
 import Header from 'components/layout/Header'
@@ -39,7 +40,7 @@ import 'App.scss'
 
 const { Content } = Layout
 
-const App = ({ data = {}, location }) => (
+const App = ({ data = {}, location, logoutUser }) => (
   <Drawer sidebar={<Sidebar user={data.user} location={location}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
     <Layout>
       <Helmet
@@ -69,6 +70,7 @@ const App = ({ data = {}, location }) => (
                 return null;
               }
             } />
+          {/* UTIL PAGES */}
           <Match
             pattern="/help"
             render={routerProps => {
@@ -80,7 +82,11 @@ const App = ({ data = {}, location }) => (
               }
               return null;
             }}
-            />
+          />
+          <Match pattern="/logout" render={() => {
+            logoutUser()
+            return <Redirect to="/" push />
+          }}/>
           {/* NOTIFICATIONS */}
           <Match pattern="/notifications" component={AsyncNotifications} />
           {/* EVENT PAGES */}
@@ -136,7 +142,7 @@ const AppWithApollo = graphql(currentViewer, {
 export default connect(state => ({
   auth0Loaded: state.auth.auth0Loaded,
   token: state.auth.token
-}))(AppWithApollo)
+}), { logoutUser })(AppWithApollo)
 
 export {
   App

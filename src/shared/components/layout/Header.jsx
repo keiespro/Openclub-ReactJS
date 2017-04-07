@@ -9,11 +9,11 @@ const AntHeader = Layout.Header
 const userMenu = (
   <Menu>
     <Menu.Item key="0">
-      <em className="ion-home icon-fw"/> Profile
+      <Link to="/profile"><Icon type="user"/> Profile</Link>
     </Menu.Item>
     <Menu.Divider />
     <Menu.Item key="1">
-      <em className="ion-log-out icon-fw" /> Logout
+      <Link to="/logout"><Icon type="logout"/> Logout</Link>
     </Menu.Item>
   </Menu>
 )

@@ -90,6 +90,6 @@ export function logoutUser() {
     localStorage.removeItem('openclub_token')
     // clear apollos cache
     apolloClient.resetStore()
-    browserHistory.replace('/')
+    //browserHistory.replace('/')
   }
 }
