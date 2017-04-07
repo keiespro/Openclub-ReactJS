@@ -7,10 +7,14 @@ import DateOfBirth from './DateOfBirth'
 import StripeCountrySelector from './StripeCountrySelector'
 import MoneyField from './MoneyField'
 import StripeFileUploader from './StripeFileUploader'
+import StripeBankAccountField from './StripeBankAccountField'
+import StripeCreditCardField from './StripeCreditCardField'
 
 export {
   DateOfBirth,
   StripeCountrySelector,
   MoneyField,
-  StripeFileUploader
+  StripeFileUploader,
+  StripeBankAccountField,
+  StripeCreditCardField
 }
