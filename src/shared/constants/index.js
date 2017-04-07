@@ -3,12 +3,16 @@ const formPrefix = 'ant-form'
 
 const durations = {
   lookup: {
-    YEARLY: 'Yearly',
+    YEARLY: 'Annually',
     MONTHLY: 'Monthly',
-    FORTNIGHTLY: 'Fortnightly',
     WEEKLY: 'Weekly'
   },
-  list: ['YEARLY', 'MONTHLY', 'FORTNIGHTLY', 'WEEKLY']
+  lookupPer: {
+    YEARLY: 'per year',
+    MONTHLY: 'per month',
+    WEEKLY: 'per week'
+  },
+  list: ['YEARLY', 'MONTHLY', 'WEEKLY']
 }
 
 export {

@@ -20,10 +20,10 @@ class ClubsLanding extends Component {
       <ContentPage>
         <Row>
           <Col span={20}>
-            <h4>Clubs</h4>
+            <h4>Events</h4>
           </Col>
           <Col span={4}>
-            <Button type="primary" icon="plus" style={{ float: 'right' }} onClick={this.goTo.bind(this, '/clubs/create')}>Create a Club</Button>
+            <Button type="primary" icon="plus" style={{ float: 'right' }} onClick={this.goTo.bind(this, '/events/create')}>Create an Event</Button>
           </Col>
         </Row>
         <div className="bottom-gap-large" />

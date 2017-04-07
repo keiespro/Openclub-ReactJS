@@ -23,26 +23,37 @@ const renderPrices = ({ fields, meta: { touched, error } }) => (
     }
     {fields.map((price, index) =>
       <InputGroup key={index} className="membership-price-item" compact>
-        <Col span="5">
+        <Col xs={6}>
           <Field
             name={`prices[${index}].price.amount`}
             type="text"
-            placeholder="Price"
-            basic={true}
+            placeholder="Fee"
+            basic
             prefix="$"
-            validate={[required, maxLength(64)]}
+            validate={[required, maxLength(8)]}
             component={Input}
           />
         </Col>
-        <Col span="5">
+        <Col xs={6}>
           <Field
             name={`prices[${index}].duration`}
             component={Select}
             placeholder="Duration"
-            options={durations.list.map(d => ({ key: d, value: durations.lookup[d] }))}
+            options={durations.list.map(d => ({ value: d, title: durations.lookup[d] }))}
           />
         </Col>
-        <Col span="2">
+        <Col xs={6}>
+          <Field
+            basic
+            name={`prices[${index}].setup_price.amount`}
+            type="text"
+            placeholder="Setup Fee (optional)"
+            prefix="$"
+            validate={[maxLength(8)]}
+            component={Input}
+            />
+        </Col>
+        <Col xs={2}>
           <Button type="danger" icon="delete" ghost onClick={() => fields.remove(index)}/>
         </Col>
       </InputGroup>
@@ -52,7 +63,6 @@ const renderPrices = ({ fields, meta: { touched, error } }) => (
 )
 
 const MembershipPlanForm = ({ handleSubmit, createForm, submitting }) => {
-
   return (
     <Form onSubmit={handleSubmit}>
       <FieldContainer required={true} title="Name">
@@ -67,10 +77,11 @@ const MembershipPlanForm = ({ handleSubmit, createForm, submitting }) => {
       <FieldContainer required={true} title="Description">
         <Field
           name="description"
-          type="text"
+          type="textarea"
           help="What is the description of this plan?"
-          validate={[required, maxLength(64)]}
+          validate={[required, maxLength(2000)]}
           component={Input}
+          autosize
         />
       </FieldContainer>
       <FieldContainer required={true} title="Prices">
