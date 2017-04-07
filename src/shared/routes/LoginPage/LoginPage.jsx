@@ -4,7 +4,7 @@ import { inlineLogin }  from 'modules/auth/actions'
 import ReactPlayer from 'react-player'
 import { Row, Col } from 'antd'
 
-import './LoginPage.scss'
+import '../Home/Home.scss'
 
 class LoginPageView extends Component {
   static propTypes = {
@@ -19,7 +19,12 @@ class LoginPageView extends Component {
       <section>
         <div className="bg-full bg-pic1 container-fluid">
           <div className="container-content">
-            <Row gutter={16} className="help-login">
+            <Row gutter={16} className="help-login" style={{ maxWidth: '400px', marginLeft: 'auto', marginRight: 'auto' }}>
+              <div className="text">
+                <h1>
+                  Login to OpenClub
+                </h1>
+              </div>
                 <div id="home-lock-container" className="login" />
             </Row>
           </div>

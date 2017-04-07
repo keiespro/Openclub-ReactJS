@@ -3,7 +3,6 @@ import { Row, Col, Layout } from 'antd'
 import NewsFeed from 'components/newsfeed'
 import NewsFeedPostForm from 'components/forms/NewsFeedPostForm'
 import { CalendarItem } from 'components/EventCalendar'
-import Footer from 'components/footer'
 
 import './Feed.scss';
 
