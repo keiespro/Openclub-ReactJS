@@ -11,7 +11,7 @@ class AddressField extends Component {
     super(props);
 
     this.state = {
-      input: ''
+      input: props.input.value ? props.input.value.formatted_address : ''
     }
 
     this.handleInput = this.handleInput.bind(this)
@@ -30,7 +30,8 @@ class AddressField extends Component {
   }
   async searchAddress() {
     const googleMaps = await this.getGoogleMaps();
-    const autocomplete = new googleMaps.maps.places.Autocomplete(findDOMNode(this.addressInput), { types: ['geocode'] });
+    const maps = 'maps' in googleMaps ? googleMaps.maps : googleMaps;
+    const autocomplete = new maps.places.Autocomplete(findDOMNode(this.addressInput), { types: ['geocode'] });
 
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
@@ -42,7 +43,8 @@ class AddressField extends Component {
           addressObject[key] = comp.short_name;
         })
       })
-      this.props.input.onChange({}, addressObject)
+      addressObject.formatted_address = place.formatted_address
+      this.props.input.onChange(addressObject)
     })
   }
   handleInput(e) {

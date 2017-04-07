@@ -9,6 +9,7 @@ import {
   MonthPicker,
   Input,
   Select,
+  Address,
   Button,
   ImageUploader,
   FileUploader
@@ -53,13 +54,12 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
           listType="picture"
         />
       </FieldContainer>
-      <FieldContainer title="Location">
+      <FieldContainer title="Club Location">
         <Field
           name="details.location"
-          type="text"
-          help="Where is your club located?"
+          help="Where is the club located?"
           validate={[maxLength(64)]}
-          component={Input}
+          component={Address}
         />
       </FieldContainer>
       <FieldContainer title="About">

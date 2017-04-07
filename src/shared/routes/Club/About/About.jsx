@@ -17,8 +17,6 @@ const About = ({ club }) => {
     aboutText = club.details.about.split('\n')
   }
 
-  console.log(club.details.founded)
-
   return (
     <Row gutter={20}>
       <Col xs={24} md={15}>
@@ -38,6 +36,11 @@ const About = ({ club }) => {
         </ContentPage>
         <ContentPage largeFont>
           <PageHeader title="Extra Details"/>
+          {club.details && club.details.location &&
+            <TextInfoIcon icon="calendar" title="Location">
+              {club.details.location.formatted_address}
+            </TextInfoIcon>
+          }
           {club.details && club.details.founded &&
             <TextInfoIcon icon="calendar" title="Founded">
               Club was founded in <b>{moment(club.details.founded).format('MMMM, YYYY')}</b>

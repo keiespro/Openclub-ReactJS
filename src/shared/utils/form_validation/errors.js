@@ -11,38 +11,41 @@ export const minLength = len => val => !val || val.length < len ?
 export const maxLength = len => val => val && val.length > len ?
   `This field must be no more than ${len} characters long.` : undefined
 
-export const email = val => !val.match(/^[\w\d._%+-]+@[\w\d.-]+\.[\w]{2,}/) ?
+export const email = val => val && !val.match(/^[\w\d._%+-]+@[\w\d.-]+\.[\w]{2,}/) ?
   'Please enter a valid email address.' : undefined
 
-export const phone = val => !val.match(/^[\d\s()+]{6,}/) ?
+export const phone = val => val && !val.match(/^[\d\s()+]{6,}/) ?
   'Please enter a valid phone number.' : undefined
 
-export const name = val => !val.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,}$/) ?
+export const name = val => val && !val.match(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]{2,}$/) ?
   'Names can only contain dictionary characters (a-z) and punctuation (\',-.).' : undefined
 
-export const object_name = val => !val.match(/^[\w\s\d'-]+$/) ?
+export const object_name = val => val && !val.match(/^[\w\s\d'-]+$/) ?
   'Names must contain only dictionary characters, punctuation, underscores and numbers.' : undefined
 
-export const slug = val => !val.match(/^[\w\d]+(?:-[\w\d]+)*$/) ?
+export const slug = val => val && !val.match(/^[\w\d]+(?:-[\w\d]+)*$/) ?
   'URLs can only contain lowercase letters (a-z), numbers (0-9) and hyphens (-), and cannot start or end with a hyphen (-).' : undefined
 
-export const reservedSlugs = val => val.match(/^(test|admin|openclub|feed|events|club|clubs|discover|notifications|profile|create|join|legal|privacy|terms|termsofservice|privacypolicy|index|default)$/) ?
+export const reservedSlugs = val => val && val.match(/^(test|admin|openclub|feed|events|club|clubs|discover|notifications|profile|create|join|legal|privacy|terms|termsofservice|privacypolicy|index|default)$/) ?
   'URLs cannot use reserved words.' : undefined
 
-export const abn = val => !val.match(/^(\d *?){9,11}$/) ?
+export const abn = val => val && !val.match(/^(\d *?){9,11}$/) ?
   'Please enter a valid Australian Business Number (ABN).' : undefined
 
-export const vat = val => !val.match(/^[\w]{2}?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$/) ?
+export const vat = val => val && !val.match(/^[\w]{2}?([0-9]{9}([0-9]{3})?|[A-Z]{2}[0-9]{3})$/) ?
   'Please enter a valid VAT number.' : undefined
 
-export const nzbn = val => !val.match(/^(\d *?){13}$/) ?
+export const nzbn = val => val && !val.match(/^(\d *?){13}$/) ?
   'Please enter a valid New Zealand Business Number (NZBN).' : undefined
 
-export const number = val => !val.match(/^[\d]+$/) ?
+export const number = val => val && !val.match(/^[\d]+$/) ?
   'Please only enter numbers.' : undefined
 
-export const money = val => !val.match(/^[+-]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/) ?
+export const money = val => val && !val.match(/^[+-]?[0-9]{1,3}(?:[0-9]*(?:[.,][0-9]{2})?|(?:,[0-9]{3})*(?:\.[0-9]{2})?|(?:\.[0-9]{3})*(?:,[0-9]{2})?)$/) ?
   'Please enter a valid monetary amount' : undefined
+
+export const url = val => val && !val.match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi) ?
+  'Please enter a valid URL' : undefined
 
 export const empty = () => undefined;
 

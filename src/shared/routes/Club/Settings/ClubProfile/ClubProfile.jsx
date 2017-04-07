@@ -25,6 +25,8 @@ const ClubProfile = ({ club, mutate }) => {
     })
   }
 
+  console.log(club)
+
   return (
     <div className="oc-form">
       <h4 className="bottom-gap-large">Profile Details</h4>
