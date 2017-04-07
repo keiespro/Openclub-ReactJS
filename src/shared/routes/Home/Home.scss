@@ -27,6 +27,20 @@
   background-image: url('https://assets.openclub.co/images/landing/rowing.jpg');
   height: calc(100vh - 50px);
 }
+.home-footer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 55px;
+  text-align: center;
+  font-size: 12px;
+  color: white;
+  a {
+    color: white;
+    text-decoration: underline
+  }
+}
 .container-content {
   z-index: 1;
   position: absolute;

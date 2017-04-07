@@ -36,6 +36,9 @@ class HomeView extends Component {
                 </div>
               </Col>
             </Row>
+            <div className="home-footer">
+              Copyright © OpenClub Pty Ltd. | <a href="https://en.openclub.co/legal/terms">Terms of Service</a> | <a href="https://en.openclub.co/legal/privacy">Privacy Policy</a>
+            </div>
           </div>
           <ReactPlayer
             url="https://www.youtube.com/embed/131eQ5HePfg"
