@@ -30,77 +30,91 @@ export const bankByCountry = {
     type: 2,
     routing_number: {
       name: 'BSB',
-      validation: australianBSB
+      validation: australianBSB,
+      width: '30%'
     },
     account_number: {
-      title: 'Account Number',
-      validation: empty
+      name: 'Account Number',
+      validation: empty,
+      width: '70%'
     }
   },
   'CA': {
     type: 3,
     transit_number: {
       name: 'Transit Number',
-      validation: canadaTransitNumber
+      validation: canadaTransitNumber,
+      width: '30%'
     },
     routing_number: {
       name: 'Institute Number',
-      validation: canadaInstituteNumber
+      validation: canadaInstituteNumber,
+      width: '30%'
     },
     account_number: {
-      title: 'Account Number',
-      validation: empty
+      name: 'Account Number',
+      validation: empty,
+      width: '40%'
     }
   },
   'IE': {
     type: 1,
     account_number: {
-      title: 'IBAN',
-      validation: ieIBAN
+      name: 'IBAN',
+      validation: ieIBAN,
+      width: '100%'
     }
   },
   'NZ': {
     type: 2,
     routing_number: {
       name: 'Bank + Branch Number',
-      validation: empty
+      validation: empty,
+      width: '40%'
     },
     account_number: {
-      title: 'Account Number',
-      validation: empty
+      name: 'Account Number',
+      validation: empty,
+      width: '60%'
     }
   },
   'SG': {
     type: 3,
     transit_number: {
       name: 'Bank Code',
-      validation: singaporeBankCode
+      validation: singaporeBankCode,
+      width: '20%'
     },
     routing_number: {
       name: 'Branch Code',
-      validation: singaporeBranchCode
+      validation: singaporeBranchCode,
+      width: '30%'
     },
     account_number: {
-      title: 'Account Number',
-      validation: empty
+      name: 'Account Number',
+      validation: empty,
+      width: '50%'
     }
   },
   'GB': {
     type: 1,
     account_number: {
-      title: 'IBAN',
-      validation: gbIBAN
+      name: 'IBAN',
+      validation: gbIBAN,
+      width: '100%'
     }
   },
   'US': {
     type: 2,
     routing_number: {
       name: 'Routing Number',
-      validation: empty
+      validation: empty,
+      width: '50%'
     },
     account_number: {
-      title: 'Account Number',
-      validation: empty
+      name: 'Account Number',
+      validation: empty,
+      width: '50%'
     }
   }
 }

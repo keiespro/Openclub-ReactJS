@@ -4,11 +4,24 @@ import {
   PageHeader
 } from 'components/layout'
 
-import StripeCreditCardField from 'components/custom_form_fields/StripeCreditCardField'
+import { StripeBankAccountField } from 'components/custom_form_fields'
 
 export default props => (
   <ContentPage>
     <PageHeader title="Test Stuff" />
-    <StripeCreditCardField />
+    AU
+      <StripeBankAccountField country="AU" />
+      CA
+      <StripeBankAccountField country="CA" />
+      IE
+      <StripeBankAccountField country="IE" />
+      SG
+      <StripeBankAccountField country="SG" />
+      NZ
+      <StripeBankAccountField country="NZ" />
+      GB
+      <StripeBankAccountField country="GB" />
+      US
+      <StripeBankAccountField country="US" />
   </ContentPage>
 )

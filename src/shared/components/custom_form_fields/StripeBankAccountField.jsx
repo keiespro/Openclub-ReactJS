@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import Input, { Group as InputGroup } from 'antd/lilb/input'
+import Input, { Group as InputGroup } from 'antd/lib/input'
+import Alert from 'antd/lib/alert'
 import { bankByCountry } from 'constants/index'
 
 class StripeBankAccountField extends Component {
@@ -13,7 +14,12 @@ class StripeBankAccountField extends Component {
     this.state = {
       account_number: '',
       transit_number: '',
-      routing_number: ''
+      routing_number: '',
+      validate: {
+        account_number: false,
+        transit_number: false,
+        routing_number: false,
+      }
     }
 
     this.handleInput = this.handleInput.bind(this)
@@ -25,9 +31,10 @@ class StripeBankAccountField extends Component {
       routing_number: transit_number + routing_number
     });
   }
-  handleInput(e) {
-    let obj = {};
+  handleInput(validation, e) {
+    let obj = this.state;
     obj[e.target.name] = e.target.value;
+    obj.validate[e.target.name] = validation(e.target.value);
     this.setState(obj);
   }
   countrySpec() {
@@ -36,29 +43,35 @@ class StripeBankAccountField extends Component {
   render() {
     const { account_number, routing_number, transit_number } = this.countrySpec();
     return (
-      <InputGroup>
-        {transit_number ? <Input
-          type="text"
-          name="transit_number"
-          placeholder={transit_number.name}
-          value={this.state.transit_number}
-          onChange={this.handleInput}
-          /> : null}
-        {routing_number ? <Input
-          type="text"
-          name="routing_number"
-          placeholder={routing_number.name}
-          value={this.state.routing_number}
-          onChange={this.handleInput}
-          /> : null}
-        {account_number ? <Input
-          type="text"
-          name="account_number"
-          placeholder={account_number.name}
-          value={this.state.account_number}
-          onChange={this.handleInput}
-          /> : null}
-      </InputGroup>
+      <div>
+        <InputGroup compact className="bottom-gap">
+          {transit_number ? <Input
+            type="text"
+            name="transit_number"
+            placeholder={transit_number.name}
+            value={this.state.transit_number}
+            onChange={this.handleInput.bind(this, transit_number.validation)}
+            style={{ width: transit_number.width }}
+            /> : null}
+          {routing_number ? <Input
+            type="text"
+            name="routing_number"
+            placeholder={routing_number.name}
+            value={this.state.routing_number}
+            onChange={this.handleInput.bind(this, routing_number.validation)}
+            style={{ width: routing_number.width }}
+            /> : null}
+          {account_number ? <Input
+            type="text"
+            name="account_number"
+            placeholder={account_number.name}
+            value={this.state.account_number}
+            style={{ width: account_number.width }}
+            onChange={this.handleInput.bind(this, account_number.validation)}
+            /> : null}
+        </InputGroup>
+        {Object.keys(this.state.validate).map(n => this.state.validate[n] ? <Alert message={this.state.validate[n]} type="error" /> : null)}
+      </div>
     );
   }
 }

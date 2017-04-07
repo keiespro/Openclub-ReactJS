@@ -37,6 +37,7 @@ const StripeBankAccountForm = ({ handleSubmit }) => {
       </FieldContainer>
       <FieldContainer required title="Bank Account">
         <Field
+          country="AU"
           name="bank_account"
           type="number"
           validate={[required, maxLength(24)]}
