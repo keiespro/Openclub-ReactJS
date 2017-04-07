@@ -11,21 +11,26 @@ const About = ({ club }) => {
     minAge = `This club has a ${club.details.minimum_age}+ age restriction`
   }
 
+  let aboutText = null
+  if(club.details && club.details.about){
+    aboutText = club.details.about.split('\n')
+  }
+
   return (
     <Row gutter={20}>
       <Col xs={24} md={15}>
         <ContentPage largeFont>
           <PageHeader title="About"/>
           <div>
-            {club.details && club.details.about ||
-              <Alert
-                message={(
-                  <span>The about text has not been entered for this club. Go to <Link to={`/${club.slug}/settings/profile`}>Settings</Link> to update the club profile.</span>
-                )}
-                type="info"
-                showIcon
-              />
-            }
+            {aboutText ?
+            aboutText.map((i, k) => (<span key={k}>{i}<br/></span>)) :
+            <Alert
+              message={(
+                <span>The about text has not been entered for this club. Go to <Link to={`/${club.slug}/settings/profile`}>Settings</Link> to update the club profile.</span>
+              )}
+              type="info"
+              showIcon
+            />}
           </div>
         </ContentPage>
         <ContentPage largeFont>

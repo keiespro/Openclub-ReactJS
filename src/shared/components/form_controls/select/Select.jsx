@@ -23,7 +23,6 @@ const Select = ({ input, options, basic, meta, help, ...rest }) => {
       {children}
     </AntSelect>
   )
-  // return <div>help</div>
 
   if (basic) return select
 

@@ -113,7 +113,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
       <FieldContainer title="Facebook">
         <Field
           addonBefore="http://www.facebook.com/"
-          name="details.website"
+          name="details.facebook"
           type="text"
           help="What is the url of your clubs facebook page?"
           validate={[slug, maxLength(128)]}
