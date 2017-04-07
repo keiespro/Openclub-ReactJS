@@ -3,6 +3,7 @@ import { Row, Col, Layout } from 'antd'
 import NewsFeed from 'components/newsfeed'
 import NewsFeedPostForm from 'components/forms/NewsFeedPostForm'
 import { CalendarItem } from 'components/EventCalendar'
+import Footer from 'components/footer'
 
 import './Feed.scss';
 
@@ -68,6 +69,9 @@ class Feed extends Component {
                 </a> | <a href="https://www.openclub.co/legal/privacy" target="_blank">
                   Privacy Policy
                 </a>
+                | <a href="/help" target="_blank">
+                 Help
+               </a>
               </div>
             </Content>
           </div>
