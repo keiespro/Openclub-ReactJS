@@ -3,8 +3,8 @@ import './Category.scss'
 
 class CategoryCard extends Component {
   render() {
-    const { type, children } = this.props
-    return <div className={`oc-card-category ${type}`}>{children}</div>
+    const { type, children, ...rest } = this.props
+    return <a {...rest} className={`oc-card-category ${type}`}>{children}</a>
   }
 }
 export default CategoryCard

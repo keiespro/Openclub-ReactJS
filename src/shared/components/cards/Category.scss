@@ -13,17 +13,25 @@
   margin: 10px;
   padding-top: 20%;
   padding-bottom: 20%;
+  box-shadow: 0px 4px 18px #888888;
+  &:hover {
+    color: white;
+    transform: scale(1.05);
+  }
 
-  .sport {
-    background-color: blue;
+  &.sport {
+    background: linear-gradient(to bottom right, #B4ED50, #429321);
   }
-  .motorsport {
-    background-color: grey;
+  &.motorsport {
+    background: linear-gradient(to bottom right, #3023AE, #C96DD8);
   }
-  .university {
-    background-color: red;
+  &.university {
+    background: linear-gradient(to bottom right, #53A0FE, #6FB7CB);
   }
-  .technology {
-    background-color: black;
+  &.technology {
+    background: linear-gradient(to bottom right, #4F4F4F, #000000);
+  }
+  &.music {
+    background: linear-gradient(to bottom right, #E851F5, #77039F);
   }
 }

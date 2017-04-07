@@ -27,18 +27,21 @@ class ClubsLanding extends Component {
           </Col>
         </Row>
         <div className="bottom-gap-large" />
-        <Row>
-          <Col xsHidden mdHidden lg={6}>
+        <Row gutter={24} className="category-container">
+          <Col xsHidden mdHidden md={6} className="category">
             <Category type="sport">Sport</Category>
           </Col>
-          <Col xsHidden mdHidden lg={6}>
+          <Col xsHidden mdHidden md={6} className="category">
             <Category type="motorsport">Motorsport</Category>
           </Col>
-          <Col xsHidden mdHidden lg={6}>
+          <Col xsHidden mdHidden md={6} className="category">
             <Category type="university">University</Category>
           </Col>
-          <Col xsHidden mdHidden lg={6}>
+          <Col xsHidden mdHidden md={6} className="category">
             <Category type="technology">Technology</Category>
+          </Col>
+          <Col xsHidden mdHidden md={6} className="category">
+            <Category type="music">Music</Category>
           </Col>
         </Row>
         <hr />
