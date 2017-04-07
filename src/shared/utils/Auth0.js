@@ -26,16 +26,6 @@ const inlineLock = process.env.IS_CLIENT ? container => new Auth0Lock(process.en
   theme: {
     primaryColor: '#008fcc'
   },
-  additionalSignUpFields: [
-    {
-      name: "address",
-      placeholder: "enter where your babies live",
-    },
-    {
-      name: "full_name",
-      placeholder: "Enter your full name"
-    }
-  ],
   auth // set above
 }) : () => true
 
