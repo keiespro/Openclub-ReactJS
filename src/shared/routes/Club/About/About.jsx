@@ -3,6 +3,7 @@ import { Link } from 'teardrop'
 import { Row, Col, Icon, Alert } from 'antd'
 import { ContentPage, PageHeader } from 'components/layout'
 import { TextInfoIcon } from 'components/display'
+import moment from 'moment'
 
 const About = ({ club }) => {
 
@@ -15,6 +16,8 @@ const About = ({ club }) => {
   if(club.details && club.details.about){
     aboutText = club.details.about.split('\n')
   }
+
+  console.log(club.details.founded)
 
   return (
     <Row gutter={20}>
@@ -37,7 +40,7 @@ const About = ({ club }) => {
           <PageHeader title="Extra Details"/>
           {club.details && club.details.founded &&
             <TextInfoIcon icon="calendar" title="Founded">
-              Club was founded in <b>{club.details.founded}</b>
+              Club was founded in <b>{moment(club.details.founded).format('MMMM, YYYY')}</b>
             </TextInfoIcon>
           }
           <TextInfoIcon icon="user" title="Minimum Age">
