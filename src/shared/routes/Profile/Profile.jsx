@@ -76,11 +76,11 @@ class Profile extends Component {
                   </FieldContainer>
                   <FieldContainer title="Profile Photo">
                     <Field
-                      name="images.square"
+                      name="images.thumb"
                       component={ImageUploader}
                       token={token}
-                      postname="square"
-                      action={`${process.env.ICEPICK_URL}/upload/image/square`}
+                      postname="thumb"
+                      action={`${process.env.ICEPICK_URL}/upload/image/thumb`}
                     />
                   </FieldContainer>
                   <FieldContainer title="Address">
