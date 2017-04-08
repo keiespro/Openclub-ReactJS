@@ -21,7 +21,7 @@ import AsyncEvents from 'routes/Events'
 import AsyncTest from 'routes/Test'
 //import AsyncEvent from 'routes/Event'
 
-import { LoadNotifications } from 'components/Notifications'
+import { LoadNotifications } from 'components/notifications'
 import { logoutUser } from 'modules/auth/actions'
 
 import Error404 from 'components/Error404/Error404'
