@@ -125,3 +125,10 @@ export const bankByCountry = {
     }
   }
 }
+
+export const objectIcon = o => ({
+  'post': 'edit',
+  'club': 'team',
+  'event': 'calendar',
+  'test': 'edit'
+}[o] || 'file-unknown')
