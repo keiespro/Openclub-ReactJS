@@ -55,7 +55,7 @@ class Club extends Component {
     ])
 
     return (
-      <section>
+      <section className="oc-object-page-container">
         <ProfileHeader
           name={club.name}
           location={club.location}

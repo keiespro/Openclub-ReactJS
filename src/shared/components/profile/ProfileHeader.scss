@@ -9,10 +9,11 @@
   }
 
   .header-details {
-    display: flex;
+    display: table;
     justify-content: center;
     height: 100%;
     padding: 20px;
+    background: linear-gradient(180deg, transparent, transparent 80%, rgba(0,0,0,0.1));
     .media {
       align-self: center;
     }
@@ -22,7 +23,13 @@
   }
 
   .details-container {
-    align-self: flex-end;
+    display: table-cell;
+    vertical-align: bottom;
+  }
+
+  .header-buttons {
+    display: table-cell;
+    vertical-align: bottom;
   }
 
   .img-round-corners {
@@ -54,7 +61,8 @@
       box-shadow: none;
     }
     .header-details {
-      padding: 0px;
+      padding: 0px 20px;
+      background: transparent;
     }
     .media-object {
       height: 50px;
@@ -63,6 +71,9 @@
       margin-top: auto;
       margin-bottom: auto;
       height: 38px;
+    }
+    .header-buttons {
+      vertical-align: middle;
     }
   }
 

@@ -7,7 +7,7 @@ class ClubHeader extends Component {
     const { club } = this.props
 
     const headerImageStyle = {
-      backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.5)), url(${club.profile_cover})`,
+      backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.5)), url(${club.profile_cover || '/coverphoto.jpg'})`,
       backgroundPosition: 'center center',
       backgroundSize: 'cover'
     }

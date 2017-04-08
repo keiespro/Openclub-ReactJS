@@ -48,10 +48,10 @@ class ProfileHeader extends Component {
     const { onJoin } = this.props
     const { background } = this.props.images || {}
 
-    const bgEle = typeof background === 'undefined' ? '#2b2b2b' : `url(${background})`
+    const bgEle = typeof background === 'undefined' ? 'url(/coverphoto.jpg)' : `url(${background})`
 
     const headerImageStyles = {
-      backgroundImage: `${bgEle}, linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.2) 100%)`,
+      backgroundImage: `${bgEle}`,
       backgroundPosition: 'center center',
       backgroundSize: 'cover'
     }
@@ -69,9 +69,11 @@ class ProfileHeader extends Component {
               {this.renderProfileBackdrop()}
               {this.renderHeading()}
             </div>
-            {onJoin &&
-              <Button type="primary" icon="user-add" size="large" className="join-button" onClick={onJoin}>Join This Club</Button>
-            }
+            <div className="header-buttons">
+              {onJoin &&
+                <Button type="primary" icon="user-add" size="large" className="join-button" onClick={onJoin}>Join This Club</Button>
+              }
+            </div>
           </div>
         </div>
       </div>
