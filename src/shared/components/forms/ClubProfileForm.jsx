@@ -151,7 +151,7 @@ const ClubProfileForm = ({ handleSubmit, token }) => {
           component={Input}
         />
       </FieldContainer>
-      <Button type="primary" htmlType="submit">Save Profile</Button>
+      <Button type="primary">Save Profile</Button>
     </Form>
   )
 }
