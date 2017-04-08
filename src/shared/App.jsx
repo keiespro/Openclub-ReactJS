@@ -12,6 +12,7 @@ import { Layout } from 'antd'
 import AsyncHome from 'routes/Home'
 import AsyncLoginPage from 'routes/LoginPage'
 import AsyncFeed from 'routes/Feed'
+import AsyncProfile from 'routes/Profile'
 import AsyncClubs from 'routes/Clubs'
 import AsyncClub from 'routes/Club'
 import AsyncNotifications from 'routes/Notifications'
@@ -94,6 +95,8 @@ const App = ({ data = {}, location, logoutUser }) => (
           {/*<Match exactly pattern="/event/:event_id" render={routerProps => <AsyncEvent {...routerProps} viewer={data.user} />} /> */}
           {/* USER AGGREGATED FEED */}
           <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
+          {/* PROFILE */}
+          <Match pattern="/profile" render={() => <AsyncProfile viewer={data.user} />} />
           {/* CLUB PAGES */}
           <Match pattern="/test" component={AsyncTest} />
           <Match pattern="/clubs" component={AsyncClubs} />
