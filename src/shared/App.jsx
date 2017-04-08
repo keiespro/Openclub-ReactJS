@@ -13,6 +13,7 @@ import AsyncHome from 'routes/Home'
 import AsyncLoginPage from 'routes/LoginPage'
 import AsyncFeed from 'routes/Feed'
 import AsyncProfile from 'routes/Profile'
+import AsyncDiscover from 'routes/Discover'
 import AsyncClubs from 'routes/Clubs'
 import AsyncClub from 'routes/Club'
 import AsyncNotifications from 'routes/Notifications'
@@ -90,6 +91,8 @@ const App = ({ data = {}, location, logoutUser }) => (
           }}/>
           {/* NOTIFICATIONS */}
           <Match pattern="/notifications" component={AsyncNotifications} />
+          {/* EVENT PAGES */}
+          <Match pattern="/(discover|search)" component={AsyncDiscover} />
           {/* EVENT PAGES */}
           <Match pattern="/events" component={AsyncEvents} />
           {/*<Match exactly pattern="/event/:event_id" render={routerProps => <AsyncEvent {...routerProps} viewer={data.user} />} /> */}

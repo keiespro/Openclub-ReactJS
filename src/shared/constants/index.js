@@ -132,3 +132,26 @@ export const objectIcon = o => ({
   'event': 'calendar',
   'test': 'edit'
 }[o] || 'file-unknown')
+
+export const defaultCategories = [
+  {
+    type: 'music',
+    name: 'Music'
+  },
+  {
+    type: 'motorsport',
+    name: 'Motorsport'
+  },
+  {
+    type: 'sport',
+    name: 'Sport'
+  },
+  {
+    type: 'technology',
+    name: 'Technology'
+  },
+  {
+    type: 'university',
+    name: 'University'
+  }
+]

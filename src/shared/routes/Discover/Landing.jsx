@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import ContentPage from 'components/layout/ContentPage'
-import CategoryCarousel from 'components/category_carousel'
 import { Row, Col, Button } from 'antd'
+import CategoryCarousel from 'components/category_carousel'
 import { defaultCategories } from 'constants/index'
 
 import './Landing.scss'
 
-class ClubsLanding extends Component {
+class DiscoverLanding extends Component {
   static contextTypes = {
     router: PropTypes.object.isRequired
   }
@@ -21,10 +21,10 @@ class ClubsLanding extends Component {
       <ContentPage>
         <Row>
           <Col span={20}>
-            <h4>Clubs</h4>
+            <h4>Discover</h4>
           </Col>
           <Col span={4}>
-            <Button type="primary" icon="plus" style={{ float: 'right' }} onClick={this.goTo.bind(this, '/clubs/create')}>Create a Club</Button>
+            Search
           </Col>
         </Row>
         <div className="bottom-gap-large" />
@@ -34,4 +34,4 @@ class ClubsLanding extends Component {
     )
   }
 }
-export default ClubsLanding
+export default DiscoverLanding

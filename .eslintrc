@@ -13,8 +13,8 @@
     "import/resolver": {
       "babel-module": {},
       "webpack": {
-        "config": "tools/webpack/client.config.babel.js"
-        }
+        "config": "tools/webpack/configFactory.js"
+      }
     }
   },
   "rules": {

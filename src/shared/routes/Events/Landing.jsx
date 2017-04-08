@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import ContentPage from 'components/layout/ContentPage'
-import Category from 'components/cards/Category'
+import CategoryCarousel from 'components/category_carousel'
 import { Row, Col, Button } from 'antd'
+import { defaultCategories } from 'constants/index'
 
 import './Landing.scss'
 
@@ -27,20 +28,7 @@ class ClubsLanding extends Component {
           </Col>
         </Row>
         <div className="bottom-gap-large" />
-        <Row>
-          <Col xsHidden mdHidden lg={6}>
-            <Category type="sport">Sport</Category>
-          </Col>
-          <Col xsHidden mdHidden lg={6}>
-            <Category type="motorsport">Motorsport</Category>
-          </Col>
-          <Col xsHidden mdHidden lg={6}>
-            <Category type="university">University</Category>
-          </Col>
-          <Col xsHidden mdHidden lg={6}>
-            <Category type="technology">Technology</Category>
-          </Col>
-        </Row>
+          <CategoryCarousel categories={defaultCategories} />
         <hr />
       </ContentPage>
     )
