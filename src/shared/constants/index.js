@@ -28,6 +28,7 @@ export const countries = [
 export const bankByCountry = {
   'AU': {
     type: 2,
+    taxId: 'ABN or ACN',
     routing_number: {
       name: 'BSB',
       validation: australianBSB,
@@ -41,6 +42,7 @@ export const bankByCountry = {
   },
   'CA': {
     type: 3,
+    taxId: 'Business Number',
     transit_number: {
       name: 'Transit Number',
       validation: canadaTransitNumber,
@@ -59,6 +61,7 @@ export const bankByCountry = {
   },
   'IE': {
     type: 1,
+    taxId: 'Business Number',
     account_number: {
       name: 'IBAN',
       validation: ieIBAN,
@@ -67,6 +70,7 @@ export const bankByCountry = {
   },
   'NZ': {
     type: 2,
+    taxId: 'NZBN',
     routing_number: {
       name: 'Bank + Branch Number',
       validation: empty,
@@ -80,6 +84,7 @@ export const bankByCountry = {
   },
   'SG': {
     type: 3,
+    taxId: 'UEN',
     transit_number: {
       name: 'Bank Code',
       validation: singaporeBankCode,
@@ -98,6 +103,7 @@ export const bankByCountry = {
   },
   'GB': {
     type: 1,
+    taxId: 'Company Number',
     account_number: {
       name: 'IBAN',
       validation: gbIBAN,
@@ -106,6 +112,7 @@ export const bankByCountry = {
   },
   'US': {
     type: 2,
+    taxId: 'EIN',
     routing_number: {
       name: 'Routing Number',
       validation: empty,

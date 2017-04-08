@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import gql from 'graphql-tag'
 import apolloClient from 'modules/apollo'
 import { connect } from 'react-redux'
-import { formPrefix } from 'constants/index'
+import { formPrefix, bankByCountry } from 'constants/index'
 import { Field, reduxForm } from 'redux-form'
 import union from 'lodash/union'
 import cx from 'classnames'
@@ -102,13 +102,16 @@ class StripeAccountForm extends Component {
     return union(verification_fields[this.getType()][level], this.props.additional_verifications)
   }
   getType() {
-    return this.props.form_values.type || 'company'
+    const { form_values } = this.props;
+    return form_values && form_values.stripe_account && 'type' in form_values.stripe_account ? form_values.stripe_account.type : 'company'
   }
   isFieldRequired(field) {
     return this.getVerifications('minimum').indexOf(field) > -1
   }
   isFieldDisabled(field) {
-    return this.isFieldRequired(field) === false && this.getVerifications('additional').indexOf(field) < 0
+    const { form_values } = this.props;
+    if (form_values && form_values.stripe_account && form_values.stripe_account.type) return this.isFieldRequired(field) === false && this.getVerifications('additional').indexOf(field) < 0
+    return true;
   }
   ifFieldRequired(field, res) {
     return this.isFieldRequired(field) ? required : empty
@@ -117,13 +120,27 @@ class StripeAccountForm extends Component {
     const additional_fields = this.getVerifications('additional');
     return additional_fields.length > 0 ? additional_fields.map((value) => fieldExplainers[value]).join(', ') : '';
   }
+  getAccountTypes() {
+    if (!this.state.country_spec) return [];
+    const { verification_fields } = this.state.country_spec;
+    if (!verification_fields) return [];
+    const types = [];
+    if ('company' in verification_fields) types.push(accountTypeOptions[0])
+    if ('individual' in verification_fields) types.push(accountTypeOptions[1])
+    return types;
+  }
   /*
   stripe_account.name = club.name;
 
   */
   render() {
-    const { handleSubmit, additional_verifications } = this.props
+    const { handleSubmit, additional_verifications, form_values } = this.props
     const { country_spec } = this.state
+
+    const accountTypes = this.getAccountTypes();
+    console.log(form_values);
+
+    const businessTaxId = form_values && form_values.stripe_account && 'country' in form_values.stripe_account ? bankByCountry[form_values.stripe_account.country].taxId : 'Business Number';
 
     return (
       <Form onSubmit={handleSubmit}>
@@ -131,7 +148,7 @@ class StripeAccountForm extends Component {
           tip="Loading country specifications..."
           spinning={this.state.country_spec_query}
           >
-          <FieldContainer required={true} title="Country">
+          <FieldContainer required title="Country">
             <StripeCountrySelector
               name="stripe_account.country"
               help="Please set your country. This cannot be changed later."
@@ -140,20 +157,20 @@ class StripeAccountForm extends Component {
               />
           </FieldContainer>
         </Spin>
-        <FieldContainer required={true} title="Type">
+        <FieldContainer required title="Type">
           <Field
             name="stripe_account.type"
             component={Select}
             help="Please select the type of entity that will be reciving funds."
-            options={accountTypeOptions}
-            defaultValue="company"
+            options={accountTypes}
+            initialValue="company"
             disabled={country_spec === null}
             />
         </FieldContainer>
         <div className="bottom-gap-large"/>
         <hr/>
         <div className="bottom-gap-large"/>
-        <div className={cx({ 'hidden': country_spec === null })}>
+        <div className={cx({ 'hidden': !country_spec })}>
           <h4 className="bottom-gap-large">Verification Fields</h4>
           <p>Our payment provider may require additional information depending on the region you're operating in. We will notify you if any additional information is required.</p>
         </div>
@@ -165,7 +182,7 @@ class StripeAccountForm extends Component {
             showIcon
           /> : null
         }
-        <FieldContainer required={this.isFieldRequired('legal_entity.business_name')} title="Business Name" deleted={this.isFieldDisabled('legal_entity.business_name')}>
+        <FieldContainer required={this.isFieldRequired('legal_entity.business_name')} title="Entity Name" deleted={this.isFieldDisabled('legal_entity.business_name')}>
           <Field
             name="stripe_account.legal_entity.business_name"
             type="text"
@@ -174,20 +191,20 @@ class StripeAccountForm extends Component {
             component={Input}
           />
         </FieldContainer>
-        <FieldContainer required={this.isFieldRequired('legal_entity.business_tax_id')} title="Business Tax ID" deleted={this.isFieldDisabled('legal_entity.business_tax_id')}>
+        <FieldContainer required={this.isFieldRequired('legal_entity.business_tax_id')} title={businessTaxId} deleted={this.isFieldDisabled('legal_entity.business_tax_id')}>
           <Field
             name="stripe_account.legal_entity.business_tax_id"
             type="text"
-            help="Please enter tax identified used by your business. (eg. An ABN, VAT number, )"
+            help={`Please provide your ${businessTaxId}.`}
             validate={[required, maxLength(64)]}
             component={Input}
           />
         </FieldContainer>
-        <FieldContainer required={this.isFieldRequired('legal_entity.business_vat_id')} title="Business VAT ID" deleted={this.isFieldDisabled('legal_entity.business_vat_id')}>
+        <FieldContainer required={this.isFieldRequired('legal_entity.business_vat_id')} title="VAT ID" deleted={this.isFieldDisabled('legal_entity.business_vat_id')}>
           <Field
             name="stripe_account.legal_entity.business_vat_id"
             type="text"
-            help="If you're registered for VAT, please provide your ID."
+            help="Our payment provider has requested your VAT ID."
             validate={[required, maxLength(64)]}
             component={Input}
           />
@@ -253,7 +270,9 @@ class StripeAccountForm extends Component {
           Our payment provider has additional verification requirements in this region that may require that you contact us. Please email support@openclub.co if you have any difficulties.
         </FieldContainer>
         <div className="bottom-gap-large" />
-        <Button type="primary" htmlType="submit" disabled={country_spec === null}>Save</Button>
+        <FieldContainer deleted={this.isFieldDisabled('legal_entity.dob.month')}>
+          <Button type="primary" htmlType="submit" disabled={country_spec === null}>Save</Button>
+        </FieldContainer>
       </Form>
     )
   }
