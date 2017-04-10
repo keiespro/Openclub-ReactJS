@@ -16,11 +16,11 @@ class ClubProfile extends Component {
     this.updateProfile = this.updateProfile.bind(this)
   }
   updateProfile(values, dispatch, props) {
-    console.log(values, dispatch, props)
     const { mutate, club } = this.props
 
     // get clean value object and image diff
     const realValues = stringKeyObjectFilter(values, props.registeredFields)
+    console.log(realValues, club)
     realValues.images = shallowObjectDiff(realValues.images, club.images)
 
     mutate({

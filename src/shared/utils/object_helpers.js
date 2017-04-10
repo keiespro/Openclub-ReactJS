@@ -6,6 +6,8 @@
 // Find all the keys in a, that have different values to those in
 // b. Equality is only checked in a shallow manner
 const shallowObjectDiff = (a, b) => {
+  if (typeof a !== 'object' || !a) a = {};
+  if (typeof b !== 'object' || !b) b = {};
   const output = {}
   Object.keys(a)
     .filter(k => a[k] !== b[k])
