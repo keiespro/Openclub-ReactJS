@@ -42,79 +42,97 @@ import 'App.scss'
 
 const { Content } = Layout
 
-const App = ({ data = {}, location, logoutUser }) => (
-  <Drawer sidebar={<Sidebar user={data.user} location={location}/>} open={true} docked={true} style={{ overflow: 'auto' }}>
-    <Layout>
-      <Helmet
-        htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}
-        titleTemplate={safeConfigGet(['htmlPage', 'titleTemplate'])}
-        defaultTitle={safeConfigGet(['htmlPage', 'defaultTitle'])}
-        meta={safeConfigGet(['htmlPage', 'meta'])}
-        link={safeConfigGet(['htmlPage', 'links'])}
-        script={safeConfigGet(['htmlPage', 'scripts'])}
-      />
-
-      <LoadNotifications user={data.user} />
-      <Header user={data.user}/>
-      <Content>
-        <MatchGroup>
-          {/* HOMEPAGE REDIRECT */}
-          <Match
-            exactly
-            pattern="/"
-            render={routerProps => {
-                if (data.user) {
-                  return <Redirect to="/feed" push />;
-                }
-                if (!data.loading) {
-                  return <AsyncHome {...routerProps} />;
-                }
-                return null;
-              }
-            } />
-          {/* UTIL PAGES */}
-          <Match
-            pattern="/help"
-            render={routerProps => {
-              if (data.user) {
-                window.location = `https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`
-              }
-              if (!data.loading) {
-                return <AsyncLoginPage {...routerProps} />;
-              }
-              return null;
-            }}
+class App extends Component {
+  static defaultProps = {
+    data: {}
+  }
+  static propTypes = {
+    data: PropTypes.object,
+    location: PropTypes.object
+  }
+  constructor(props) {
+    super(props)
+    this.state = {
+      open: false
+    }
+  }
+  toggleSidebar() {
+    this.setState({ open: !this.state.open })
+  }
+  render() {
+    const { sidebarOpen } = this.state;
+    const { data, location } = this.props;
+    return (
+      <Drawer className={cx({'open': sidebarOpen})} sidebar={<Sidebar user={data.user} location={location}/>} style={{ overflow: 'auto' }}>
+        <Layout>
+          <Helmet
+            htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}
+            titleTemplate={safeConfigGet(['htmlPage', 'titleTemplate'])}
+            defaultTitle={safeConfigGet(['htmlPage', 'defaultTitle'])}
+            meta={safeConfigGet(['htmlPage', 'meta'])}
+            link={safeConfigGet(['htmlPage', 'links'])}
+            script={safeConfigGet(['htmlPage', 'scripts'])}
           />
-          <Match pattern="/logout" render={() => {
-            logoutUser()
-            return <Redirect to="/" push />
-          }}/>
-          {/* NOTIFICATIONS */}
-          <Match pattern="/notifications" component={AsyncNotifications} />
-          {/* EVENT PAGES */}
-          <Match pattern="/(discover|search)" component={AsyncDiscover} />
-          {/* EVENT PAGES */}
-          <Match pattern="/events" component={AsyncEvents} />
-          {/*<Match exactly pattern="/event/:event_id" render={routerProps => <AsyncEvent {...routerProps} viewer={data.user} />} /> */}
-          {/* USER AGGREGATED FEED */}
-          <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
-          {/* PROFILE */}
-          <Match pattern="/profile" render={() => <AsyncProfile viewer={data.user} />} />
-          {/* CLUB PAGES */}
-          <Match pattern="/test" component={AsyncTest} />
-          <Match pattern="/clubs" component={AsyncClubs} />
-          <Match pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
-          {/* 404 */}
-          <Miss component={Error404} />
-        </MatchGroup>
 
-      </Content>
-    </Layout>
-  </Drawer>
-)
+          <LoadNotifications user={data.user} />
+          <Header user={data.user} toggleSidebar={this.toggleSidebar.bind(this)} open={this.state.open}/>
+          <Content>
+            <MatchGroup>
+              {/* HOMEPAGE REDIRECT */}
+              <Match
+                exactly
+                pattern="/"
+                render={routerProps => {
+                    if (data.user) {
+                      return <Redirect to="/feed" push />;
+                    }
+                    if (!data.loading) {
+                      return <AsyncHome {...routerProps} />;
+                    }
+                    return null;
+                  }
+                } />
+              {/* UTIL PAGES */}
+              <Match
+                pattern="/help"
+                render={routerProps => {
+                  if (data.user) {
+                    window.location = `https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`
+                  }
+                  if (!data.loading) {
+                    return <AsyncLoginPage {...routerProps} />;
+                  }
+                  return null;
+                }}
+              />
+              <Match pattern="/logout" render={() => {
+                logoutUser()
+                return <Redirect to="/" push />
+              }}/>
+              {/* NOTIFICATIONS */}
+              <Match pattern="/notifications" component={AsyncNotifications} />
+              {/* EVENT PAGES */}
+              <Match pattern="/(discover|search)" component={AsyncDiscover} />
+              {/* EVENT PAGES */}
+              <Match pattern="/events" component={AsyncEvents} />
+              {/*<Match exactly pattern="/event/:event_id" render={routerProps => <AsyncEvent {...routerProps} viewer={data.user} />} /> */}
+              {/* USER AGGREGATED FEED */}
+              <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
+              {/* PROFILE */}
+              <Match pattern="/profile" render={() => <AsyncProfile viewer={data.user} />} />
+              {/* CLUB PAGES */}
+              <Match pattern="/test" component={AsyncTest} />
+              <Match pattern="/clubs" component={AsyncClubs} />
+              <Match pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
+              {/* 404 */}
+              <Miss component={Error404} />
+            </MatchGroup>
 
-App.propTypes = {
-  data: PropTypes.object
+          </Content>
+        </Layout>
+      </Drawer>
+    )
+  }
 }
 
 const currentViewer = gql`

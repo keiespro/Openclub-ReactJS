@@ -1,13 +1,24 @@
-import React from 'react'
-import { graphql, compose } from 'react-apollo'
+import React, { Component, PropTypes } from 'react'
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { message } from 'antd'
 import ClubProfileForm from 'components/forms/ClubProfileForm'
 import { stringKeyObjectFilter, shallowObjectDiff } from 'utils/object_helpers'
 
-const ClubProfile = ({ club, mutate }) => {
+class ClubProfile extends Component {
+  static propTypes = {
+    club: PropTypes.object,
+    mutate: PropTypes.func
+  }
+  constructor(props) {
+    super(props)
 
-  const updateProfile = (values, dispatch, props) => {
+    this.updateProfile = this.updateProfile.bind(this)
+  }
+  updateProfile(values, dispatch, props) {
+    console.log(values, dispatch, props)
+    const { mutate, club } = this.props
+
     // get clean value object and image diff
     const realValues = stringKeyObjectFilter(values, props.registeredFields)
     realValues.images = shallowObjectDiff(realValues.images, club.images)
@@ -17,22 +28,22 @@ const ClubProfile = ({ club, mutate }) => {
         slug: club.slug,
         club: realValues
       }
-    }).then(({ data }) => {
+    }).then(() => {
       message.success('Club successfully updated', 4)
     }).catch(err => {
       console.log(err)
       message.error('Error updating club: ' + err, 4)
     })
   }
-
-  console.log(club)
-
-  return (
-    <div className="oc-form">
-      <h4 className="bottom-gap-large">Profile Details</h4>
-      <ClubProfileForm initialValues={club} onSubmit={updateProfile}/>
-    </div>
-  )
+  render() {
+    const { club } = this.props;
+    return (
+      <div className="oc-form">
+        <h4 className="bottom-gap-large">Profile Details</h4>
+        <ClubProfileForm initialValues={club} onSubmit={this.updateProfile} />
+      </div>
+    )
+  }
 }
 
 const mutation = gql`
