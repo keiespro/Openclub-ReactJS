@@ -27,7 +27,8 @@ class Sidebar extends Component {
 
     if (user) {
       const myClubs = user.clubs || [];
-      const match = location.pathname ? location.pathname.match(/^\/([\d\w-_]+)\/?.*?/)[1] : '';
+      const regexLocation = location.pathname ? location.pathname.match(/^\/([\d\w-_]+)\/?.*?/) : null;
+      const match = regexLocation ? regexLocation[1] : '';
       const keys = [
         'home', 'discover', 'feed', 'profile', 'notifications', 'events', 'clubs',
         ...myClubs.map(c => c.slug)
