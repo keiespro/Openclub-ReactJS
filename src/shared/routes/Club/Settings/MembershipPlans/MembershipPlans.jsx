@@ -5,10 +5,12 @@ import { Button, message, Alert } from 'antd'
 import Table from 'components/table'
 import MembershipPlanForm from 'components/forms/MembershipPlanForm'
 import { durations } from 'constants/index'
+import _ from 'lodash'
 
 class MembershipPlans extends Component {
   static propTypes = {
     createMutation: PropTypes.func,
+    updateMutation: PropTypes.func,
     club: PropTypes.object
   }
   constructor(props) {
@@ -21,14 +23,20 @@ class MembershipPlans extends Component {
   }
 
   savePlan(values) {
-    const { createMutation } = this.props
-    createMutation({
+    let clonedValues = _.clone(values);
+    if (clonedValues.__typename) delete clonedValues.__typename;
+
+    const { createMutation, updateMutation } = this.props
+
+    const mutation = '_id' in values ? updateMutation : createMutation;
+
+    mutation({
       variables: {
         slug: this.props.club.slug,
-        plan: values
+        plan: clonedValues
       }
     }).then(() => {
-      // this.setState({ showAdd: false })
+      this.setState({ showAdd: false })
       message.success('Plan added successfully', 4)
     }).catch(err => {
       message.error('Error creating plan: ' + err, 4)
@@ -92,6 +100,7 @@ class MembershipPlans extends Component {
           <div className="membershipplans-newplan">
             <MembershipPlanForm
               form={`membership_form_new`}
+              initialValues={{public: true}}
               onSubmit={this.savePlan}
               cancel={() => this.setState({ showAdd: false })}
             />
@@ -110,11 +119,17 @@ const createMutation = gql`
       _id
       name
       description
+      public
       prices{
         _id
         duration
+        setup_price{
+          amount
+          amount_float
+        }
         price{
           amount
+          amount_float
         }
       }
     }
@@ -127,11 +142,17 @@ const updateMutation = gql`
       _id
       name
       description
+      public
       prices{
         _id
         duration
+        setup_price{
+          amount
+          amount_float
+        }
         price{
           amount
+          amount_float
         }
       }
     }

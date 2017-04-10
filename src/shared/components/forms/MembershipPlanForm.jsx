@@ -97,10 +97,10 @@ class MembershipPlanForm extends Component {
             autosize
           />
         </FieldContainer>
-        <FieldContainer required title="Plan Visibility">
+        <FieldContainer required title="Plan Availability">
           <Field
             name="public"
-            label="Display plan publicly."
+            label="Display plan publicly and allow members to join."
             component={Checkbox}
             autosize
           />

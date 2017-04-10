@@ -126,6 +126,7 @@ const clubQuery = gql`
         _id
         name
         description
+        public
         prices{
           _id
           duration
