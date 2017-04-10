@@ -146,13 +146,11 @@ const ProfileReduxForm = wrapApollo(reduxForm({
 const ProfileMutation = graphql(gql`
   mutation updateProfile($user:userUpdate!){
     updateUser(user: $user) {
-      user{
-        name
-        email
-        images {
-          thumb
-          square
-        }
+      name
+      email
+      images {
+        thumb
+        square
       }
     }
   }
