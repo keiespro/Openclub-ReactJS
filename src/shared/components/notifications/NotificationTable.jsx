@@ -86,6 +86,9 @@ class Notifications extends Component {
       }
     ]
 
+    if (data.notifications && data.notifications.length <= 0)
+      return <div className="text-center">No notifications.</div>
+
     return isNotLoading ? <Table rowKey={rowKey} rowClassName={rowClassName} onRowClick={onRowClick} pagination={false} showHeader={false} columns={notificationCols} dataSource={notifications} /> : <Icon type="Loading" />
   }
 }
