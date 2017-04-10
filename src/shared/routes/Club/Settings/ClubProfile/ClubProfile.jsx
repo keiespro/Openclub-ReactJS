@@ -20,7 +20,6 @@ class ClubProfile extends Component {
 
     // get clean value object and image diff
     const realValues = stringKeyObjectFilter(values, props.registeredFields)
-    console.log(realValues, club)
     realValues.images = shallowObjectDiff(realValues.images, club.images)
 
     mutate({

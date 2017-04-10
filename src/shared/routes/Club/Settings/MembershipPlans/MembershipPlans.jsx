@@ -21,13 +21,14 @@ class MembershipPlans extends Component {
   }
 
   savePlan(values) {
-    return this.props.createMutation({
+    const { createMutation } = this.props
+    createMutation({
       variables: {
         slug: this.props.club.slug,
         plan: values
       }
     }).then(() => {
-      this.setState({ showAdd: false })
+      // this.setState({ showAdd: false })
       message.success('Plan added successfully', 4)
     }).catch(err => {
       message.error('Error creating plan: ' + err, 4)
@@ -38,25 +39,29 @@ class MembershipPlans extends Component {
     const priceColumns = [
       { key: 'price', customDataRender: (table, price) => `$${price.amount} ` },
       { key: 'duration', customDataRender: (table, duration) => durations.lookup[duration] },
-      { key: 'setup_price', customDataRender: (table, setup_price) => `$${setup_price.amount} setup fee` }
+      { key: 'setup_price', customDataRender: (table, setupPrice) => `$${setupPrice.amount} setup fee` }
     ]
 
     const columns = [
       { title: 'Name', key: 'name' },
       { title: 'Description', key: 'description' },
-      { title: 'Prices', tdclasses: 'no-padding', key: 'prices', customDataRender: (table, prices) => {
-        return prices ? <Table data={prices} columns={priceColumns}/> : <div style={{padding:'1em'}}>Free to join</div>
-      }},
-      { title: 'Actions', customDataRender: (table, cellData, rowData) => {
+      { title: 'Prices',
+        tdclasses: 'no-padding',
+        key: 'prices',
+        customDataRender: (table, prices) => (
+          prices ? <Table data={prices} columns={priceColumns} /> : <div style={{padding: '1em'}}>Free to join</div>
+        )
+      },
+      { title: 'Actions',
+        customDataRender: (table, cellData, rowData) => {
         if (table.state.expandedKeys[rowData._id]) {
           return (
             <Button onClick={() => table.updateExpanded({[rowData._id]: false})}>Cancel</Button>
           )
-        } else {
-          return (
-            <Button icon="edit" onClick={() => table.updateExpanded({[rowData._id]: true})}>Edit</Button>
-          )
         }
+        return (
+          <Button icon="edit" onClick={() => table.updateExpanded({[rowData._id]: true})}>Edit</Button>
+        )
       }}
     ]
 
@@ -65,6 +70,7 @@ class MembershipPlans extends Component {
 
     const expander = rowData => (
       <MembershipPlanForm
+        id={rowData._id}
         form={`membership_form_${rowData._id}`}
         initialValues={rowData}
         onSubmit={this.savePlan}
@@ -87,6 +93,7 @@ class MembershipPlans extends Component {
             <MembershipPlanForm
               form={`membership_form_new`}
               onSubmit={this.savePlan}
+              cancel={() => this.setState({ showAdd: false })}
             />
           </div>
         ) : (
@@ -137,7 +144,7 @@ const MembershipPlansWithApollo = compose(
     options: {
       updateQueries: {
         club: (prev, { mutationResult }) => {
-          console.log(prev)
+          console.log(prev, mutationResult)
           const newPlan = mutationResult.data.createMembershipPlan
           const oldPlans = prev.club.membership_plans || []
           return {
