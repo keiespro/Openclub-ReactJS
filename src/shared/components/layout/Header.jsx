@@ -33,13 +33,16 @@ const notificationMenu = (
   </div>
 )
 
-const Header = ({ user, showSearch, notifications }) => (
+const Header = ({ user, showSearch, notifications, open }) => (
   <div className="oc-header">
+    <div className="oc-header-context">
+      <Button ghost icon={open ? 'menu-fold' : 'menu-unfold'} />
+    </div>
     <Link to="/" className="oc-header-logo">
       <Logo color="#008FCC" />
     </Link>
     { user &&
-    <div className="oc-header-context">
+    <div className="oc-header-context right">
       <div className="oc-header-usermenu">
         <Dropdown overlay={notificationMenu} trigger={['click']}>
           <Badge count={notifications.unseen} className="notifications-toggle">

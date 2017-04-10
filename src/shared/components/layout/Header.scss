@@ -17,9 +17,13 @@
   }
 }
 .oc-header-context {
-  float: right;
+  float: left;
   height: $header-hg;
-  margin-right: 20px;
+  margin-left: 20px;
+  &.right {
+    float: right;
+    margin-right: 20px;
+  }
 }
 .oc-header-usermenu {
   line-height: $header-hg;
