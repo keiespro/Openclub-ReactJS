@@ -86,10 +86,9 @@ export function checkAuthentication() {
 // Logs the user out
 export function logoutUser() {
   return dispatch => {
+    console.log('hello log the fuck out motherfucker!')
     dispatch(requestLogout())
     localStorage.removeItem('openclub_token')
-    // clear apollos cache
     apolloClient.resetStore()
-    //browserHistory.replace('/')
   }
 }

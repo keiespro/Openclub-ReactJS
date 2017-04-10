@@ -48,7 +48,8 @@ class App extends Component {
   }
   static propTypes = {
     data: PropTypes.object,
-    location: PropTypes.object
+    location: PropTypes.object,
+    logoutUser: PropTypes.func
   }
   constructor(props) {
     super(props)
@@ -105,10 +106,7 @@ class App extends Component {
                   return null;
                 }}
               />
-              <Match pattern="/logout" render={() => {
-                logoutUser()
-                return <Redirect to="/" push />
-              }}/>
+              <Match pattern="/logout" render={() => { this.props.logoutUser(); return <Redirect to="/" push /> }} />
               {/* NOTIFICATIONS */}
               <Match pattern="/notifications" component={AsyncNotifications} />
               {/* EVENT PAGES */}

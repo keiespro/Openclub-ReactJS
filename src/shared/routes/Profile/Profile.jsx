@@ -23,7 +23,7 @@ class Profile extends Component {
   static propTypes = {
     form_values: PropTypes.object,
     token: PropTypes.string,
-    mutate: PropTypes.func,
+    updateProfile: PropTypes.func,
     submitting: PropTypes.bool,
     handleSubmit: PropTypes.func,
     initialValues: PropTypes.object
@@ -32,18 +32,17 @@ class Profile extends Component {
     super(props)
   }
   static handleSubmit(values, dispatch, props) {
-    const { mutate, initialValues, registeredFields } = props;
+    const { updateProfile, initialValues, registeredFields } = props;
     // get clean value object and image diff
     const userProfile = stringKeyObjectFilter(values, registeredFields)
     userProfile.images = shallowObjectDiff(userProfile.images, values.images)
 
-    mutate({
+    updateProfile({
       variables: {
         user: userProfile
       }
     }).then(() => {
       message.success('Profile Updated!', 4)
-
     }).catch(err => {
       message.error('Uh-oh! We encountered an error: ' + err, 4)
     })
@@ -147,15 +146,34 @@ const ProfileReduxForm = wrapApollo(reduxForm({
 const ProfileMutation = graphql(gql`
   mutation updateProfile($user:userUpdate!){
     updateUser(user: $user) {
-      email
-      name
-      images {
-        thumb
-        square
+      user{
+        name
+        email
+        images {
+          thumb
+          square
+        }
       }
     }
   }
-`)(ProfileReduxForm)
+`, {
+  name: 'updateProfile',
+  options: {
+    updateQueries: {
+      currentViewer: (prev, { mutationResult }) => {
+        console.log(prev, mutationResult);
+        const user = {
+          ...prev.user,
+          ...mutationResult.data.updateUser
+        }
+        console.log(user)
+        return {
+          user
+        }
+      }
+    }
+  }
+})(ProfileReduxForm)
 
 export default connect(state => ({
   token: state.auth.token
