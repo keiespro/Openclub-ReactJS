@@ -8,6 +8,13 @@ const auth = {
   sso: true
 }
 
+const additionalSignUpFields = [
+  {
+    name: 'name',
+    placeholder: 'Full Name'
+  }
+]
+
 // singleton Auth0 lock
 const lock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN, {
   theme: {
@@ -18,7 +25,8 @@ const lock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, 
     title: 'Log In to OpenClub'
   },
   closable: false,
-  auth // set above
+  auth, // set above
+  additionalSignUpFields
 }) : () => true
 
 const inlineLock = process.env.IS_CLIENT ? container => new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN, {
@@ -26,7 +34,8 @@ const inlineLock = process.env.IS_CLIENT ? container => new Auth0Lock(process.en
   theme: {
     primaryColor: '#008fcc'
   },
-  auth // set above
+  auth, // set above
+  additionalSignUpFields
 }) : () => true
 
 /**
