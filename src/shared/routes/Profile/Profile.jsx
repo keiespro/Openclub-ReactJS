@@ -69,11 +69,14 @@ class Profile extends Component {
     e.preventDefault();
 
     const { addCreditCard } = this.props;
+    const card = await this.state.cardSubmit();
+
+    console.log(card);
 
     try {
       await addCreditCard({
         variables: {
-          card: await this.state.cardSubmit()
+          card: card.id
         }
       })
       message.success('Credit card sucessfully added', 10)
