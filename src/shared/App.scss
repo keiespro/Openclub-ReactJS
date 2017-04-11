@@ -21,10 +21,12 @@ body {
   }
 }
 @media #{$min-desktop} {
-  .rc-drawer-sidebar {
-    transform: translateX(0%) !important;
-  }
-  .rc-drawer-content {
-    left: 240px;
+  .loggedin {
+    .rc-drawer-sidebar {
+      transform: translateX(0%) !important;
+    }
+    .rc-drawer-content {
+      left: 240px;
+    }
   }
 }
