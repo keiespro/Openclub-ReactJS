@@ -97,13 +97,16 @@ class App extends Component {
                 exactly
                 pattern="/"
                 render={routerProps => {
-                    if (data.user) {
-                      return <Redirect to="/feed" push />;
-                    }
-                    if (!data.loading) {
-                      return <AsyncHome {...routerProps} />;
-                    }
-                    return null;
+                  if (data.user) {
+                    return <Redirect to="/feed" push />;
+                  }
+                  if (data.loading) {
+                    return <Loading />;
+                  }
+                  if (!data.loading) {
+                    return <AsyncHome {...routerProps} />;
+                  }
+                  return null;
                   }
                 } />
               {/* UTIL PAGES */}
@@ -121,7 +124,7 @@ class App extends Component {
               />
               <Match pattern="/logout" render={() => { this.props.logoutUser(); return <Redirect to="/" push /> }} />
               {/* NOTIFICATIONS */}
-              <Match pattern="/notifications" render={() => this.hasViewer(<AsyncNotifications />)} />
+              <Match pattern="/notifications" component={data.user ? AsyncNotifications : Unauthorised} />
               {/* EVENT PAGES */}
               <Match pattern="/(discover|search)" component={AsyncDiscover} />
               {/* EVENT PAGES */}
@@ -130,7 +133,7 @@ class App extends Component {
               {/* USER AGGREGATED FEED */}
               <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
               {/* PROFILE */}
-              <Match pattern="/profile" render={() => this.hasViewer(<AsyncProfile viewer={data.user} />)} />
+              <Match pattern="/profile" component={data.user ? AsyncProfile : Unauthorised} viewer={data.user} />
               {/* CLUB PAGES */}
               <Match pattern="/test" component={AsyncTest} />
               <Match pattern="/clubs" component={AsyncClubs} />
