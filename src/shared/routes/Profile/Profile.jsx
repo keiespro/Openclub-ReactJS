@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo'
 import { Field, reduxForm } from 'redux-form'
 import { Menu, message, Col, Row, Tooltip } from 'antd'
-import cx from 'classnames'
-import { required, maxLength, slug, email, url, phone } from 'utils/form_validation/errors'
+import { Group as ButtonGroup } from 'antd/lib/button'
+import { required, maxLength, email } from 'utils/form_validation/errors'
 import gql from 'graphql-tag'
 import { stringKeyObjectFilter, shallowObjectDiff } from 'utils/object_helpers'
 import CardList from 'components/payment/CardList'
@@ -147,7 +147,9 @@ class Profile extends Component {
                 <Col xs={{span: 24}} md={{span: 18}}>
                   <h3 className="bottom-gap-large" id="overview" ref={overview => { this.anchors.overview = overview }}>OpenClub Profile</h3>
                   <hr className="bottom-gap" />
-                  <p>OpenClub securely stores your profile information and only shares your portable profile with the clubs that you join. Your payment details are securely stored, and can only be used by you—no club can access these details.</p>
+                  <div className="bottom-gap-large">
+                    <p>OpenClub securely stores your data and only shares certain bits with the clubs that you join. Your payment details are never shared and are stored securely with us.</p>
+                  </div>
                   <hr className="bottom-gap-large" />
                     <h3 className="bottom-gap" ref={profile => { this.anchors.profile = profile }}>Portable Profile</h3>
                     <hr className="bottom-gap" />
@@ -203,8 +205,10 @@ class Profile extends Component {
                                 cards={viewer.stripe_account.data.sources.data}
                                 actions={card => (
                                   <div>
-                                    <Tooltip placement="top" title="Make primary card"><Button type="primary" shape="circle" icon="delete" /></Tooltip>
-                                    <Tooltip placement="top" title="Delete card"><Button type="danger" shape="circle" icon="delete" /></Tooltip>
+                                    <ButtonGroup style={{ whiteSpace: 'nowrap' }}>
+                                      <Tooltip placement="top" title="Make primary card"><Button type="primary" icon="credit-card" /></Tooltip>
+                                      <Tooltip placement="top" title="Delete card"><Button type="danger" icon="delete" /></Tooltip>
+                                    </ButtonGroup>
                                   </div>
                                 )}
                               />
@@ -220,8 +224,10 @@ class Profile extends Component {
                             <FieldContainer title="Add Card" id="payment" ref={payment => { this.anchors.payment = payment }}>
                               Enter the card you wish to add.
                               <StripeCreditCardField input={{onChange: this.handleCreditCardInput}} />
-                              <Button className="bottom-gap" icon="plus" type="primary" onClick={this.handleCreditCardSubmit} loading={this.state.loading}>Add Card</Button>
-                              <Button className="bottom-gap" icon="cross" type="danger" onClick={this.toggleCreditCardAdd} disabled={this.state.loading}>Cancel</Button>
+                              <ButtonGroup>
+                                <Button className="bottom-gap" icon="plus" type="primary" onClick={this.handleCreditCardSubmit} loading={this.state.loading}>Add Card</Button>
+                                <Button className="bottom-gap" icon="cross" type="danger" onClick={this.toggleCreditCardAdd} disabled={this.state.loading}>Cancel</Button>
+                              </ButtonGroup>
                             </FieldContainer>
                           </form>
                         ) : (

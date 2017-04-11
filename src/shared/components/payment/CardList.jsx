@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import cx from 'classnames';
+import Table from 'antd/lib/table';
 
 class CardList extends Component {
   static propTypes = {
@@ -10,6 +11,7 @@ class CardList extends Component {
     super(props)
   }
   brandLogo(card) {
+    console.log(card)
     const brandClasses = cx({
       'fa': true,
       'fa-cc-visa': card.brand === 'Visa',
@@ -24,28 +26,26 @@ class CardList extends Component {
   }
   numberFormat(card) {
     switch (card.brand) {
-      case 'American Express': return `•••• •••••• •${card.last4}`;
-      case 'Diners Club': return `•••• •••••• ${card.last4}`;
-      default: return `•••• •••• •••• ${card.last4}`;
+      case 'American Express': return <span style={{ whiteSpace: 'nowrap' }}>{`•••• •••••• •${card.last4}`}</span>;
+      case 'Diners Club': return <span style={{ whiteSpace: 'nowrap' }}>{`•••• •••••• ${card.last4}`}</span>;
+      default: return <span style={{ whiteSpace: 'nowrap' }}>{`•••• •••• •••• ${card.last4}`}</span>;
     }
   }
   actions(card) {
     return this.props.actions(card)
   }
   render() {
-    const { actions, cards } = this.props;
-    return (
-      <table>
-        {cards.map(card => (
-          <tr key={card.id}>
-            <td>{this.brandLogo(card)}</td>
-            <td>{this.numberFormat(card)}</td>
-            <td>{card.exp_month}/{card.exp_year}</td>
-            {actions && <td>{this.actions(card)}</td>}
-          </tr>
-        ))}
-      </table>
-    )
+    const { actions, cards, ...rest } = this.props;
+    console.log(cards);
+
+    const columns = [
+      { key: 'brand', render: (table, card) => this.brandLogo(card), width: '5%' },
+      { key: 'last4', render: (table, card) => this.numberFormat(card) },
+      { key: 'expiry', render: (table, card) => <span style={{ whiteSpace: 'nowrap' }}>{card.exp_month}/{card.exp_year}</span>, width: '5%' },
+    ]
+    if (actions) columns.push({ key: 'actions', render: (table, card) => this.actions(card) })
+
+    return <Table columns={columns} dataSource={cards} showHeader={false} pagination={false} {...rest} />
   }
 }
 export default CardList;
