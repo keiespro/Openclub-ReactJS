@@ -5,7 +5,8 @@ import loadGoogleMapsAPI from 'load-google-maps-api'
 
 class AddressField extends Component {
   static propTypes = {
-    input: PropTypes.object
+    input: PropTypes.object,
+    asString: PropTypes.bool
   }
   constructor(props) {
     super(props);
@@ -36,15 +37,20 @@ class AddressField extends Component {
     autocomplete.addListener('place_changed', () => {
       const place = autocomplete.getPlace();
 
-      let addressObject = {}
-      place.address_components.forEach((comp) => {
-        this.setState({ input: place.formatted_address })
-        comp.types.forEach(key => {
-          addressObject[key] = comp.short_name;
+      const { formatted_address, geometry, address_components } = place;
+      this.setState({ input: formatted_address })
+
+      if (this.props.asString) {
+        this.props.input.onChange({
+          formatted_address
         })
-      })
-      addressObject.formatted_address = place.formatted_address
-      this.props.input.onChange(addressObject)
+      } else {
+        this.props.input.onChange({
+          formatted_address,
+          geometry,
+          address_components
+        })
+      }
     })
   }
   handleInput(e) {
@@ -56,6 +62,7 @@ class AddressField extends Component {
   }
   render() {
     const { input } = this.props;
+    console.log('address', input);
 
     return (
     <Input
