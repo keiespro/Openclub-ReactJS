@@ -18,7 +18,7 @@ class StripeCreditCardField extends Component {
     this.setState({ error })
   }
   componentDidMount() {
-    this.creditcard = stripe({}, '#stripe-card-element', this.displayError.bind(this)).then(() => {
+    this.creditcard = stripe({ hidePostalCode: true }, '#stripe-card-element', this.displayError.bind(this)).then(() => {
       this.creditcard.mount();
       this.props.input.onChange(this.creditcard.submit);
     });
