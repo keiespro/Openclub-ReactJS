@@ -17,11 +17,10 @@ class StripeCreditCardField extends Component {
   displayError(error) {
     this.setState({ error })
   }
-  componentDidMount() {
-    this.creditcard = stripe({ hidePostalCode: true }, '#stripe-card-element', this.displayError.bind(this)).then(() => {
-      this.creditcard.mount();
-      this.props.input.onChange(this.creditcard.submit);
-    });
+  async componentDidMount() {
+    this.creditcard = await stripe({ hidePostalCode: true }, '#stripe-card-element', this.displayError.bind(this));
+    this.creditcard.mount();
+    this.props.input.onChange(this.creditcard.submit);
   }
   componentWillUnmount() {
     if (this.creditcard) this.creditcard.unmount();

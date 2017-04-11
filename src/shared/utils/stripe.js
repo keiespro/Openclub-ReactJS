@@ -62,7 +62,7 @@ async function createCardElement(style, mountNode, err) {
     mount,
     unmount,
     card,
-    submit
+    submit: submit.bind(this)
   };
 }
 
