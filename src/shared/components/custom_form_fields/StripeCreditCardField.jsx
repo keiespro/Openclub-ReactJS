@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { createCardElement as stripe } from 'utils/stripe'
+import { createCardElement } from 'utils/stripe'
 
 import './StripeCreditCardField.scss'
 
@@ -18,17 +18,21 @@ class StripeCreditCardField extends Component {
     this.setState({ error })
   }
   async componentDidMount() {
-    this.creditcard = await stripe({ hidePostalCode: true }, '#stripe-card-element', this.displayError.bind(this));
-    this.creditcard.mount();
-    this.props.input.onChange(this.creditcard.submit);
+    const { onChange } = this.props.input;
+    const { mount, unmount, submit } = await createCardElement({ hidePostalCode: true }, this.cc, this.displayError.bind(this));
+
+    mount();
+    this.unmount = unmount;
+
+    onChange(submit);
   }
   componentWillUnmount() {
-    if (this.creditcard) this.creditcard.unmount();
+    if (this.unmount) this.unmount();
   }
   render() {
     return (
       <div className="credit-card-form">
-        <div id="stripe-card-element" />
+        <div className="bottom-gap" ref={cc => { this.cc = cc }} />
       </div>
     );
   }

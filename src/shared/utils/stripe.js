@@ -14,14 +14,12 @@ async function init() {
   let Stripe = null;
 
   if (window.Stripe) Stripe = window.Stripe;
-
-  return Stripe;
+  Stripe.setPublishableKey(process.env.STRIPE_PUBLISHABLE_KEY);
+  return Stripe(process.env.STRIPE_PUBLISHABLE_KEY);
 }
 
 async function createBankAccount(details) {
   const Stripe = await init();
-
-  Stripe.setPublishableKey(process.env.STRIPE_PUBLISHABLE_KEY)
 
   return new Promise((resolve, reject) => {
       Stripe.bankAccount.createToken(details, (status, response) => {
@@ -32,13 +30,11 @@ async function createBankAccount(details) {
 }
 
 async function createCardElement(style, mountNode, err) {
-  const Stripe = await init();
-  const stripe = Stripe(process.env.STRIPE_PUBLISHABLE_KEY);
+  const stripe = await init();
+
   const elements = stripe.elements();
 
-  const card = elements.create('card', style);
-
-  card.mount(mountNode);
+  let card = null
 
   const errorListener = ({ error }) => {
     if (error) err(error.message);
@@ -47,20 +43,24 @@ async function createCardElement(style, mountNode, err) {
   const boundErrorListener = errorListener.bind(this);
 
   const mount = () => {
+    card = elements.create('card', style);
+    card.mount(mountNode)
     card.addEventListener('change', boundErrorListener);
   }
   const unmount = () => {
     card.removeEventListener('change', boundErrorListener);
   }
   const submit = async () => {
-    const { token, error } = await Stripe.createToken(card);
+    console.log(card)
+    const { token, error } = await stripe.createToken(card);
+    console.log(token, error)
     if (error) return err(error.message);
     return token;
   }
 
   return {
-    mount,
-    unmount,
+    mount: mount.bind(this),
+    unmount: unmount.bind(this),
     card,
     submit: submit.bind(this)
   };
