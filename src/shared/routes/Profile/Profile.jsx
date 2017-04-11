@@ -2,11 +2,12 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { graphql, compose } from 'react-apollo'
 import { Field, reduxForm } from 'redux-form'
-import { Menu, message, Col, Row } from 'antd'
+import { Menu, message, Col, Row, Tooltip } from 'antd'
+import cx from 'classnames'
 import { required, maxLength, slug, email, url, phone } from 'utils/form_validation/errors'
 import gql from 'graphql-tag'
 import { stringKeyObjectFilter, shallowObjectDiff } from 'utils/object_helpers'
-
+import CardList from 'components/payment/CardList'
 import { ContentArea, ContentPage } from 'components/layout'
 
 import {
@@ -37,7 +38,8 @@ class Profile extends Component {
     this.state = {
       addCard: false,
       cardSubmit: () => Promise.reject('No card details added.'),
-      selectedKeys: []
+      selectedKeys: [],
+      loading: false
     }
 
     this.anchors = {};
@@ -69,6 +71,7 @@ class Profile extends Component {
     e.preventDefault();
 
     const { addCreditCard } = this.props;
+    this.setState({ loading: true })
     const card = await this.state.cardSubmit();
 
     console.log(card);
@@ -80,8 +83,10 @@ class Profile extends Component {
         }
       })
       message.success('Credit card sucessfully added', 10)
+      this.setState({ loading: false, addCard: false })
     } catch (err) {
       message.error(`Uh-oh! ${err}`, 20)
+      this.setState({ loading: false })
     }
   }
   handleCreditCardInput(submit) {
@@ -190,15 +195,19 @@ class Profile extends Component {
                     <h3 className="bottom-gap-large" id="payment" ref={payment => { this.anchors.payment = payment }}>Payment Details</h3>
                     <hr className="bottom-gap" />
                     <div className="bottom-gap-large">
-                      {viewer.stripe_account && viewer.stripe_account.data.sources.data && viewer.stripe_account.data.source.data.length > 0 ? (
+                      {viewer.stripe_account && viewer.stripe_account.data.sources && viewer.stripe_account.data.sources.data && viewer.stripe_account.data.sources.data.length > 0 ? (
                         <div>
                           <div>
                             <p>Credit Cards:</p>
-                            <ul>
-                              {viewer.stripe_account.data.sources.data.map((card) => (
-                                <li>{card.brand} {card.last4} {card.exp_month} {card.exp_year} {card.country}</li>
-                              ))}
-                            </ul>
+                              <CardList
+                                cards={viewer.stripe_account.data.sources.data}
+                                actions={card => (
+                                  <div>
+                                    <Tooltip placement="top" title="Make primary card"><Button type="primary" shape="circle" icon="delete" /></Tooltip>
+                                    <Tooltip placement="top" title="Delete card"><Button type="danger" shape="circle" icon="delete" /></Tooltip>
+                                  </div>
+                                )}
+                              />
                           </div>
                           <small className="bottom-gap">You can store up to 5 cards within OpenClub.</small>
                         </div>
@@ -211,8 +220,8 @@ class Profile extends Component {
                             <FieldContainer title="Add Card" id="payment" ref={payment => { this.anchors.payment = payment }}>
                               Enter the card you wish to add.
                               <StripeCreditCardField input={{onChange: this.handleCreditCardInput}} />
-                              <Button className="bottom-gap" icon="plus" type="primary" onClick={this.handleCreditCardSubmit}>Add Card</Button>
-                              <Button className="bottom-gap" icon="cross" type="danger" onClick={this.toggleCreditCardAdd}>Cancel</Button>
+                              <Button className="bottom-gap" icon="plus" type="primary" onClick={this.handleCreditCardSubmit} loading={this.state.loading}>Add Card</Button>
+                              <Button className="bottom-gap" icon="cross" type="danger" onClick={this.toggleCreditCardAdd} disabled={this.state.loading}>Cancel</Button>
                             </FieldContainer>
                           </form>
                         ) : (
@@ -311,7 +320,7 @@ const ProfileApollo = compose(
         currentViewer: (prev, { mutationResult }) => ({
           user: {
             ...prev.user,
-            ...mutationResult.data.updateUser
+            ...mutationResult.data.addCreditCard
           }
         })
       }

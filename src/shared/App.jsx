@@ -33,6 +33,7 @@ import Sidebar from 'components/layout/Sidebar'
 import { safeConfigGet } from 'utils/config'
 
 // base styling including bootstrap
+import 'font-awesome/scss/font-awesome.scss'
 import 'styles/_base.scss'
 // ant theming
 import 'antd/dist/antd.css'
