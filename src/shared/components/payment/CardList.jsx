@@ -11,7 +11,6 @@ class CardList extends Component {
     super(props)
   }
   brandLogo(card) {
-    console.log(card)
     const brandClasses = cx({
       'fa': true,
       'fa-cc-visa': card.brand === 'Visa',
@@ -36,7 +35,6 @@ class CardList extends Component {
   }
   render() {
     const { actions, cards, ...rest } = this.props;
-    console.log(cards);
 
     const columns = [
       { key: 'brand', render: (table, card) => this.brandLogo(card), width: '5%' },

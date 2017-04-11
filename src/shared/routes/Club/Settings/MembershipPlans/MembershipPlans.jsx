@@ -32,7 +32,7 @@ class MembershipPlans extends Component {
 
     mutation({
       variables: {
-        slug: this.props.club.slug,
+        _id: this.props.club._id,
         plan: clonedValues
       }
     }).then(() => {
@@ -114,8 +114,8 @@ class MembershipPlans extends Component {
 }
 
 const createMutation = gql`
-  mutation createMembershipPlan($slug: String!, $plan: membershipPlanInput!){
-    createMembershipPlan(slug: $slug, plan: $plan){
+  mutation createMembershipPlan($_id: MongoID!, $plan: membershipPlanInput!){
+    createMembershipPlan(_id: $_id, plan: $plan){
       _id
       name
       description
@@ -137,8 +137,8 @@ const createMutation = gql`
 `
 
 const updateMutation = gql`
-  mutation updateMembershipPlan($slug: String!, $plan: membershipPlanUpdate!){
-    updateMembershipPlan(slug: $slug, plan: $plan){
+  mutation updateMembershipPlan($_id: MongoID!, $plan: membershipPlanUpdate!){
+    updateMembershipPlan(_id: $_id, plan: $plan){
       _id
       name
       description

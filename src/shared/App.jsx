@@ -124,7 +124,7 @@ class App extends Component {
               />
               <Match pattern="/logout" render={() => { this.props.logoutUser(); return <Redirect to="/" push /> }} />
               {/* NOTIFICATIONS */}
-              <Match pattern="/notifications" component={data.user ? AsyncNotifications : Unauthorised} />
+              <Match pattern="/notifications" render={() => data.user ? <AsyncNotifications viewer={data.user} /> : <Unauthorised />} />
               {/* EVENT PAGES */}
               <Match pattern="/(discover|search)" component={AsyncDiscover} />
               {/* EVENT PAGES */}
@@ -133,7 +133,7 @@ class App extends Component {
               {/* USER AGGREGATED FEED */}
               <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
               {/* PROFILE */}
-              <Match pattern="/profile" component={data.user ? AsyncProfile : Unauthorised} viewer={data.user} />
+              <Match pattern="/profile" render={() => data.user ? <AsyncFeed viewer={data.user} /> : <Unauthorised />} />
               {/* CLUB PAGES */}
               <Match pattern="/test" component={AsyncTest} />
               <Match pattern="/clubs" component={AsyncClubs} />
