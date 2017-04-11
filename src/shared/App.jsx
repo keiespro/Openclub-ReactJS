@@ -22,10 +22,12 @@ import AsyncTest from 'routes/Test'
 //import AsyncEvent from 'routes/Event'
 
 import { LoadNotifications } from 'components/notifications'
-import { logoutUser, showLock } from 'modules/auth/actions'
+import { logoutUser, login } from 'modules/auth/actions'
 
+import Error from 'components/Error/Error'
 import Error404 from 'components/Error404/Error404'
 import Unauthorised from 'components/Unauthorised/Unauthorised'
+import Loading from 'components/Loading/Loading'
 import Header from 'components/layout/Header'
 import Sidebar from 'components/layout/Sidebar'
 import { safeConfigGet } from 'utils/config'
@@ -51,7 +53,7 @@ class App extends Component {
     data: PropTypes.object,
     location: PropTypes.object,
     logoutUser: PropTypes.func,
-    showLock: PropTypes.func
+    login: PropTypes.func
   }
   constructor(props) {
     super(props)
@@ -63,16 +65,18 @@ class App extends Component {
     this.setState({ open: !this.state.open })
   }
   hasViewer(comp) {
-    const { data, showLock } = this.props;
+    const { data } = this.props
+    if (data.error) return <Error error={data.error} />
     if (data.user) return comp;
-    if (typeof window !== 'undefined') showLock();
+    if (typeof window !== 'undefined' && data.loading !== false) return <Loading />;
+    if (typeof window !== 'undefined' && data.loading === false) this.props.login();
     return <Unauthorised />;
   }
   render() {
     const { sidebarOpen } = this.state;
     const { data, location } = this.props;
     return (
-      <Drawer className={cx({'open': sidebarOpen})} sidebar={<Sidebar user={data.user} location={location}/>} style={{ overflow: 'auto' }}>
+      <Drawer className={cx({'loggedin': data.user, 'open': sidebarOpen})} sidebar={<Sidebar user={data.user} location={location}/>} style={{ overflow: 'auto' }}>
         <Layout>
           <Helmet
             htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}
@@ -116,7 +120,7 @@ class App extends Component {
               />
               <Match pattern="/logout" render={() => { this.props.logoutUser(); return <Redirect to="/" push /> }} />
               {/* NOTIFICATIONS */}
-              <Match pattern="/notifications" component={this.hasViewer(AsyncNotifications)} />
+              <Match pattern="/notifications" render={() => this.hasViewer(<AsyncNotifications />)} />
               {/* EVENT PAGES */}
               <Match pattern="/(discover|search)" component={AsyncDiscover} />
               {/* EVENT PAGES */}
@@ -149,7 +153,12 @@ const currentViewer = gql`
       name
       notification_token
       helpdesk_jwt
-      stripe_account
+      address {
+        formatted_address
+      }
+      stripe_account {
+        data
+      }
       images {
         thumb
         square
@@ -173,7 +182,7 @@ const AppWithApollo = graphql(currentViewer, {
 export default connect(state => ({
   auth0Loaded: state.auth.auth0Loaded,
   token: state.auth.token
-}), { logoutUser, showLock })(AppWithApollo)
+}), { logoutUser, login })(AppWithApollo)
 
 export {
   App
