@@ -46,8 +46,8 @@ class ClubProfile extends Component {
 }
 
 const mutation = gql`
-  mutation updateClub($slug: String!, $club: clubUpdate!){
-    updateClub(slug: $slug, club: $club){
+  mutation updateClub($_id: MongoID!, $club: clubUpdate!){
+    updateClub(_id: $_id, club: $club){
       _id
       slug
       name
