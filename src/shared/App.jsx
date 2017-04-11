@@ -22,9 +22,10 @@ import AsyncTest from 'routes/Test'
 //import AsyncEvent from 'routes/Event'
 
 import { LoadNotifications } from 'components/notifications'
-import { logoutUser } from 'modules/auth/actions'
+import { logoutUser, showLock } from 'modules/auth/actions'
 
 import Error404 from 'components/Error404/Error404'
+import Unauthorised from 'components/Unauthorised/Unauthorised'
 import Header from 'components/layout/Header'
 import Sidebar from 'components/layout/Sidebar'
 import { safeConfigGet } from 'utils/config'
@@ -49,7 +50,8 @@ class App extends Component {
   static propTypes = {
     data: PropTypes.object,
     location: PropTypes.object,
-    logoutUser: PropTypes.func
+    logoutUser: PropTypes.func,
+    showLock: PropTypes.func
   }
   constructor(props) {
     super(props)
@@ -59,6 +61,12 @@ class App extends Component {
   }
   toggleSidebar() {
     this.setState({ open: !this.state.open })
+  }
+  hasViewer(comp) {
+    const { data, showLock } = this.props;
+    if (data.user) return comp;
+    if (typeof window !== 'undefined') showLock();
+    return <Unauthorised />;
   }
   render() {
     const { sidebarOpen } = this.state;
@@ -76,7 +84,7 @@ class App extends Component {
           />
 
           <LoadNotifications user={data.user} />
-          <Header user={data.user} toggleSidebar={this.toggleSidebar.bind(this)} open={this.state.open}/>
+          <Header user={data.user} toggleSidebar={this.toggleSidebar.bind(this)} open={this.state.open} />
           <Content>
             <MatchGroup>
               {/* HOMEPAGE REDIRECT */}
@@ -108,7 +116,7 @@ class App extends Component {
               />
               <Match pattern="/logout" render={() => { this.props.logoutUser(); return <Redirect to="/" push /> }} />
               {/* NOTIFICATIONS */}
-              <Match pattern="/notifications" component={AsyncNotifications} />
+              <Match pattern="/notifications" component={this.hasViewer(AsyncNotifications)} />
               {/* EVENT PAGES */}
               <Match pattern="/(discover|search)" component={AsyncDiscover} />
               {/* EVENT PAGES */}
@@ -117,7 +125,7 @@ class App extends Component {
               {/* USER AGGREGATED FEED */}
               <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
               {/* PROFILE */}
-              <Match pattern="/profile" render={() => <AsyncProfile viewer={data.user} />} />
+              <Match pattern="/profile" render={() => this.hasViewer(<AsyncProfile viewer={data.user} />)} />
               {/* CLUB PAGES */}
               <Match pattern="/test" component={AsyncTest} />
               <Match pattern="/clubs" component={AsyncClubs} />
@@ -141,6 +149,7 @@ const currentViewer = gql`
       name
       notification_token
       helpdesk_jwt
+      stripe_account
       images {
         thumb
         square
@@ -164,7 +173,7 @@ const AppWithApollo = graphql(currentViewer, {
 export default connect(state => ({
   auth0Loaded: state.auth.auth0Loaded,
   token: state.auth.token
-}), { logoutUser })(AppWithApollo)
+}), { logoutUser, showLock })(AppWithApollo)
 
 export {
   App
