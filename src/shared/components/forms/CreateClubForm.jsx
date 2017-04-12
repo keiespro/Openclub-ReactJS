@@ -68,7 +68,7 @@ class CreateClubForm extends Component {
             listType="picture"
           />
         </FieldContainer>
-        <Button type="primary" htmlType="submit">Create</Button>
+        <Button type="primary" htmlType="submit" loading={this.props.submitting}>Create</Button>
       </Form>
     )
   }

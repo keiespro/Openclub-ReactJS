@@ -9,7 +9,7 @@ import {
 } from 'components/layout'
 import { message } from 'antd'
 
-const CreateClub = ({ mutate }, { router }) => {
+const CreateClub = ({ mutate, submitting }, { router }) => {
 
   const createTheClub = values => {
     mutate({
@@ -31,7 +31,7 @@ const CreateClub = ({ mutate }, { router }) => {
       <p>
         Power your social group, sporting club, association or business with OpenClub. Connect within the communities that matter to you. OpenClub is free to setup.
       </p>
-      <CreateClubForm onSubmit={createTheClub}/>
+      <CreateClubForm onSubmit={createTheClub} submitting={submitting} />
     </ContentPage>
   )
 }

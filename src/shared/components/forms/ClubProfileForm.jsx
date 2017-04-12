@@ -119,7 +119,7 @@ class ClubProfileForm extends Component {
         </FieldContainer>
         <FieldContainer title="Facebook">
           <Field
-            addonBefore="http://www.facebook.com/"
+            addonBefore="facebook.com/"
             name="details.facebook"
             type="text"
             help="What is the url of your clubs facebook page?"
@@ -139,7 +139,7 @@ class ClubProfileForm extends Component {
         </FieldContainer>
         <FieldContainer title="LinkedIn">
           <Field
-            addonBefore="http://www.linkedin.com/"
+            addonBefore="linkedin.com/company/"
             name="details.linkedin"
             type="text"
             help="What is the url of your clubs linkedin page?"

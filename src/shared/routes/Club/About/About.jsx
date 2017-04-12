@@ -71,17 +71,17 @@ const About = ({ club }) => {
           }
           { club.details && club.details.facebook &&
             <TextInfoIcon icon="like-o" title="Facebook">
-              <a href={`http://www.facebook.com/${club.details.facebook}`} target="_blank">http://www.facebook.com/{club.details.website}</a>
+              <a href={`http://www.facebook.com/${club.details.facebook}`} target="_blank">fb.me/{club.details.facebook}</a>
             </TextInfoIcon>
           }
           { club.details && club.details.instagram &&
             <TextInfoIcon icon="picture" title="Instagram">
-              <a href={`http://www.facebook.com/${club.details.instagram}`} target="_blank">@{club.details.instagram}</a>
+              <a href={`http://www.instagram.com/${club.details.instagram}`} target="_blank">@{club.details.instagram}</a>
             </TextInfoIcon>
           }
           { club.details && club.details.linkedin &&
             <TextInfoIcon icon="contacts" title="LinkedIn">
-              <a href={`http://www.linkedin.com/${club.details.linkedin}`} target="_blank">http://www.facebook.com/{club.details.linkedin}</a>
+              <a href={`http://www.linkedin.com/company/${club.details.linkedin}`} target="_blank">linkedin.com/company/{club.details.linkedin}</a>
             </TextInfoIcon>
           }
           { club.details && club.details.twitter &&

@@ -30,7 +30,6 @@ class MembershipPlans extends Component {
 
     if (registeredFields.prices) delete registeredFields.prices;
     const plan = stringKeyObjectFilter(values, registeredFields);
-    console.log(plan);
 
     if ('_id' in values) plan._id = values._id;
     const mutation = '_id' in values ? updateMutation : createMutation;
