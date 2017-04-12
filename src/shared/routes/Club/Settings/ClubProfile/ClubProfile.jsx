@@ -25,7 +25,7 @@ class ClubProfile extends Component {
 
     updateClub({
       variables: {
-        _id: club._id,
+        clubId: club._id,
         club: realValues
       }
     }).then(() => {
@@ -47,8 +47,8 @@ class ClubProfile extends Component {
 }
 
 const mutation = gql`
-  mutation updateClub($_id: MongoID!, $club: clubUpdate!){
-    updateClub(_id: $_id, club: $club){
+  mutation updateClub($clubId: MongoID!, $club: clubUpdate!){
+    updateClub(clubId: $clubId, club: $club){
       _id
       slug
       name

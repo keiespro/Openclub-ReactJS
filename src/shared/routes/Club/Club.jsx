@@ -157,6 +157,9 @@ const clubQuery = gql`
         linkedin
         twitter
       }
+      stripe_account{
+        data
+      }
     }
   }
 `
