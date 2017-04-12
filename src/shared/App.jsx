@@ -125,7 +125,7 @@ class App extends Component {
               {/* USER AGGREGATED FEED */}
               <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
               {/* PROFILE */}
-              <Match pattern="/profile" render={() => data.user ? <AsyncFeed viewer={data.user} /> : <Unauthorised />} />
+              <Match pattern="/profile" render={() => data.user ? <AsyncProfile viewer={data.user} /> : <Unauthorised />} />
               {/* CLUB PAGES */}
               <Match pattern="/test" component={AsyncTest} />
               <Match pattern="/clubs" component={AsyncClubs} />
