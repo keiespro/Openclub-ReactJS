@@ -296,8 +296,8 @@ class StripeAccountForm extends Component {
           Our payment provider has additional verification requirements in this region that may require that you contact us. Please email support@openclub.co if you have any difficulties.
         </FieldContainer>
         <div className="bottom-gap-large" />
-        <FieldContainer deleted={this.isFieldDisabled('legal_entity.dob.month')}>
-          <Button type="primary" htmlType="submit" disabled={country_spec === null} loading={submitting}>Save</Button>
+        <FieldContainer>
+          <Button type="primary" htmlType="submit" disabled={country_spec === null} loading={submitting}>Save Account Details</Button>
         </FieldContainer>
       </Form>
     )

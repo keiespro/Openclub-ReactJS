@@ -12,7 +12,7 @@ import {
 } from 'components/form_controls'
 import { required, maxLength } from 'utils/form_validation/errors'
 
-const StripeBankAccountForm = ({ handleSubmit }) => {
+const StripeBankAccountForm = ({ handleSubmit, submitting, country }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -35,16 +35,16 @@ const StripeBankAccountForm = ({ handleSubmit }) => {
           component={Input}
         />
       </FieldContainer>
-      <FieldContainer required title="Bank Account">
+      <FieldContainer required title="Account Details">
         <Field
-          country="AU"
+          country={country}
           name="bank_account"
           type="number"
           validate={[required, maxLength(24)]}
           component={StripeBankAccountField}
         />
       </FieldContainer>
-      <Button type="primary" htmlType="submit">Save</Button>
+      <Button type="primary" htmlType="submit" loading={submitting}>Update Bank Account</Button>
     </Form>
   )
 }

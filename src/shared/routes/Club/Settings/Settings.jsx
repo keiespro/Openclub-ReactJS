@@ -17,20 +17,25 @@ const Settings = ({ club, location, pattern }, { router }) => {
   const match = location.pathname ? location.pathname.match(/^.*\/.*\/([\d\w-_]+)\/?/)[1] : '';
   const selectedKeys = [match];
 
+  const Items = [
+      <Menu.Item key="profile">Profile</Menu.Item>,
+      <Menu.Item key="plans">Membership Plans</Menu.Item>,
+      <Menu.Item key="payments">Financial Details</Menu.Item>
+  ]
+
   return (
     <ContentPage>
       <Row>
         <Col xs={{span: 0}} md={{span: 6}}>
-          <Menu
-            onClick={handleClick}
-            selectedKeys={selectedKeys}
-            mode="inline"
-          >
-          <Menu.ItemGroup key="sub1" title={<span>Club Settings</span>}>
-            <Menu.Item key="profile">Profile</Menu.Item>
-            <Menu.Item key="plans">Membership Plans</Menu.Item>
-            <Menu.Item key="payments">Financial Details</Menu.Item>
-          </Menu.ItemGroup>
+          <Menu onClick={handleClick} selectedKeys={selectedKeys} mode="inline">
+            <Menu.ItemGroup key="sub1" title={<span>Club Settings</span>}>
+              {Items}
+            </Menu.ItemGroup>
+          </Menu>
+        </Col>
+        <Col xs={{ span: 24 }} md={{ span: 0 }} className="bottom-gap">
+          <Menu onClick={handleClick} selectedKeys={selectedKeys} mode="horizontal">
+            {Items}
           </Menu>
         </Col>
         <Col xs={{span: 24}} md={{span: 18}}>

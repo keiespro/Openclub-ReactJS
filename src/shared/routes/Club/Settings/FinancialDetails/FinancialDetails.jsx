@@ -54,7 +54,7 @@ class BankDetails extends Component {
         <div className="bottom-gap-large" />
         <h4 className="bottom-gap-large">Bank Accounts</h4>
         {club.stripe_account ? (
-          <StripeBankAccountForm onSubmit={this.saveBankAccount} submitting={submitting} />
+          <StripeBankAccountForm country={club.stripe_account.data.country} onSubmit={this.saveBankAccount} submitting={submitting} />
         ) : (
           <Alert
             message="Club Account Not Setup"
