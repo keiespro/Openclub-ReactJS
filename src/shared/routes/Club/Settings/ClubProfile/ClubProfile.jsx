@@ -8,7 +8,7 @@ import { stringKeyObjectFilter, shallowObjectDiff } from 'utils/object_helpers'
 class ClubProfile extends Component {
   static propTypes = {
     club: PropTypes.object,
-    mutate: PropTypes.func
+    updateClub: PropTypes.func
   }
   constructor(props) {
     super(props)
@@ -16,15 +16,15 @@ class ClubProfile extends Component {
     this.updateProfile = this.updateProfile.bind(this)
   }
   updateProfile(values, dispatch, props) {
-    const { mutate, club } = this.props
+    const { updateClub, club } = this.props
 
     // get clean value object and image diff
     const realValues = stringKeyObjectFilter(values, props.registeredFields)
     realValues.images = shallowObjectDiff(realValues.images, club.images)
 
-    mutate({
+    updateClub({
       variables: {
-        slug: club.slug,
+        _id: club._id,
         club: realValues
       }
     }).then(() => {
@@ -35,11 +35,11 @@ class ClubProfile extends Component {
     })
   }
   render() {
-    const { club } = this.props;
+    const { club, submitting } = this.props;
     return (
       <div className="oc-form">
         <h4 className="bottom-gap-large">Profile Details</h4>
-        <ClubProfileForm initialValues={club} onSubmit={this.updateProfile} />
+        <ClubProfileForm initialValues={club} onSubmit={this.updateProfile} submitting={submitting}/>
       </div>
     )
   }
@@ -74,7 +74,7 @@ const mutation = gql`
 `
 
 const ClubProfileWithApollo = graphql(mutation, {
-  name: 'mutation',
+  name: 'updateClub',
   options: {
     updateQueries: {
       club: (prev, { mutationResult }) => {

@@ -101,7 +101,7 @@ export default function webpackConfigFactory(buildOptions) {
         // the `node-source-map-support` module to allow for this).
         isNode
         // Always include source maps for any development build.
-        || isDev
+        || isDev || isProd
         // Allow for the following flag to force source maps even for production
         // builds.
         || config.includeSourceMapsForProductionBuilds,

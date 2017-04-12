@@ -8,6 +8,7 @@ import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
 import { ContentArea } from 'components/layout'
 import Error404 from 'components/Error404/Error404'
 import { keysFromFragments } from 'utils/route'
+import Loading from 'components/Loading/Loading'
 // Async routes
 import AsyncAbout from './About'
 import AsyncCommunity from './Community'
@@ -34,13 +35,8 @@ class Club extends Component {
     //const collapseHeader = location.pathname.includes('/feed') === false;
     const collapseHeader = !location.pathname.match(/^.*\/.*\/(feed)/);
 
-    if(loading){
-      return <div>Loading Club...</div>
-    }
-
-    if(!club){
-      return <div>Club not found!</div>
-    }
+    if (loading) return <Loading />
+    if (!club) return <Error404 />
 
     const handleClick = e => {
       router.transitionTo(`/${club.slug}/${e.key}`)

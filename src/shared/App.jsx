@@ -65,14 +65,6 @@ class App extends Component {
   toggleSidebar() {
     this.setState({ open: !this.state.open })
   }
-  hasViewer(comp) {
-    const { data } = this.props
-    if (data.error) return <Error error={data.error} />
-    if (data.user) return comp;
-    if (typeof window !== 'undefined' && data.loading !== false) return <Loading />;
-    if (typeof window !== 'undefined' && data.loading === false) this.props.login();
-    return <Unauthorised />;
-  }
   render() {
     const { sidebarOpen } = this.state;
     const { data, location } = this.props;

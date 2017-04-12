@@ -58,7 +58,8 @@ class StripeAccountForm extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func,
     form_values: PropTypes.object,
-    additional_verifications: PropTypes.arrayOf(PropTypes.string)
+    additional_verifications: PropTypes.arrayOf(PropTypes.string),
+    club: PropTypes.object
   }
   constructor(props) {
     super(props);

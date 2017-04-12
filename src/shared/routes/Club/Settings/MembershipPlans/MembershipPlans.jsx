@@ -22,7 +22,7 @@ class MembershipPlans extends Component {
     this.savePlan = this.savePlan.bind(this);
   }
 
-  savePlan(values) {
+  async savePlan(values) {
     let clonedValues = _.clone(values);
     if (clonedValues.__typename) delete clonedValues.__typename;
 
@@ -30,23 +30,24 @@ class MembershipPlans extends Component {
 
     const mutation = '_id' in values ? updateMutation : createMutation;
 
-    mutation({
-      variables: {
-        _id: this.props.club._id,
-        plan: clonedValues
-      }
-    }).then(() => {
-      this.setState({ showAdd: false })
-      message.success('Plan added successfully', 4)
-    }).catch(err => {
-      message.error('Error creating plan: ' + err, 4)
-    })
+    try {
+      await mutation({
+        variables: {
+          _id: this.props.club._id,
+          plan: clonedValues
+        }
+      })
+      message.success('Plan change was successful.');
+      this.setState({ showAdd: false });
+      this.forceUpdate();
+    } catch (err) {
+      message.error('Uh-oh! ' + err);
+    }
   }
-
   render() {
     const priceColumns = [
-      { key: 'price', customDataRender: (table, price) => `$${price.amount} ` },
       { key: 'duration', customDataRender: (table, duration) => durations.lookup[duration] },
+      { key: 'price', customDataRender: (table, price) => `$${price.amount} ${durations.lookupPer[duration]}` },
       { key: 'setup_price', customDataRender: (table, setupPrice) => `$${setupPrice.amount} setup fee` }
     ]
 
@@ -74,7 +75,7 @@ class MembershipPlans extends Component {
     ]
 
     const { showAdd } = this.state
-    const { club } = this.props
+    const { club, submitting } = this.props
 
     const expander = rowData => (
       <MembershipPlanForm
@@ -103,6 +104,7 @@ class MembershipPlans extends Component {
               initialValues={{public: true}}
               onSubmit={this.savePlan}
               cancel={() => this.setState({ showAdd: false })}
+              submitting={submitting}
             />
           </div>
         ) : (
