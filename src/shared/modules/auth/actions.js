@@ -76,7 +76,7 @@ export function checkAuthentication() {
           dispatch(lockError(error))
           dispatch(authLoaded())
         })
-      }else{
+      } else {
         dispatch(authLoaded())
       }
     })
@@ -86,7 +86,6 @@ export function checkAuthentication() {
 // Logs the user out
 export function logoutUser() {
   return dispatch => {
-    console.log('hello log the fuck out motherfucker!')
     dispatch(requestLogout())
     localStorage.removeItem('openclub_token')
     apolloClient.resetStore()

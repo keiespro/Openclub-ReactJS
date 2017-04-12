@@ -7,6 +7,7 @@ import ProfileHeader from 'components/profile/ProfileHeader'
 import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
 import { ContentArea } from 'components/layout'
 import Error404 from 'components/Error404/Error404'
+import Error from 'components/Error/Error'
 import { keysFromFragments } from 'utils/route'
 import Loading from 'components/Loading/Loading'
 // Async routes
@@ -27,15 +28,17 @@ class Club extends Component {
     router: PropTypes.object
   }
   render() {
+    console.log(this.props);
     const { data, children, location, params, viewer, pathname } = this.props
     const { router } = this.context
-    const { club, loading } = data
+    const { club, loading, error } = data
     //const { params, location } = this.props
 
     //const collapseHeader = location.pathname.includes('/feed') === false;
     const collapseHeader = !location.pathname.match(/^.*\/.*\/(feed)/);
 
     if (loading) return <Loading />
+    if (error) return <Error error={error} />
     if (!club) return <Error404 />
 
     const handleClick = e => {
