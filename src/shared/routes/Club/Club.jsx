@@ -20,21 +20,21 @@ import AsyncSettings from './Settings'
 
 import './Club.scss'
 
-const SubMenu = Menu.SubMenu
-const MenuItemGroup = Menu.ItemGroup
-
 class Club extends Component {
+  static propTypes = {
+    data: PropTypes.object,
+    location: PropTypes.object,
+    params: PropTypes.object,
+    viewer: PropTypes.object,
+    pathname: PropTypes.string
+  }
   static contextTypes = {
     router: PropTypes.object
   }
   render() {
-    console.log(this.props);
-    const { data, children, location, params, viewer, pathname } = this.props
+    const { data, location, params, viewer, pathname } = this.props
     const { router } = this.context
     const { club, loading, error } = data
-    //const { params, location } = this.props
-
-    //const collapseHeader = location.pathname.includes('/feed') === false;
     const collapseHeader = !location.pathname.match(/^.*\/.*\/(feed)/);
 
     if (loading) return <Loading />
@@ -72,34 +72,39 @@ class Club extends Component {
           <Menu.Item key="about">About</Menu.Item>
           <Menu.Item key="community">Members</Menu.Item>
           <Menu.Item key="mymembership">My Membership</Menu.Item>
-          <Menu.Item key="divider" disabled={true}> | </Menu.Item>
-          <Menu.Item key="settings"><Icon type="setting"/> Settings</Menu.Item>
+          <Menu.Item key="divider" disabled> | </Menu.Item>
+          <Menu.Item key="settings"><Icon type="setting" /> Settings</Menu.Item>
         </Menu>
         <ContentArea>
-          <ClubHeroHelper club={club}/>
+          <ClubHeroHelper club={club} />
           <MatchGroup>
-            <Match exactly pattern={`/${params.club_id}`}
-              render={routerProps => {
-                if(viewer && viewer.clubs && viewer.clubs.some(c => c.slug === params.club_id)){
+            <Match
+              exactly
+              pattern={`/${params.club_id}`}
+              render={() => {
+                if (viewer && viewer.clubs && viewer.clubs.some(c => c.slug === params.club_id)) {
                   return <Redirect to={`/${params.club_id}/feed`} push />
-                }else{
-                  return <Redirect to={`/${params.club_id}/about`} push />
                 }
+                return <Redirect to={`/${params.club_id}/about`} push />
               }}
             />
-            <Match pattern={`/${params.club_id}/about`}
-              render={routerProps => <AsyncAbout {...routerProps} club={club}/>}
+            <Match
+              pattern={`/${params.club_id}/about`}
+              render={routerProps => <AsyncAbout {...routerProps} club={club} />}
             />
-            <Match pattern={`/${params.club_id}/feed`}
-              render={routerProps => <AsyncFeed {...routerProps} club={club}/>}
+            <Match
+              pattern={`/${params.club_id}/feed`}
+              render={routerProps => <AsyncFeed {...routerProps} club={club} />}
             />
-            <Match pattern={`/${params.club_id}/settings`}
-              render={routerProps => <AsyncSettings {...routerProps} club={club}/>}
+            <Match
+              pattern={`/${params.club_id}/settings`}
+              render={routerProps => <AsyncSettings {...routerProps} club={club} />}
             />
-            <Match pattern={`/${params.club_id}/join`}
-              render={routerProps => <AsyncJoin {...routerProps} club={club}/>}
+            <Match
+              pattern={`/${params.club_id}/join`}
+              render={routerProps => <AsyncJoin {...routerProps} club={club} />}
             />
-            <Miss component={Error404}></Miss>
+          <Miss component={Error404} />
           </MatchGroup>
         </ContentArea>
       </section>

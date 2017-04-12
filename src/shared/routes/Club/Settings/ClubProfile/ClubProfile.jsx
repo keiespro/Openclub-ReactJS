@@ -21,6 +21,7 @@ class ClubProfile extends Component {
     // get clean value object and image diff
     const realValues = stringKeyObjectFilter(values, props.registeredFields)
     realValues.images = shallowObjectDiff(realValues.images, club.images)
+    console.log(realValues);
 
     updateClub({
       variables: {
@@ -39,7 +40,7 @@ class ClubProfile extends Component {
     return (
       <div className="oc-form">
         <h4 className="bottom-gap-large">Profile Details</h4>
-        <ClubProfileForm initialValues={club} onSubmit={this.updateProfile} submitting={submitting}/>
+        <ClubProfileForm initialValues={club} onSubmit={this.updateProfile} submitting={submitting} />
       </div>
     )
   }
@@ -77,14 +78,10 @@ const ClubProfileWithApollo = graphql(mutation, {
   name: 'updateClub',
   options: {
     updateQueries: {
-      club: (prev, { mutationResult }) => {
-        return {
-          club: {
-            ...prev.club,
-            ...mutationResult
-          }
-        }
-      }
+      club: (prev, { mutationResult }) => ({
+        ...prev.club,
+        ...mutationResult
+      })
     }
   }
 })(ClubProfile)

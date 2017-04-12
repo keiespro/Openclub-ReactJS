@@ -62,7 +62,6 @@ class AddressField extends Component {
   }
   render() {
     const { input } = this.props;
-    console.log('address', input);
 
     return (
     <Input

@@ -5,13 +5,15 @@ import { Button, message, Alert } from 'antd'
 import Table from 'components/table'
 import MembershipPlanForm from 'components/forms/MembershipPlanForm'
 import { durations } from 'constants/index'
+import { stringKeyObjectFilter } from 'utils/object_helpers'
 import _ from 'lodash'
 
 class MembershipPlans extends Component {
   static propTypes = {
     createMutation: PropTypes.func,
     updateMutation: PropTypes.func,
-    club: PropTypes.object
+    club: PropTypes.object,
+    submitting: PropTypes.bool
   }
   constructor(props) {
     super(props)
@@ -22,32 +24,38 @@ class MembershipPlans extends Component {
     this.savePlan = this.savePlan.bind(this);
   }
 
-  async savePlan(values) {
-    let clonedValues = _.clone(values);
-    if (clonedValues.__typename) delete clonedValues.__typename;
+  async savePlan(values, dispatch, props) {
+    const { createMutation, updateMutation } = this.props;
+    let { registeredFields } = props
 
-    const { createMutation, updateMutation } = this.props
+    if (registeredFields.prices) delete registeredFields.prices;
+    const plan = stringKeyObjectFilter(values, registeredFields);
+    console.log(plan);
 
+    if ('_id' in values) plan._id = values._id;
     const mutation = '_id' in values ? updateMutation : createMutation;
 
     try {
       await mutation({
         variables: {
-          _id: this.props.club._id,
-          plan: clonedValues
+          clubId: this.props.club._id,
+          plan
         }
       })
       message.success('Plan change was successful.');
       this.setState({ showAdd: false });
-      this.forceUpdate();
     } catch (err) {
       message.error('Uh-oh! ' + err);
     }
   }
   render() {
+    const { showAdd } = this.state;
+    const { submitting } = this.props;
+
+    const club = _.clone(this.props.club);
+
     const priceColumns = [
-      { key: 'duration', customDataRender: (table, duration) => durations.lookup[duration] },
-      { key: 'price', customDataRender: (table, price) => `$${price.amount} ${durations.lookupPer[duration]}` },
+      { key: 'price', customDataRender: (table, price, plan) => `$${price.amount} ${durations.lookupPer[plan.duration]}` },
       { key: 'setup_price', customDataRender: (table, setupPrice) => `$${setupPrice.amount} setup fee` }
     ]
 
@@ -74,17 +82,13 @@ class MembershipPlans extends Component {
       }}
     ]
 
-    const { showAdd } = this.state
-    const { club, submitting } = this.props
 
-    const expander = rowData => (
-      <MembershipPlanForm
-        id={rowData._id}
-        form={`membership_form_${rowData._id}`}
-        initialValues={rowData}
-        onSubmit={this.savePlan}
-      />
-    )
+    const expander = rowData => <MembershipPlanForm
+      id={rowData._id}
+      form={`membership_form_${rowData._id}`}
+      initialValues={rowData}
+      onSubmit={this.savePlan}
+    />
 
     return (
       <div>
@@ -115,9 +119,9 @@ class MembershipPlans extends Component {
   }
 }
 
-const createMutation = gql`
-  mutation createMembershipPlan($_id: MongoID!, $plan: membershipPlanInput!){
-    createMembershipPlan(_id: $_id, plan: $plan){
+const createMutationGQL = gql`
+  mutation createMembershipPlan($clubId: MongoID!, $plan: membershipPlanInput!){
+    createMembershipPlan(clubId: $clubId, plan: $plan){
       _id
       name
       description
@@ -138,9 +142,9 @@ const createMutation = gql`
   }
 `
 
-const updateMutation = gql`
-  mutation updateMembershipPlan($_id: MongoID!, $plan: membershipPlanUpdate!){
-    updateMembershipPlan(_id: $_id, plan: $plan){
+const updateMutationGQL = gql`
+  mutation updateMembershipPlan($clubId: MongoID!, $plan: membershipPlanUpdate){
+    updateMembershipPlan(clubId: $clubId, plan: $plan){
       _id
       name
       description
@@ -162,7 +166,7 @@ const updateMutation = gql`
 `
 
 const MembershipPlansWithApollo = compose(
-  graphql(createMutation, {
+  graphql(createMutationGQL, {
     name: 'createMutation',
     options: {
       updateQueries: {
@@ -180,7 +184,7 @@ const MembershipPlansWithApollo = compose(
       }
     }
   }),
-  graphql(updateMutation, {
+  graphql(updateMutationGQL, {
     name: 'updateMutation'
   })
 )(MembershipPlans)
