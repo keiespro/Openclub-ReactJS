@@ -502,6 +502,7 @@ export default function webpackConfigFactory(buildOptions) {
             // Our offline support will be done via a service worker.
             // Read more on them here:
             // http://bit.ly/2f8q7Td
+            autoUpdate: true,
             ServiceWorker: {
               // The name of the service worker script that will get generated.
               output: config.serviceWorker.fileName,
@@ -534,11 +535,11 @@ export default function webpackConfigFactory(buildOptions) {
             // Which external files should be included with the service worker?
             externals:
               // Add the polyfill io script as an external if it is enabled.
-              (
-                config.polyfillIO.enabled
-                  ? [config.polyfillIO.url]
-                  : []
-              )
+              [
+                config.polyfillIO.url,
+                'https://js.stripe.com/v2/',
+                'https://js.stripe.com/v3/'
+              ]
               // Add any included public folder assets.
               .concat(
                 config.serviceWorker.includePublicAssets.reduce((acc, cur) => {
