@@ -65,6 +65,7 @@ class App extends Component {
   render() {
     const { sidebarOpen } = this.state;
     const { data, location } = this.props;
+    console.log("REMOVEME", data.user || 'hi');
     return (
       <Drawer className={cx({'loggedin': data.user, 'open': sidebarOpen})} sidebar={<Sidebar user={data.user} location={location}/>} style={{ overflow: 'auto' }}>
         <Layout>
@@ -157,8 +158,9 @@ const currentViewer = gql`
         square
       }
       memberships {
-        _id
         club_id
+        roles
+        club
       }
     }
   }
