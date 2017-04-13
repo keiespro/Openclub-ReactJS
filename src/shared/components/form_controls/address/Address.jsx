@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import Input from 'antd/lib/input'
+import Spin from 'antd/lib/spin'
 import loadGoogleMapsAPI from 'load-google-maps-api'
 
 class AddressField extends Component {
@@ -12,10 +13,8 @@ class AddressField extends Component {
     super(props);
 
     this.state = {
-      input: props.input.value ? props.input.value.formatted_address : ''
+      ready: false
     }
-
-    this.handleInput = this.handleInput.bind(this)
 
     this.googleMaps = null;
 
@@ -25,52 +24,53 @@ class AddressField extends Component {
     this.timeout = null;
   }
   async getGoogleMaps() {
-    if (this.googleMaps) return this.googleMaps;
+    if (this.googleMaps) {
+      this.setState({ ready: true })
+      return this.googleMaps;
+    }
     this.googleMaps = await loadGoogleMapsAPI({ key: process.env.GOOGLE_API_KEY, libraries: 'places' })
+    this.setState({ ready: true })
     return this.googleMaps;
   }
-  async searchAddress() {
+  async handleChange(autocomplete, input) {
+    const place = await autocomplete.getPlace();
+
+    const { formatted_address, geometry, address_components } = place;
+
+    if (this.props.asString) {
+      input.onChange({
+        formatted_address
+      })
+    } else {
+      input.onChange({
+        formatted_address,
+        geometry,
+        address_components
+      })
+    }
+  }
+  async componentDidMount() {
     const googleMaps = await this.getGoogleMaps();
     const maps = 'maps' in googleMaps ? googleMaps.maps : googleMaps;
-    const autocomplete = new maps.places.Autocomplete(findDOMNode(this.addressInput), { types: ['geocode'] });
+    const autocomplete = new maps.places.Autocomplete(findDOMNode(this.addressInput), { types: ['address'] });
 
-    autocomplete.addListener('place_changed', () => {
-      const place = autocomplete.getPlace();
+    const { input } = this.props;
+    if (input.value && typeof input.value === 'object') input.onChange(input.value);
 
-      const { formatted_address, geometry, address_components } = place;
-      this.setState({ input: formatted_address })
-
-      if (this.props.asString) {
-        this.props.input.onChange({
-          formatted_address
-        })
-      } else {
-        this.props.input.onChange({
-          formatted_address,
-          geometry,
-          address_components
-        })
-      }
-    })
-  }
-  handleInput(e) {
-    this.setState({input: e.target.value})
-    clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.searchAddress();
-    }, 500);
+    autocomplete.addListener('place_changed', this.handleChange.bind(this, autocomplete, input));
   }
   render() {
     const { input } = this.props;
 
     return (
-    <Input
-      {...input}
-      autoComplete={false}
-      onChange={this.handleInput}
-      value={this.state.input}
-      ref={addressInput => { this.addressInput = addressInput }}
-    />
+      <Spin spinning={!this.state.ready} tip="Waiting on Google...">
+        <Input
+          autoComplete={false}
+          defaultValue={input.value ? input.value.formatted_address : ''}
+          ref={addressInput => { this.addressInput = addressInput }}
+          disabled={!this.state.ready}
+        />
+      </Spin>
     );
   }
 }
