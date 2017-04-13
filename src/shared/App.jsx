@@ -19,12 +19,10 @@ import AsyncClub from 'routes/Club'
 import AsyncNotifications from 'routes/Notifications'
 import AsyncEvents from 'routes/Events'
 import AsyncTest from 'routes/Test'
-//import AsyncEvent from 'routes/Event'
 
 import { LoadNotifications } from 'components/notifications'
 import { logoutUser, login } from 'modules/auth/actions'
 
-import Error from 'components/Error/Error'
 import Error404 from 'components/Error404/Error404'
 import Unauthorised from 'components/Unauthorised/Unauthorised'
 import Loading from 'components/Loading/Loading'
@@ -54,7 +52,6 @@ class App extends Component {
     data: PropTypes.object,
     location: PropTypes.object,
     logoutUser: PropTypes.func,
-    login: PropTypes.func
   }
   constructor(props) {
     super(props)
@@ -159,13 +156,9 @@ const currentViewer = gql`
         thumb
         square
       }
-      clubs {
+      memberships {
         _id
-        slug
-        name
-        images {
-          thumb
-        }
+        club_id
       }
     }
   }

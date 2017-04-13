@@ -11,10 +11,7 @@
   },
   "settings": {
     "import/resolver": {
-      "babel-module": {},
-      "webpack": {
-        "config": "tools/webpack/configFactory.js"
-      }
+      "babel-module": {}
     }
   },
   "rules": {
@@ -50,5 +47,7 @@
     "import/no-extraneous-dependencies": 0,
     "no-use-before-define": 2,
     "react/require-default-props": 0,
+    "import/extensions": 0,
+    "no-confusing-arrow": 0,
   }
 }

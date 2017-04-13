@@ -52,6 +52,8 @@ class Profile extends Component {
   static async handleSubmit(values, dispatch, props) {
     const { updateProfile, initialValues, registeredFields } = props;
     // get clean value object and image diff
+    // need to remove address because it brings __typename with it.
+    if (registeredFields.address) delete registeredFields.address;
     const userProfile = stringKeyObjectFilter(values, registeredFields)
     userProfile.images = shallowObjectDiff(userProfile.images, values.images)
     console.log(userProfile)
@@ -126,7 +128,6 @@ class Profile extends Component {
 
   render() {
     const { token, viewer } = this.props;
-    console.log(this.props)
     return (
         <ContentArea>
             <ContentPage>
