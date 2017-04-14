@@ -1,18 +1,9 @@
-import React from 'react'
 import { asyncComponent } from 'react-async-component'
-import Error from 'components/Error/Error'
-import Loading from 'components/Loading/Loading'
+import asyncExtensions from 'utils/asyncExtensions'
 
-export default process.env.NODE_ENV === 'production' ? asyncComponent({
-  resolve: () => new Promise(resolve =>
-    require.ensure(
-      [],
-      (require) => {
-        resolve(require('./Test'));
-      },
-      'Test'
-    )
-  ),
-  ErrorComponent: ({ error }) => <Error error={error} />,
-  LoadingComponent: () => <Loading />
-}) : require('./Test').default
+export default asyncComponent({
+  async resolve() {
+    return System.import('routes/Test/Test');
+  },
+  ...asyncExtensions
+})

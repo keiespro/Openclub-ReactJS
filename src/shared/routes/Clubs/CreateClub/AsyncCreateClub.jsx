@@ -1,13 +1,9 @@
 import { asyncComponent } from 'react-async-component'
+import asyncExtensions from 'utils/asyncExtensions'
 
-export default process.env.NODE_ENV === 'production' ? asyncComponent({
-  resolve: () => new Promise(resolve =>
-    require.ensure(
-      [],
-      (require) => {
-        resolve(require('./CreateClub'));
-      },
-      'CreateClub'
-    )
-  )
-}) : require('./CreateClub').default
+export default asyncComponent({
+  async resolve() {
+    return System.import('routes/Clubs/CreateClub/CreateClub');
+  },
+  ...asyncExtensions
+})
