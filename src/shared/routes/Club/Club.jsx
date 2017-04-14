@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { graphql } from 'react-apollo'
+import { connect } from 'react-redux'
+import { login } from 'modules/auth/actions'
 import gql from 'graphql-tag'
-import { Menu, Icon } from 'antd'
+import { Menu, Icon, Button, Dropdown } from 'antd'
 import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
 import ProfileHeader from 'components/profile/ProfileHeader'
 import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
@@ -10,6 +12,7 @@ import Error404 from 'components/Error404/Error404'
 import Error from 'components/Error/Error'
 import { keysFromFragments } from 'utils/route'
 import Loading from 'components/Loading/Loading'
+import clubPermissions from 'utils/club_permissions'
 // Async routes
 import AsyncAbout from './About'
 import AsyncCommunity from './Community'
@@ -26,7 +29,8 @@ class Club extends Component {
     location: PropTypes.object,
     params: PropTypes.object,
     viewer: PropTypes.object,
-    pathname: PropTypes.string
+    pathname: PropTypes.string,
+    login: PropTypes.func
   }
   static contextTypes = {
     router: PropTypes.object
@@ -41,17 +45,24 @@ class Club extends Component {
     if (error) return <Error error={error} />
     if (!club) return <Error404 />
 
-    const handleClick = e => {
-      router.transitionTo(`/${club.slug}/${e.key}`)
-    }
+    const perm = clubPermissions(club, viewer);
+    const handleClick = e => router.transitionTo(`/${club.slug}/${e.key}`);
 
     const onJoin = () => {
+      if (!viewer) { this.props.login(); return; }
       router.transitionTo(`/${club.slug}/join`)
     }
 
     const selectedKeys = keysFromFragments(location.pathname, pathname, [
       'feed', 'events', 'about', 'community', 'mymembership', 'settings'
     ])
+
+    const followMenu = (
+      <Menu onClick={this.followAction}>
+        { perm.userIsFollower ? <Menu.Item key="unfollow">Unfollow</Menu.Item> : <Menu.Item key="follow">Follow</Menu.Item>}
+        { perm.userIsSubscribed ? <Menu.Item key="unmute">Turn notifications off</Menu.Item> : <Menu.Item key="mute">Turn notifications on</Menu.Item> }
+      </Menu>
+    );
 
     return (
       <section className="oc-object-page-container">
@@ -61,6 +72,22 @@ class Club extends Component {
           images={club.images}
           collapsed={collapseHeader}
           onJoin={onJoin}
+          buttons={(
+            <div>
+              { (perm.userCanFollow || perm.userIsFollower) && (
+                <Dropdown overlay={followMenu}>
+                  <Button type="default" icon="user-add" size="large" className="join-button">
+                    {perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" />
+                  </Button>
+                </Dropdown>
+              )}
+              {
+                (perm.userCanJoin) && (
+                  <Button type="primary" icon="user-add" size="large" className="join-button" onClick={onJoin}>Join This Club</Button>
+                )
+              }
+            </div>
+          )}
         />
         <Menu
           onClick={handleClick}
@@ -71,9 +98,9 @@ class Club extends Component {
           <Menu.Item key="events">Events</Menu.Item>
           <Menu.Item key="about">About</Menu.Item>
           <Menu.Item key="community">Members</Menu.Item>
-          <Menu.Item key="mymembership">My Membership</Menu.Item>
-          <Menu.Item key="divider" disabled> | </Menu.Item>
-          <Menu.Item key="settings"><Icon type="setting" /> Settings</Menu.Item>
+          { perm.userIsMember && <Menu.Item key="mymembership">My Membership</Menu.Item>}
+          { perm.userCanAccessSettings && <Menu.Item key="divider" disabled> | </Menu.Item>}
+          { perm.userCanAccessSettings && <Menu.Item key="settings"><Icon type="setting" /> Settings</Menu.Item>}
         </Menu>
         <ContentArea>
           <ClubHeroHelper club={club} />
@@ -90,19 +117,19 @@ class Club extends Component {
             />
             <Match
               pattern={`/${params.club_id}/about`}
-              render={routerProps => <AsyncAbout {...routerProps} club={club} />}
+              render={routerProps => <AsyncAbout {...routerProps} club={club} perm={perm} />}
             />
             <Match
               pattern={`/${params.club_id}/feed`}
-              render={routerProps => <AsyncFeed {...routerProps} club={club} />}
+              render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} />}
             />
             <Match
               pattern={`/${params.club_id}/settings`}
-              render={routerProps => <AsyncSettings {...routerProps} club={club} />}
+              render={routerProps => <AsyncSettings {...routerProps} club={club} perm={perm} />}
             />
             <Match
               pattern={`/${params.club_id}/join`}
-              render={routerProps => <AsyncJoin {...routerProps} club={club} />}
+              render={routerProps => <AsyncJoin {...routerProps} club={club} perm={perm} />}
             />
           <Miss component={Error404} />
           </MatchGroup>
@@ -168,7 +195,11 @@ const ClubWithApollo = graphql(clubQuery, {
   options: ({ params }) => ({ variables: { slug: params.club_id }}),
 })(Club)
 
-export default ClubWithApollo;
+const ClubWithRedux = connect(state => ({}), {
+  login
+})(ClubWithApollo)
+
+export default ClubWithRedux;
 
 export {
   Club

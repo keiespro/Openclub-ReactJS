@@ -1,6 +1,5 @@
 import apolloClient from 'modules/apollo'
 import gql from 'graphql-tag'
-import stream, { feedGroups } from 'utils/GetStream'
 
 // Auth0 lock actions
 export const LOAD_NOTIFICATIONS = 'LOAD_NOTIFICATIONS';
@@ -23,15 +22,15 @@ const reduceNewNotifications = results => ({
   type: NEW_NOTIFICATIONS
 })
 
-export function loadNotifications(userId, tokenId) {
+export function loadNotifications(thread) {
   return dispatch => {
-      const notifications = stream.feed(feedGroups.NOTIFICATIONS, userId, tokenId);
-      notifications.get({ limit: 20 }).then((result) => {
-        dispatch(reduceLoadNotifications(result))
-      })
-      notifications.subscribe((notification) => {
-        dispatch(reduceNewNotifications(notification))
-      })
+      dispatch(reduceLoadNotifications(thread));
+  }
+}
+
+export function newNotification(n) {
+  return dispatch => {
+    dispatch(reduceNewNotifications(n))
   }
 }
 

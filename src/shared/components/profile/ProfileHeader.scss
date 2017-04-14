@@ -1,3 +1,5 @@
+@import "styles/Variables.scss";
+
 .objectpage-header-container {
   height: 240px;
   position: relative;
@@ -20,36 +22,36 @@
     .media-left {
       padding-right: 20px;
     }
-  }
+    .details-container {
+      display: table-cell;
+      vertical-align: bottom;
+    }
+    .header-buttons, .header-buttons > div {
+      display: table-cell;
+      white-space: nowrap;
+      vertical-align: bottom;
+      button: {
+        margin: 5px;
+      }
+    }
 
-  .details-container {
-    display: table-cell;
-    vertical-align: bottom;
-  }
-
-  .header-buttons {
-    display: table-cell;
-    vertical-align: bottom;
-  }
-
-  .img-round-corners {
-    border-radius: 12px;
-  }
-
-  .profile-backdrop {
-    padding: 5px;
-    border-radius: 5px;
-    background-color: #fff;
-    box-shadow: 0 2px 1px rgba(0,0,0,0.5);
-  }
-
-  .objectpage-label {
-    color: white;
-    text-shadow: 0px 2px 1px black;
-  }
-
-  .objectpage-heading {
-    margin: 0;
+    @media #{$max-tablet} {
+      .details-container {
+        display: flex;
+      }
+      .header-buttons, .header-buttons > div {
+        display: flex;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        button {
+          flex-grow: 1;
+          border-radius: 0px;
+          margin: 0;
+        }
+      }
+    }
   }
 
   &.collapsed {
@@ -76,6 +78,27 @@
       vertical-align: middle;
     }
   }
+
+  .img-round-corners {
+    border-radius: 12px;
+  }
+
+  .profile-backdrop {
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 1px rgba(0,0,0,0.5);
+  }
+
+  .objectpage-label {
+    color: white;
+    text-shadow: 0px 2px 1px black;
+  }
+
+  .objectpage-heading {
+    margin: 0;
+  }
+
 
   .join-button {
     align-self: flex-end;

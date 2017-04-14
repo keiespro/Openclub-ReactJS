@@ -26,12 +26,12 @@ class Sidebar extends Component {
     const { user, location } = this.props;
 
     if (user) {
-      const myClubs = user.clubs || [];
+      const myClubs = user.memberships || [];
       const regexLocation = location.pathname ? location.pathname.match(/^\/([\d\w-_]+)\/?.*?/) : null;
       const match = regexLocation ? regexLocation[1] : '';
       const keys = [
         'home', 'discover', 'feed', 'profile', 'notifications', 'events', 'clubs',
-        ...myClubs.map(c => c.slug)
+        ...myClubs.map(c => c.club.slug)
       ];
       const selectedKeys = [keys.indexOf(match) > -1 ? match : ''];
 
@@ -63,9 +63,9 @@ class Sidebar extends Component {
             <ItemGroup key="sub3" title={<span>My Clubs</span>}>
               {myClubs.map(c =>
                 <Item
-                  key={`${c.slug}`}
+                  key={`${c.club.slug}`}
                 >
-                  <img alt={c.name} className="oc-sidebar-clubimage" src={c.images ? c.images.thumb : '/empty-club.png'} /> {c.name}
+                  <img alt={c.club.name} className="oc-sidebar-clubimage" src={c.club.images ? c.club.images.thumb : '/empty-club.png'} /> {c.club.name}
                 </Item>
               )}
             </ItemGroup>

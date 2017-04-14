@@ -1,7 +1,5 @@
 import stream from 'getstream';
 
-console.log(stream.connect.toString, process.env.STREAM_API_KEY);
-
 export default stream.connect(process.env.STREAM_API_KEY, null, process.env.STREAM_APP_ID);
 
 let client;

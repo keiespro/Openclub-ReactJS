@@ -1,18 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag'
-import apolloClient from 'modules/apollo'
 import { ContentArea, ContentPage } from 'components/layout'
 import { Button, Table, Icon } from 'antd'
 import { objectIcon } from 'constants/index'
 import cx from 'classnames'
 import './NotificationTable.scss'
-
-const testNotificationMutation = gql`
-mutation testNotification{
-  testNotifications
-}
-`
 
 class Notifications extends Component {
   static contextTypes = {
@@ -20,13 +13,12 @@ class Notifications extends Component {
   }
   static propTypes = {
     data: PropTypes.object,
-    _id: PropTypes.string,
-    notifications_token: PropTypes.string
+    max: PropTypes.number
   }
-  runTest() {
-    return apolloClient.mutate({
-      mutation: testNotificationMutation
-    })
+  constructor(props) {
+    super(props);
+
+    this.dismiss = this.dismiss.bind(this);
   }
   goTo(link) {
     this.context.router.transitionTo(link.replace(/^\//, ''));
@@ -58,14 +50,10 @@ class Notifications extends Component {
     }
   }
   render() {
-    console.log(this.props.data)
     const { data, max } = this.props
-
     let { notifications } = data
+    if (max && notifications) notifications = notifications.slice(0, max)
 
-    if (max) notifications = notifications.slice(0, max)
-
-    const isNotLoading = data.notifications && data.notifications.length > 0
     const onRowClick = record => this.goTo.bind(this, record.link);
     const rowKey = record => record.id;
     const rowClassName = record => cx({ 'notification-unseen': !record.is_seen });
@@ -89,7 +77,7 @@ class Notifications extends Component {
     if (data.notifications && data.notifications.length <= 0)
       return <div className="text-center">No notifications.</div>
 
-    return isNotLoading ? <Table rowKey={rowKey} rowClassName={rowClassName} onRowClick={onRowClick} pagination={false} showHeader={false} columns={notificationCols} dataSource={notifications} /> : <Icon type="Loading" />
+    return <Table rowKey={rowKey} rowClassName={rowClassName} onRowClick={onRowClick} pagination={false} showHeader={false} columns={notificationCols} dataSource={notifications} />
   }
 }
 

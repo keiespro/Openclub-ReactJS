@@ -5,7 +5,7 @@ import { ContentPage, PageHeader } from 'components/layout'
 import { TextInfoIcon } from 'components/display'
 import moment from 'moment'
 
-const About = ({ club }) => {
+const About = ({ club, perm }) => {
 
   let minAge = 'This club has no age restrictions on members'
   if(club.details && club.details.minimum_age && club.details.minimum_age !== '0'){
@@ -20,22 +20,24 @@ const About = ({ club }) => {
   return (
     <Row gutter={20}>
       <Col xs={24} md={15}>
+        {aboutText && (
+          <ContentPage largeFont>
+            <PageHeader title="About" />
+            <div>
+              {aboutText ?
+              aboutText.map((i, k) => (<span key={k}>{i}<br/></span>)) :
+              (perm.userCanUpdateDetails ? <Alert
+                message={(
+                  <span>The about text has not been entered for this club. Go to <Link to={`/${club.slug}/settings/profile`}>Settings</Link> to update the club profile.</span>
+                )}
+                type="info"
+                showIcon
+              /> : null)}
+            </div>
+          </ContentPage>
+        )}
         <ContentPage largeFont>
-          <PageHeader title="About"/>
-          <div>
-            {aboutText ?
-            aboutText.map((i, k) => (<span key={k}>{i}<br/></span>)) :
-            <Alert
-              message={(
-                <span>The about text has not been entered for this club. Go to <Link to={`/${club.slug}/settings/profile`}>Settings</Link> to update the club profile.</span>
-              )}
-              type="info"
-              showIcon
-            />}
-          </div>
-        </ContentPage>
-        <ContentPage largeFont>
-          <PageHeader title="Extra Details"/>
+          <PageHeader title="Details"/>
           {club.details && club.details.location &&
             <TextInfoIcon icon="calendar" title="Location">
               {club.details.location.formatted_address}
@@ -53,7 +55,7 @@ const About = ({ club }) => {
       </Col>
       <Col xs={24} md={9}>
         <ContentPage largeFont>
-          <PageHeader title="Contact Details"/>
+          <PageHeader title="Contact Details" />
           { club.details && club.details.email &&
             <TextInfoIcon icon="mail" title="Club Enquiries Email">
               <a href={`mailto:${club.details.email}`}>{club.details.email}</a>

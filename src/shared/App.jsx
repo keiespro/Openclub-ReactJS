@@ -7,6 +7,7 @@ import cx from 'classnames'
 import gql from 'graphql-tag'
 import Drawer from 'rc-drawer'
 import { Layout } from 'antd'
+import LoadingBar from 'react-redux-loading-bar'
 
 // Async routes
 import AsyncHome from 'routes/Home'
@@ -65,9 +66,9 @@ class App extends Component {
   render() {
     const { sidebarOpen } = this.state;
     const { data, location } = this.props;
-    console.log("REMOVEME", data.user || 'hi');
     return (
       <Drawer className={cx({'loggedin': data.user, 'open': sidebarOpen})} sidebar={<Sidebar user={data.user} location={location}/>} style={{ overflow: 'auto' }}>
+        <LoadingBar style={{ zIndex: 999 }} />
         <Layout>
           <Helmet
             htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}
