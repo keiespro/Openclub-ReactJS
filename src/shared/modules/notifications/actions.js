@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 
 // Auth0 lock actions
 export const LOAD_NOTIFICATIONS = 'LOAD_NOTIFICATIONS';
-export const CLEAR_NOTIFICATIONS = 'CLEAR_NOTIFICATIONS';
+export const SEEN_NOTIFICATIONS = 'SEEN_NOTIFICATIONS';
 export const NEW_NOTIFICATIONS = 'NEW_NOTIFICATIONS';
 
 const reduceLoadNotifications = ({ results, unread, unseen}) => ({
@@ -13,8 +13,9 @@ const reduceLoadNotifications = ({ results, unread, unseen}) => ({
   type: LOAD_NOTIFICATIONS
 })
 
-const reduceClearNotifications = () => ({
-  type: CLEAR_NOTIFICATIONS
+const reduceSeenNotifications = () => ({
+  unseen: 0,
+  type: SEEN_NOTIFICATIONS
 })
 
 const reduceNewNotifications = results => ({
@@ -34,18 +35,22 @@ export function newNotification(n) {
   }
 }
 
-const clearNotificationsMutation = gql`
-mutation clearNotifications{
-  clearNotifications
+const seenNotificationsMutation = gql`
+mutation markNotifications{
+  markNotifications
 }
 `
 
-export function clearNotifications() {
-  return dispatch => {
+export function seenNotifications() {
+  return async dispatch => {
     // Mark Notifications as cleared, we don't care if the server responds of not.
-    apolloClient.mutate({
-      mutation: clearNotificationsMutation
-    });
-    dispatch(reduceClearNotifications())
+    try {
+      await apolloClient.mutate({
+        mutation: seenNotificationsMutation
+      });
+      dispatch(reduceSeenNotifications())
+    } catch (err) {
+      console.error('Silent Notifications Error', err); //eslint-disable-line
+    }
   }
 }

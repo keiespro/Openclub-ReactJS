@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { seenNotifications } from 'modules/notifications/actions'
 import gql from 'graphql-tag'
 import { ContentArea, ContentPage } from 'components/layout'
 import { Button, Table, Icon } from 'antd'
@@ -13,7 +14,8 @@ class Notifications extends Component {
   }
   static propTypes = {
     data: PropTypes.object,
-    max: PropTypes.number
+    max: PropTypes.number,
+    seen: PropTypes.func
   }
   constructor(props) {
     super(props);
@@ -36,7 +38,14 @@ class Notifications extends Component {
   dismiss(id) {
     return id;
   }
+  findObject(value) {
+    if (value.object) return value.object;
+    if (value.activities && value.activities.constructor === Array && value.activities.length > 0) return value.activities[0].object || '';
+  }
   formatActors(value) {
+    if (!value.activity_count) {
+      return value.actor || ''
+    }
     if (value.activity_count === 1) {
       return value.activities[0].actor
     }
@@ -51,13 +60,18 @@ class Notifications extends Component {
   }
   render() {
     const { data, max } = this.props
-    let { notifications } = data
+    let { notifications } = data;
+
+    if (!notifications || notifications.length <= 0) {
+      return <div className="text-center">No new notifications.</div>
+    }
+
     if (max && notifications) notifications = notifications.slice(0, max)
 
     const onRowClick = record => this.goTo.bind(this, record.link);
     const rowKey = record => record.id;
     const rowClassName = record => cx({ 'notification-unseen': !record.is_seen });
-    const recordImg = record => record.activities.length > 0 && 'img' in record.activities[0] ? record.activities[0].img : false;
+    const recordImg = record => record.activities && record.activities.length > 0 && 'img' in record.activities[0] ? record.activities[0].img : (record.img || false);
     const notificationCols = [
       {
         key: 'icon',
@@ -66,7 +80,7 @@ class Notifications extends Component {
       },
       {
         key: 'notification',
-        render: (text, record) => <div>{`${this.formatActors(record)} ${record.verb} your ${record.object}`}</div>
+        render: (text, record) => <div>{`${this.formatActors(record)} ${record.verb} your ${this.findObject(record)}`}</div>
       },
       {
         key: 'actions',
@@ -74,13 +88,12 @@ class Notifications extends Component {
       }
     ]
 
-    if (data.notifications && data.notifications.length <= 0)
-      return <div className="text-center">No notifications.</div>
-
-    return <Table rowKey={rowKey} rowClassName={rowClassName} onRowClick={onRowClick} pagination={false} showHeader={false} columns={notificationCols} dataSource={notifications} />
+    return <Table rowKey={rowKey} rowClassName={rowClassName} onRowClick={onRowClick} pagination={false} showHeader={false} columns={notificationCols} dataSource={notifications} onMouseOver={this.markAsSeen}/>
   }
 }
 
 export default connect(state => ({
   data: state.notifications
-}))(Notifications);
+}), {
+  seen: seenNotifications
+})(Notifications);

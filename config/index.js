@@ -156,7 +156,7 @@ const config = {
   // @see https://github.com/nfl/react-helmet
   htmlPage: {
     htmlAttributes: { lang: 'en' },
-    titleTemplate: 'OpenClub - %s',
+    titleTemplate: '%s - OpenClub',
     defaultTitle: 'OpenClub',
     meta: [
       {
@@ -186,8 +186,8 @@ const config = {
       { rel: 'manifest', href: '/manifest.json' },
     ],
     scripts: [
-      // Example:
-      // { src: 'http://include.com/pathtojs.js', type: 'text/javascript' },
+      { src: 'https://js.stripe.com/v2/', type: 'text/javascript' },
+      { src: 'https://js.stripe.com/v3/', type: 'text/javascript' }
     ],
   },
 
@@ -341,6 +341,16 @@ const config = {
       return webpackConfig;
     },
   },
+  env: {
+    AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
+    AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
+    GRAPH_URL: process.env.GRAPH_URL,
+    ICEPICK_URL: process.env.ICEPICK_URL,
+    STREAM_APP_ID: process.env.STREAM_APP_ID,
+    STREAM_API_KEY: process.env.STREAM_API_KEY,
+    GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY
+  }
 };
 
 // Export the client configuration object.
@@ -388,6 +398,7 @@ export const clientConfig = filterObject(
     // We need to expose all the htmlPage settings.
     htmlPage: true,
     additionalNodeBundles: true,
+    env: true
   },
 );
 

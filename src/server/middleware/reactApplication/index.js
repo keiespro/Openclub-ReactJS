@@ -68,24 +68,12 @@ function reactApplicationMiddleware(request, response) {
     // Create our React application and render it into a string.
     const reactAppString = renderToString(app)
 
-    const env_vars = {
-      'AUTH0_CLIENT_ID': process.env.AUTH0_CLIENT_ID,
-      'AUTH0_DOMAIN': process.env.AUTH0_DOMAIN,
-      'GRAPH_URL': process.env.GRAPH_URL,
-      'ICEPICK_URL': process.env.ICEPICK_URL,
-      'STREAM_APP_ID': process.env.STREAM_APP_ID,
-      'STREAM_API_KEY': process.env.STREAM_API_KEY,
-      'GOOGLE_API_KEY': process.env.GOOGLE_API_KEY,
-      'STRIPE_PUBLISHABLE_KEY': process.env.STRIPE_PUBLISHABLE_KEY
-    }
-
     // Generate the html response.
     const html = generateHTML({
       // Provide the full app react element.
       reactAppString,
       // Nonce which allows us to safely declare inline scripts.
       nonce,
-      env_vars,
       // Running this gets all the helmet properties (e.g. headers/scripts/title etc)
       // that need to be included within our html.  It's based on the rendered app.
       // @see https://github.com/nfl/react-helmet

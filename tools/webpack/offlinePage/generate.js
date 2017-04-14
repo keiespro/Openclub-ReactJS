@@ -9,17 +9,6 @@
 
 import serialize from 'serialize-javascript';
 
-const env_vars = {
-  'AUTH0_CLIENT_ID': process.env.AUTH0_CLIENT_ID,
-  'AUTH0_DOMAIN': process.env.AUTH0_DOMAIN,
-  'GRAPH_URL': process.env.GRAPH_URL,
-  'ICEPICK_URL': process.env.ICEPICK_URL,
-  'STREAM_APP_ID': process.env.STREAM_APP_ID,
-  'STREAM_API_KEY': process.env.STREAM_API_KEY,
-  'GOOGLE_API_KEY': process.env.GOOGLE_API_KEY,
-  'STRIPE_PUBLISHABLE_KEY': process.env.STRIPE_PUBLISHABLE_KEY
-}
-
 const htmlAttributes = attrs => Object.keys(attrs)
   .map(attrName => `${attrName}="${attrs[attrName]}"`)
   .join(' ');
@@ -58,10 +47,7 @@ export default function generate(templateParams) {
             // client bundle that gets executed in the browser.
             `window.__CLIENT_CONFIG__=${serialize(clientConfig)};`
           }
-          ${env_vars ? `window.__ENV_VARS__=${serialize(env_vars)};` : ''}
         </script>
-        ${scriptTag('https://js.stripe.com/v2/')}
-        ${scriptTag('https://js.stripe.com/v3/')}
         ${
           // Enable the polyfill io script?
           // This can't be configured within a react-helmet component as we

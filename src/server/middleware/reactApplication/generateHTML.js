@@ -30,7 +30,7 @@ function scriptTags(jsFilePaths) {
 
 
 export default function generateHTML(args) {
-  const { reactAppString, initialState, nonce, helmet, asyncComponentState, env_vars } = args;
+  const { reactAppString, initialState, nonce, helmet, asyncComponentState } = args;
 
   // The chunks that we need to fetch the assets (js/css) for and then include
   // said assets as script/style tags within our html.
@@ -86,19 +86,11 @@ export default function generateHTML(args) {
             : ''
         }
         ${
-          // Bind the initial application state based on the server render
-          // so the client can register the correct initial state for the view.
-          env_vars
-            ? inlineScript(`window.__ENV_VARS__=${serialize(env_vars)};`)
-            : ''
-        }
-        ${
           // Bind our code split state so that the client knows which server
           // rendered modules need to be rehydrated.
-          /*codeSplitState
-            ? inlineScript(`window.${STATE_IDENTIFIER}=${serialize(codeSplitState)};`)
-            : ''
-          */
+          // codeSplitState
+          //   ? inlineScript(`window.${STATE_IDENTIFIER}=${serialize(codeSplitState)};`)
+          //   : ''
           asyncComponentState
             ? inlineScript(`window.ASYNC_COMPONENTS_STATE=${serialize(asyncComponentState)};`)
             : ''
@@ -111,8 +103,6 @@ export default function generateHTML(args) {
             ? scriptTag(config.polyfillIO.url)
             : ''
         }
-        ${scriptTag('https://js.stripe.com/v2/')}
-        ${scriptTag('https://js.stripe.com/v3/')}
         ${
           // When we are in development mode our development server will generate a
           // vendor DLL in order to dramatically reduce our compilation times.  Therefore

@@ -101,7 +101,7 @@ export default function webpackConfigFactory(buildOptions) {
         // the `node-source-map-support` module to allow for this).
         isNode
         // Always include source maps for any development build.
-        || isDev || isProd
+        || isDev || isProd // FIXME: remove prod
         // Allow for the following flag to force source maps even for production
         // builds.
         || config.includeSourceMapsForProductionBuilds,
@@ -148,7 +148,17 @@ export default function webpackConfigFactory(buildOptions) {
         ifClient('regenerator-runtime/runtime'),
         // The source entry file for the bundle.
         path.resolve(appRootDir.get(), bundleConfig.srcEntryFile),
-      ])
+      ]),
+      vendor: [
+        'react',
+        'react-dom',
+        'react-redux',
+        'teardrop',
+        'redux',
+        'redux-thunk',
+        'react-apollo',
+        'graphql-tag'
+      ]
     },
 
     // Bundle output configuration.
@@ -237,14 +247,14 @@ export default function webpackConfigFactory(buildOptions) {
         'process.env.IS_CLIENT': JSON.stringify(isClient),
         'process.env.IS_SERVER': JSON.stringify(isServer),
         'process.env.IS_NODE': JSON.stringify(isNode),
-        'process.env.AUTH0_CLIENT_ID': isServer ? 'process.env.AUTH0_CLIENT_ID' : 'window.__ENV_VARS__.AUTH0_CLIENT_ID',
-        'process.env.AUTH0_DOMAIN': isServer ? 'process.env.AUTH0_DOMAIN' :  'window.__ENV_VARS__.AUTH0_DOMAIN',
-        'process.env.GRAPH_URL': isServer ? 'process.env.GRAPH_URL' :  'window.__ENV_VARS__.GRAPH_URL',
-        'process.env.ICEPICK_URL': isServer ? 'process.env.ICEPICK_URL' :  'window.__ENV_VARS__.ICEPICK_URL',
-        'process.env.STREAM_APP_ID': isServer ? 'process.env.STREAM_APP_ID' : 'window.__ENV_VARS__.STREAM_APP_ID',
-        'process.env.STREAM_API_KEY': isServer ? 'process.env.STREAM_API_KEY' : 'window.__ENV_VARS__.STREAM_API_KEY',
-        'process.env.GOOGLE_API_KEY': isServer ? 'process.env.GOOGLE_API_KEY' : 'window.__ENV_VARS__.GOOGLE_API_KEY',
-        'process.env.STRIPE_PUBLISHABLE_KEY': isServer ? 'process.env.STRIPE_PUBLISHABLE_KEY' : 'window.__ENV_VARS__.STRIPE_PUBLISHABLE_KEY'
+        'process.env.AUTH0_CLIENT_ID': isServer ? 'process.env.AUTH0_CLIENT_ID' : 'window.__CLIENT_CONFIG__.env.AUTH0_CLIENT_ID',
+        'process.env.AUTH0_DOMAIN': isServer ? 'process.env.AUTH0_DOMAIN' : 'window.__CLIENT_CONFIG__.env.AUTH0_DOMAIN',
+        'process.env.GRAPH_URL': isServer ? 'process.env.GRAPH_URL' : 'window.__CLIENT_CONFIG__.env.GRAPH_URL',
+        'process.env.ICEPICK_URL': isServer ? 'process.env.ICEPICK_URL' : 'window.__CLIENT_CONFIG__.env.ICEPICK_URL',
+        'process.env.STREAM_APP_ID': isServer ? 'process.env.STREAM_APP_ID' : 'window.__CLIENT_CONFIG__.env.STREAM_APP_ID',
+        'process.env.STREAM_API_KEY': isServer ? 'process.env.STREAM_API_KEY' : 'window.__CLIENT_CONFIG__.env.STREAM_API_KEY',
+        'process.env.GOOGLE_API_KEY': isServer ? 'process.env.GOOGLE_API_KEY' : 'window.__CLIENT_CONFIG__.env.GOOGLE_API_KEY',
+        'process.env.STRIPE_PUBLISHABLE_KEY': isServer ? 'process.env.STRIPE_PUBLISHABLE_KEY' : 'window.__CLIENT_CONFIG__.env.STRIPE_PUBLISHABLE_KEY'
       }),
 
       // Generates a JSON file containing a map of all the output files for

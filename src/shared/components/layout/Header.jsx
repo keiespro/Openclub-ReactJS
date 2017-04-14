@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { seenNotifications } from 'modules/notifications/actions'
 import { Layout, Menu, Dropdown, Icon, Button, Badge } from 'antd'
 import { Link } from 'teardrop'
 import Logo from 'components/logo/Logo'
@@ -33,7 +34,7 @@ const notificationMenu = (
   </div>
 )
 
-const Header = ({ user, showSearch, notifications, open }) => (
+const Header = ({ user, showSearch, notifications, open, seen }) => (
   <div className="oc-header">
     <div className="oc-header-context hidden-md hidden-lg">
       <div className="oc-header-usermenu">
@@ -48,7 +49,7 @@ const Header = ({ user, showSearch, notifications, open }) => (
       <div className="oc-header-usermenu">
         <Dropdown overlay={notificationMenu} trigger={['click']}>
           <Badge count={notifications.unseen} className="notifications-toggle">
-            <Button shape="circle" type="primary" icon="bell" ghost />
+            <Button shape="circle" type="primary" icon="bell" ghost onClick={seen} />
           </Badge>
         </Dropdown>
         <Dropdown overlay={userMenu} trigger={['click']}>
@@ -79,4 +80,6 @@ const Header = ({ user, showSearch, notifications, open }) => (
 
 export default connect(state => ({
   notifications: state.notifications
-}))(Header)
+}), {
+  seen: seenNotifications
+})(Header)
