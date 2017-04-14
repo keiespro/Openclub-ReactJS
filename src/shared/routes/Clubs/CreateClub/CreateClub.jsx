@@ -11,18 +11,18 @@ import { message } from 'antd'
 
 const CreateClub = ({ mutate, submitting }, { router }) => {
 
-  const createTheClub = values => {
-    mutate({
-      variables: {
-        slug: values.slug,
-        club: values.club
-      }
-    }).then(({ data }) => {
-      router.transitionTo(`/${values.slug}`)
-    }).catch(err => {
-      console.log(err)
-      message('Error creating club: ' + err, 4)
-    })
+  const createTheClub = async values => {
+    try {
+      await mutate({
+        variables: {
+          slug: values.slug,
+          club: values.club
+        }
+      });
+      router.transitionTo(`/${values.slug}`);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
@@ -63,7 +63,10 @@ const CreateClubWithApollo = graphql(createMutation, {
         return {
           user: {
             ...prev.user,
-            clubs: [...prev.user.clubs, newClub]
+            memberships: [
+              ...prev.user.memberships,
+              newClub
+            ]
           }
         }
       }
