@@ -4,5 +4,5 @@ import Loading from 'components/Loading/Loading'
 
 export default {
   ErrorComponent: ({ error }) => <Error error={error} />,
-  LoadingComponent: () => <Loading />
+LoadingComponent: () => <div>Loady McLoadFace</div>
 }

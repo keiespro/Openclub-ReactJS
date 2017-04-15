@@ -11,6 +11,7 @@ const networkInterface = createNetworkInterface({
 })
 
 export default new ApolloClient({
+  ssrMode: true,
   networkInterface,
   dataIdFromObject: obj => obj._id
 });

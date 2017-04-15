@@ -11,7 +11,7 @@ import AuthLoader from '../shared/components/auth/AuthLoader'
 import App from '../shared/App';
 import createStore from '../shared/store/create_store';
 import apolloClient, { initMiddlewares } from '../shared/modules/apollo';
-import { LocaleProvider } from 'antd'
+import LocaleProvider from 'antd/lib/locale-provider'
 import enUS from 'antd/lib/locale-provider/en_US'
 
 // Get the DOM Element that will host our React application.
@@ -37,7 +37,7 @@ function renderApp(TheApp) {
             <BrowserRouter>
               {routerProps => (
                 <AuthLoader>
-                  <TheApp {...routerProps}/>
+                  <TheApp {...routerProps} />
                 </AuthLoader>
               )}
             </BrowserRouter>

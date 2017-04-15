@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { seenNotifications } from 'modules/notifications/actions'
-import gql from 'graphql-tag'
-import { ContentArea, ContentPage } from 'components/layout'
 import { Button, Table, Icon } from 'antd'
 import { objectIcon } from 'constants/index'
 import cx from 'classnames'
@@ -22,43 +20,34 @@ class Notifications extends Component {
 
     this.dismiss = this.dismiss.bind(this);
   }
-  goTo(link) {
-    this.context.router.transitionTo(link.replace(/^\//, ''));
-  }
-  formatVerb(value) {
-    const { verb } = value;
-    switch (verb) {
-      case 'like': return 'liked'; break;
-      case 'test': return 'tested'; break;
-      case 'comment': return 'commented on'; break;
-      case 'join': return 'joined'; break;
-      default: return 'performed an unknown activity'; break;
-    }
-  }
   dismiss(id) {
     return id;
   }
-  findObject(value) {
-    if (value.object) return value.object;
-    if (value.activities && value.activities.constructor === Array && value.activities.length > 0) return value.activities[0].object || '';
-  }
-  formatActors(value) {
-    if (!value.activity_count) {
-      return value.actor || ''
-    }
-    if (value.activity_count === 1) {
-      return value.activities[0].actor
-    }
-    if (value.activity_count === 2) {
-      return `${value.activities[0].actor} and ${value.activities[0].actor}`
-    }
-    if (value.activity_count > 2) {
-      const remaining = value.activity_count - 2
-      const personOrPeople = remaining === 1 ? 'person' : 'people'
-      return `${value.activities[0].actor}, ${value.activities[0].actor} and ${remaining} other ${personOrPeople}`
-    }
+  goTo(link) {
+    this.context.router.transitionTo(link.replace(/^\//, ''));
   }
   render() {
+    const findObject = (value) => {
+      if (value.object) return value.object;
+      if (value.activities && value.activities.constructor === Array && value.activities.length > 0) return value.activities[0].object || '';
+    }
+    const formatActors = (value) => {
+      if (!value.activity_count) {
+        return value.actor || ''
+      }
+      if (value.activity_count === 1) {
+        return value.activities[0].actor
+      }
+      if (value.activity_count === 2) {
+        return `${value.activities[0].actor} and ${value.activities[0].actor}`
+      }
+      if (value.activity_count > 2) {
+        const remaining = value.activity_count - 2
+        const personOrPeople = remaining === 1 ? 'person' : 'people'
+        return `${value.activities[0].actor}, ${value.activities[0].actor} and ${remaining} other ${personOrPeople}`
+      }
+    }
+
     const { data, max } = this.props
     let { notifications } = data;
 
@@ -80,7 +69,7 @@ class Notifications extends Component {
       },
       {
         key: 'notification',
-        render: (text, record) => <div>{`${this.formatActors(record)} ${record.verb} your ${this.findObject(record)}`}</div>
+        render: (text, record) => <div>{`${formatActors(record)} ${record.verb} your ${findObject(record)}`}</div>
       },
       {
         key: 'actions',

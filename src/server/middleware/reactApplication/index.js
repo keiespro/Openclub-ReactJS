@@ -5,19 +5,24 @@ import { ServerRouter, createServerRenderContext } from 'teardrop';
 //import { CodeSplitProvider, createRenderContext } from 'code-split-component';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider, renderToStringWithData } from 'react-apollo';
+import fetch from 'node-fetch'
 import Helmet from 'react-helmet';
+import LocaleProvider from 'antd/lib/locale-provider';
+import enUS from 'antd/lib/locale-provider/en_US'
 import generateHTML from './generateHTML';
 import createStore from '../../../shared/store/create_store';
 import apolloClient from '../../../shared/modules/apollo';
 import App from '../../../shared/App';
 import config from '../../../../config';
 
+global.fetch = fetch;
+
 /**
  * An express middleware that is capabable of service our React application,
  * supporting server side rendering of the application.
  */
-function reactApplicationMiddleware(request, response) {
+async function reactApplicationMiddleware(request, response) {
   // We should have had a nonce provided to us.  See the server/index.js for
   // more information on what this is.
   if (typeof response.locals.nonce !== 'string') {
@@ -55,18 +60,20 @@ function reactApplicationMiddleware(request, response) {
 
   const app = (
     <AsyncComponentProvider asyncContext={asyncContext}>
-      <ApolloProvider store={store} client={apolloClient}>
-        <ServerRouter location={request.url} context={reactRouterContext}>
-          <App store={store} />
-        </ServerRouter>
-      </ApolloProvider>
+      <LocaleProvider locale={enUS}>
+        <ApolloProvider store={store} client={apolloClient}>
+          <ServerRouter location={request.url} context={reactRouterContext}>
+            {routerProps => (<App store={store} {...routerProps} />)}
+          </ServerRouter>
+        </ApolloProvider>
+      </LocaleProvider>
     </AsyncComponentProvider>
   );
 
   // do initial bootstrapping to resolve any async components for the server render
-  asyncBootstrapper(app).then(() => {
+  asyncBootstrapper(app).then(async () => {
     // Create our React application and render it into a string.
-    const reactAppString = renderToString(app)
+    const reactAppString = await renderToStringWithData(app)
 
     // Generate the html response.
     const html = generateHTML({
