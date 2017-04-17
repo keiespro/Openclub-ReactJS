@@ -192,6 +192,7 @@ const clubQuery = gql`
 `
 
 const ClubWithApollo = graphql(clubQuery, {
+  skip: ({ params }) => !/^[\w\d]+(?:-[\w\d]+)*$/.test(params.club_id),
   options: ({ params }) => ({ variables: { slug: params.club_id }}),
 })(Club)
 
