@@ -22,7 +22,7 @@ const clubPermissions = (club, viewer) => {
   if (!viewer) return p;
   if (!viewer.memberships || viewer.memberships.length <= 0) return p;
 
-  const mK = viewer ? _.findIndex(viewer.memberships, { _id: club._id }) : false;
+  const mK = viewer ? _.findIndex(viewer.memberships, { club_id: club._id }) : false;
   const membership = mK !== false && mK > -1 ? viewer.memberships[mK] : {};
 
   // Club has plans
@@ -32,7 +32,7 @@ const clubPermissions = (club, viewer) => {
   p.clubHasPublicPlans = p.clubHasPlans && _.findIndex(club.membership_plans, { public: true }) > -1;
 
   // User has admin permission
-  p.userIsAdmin = _.findIndex(membership.roles || [], 'admin') > -1;
+  p.userIsAdmin = (membership.roles || []).indexOf('admin') > -1;
 
   // User is member of club
   p.userIsMember = !membership.plan === false || p.userIsAdmin
@@ -59,7 +59,7 @@ const clubPermissions = (club, viewer) => {
   p.userCanUpdateDetails = p.userIsAdmin;
 
   // User can edit plans
-  p.userCanEditPlans = p.userIdAdmin;
+  p.userCanEditPlans = p.userIsAdmin;
 
   // User can setup club
   p.userCanSetupClub = p.userIsAdmin;
@@ -69,7 +69,6 @@ const clubPermissions = (club, viewer) => {
 
   // User can view detailed members
   p.userCanViewDetailedMembers = p.userIsAdmin
-console.log(p);
   return p;
 }
 
