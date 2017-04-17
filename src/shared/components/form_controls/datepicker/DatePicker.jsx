@@ -5,7 +5,7 @@ import { DatePicker as AntDatePicker } from 'antd'
 const dateFormat = 'DD/MM/YYYY'
 
 const DatePicker = ({ input, meta, ...rest }) => (
-  <AntDatePicker {...input } value={input.value || null} format={dateFormat} {...rest}/>
+  <AntDatePicker {...input} value={moment(input.value)} format={dateFormat} {...rest} />
 )
 
 export default DatePicker
