@@ -19,7 +19,7 @@ import {
 import {
   StripeCountrySelector,
   DateOfBirth,
-  StripeFileUploader
+  Terms
 } from 'components/custom_form_fields'
 import { Alert, Col, message, Spin } from 'antd'
 import { required, maxLength, email, empty, number } from 'utils/form_validation/errors'
@@ -294,6 +294,11 @@ class StripeAccountForm extends Component {
         <FieldContainer required title="Additional Verifications" deleted={this.isFieldDisabled('legal_entity.additional_owners')}>
           Our payment provider has additional verification requirements in this region that may require that you contact us. Please email support@openclub.co if you have any difficulties.
         </FieldContainer>
+        {!existingAccount && (
+          <FieldContainer>
+            <Field component={Terms} name="tos_acceptance" />
+          </FieldContainer>
+        )}
         <div className="bottom-gap-large" />
         <FieldContainer>
           <Button type="primary" htmlType="submit" disabled={country_spec === null} loading={submitting}>Save Account Details</Button>
