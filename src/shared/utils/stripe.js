@@ -14,7 +14,6 @@ async function init() {
   let Stripe = null;
 
   if (window.Stripe) Stripe = window.Stripe;
-  Stripe.setPublishableKey(process.env.STRIPE_PUBLISHABLE_KEY);
   return Stripe(process.env.STRIPE_PUBLISHABLE_KEY);
 }
 
@@ -22,7 +21,11 @@ async function createBankAccount(details) {
   const Stripe = await init();
 
   return new Promise((resolve, reject) => {
-      Stripe.bankAccount.createToken(details, (status, response) => {
+    console.log(Stripe);
+      Stripe.createToken('bank_account', {
+        ...details
+      }, (status, response) => {
+        console.log(status, response);
       if (response.error) reject(response.error.message);
       resolve(response)
     });
