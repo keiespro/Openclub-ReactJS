@@ -186,7 +186,6 @@ const config = {
       { rel: 'manifest', href: '/manifest.json' },
     ],
     scripts: [
-      { src: 'https://js.stripe.com/v2/', type: 'text/javascript' },
       { src: 'https://js.stripe.com/v3/', type: 'text/javascript' }
     ],
   },
