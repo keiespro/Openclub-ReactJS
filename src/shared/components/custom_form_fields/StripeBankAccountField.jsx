@@ -46,6 +46,7 @@ class StripeBankAccountField extends Component {
       <div>
         <InputGroup compact className="bottom-gap">
           {transit_number ? <Input
+            key="transit_number"
             type="text"
             name="transit_number"
             placeholder={transit_number.name}
@@ -54,6 +55,7 @@ class StripeBankAccountField extends Component {
             style={{ width: transit_number.width }}
             /> : null}
           {routing_number ? <Input
+            key="routing_number"
             type="text"
             name="routing_number"
             placeholder={routing_number.name}
@@ -62,6 +64,7 @@ class StripeBankAccountField extends Component {
             style={{ width: routing_number.width }}
             /> : null}
           {account_number ? <Input
+            key="account_number"
             type="text"
             name="account_number"
             placeholder={account_number.name}
@@ -70,7 +73,7 @@ class StripeBankAccountField extends Component {
             onChange={this.handleInput.bind(this, account_number.validation)}
             /> : null}
         </InputGroup>
-        {Object.keys(this.state.validate).map(n => this.state.validate[n] ? <Alert message={this.state.validate[n]} type="error" /> : null)}
+        {Object.keys(this.state.validate).map(n => this.state.validate[n] ? <Alert message={this.state.validate[n]} type="error" key={n} /> : null)}
       </div>
     );
   }
