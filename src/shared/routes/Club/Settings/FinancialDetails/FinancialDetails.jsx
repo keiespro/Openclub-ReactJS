@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
+import Button from 'antd/lib/button'
+import Modal from 'antd/lib/modal'
 import { Alert, message } from 'antd'
 import StripeAccountForm from 'components/forms/StripeAccountForm'
 import StripeBankAccountForm from 'components/forms/StripeBankAccountForm'
@@ -18,8 +20,11 @@ class BankDetails extends Component {
   constructor(props) {
     super(props)
 
+    this.state = { submitting: false }
+
     this.saveDetails = this.saveDetails.bind(this)
     this.saveBankAccount = this.saveBankAccount.bind(this);
+    this.deleteBankAccount = this.deleteBankAccount.bind(this);
   }
   async saveDetails(values, dispatch, props) {
     const { createAccount, updateAccount, club } = this.props;
@@ -34,8 +39,6 @@ class BankDetails extends Component {
         year: data.dob.getFullYear()
       }
     }
-
-    console.log(!!club.stripe_account, data, props.registeredFields, values);
 
     try {
       await mutation({
@@ -52,10 +55,10 @@ class BankDetails extends Component {
     }
   }
   async saveBankAccount(values, dispatch, props) {
-    console.log(values, dispatch, props);
     const { saveBankAccount, club } = this.props;
 
     try {
+      this.setState({ submitting: true })
       const source = await createBankAccount({
         routing_number: values.bank_account.routing_number,
         account_number: values.bank_account.account_number,
@@ -67,17 +70,79 @@ class BankDetails extends Component {
       await saveBankAccount({
         variables: {
           clubId: club._id,
-          source
+          source: source.token.id
         }
       })
-      message.success("Bank account added!");
+      this.setState({ submitting: false })
+      message.success("Bank account has been added successfully.");
     } catch (err) {
-      console.error(err);
+      Modal.error({
+        title: "Error Adding Account",
+        content: err.message
+      });
+      this.setState({ submitting: false })
     }
+  }
+  async deleteBankAccount(id) {
+    const { deleteBankAccount, club } = this.props;
+
+    try {
+      this.setState({ submitting: true })
+      await deleteBankAccount({
+        variables: {
+          clubId: club._id,
+          source: id
+        }
+      })
+      this.setState({ submitting: false })
+      message.success("Bank account has been deleted successfully.");
+    } catch (err) {
+      Modal.error({
+        title: "Error Deleting Account",
+        content: err.message
+      });
+      this.setState({ submitting: false })
+    }
+  }
+  async confirmDeleteBankAccount(id) {
+    Modal.confirm({
+      title: "Delete Bank Account",
+      content: "Are you sure you wish to delete this bank account?",
+      okText: "Confirm & Delete",
+      cancelTest: "Cancel",
+      maskClosable: true,
+      onOk: await this.deleteBankAccount.bind(this, id)
+    })
+  }
+  renderBankAccounts(club, submitting) {
+    if (!club.stripe_account) {
+      return (
+        <Alert
+          message="Club Account Not Setup"
+          description="Bank accounts cannot be added until the primary club account above is setup"
+          type="warning"
+          showIcon
+        />
+      );
+    }
+    if (club.stripe_account.data && club.stripe_account.data.external_accounts.data.length === 0) {
+      return <StripeBankAccountForm club={club} country={club.stripe_account.data.country} onSubmit={this.saveBankAccount} submitting={submitting || this.state.submitting} />
+    }
+    const account = club.stripe_account.data.external_accounts.data[0];
+    return (
+      <div>
+        <Alert
+          message="Account Connected"
+          description={`Funds will be automatically deposited into your ${account.bank_name} account ending in ${account.last4} every ${club.stripe_account.data.payout_schedule.delay_days} days after transactions occur. Funds will be deposited in ${account.currency.toUpperCase()}. Please contact support if you have any concerns.`}
+          type="success"
+          showIcon
+        />
+      <Button type="danger" onClick={this.confirmDeleteBankAccount.bind(this, account.id)} disabled>Delete Bank Account</Button>
+      </div>
+    );
   }
   render() {
     const { club, submitting } = this.props
-    console.log(this.props);
 
     return (
       <div className="oc-form">
@@ -87,16 +152,9 @@ class BankDetails extends Component {
         <hr />
         <div className="bottom-gap-large" />
         <h4 className="bottom-gap-large">Bank Accounts</h4>
-        {club.stripe_account ? (
-          <StripeBankAccountForm country={club.stripe_account.data.country} onSubmit={this.saveBankAccount} submitting={submitting} />
-        ) : (
-          <Alert
-            message="Club Account Not Setup"
-            description="Bank accounts cannot be added until the primary club account above is setup"
-            type="warning"
-            showIcon
-          />
-        )}
+        <div>
+          {this.renderBankAccounts(club, submitting)}
+        </div>
       </div>
     )
   }
@@ -124,7 +182,17 @@ const updateAccountMutationQL = gql`
 
 const saveBankAccountQL = gql`
   mutation saveBankAccount($clubId: MongoID!, $source: String!) {
-    saveBankAccount(clubID: $clubId, source: $source){
+    saveBankAccount(clubId: $clubId, source: $source){
+      stripe_account{
+        data
+      }
+    }
+  }
+`
+
+const deleteBankAccountQL = gql`
+  mutation deleteBankAccount($clubId: MongoID!, $source: String!) {
+    deleteBankAccount(clubId: $clubId, source: $source){
       stripe_account{
         data
       }
@@ -167,6 +235,19 @@ graphql(saveBankAccountQL, {
         club: {
           ...prev.club,
           ...mutationResult.data.saveBankAccount
+        }
+      })
+    }
+  }
+}),
+graphql(deleteBankAccountQL, {
+  name: 'deleteBankAccount',
+  options: {
+    updateQueries: {
+      club: (prev, { mutationResult }) => ({
+        club: {
+          ...prev.club,
+          ...mutationResult.data.deleteBankAccount
         }
       })
     }

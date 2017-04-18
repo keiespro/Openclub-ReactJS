@@ -13,7 +13,6 @@ import {
 import { required, maxLength } from 'utils/form_validation/errors'
 
 const StripeBankAccountForm = ({ handleSubmit, submitting, country }) => {
-
   return (
     <Form onSubmit={handleSubmit}>
       <FieldContainer required title="Account Holder Type">
@@ -44,7 +43,9 @@ const StripeBankAccountForm = ({ handleSubmit, submitting, country }) => {
           component={StripeBankAccountField}
         />
       </FieldContainer>
-      <Button type="primary" htmlType="submit" loading={submitting}>Update Bank Account</Button>
+      <FieldContainer>
+        <Button type="primary" htmlType="submit" loading={submitting}>Submit Bank Account</Button>
+      </FieldContainer>
     </Form>
   )
 }
@@ -53,4 +54,11 @@ const StripeBankAccountReduxForm = reduxForm({
   form: 'stripe_bank_account'
 })(StripeBankAccountForm)
 
-export default StripeBankAccountReduxForm
+const StripeBankAccountReduxConnect = connect(state => {
+  if (!state.form || 'stripe_bank_account' in state.form === false) return {};
+  return {
+    form_values: 'values' in state.form.stripe_bank_account ? state.form.stripe_bank_account.values : {}
+  }
+})(StripeBankAccountReduxForm)
+
+export default StripeBankAccountReduxConnect

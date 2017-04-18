@@ -17,19 +17,14 @@ async function init() {
   return Stripe(process.env.STRIPE_PUBLISHABLE_KEY);
 }
 
-async function createBankAccount(details) {
+async function createBankAccount(bankAccount) {
   const Stripe = await init();
-
-  return new Promise((resolve, reject) => {
-    console.log(Stripe);
-      Stripe.createToken('bank_account', {
-        ...details
-      }, (status, response) => {
-        console.log(status, response);
-      if (response.error) reject(response.error.message);
-      resolve(response)
-    });
-  });
+  try {
+    const token = await Stripe.createToken('bank_account', bankAccount);
+    return token;
+  } catch (err) {
+    return Promise.reject(err);
+  }
 }
 
 async function createCardElement(style, mountNode, err) {
