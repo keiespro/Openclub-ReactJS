@@ -23,14 +23,22 @@ class BankDetails extends Component {
   }
   async saveDetails(values, dispatch, props) {
     const { createAccount, updateAccount, club } = this.props;
-
     const mutation = club.stripe_account ? updateAccount : createAccount;
 
-    const data = stringKeyObjectFilter(values, props.registeredFields)
-    console.log(!!club.stripe_account, data, props.registeredFields);
+    let data = stringKeyObjectFilter(values, props.registeredFields)
+
+    if (data.dob instanceof Date) {
+      data.dob = {
+        day: data.dob.getDate(),
+        month: data.dob.getMonth(),
+        year: data.dob.getFullYear()
+      }
+    }
+
+    console.log(!!club.stripe_account, data, props.registeredFields, values);
 
     try {
-      mutation({
+      await mutation({
         variables: {
           clubId: club._id,
           account: {
@@ -38,11 +46,13 @@ class BankDetails extends Component {
           }
         }
       })
+      message.success("Account details updated sucessfully!", 10);
     } catch (err) {
-      message.error(err, 20);
+      console.error(err);
     }
   }
   async saveBankAccount(values, dispatch, props) {
+    console.log(values, dispatch, props);
     const { saveBankAccount, club } = this.props;
 
     try {
@@ -54,12 +64,13 @@ class BankDetails extends Component {
         country: club.stripe_account.data.country,
         currency: club.stripe_account.data.default_currency
       });
-      saveBankAccount({
+      await saveBankAccount({
         variables: {
           clubId: club._id,
           source
         }
       })
+      message.success("Bank account added!");
     } catch (err) {
       console.error(err);
     }

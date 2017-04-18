@@ -23,6 +23,16 @@ class AddressField extends Component {
     }
     this.timeout = null;
   }
+  produceDefaultValue() {
+    const { input } = this.props;
+    if (input.value && typeof input.value === 'object') {
+      if (input.value.formatted_address) return input.value.formatted_address;
+      if (input.value.line1 && input.value.city && input.value.country && input.value.state && input.value.postal_code && input.value.country) {
+        return `${input.value.line1}, ${input.value.city} ${input.value.state} ${input.value.postal_code}, ${input.value.country}`
+      }
+    }
+    return '';
+  }
   async getGoogleMaps() {
     if (this.googleMaps) {
       this.setState({ ready: true })
@@ -66,7 +76,7 @@ class AddressField extends Component {
       <Spin spinning={!this.state.ready} tip="Waiting on Google...">
         <Input
           autoComplete={false}
-          defaultValue={input.value ? input.value.formatted_address : ''}
+          defaultValue={this.produceDefaultValue()}
           ref={addressInput => { this.addressInput = addressInput }}
           disabled={!this.state.ready}
         />

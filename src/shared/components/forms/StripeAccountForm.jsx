@@ -150,7 +150,6 @@ class StripeAccountForm extends Component {
 
   */
   render() {
-    console.log(this.props);
     const { handleSubmit, additional_verifications, form_values, club, submitting } = this.props
     const { stripe_account } = club;
     const { country_spec } = this.state
