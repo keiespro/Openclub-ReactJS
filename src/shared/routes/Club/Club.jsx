@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { login } from 'modules/auth/actions'
+import Helmet from 'react-helmet'
 import gql from 'graphql-tag'
 import { Menu, Icon, Button, Dropdown } from 'antd'
 import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
@@ -20,6 +21,8 @@ import AsyncEvents from './Events'
 import AsyncFeed from './Feed'
 import AsyncJoin from './Join'
 import AsyncSettings from './Settings'
+
+import la from 'logandarrow'
 
 import './Club.scss'
 
@@ -66,6 +69,7 @@ class Club extends Component {
 
     return (
       <section className="oc-object-page-container">
+        <Helmet title={`${club.name}`} />
         <ProfileHeader
           name={club.name}
           location={club.location}
@@ -109,6 +113,7 @@ class Club extends Component {
               exactly
               pattern={`/${params.club_id}`}
               render={() => {
+                if (!viewer) return <Redirect to={`/${params.club_id}/about`} />;
                 if (viewer && viewer.clubs && viewer.clubs.some(c => c.slug === params.club_id)) {
                   return <Redirect to={`/${params.club_id}/feed`} push />
                 }
@@ -125,11 +130,11 @@ class Club extends Component {
             />
             <Match
               pattern={`/${params.club_id}/settings`}
-              render={routerProps => <AsyncSettings {...routerProps} club={club} perm={perm} />}
+              render={routerProps => perm.userCanAccessSettings ? <AsyncSettings {...routerProps} club={club} perm={perm} /> : <Error404 />}
             />
             <Match
               pattern={`/${params.club_id}/join`}
-              render={routerProps => <AsyncJoin {...routerProps} club={club} perm={perm} />}
+              render={routerProps => perm.userCanJoin ? <AsyncJoin {...routerProps} club={club} perm={perm} /> : <Error404 />}
             />
           <Miss component={Error404} />
           </MatchGroup>
