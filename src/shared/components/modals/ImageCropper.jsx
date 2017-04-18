@@ -39,7 +39,7 @@ class ImageCropper extends Component {
     const { show, handleHide, onResult, onCancel, src } = this.props
 
     return (
-      <Modal title="Adjust Image" cancelText="Cancel" okText="OK"
+      <Modal title="Adjust Image" cancelText="Cancel" okText="OK" maskClosable={false}
         visible={show} onOk={() => this.handleOk(onResult, handleHide)} onCancel={() => this.handleCancel(onCancel, handleHide)}
       >
         <ReactCrop
