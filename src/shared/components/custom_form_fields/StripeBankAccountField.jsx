@@ -36,6 +36,7 @@ class StripeBankAccountField extends Component {
     obj[e.target.name] = e.target.value;
     obj.validate[e.target.name] = validation(e.target.value);
     this.setState(obj);
+    this.update();
   }
   countrySpec() {
     return bankByCountry[this.props.country];
