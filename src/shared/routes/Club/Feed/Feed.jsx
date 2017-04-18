@@ -9,7 +9,7 @@ class Feed extends Component {
     const { club } = this.props;
     return (
       <div>
-        <Helmet title={`${club.name}`} />
+        <Helmet title={`${club.name} — Feed`} />
         <span>Feed here mang</span>
       </div>
     )
