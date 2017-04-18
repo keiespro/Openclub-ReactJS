@@ -47,7 +47,7 @@ const clubPermissions = (club, viewer) => {
   p.userCanAccessSettings = p.userIsAdmin;
 
   // User can join club
-  p.userCanJoin = p.clubHasPublicPlans && !p.userIsMember && !p.userIsAdmin
+  p.userCanJoin = p.clubHasPublicPlans && !p.userIsMember && !p.userIsAdmin || true
 
   // User can follow club
   p.userCanFollow = !p.userIsFollower

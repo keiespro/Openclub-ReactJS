@@ -24,6 +24,11 @@ class MembershipPlans extends Component {
     this.savePlan = this.savePlan.bind(this);
   }
 
+  bankCheck() {
+    const { club } = this.props;
+    return club.stripe_account && club.stripe_account.data && club.stripe_account.data.external_accounts.data.length > 0;
+  }
+
   async savePlan(values, dispatch, props) {
     const { createMutation, updateMutation } = this.props;
     let { registeredFields } = props
@@ -91,8 +96,8 @@ class MembershipPlans extends Component {
 
     return (
       <div>
-        {club.membership_plans && club.membership_plans.length > 0 && !club.bank_details &&
-          <Alert message="No bank details have been entered. If you have plans that require payment, signup won't be available until bank details have been setup." type="warning" showIcon />
+        {!this.bankCheck() &&
+          <Alert message="You haven't setup any bank accounts yet. Please ensure that you add bank accounts before trying to accept payments." type="warning" showIcon />
         }
         <Table
           data={club.membership_plans}
