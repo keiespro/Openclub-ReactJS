@@ -7,8 +7,6 @@ const windowCheck = () => {
   return false;
 }
 
-const timeout = 10000;
-
 async function init() {
   if (windowCheck()) return null;
   let Stripe = null;
