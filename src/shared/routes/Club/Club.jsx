@@ -16,11 +16,11 @@ import Loading from 'components/Loading/Loading'
 import clubPermissions from 'utils/club_permissions'
 // Async routes
 import AsyncAbout from './About/About' // FIXME: Shitty hack to bypass System.import()
-import AsyncCommunity from './Community'
-import AsyncEvents from './Events'
-import AsyncFeed from './Feed'
-import AsyncJoin from './Join'
-import AsyncSettings from './Settings'
+import AsyncCommunity from './Community/Community'
+import AsyncEvents from './Events/Events'
+import AsyncFeed from './Feed/Feed'
+import AsyncJoin from './Join/Join'
+import AsyncSettings from './Settings/Settings'
 
 import './Club.scss'
 
@@ -131,7 +131,7 @@ class Club extends Component {
             />
             <Match
               pattern={`/${params.club_id}/join`}
-              render={routerProps => perm.userCanJoin ? <AsyncJoin {...routerProps} club={club} perm={perm} /> : <Error404 />}
+              render={routerProps => perm.userCanJoin ? <AsyncJoin {...routerProps} club={club} perm={perm} viewer={viewer} /> : <Error404 />}
             />
           <Miss component={Error404} />
           </MatchGroup>

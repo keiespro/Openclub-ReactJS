@@ -59,18 +59,17 @@ class MembershipPlans extends Component {
     const club = _.clone(this.props.club);
 
     const priceColumns = [
-      { key: 'price', customDataRender: (table, price, plan) => `$${price.amount} ${durations.lookupPer[plan.duration]}` },
-      { key: 'setup_price', customDataRender: (table, setupPrice) => `$${setupPrice.amount} setup fee` }
+      { key: 'price', size: '50%', customDataRender: (table, price, plan) => `$${price.amount} ${durations.lookupPer[plan.duration]}` },
+      { key: 'setup_price', size: '50%', customDataRender: (table, setupPrice) => `$${setupPrice.amount} setup fee` }
     ]
 
     const columns = [
       { title: 'Name', key: 'name' },
-      { title: 'Description', key: 'description' },
       { title: 'Prices',
         tdclasses: 'no-padding',
         key: 'prices',
         customDataRender: (table, prices) => (
-          prices ? <Table data={prices} columns={priceColumns} /> : <div style={{padding: '1em'}}>Free to join</div>
+          prices ? <Table data={prices} columns={priceColumns} /> : <div style={{margin: '1em', marginLeft: 0}}>Free to join</div>
         )
       },
       { title: 'Actions',
@@ -189,7 +188,24 @@ const MembershipPlansWithApollo = compose(
     }
   }),
   graphql(updateMutationGQL, {
-    name: 'updateMutation'
+    name: 'updateMutation',
+    options: {
+      updateQueries: {
+        club: (prev, { mutationResult }) => {
+          console.log(mutationResult);
+          const changedPlan = mutationResult.data.updateMembershipPlan
+          let oldPlans = prev.club.membership_plans || []
+          const index = _.findIndex(oldPlans, { _id: changedPlan._id });
+          oldPlans[index] = changedPlan;
+          return {
+            club: {
+              ...prev.club,
+              membership_plans: oldPlans
+            }
+          }
+        }
+      }
+    }
   })
 )(MembershipPlans)
 
