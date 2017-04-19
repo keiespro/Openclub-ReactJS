@@ -34,11 +34,11 @@ const notificationMenu = (
   </div>
 )
 
-const Header = ({ user, showSearch, notifications, open, seen }) => (
+const Header = ({ user, showSearch, notifications, open, seen, toggle }) => (
   <div className="oc-header">
     <div className="oc-header-context hidden-md hidden-lg">
       <div className="oc-header-usermenu">
-        <Button shape="circle" type="primary" ghost icon={open ? 'menu-fold' : 'menu-unfold'} />
+        <Button shape="circle" type="primary" ghost icon={open ? 'menu-fold' : 'menu-unfold'} onClick={toggle} />
       </div>
     </div>
     <Link to="/" className="oc-header-logo">

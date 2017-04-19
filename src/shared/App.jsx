@@ -64,10 +64,9 @@ class App extends Component {
     this.setState({ open: !this.state.open })
   }
   render() {
-    const { sidebarOpen } = this.state;
     const { data, location } = this.props;
     return (
-      <Drawer className={cx({'loggedin': data.user, 'open': sidebarOpen})} sidebar={<Sidebar user={data.user} location={location}/>} style={{ overflow: 'auto' }}>
+      <Drawer className={cx({'loggedin': data.user, 'open': this.state.open})} sidebar={<Sidebar user={data.user} location={location} />} style={{ overflow: 'auto' }}>
         <LoadingBar style={{ zIndex: 999 }} />
         <Layout>
           <Helmet
@@ -80,7 +79,7 @@ class App extends Component {
           />
 
           <LoadNotifications user={data.user} />
-          <Header user={data.user} toggleSidebar={this.toggleSidebar.bind(this)} open={this.state.open} />
+          <Header user={data.user} toggle={this.toggleSidebar.bind(this)} open={this.state.open} />
           <Content>
             <MatchGroup>
               {/* HOMEPAGE REDIRECT */}
