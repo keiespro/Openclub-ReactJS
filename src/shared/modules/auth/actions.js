@@ -76,7 +76,7 @@ export function checkAuthentication() {
           dispatch(lockError(error))
           dispatch(authLoaded())
         })
-      }else{
+      } else {
         dispatch(authLoaded())
       }
     })
@@ -88,8 +88,6 @@ export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout())
     localStorage.removeItem('openclub_token')
-    // clear apollos cache
     apolloClient.resetStore()
-    browserHistory.replace('/')
   }
 }

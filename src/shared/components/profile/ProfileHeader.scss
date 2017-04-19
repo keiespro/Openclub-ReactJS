@@ -1,3 +1,5 @@
+@import "styles/Variables.scss";
+
 .objectpage-header-container {
   height: 240px;
   position: relative;
@@ -9,20 +11,72 @@
   }
 
   .header-details {
-    display: flex;
+    display: table;
     justify-content: center;
     height: 100%;
     padding: 20px;
+    background: linear-gradient(180deg, transparent, transparent 80%, rgba(0,0,0,0.1));
     .media {
       align-self: center;
     }
     .media-left {
       padding-right: 20px;
     }
+    .details-container {
+      display: table-cell;
+      vertical-align: bottom;
+    }
+    .header-buttons, .header-buttons > div {
+      display: table-cell;
+      white-space: nowrap;
+      vertical-align: bottom;
+      button: {
+        margin: 5px;
+      }
+    }
+
+    @media #{$max-tablet} {
+      .details-container {
+        display: flex;
+      }
+      .header-buttons, .header-buttons > div {
+        display: flex;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        button {
+          flex-grow: 1;
+          border-radius: 0px;
+          margin: 0;
+        }
+      }
+    }
   }
 
-  .details-container {
-    align-self: flex-end;
+  &.collapsed {
+    height: 50px;
+    .profile-backdrop {
+      padding: 0;
+      border-radius: 0;
+      background-color: #fff;
+      box-shadow: none;
+    }
+    .header-details {
+      padding: 0px 20px;
+      background: transparent;
+    }
+    .media-object {
+      height: 50px;
+    }
+    .objectpage-heading {
+      margin-top: auto;
+      margin-bottom: auto;
+      height: 38px;
+    }
+    .header-buttons {
+      vertical-align: middle;
+    }
   }
 
   .img-round-corners {
@@ -45,24 +99,8 @@
     margin: 0;
   }
 
-  &.collapsed {
-    height: 50px;
-    .profile-backdrop {
-      padding: 0;
-      border-radius: 0;
-      background-color: #fff;
-      box-shadow: none;
-    }
-    .header-details {
-      padding: 0px;
-    }
-    .media-object {
-      height: 50px;
-    }
-    .objectpage-heading {
-      margin-top: auto;
-      margin-bottom: auto;
-      height: 38px;
-    }
+
+  .join-button {
+    align-self: flex-end;
   }
 }

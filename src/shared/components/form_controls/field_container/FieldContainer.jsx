@@ -1,10 +1,12 @@
 import React from 'react'
 import classNames from 'classnames'
-import { formPrefix } from 'constants'
+import { formPrefix } from 'constants/index'
 
 import './FieldContainer.scss'
 
-const FieldContainer = ({ required, title, children }) => {
+const FieldContainer = ({ deleted, required, title, children }) => {
+  if (deleted) return null;
+
   const className = classNames({
     [`${formPrefix}-item-required`]: required
   })

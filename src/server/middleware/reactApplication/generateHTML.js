@@ -8,7 +8,7 @@
 // @see ./tools/webpack/offlinePage/generate.js
 
 import serialize from 'serialize-javascript';
-import { STATE_IDENTIFIER } from 'code-split-component';
+//import { STATE_IDENTIFIER } from 'code-split-component';
 import getAssetsForClientChunks from './getAssetsForClientChunks';
 import config, { clientConfig } from '../../../../config';
 
@@ -30,7 +30,7 @@ function scriptTags(jsFilePaths) {
 
 
 export default function generateHTML(args) {
-  const { reactAppString, initialState, nonce, helmet, codeSplitState } = args;
+  const { reactAppString, initialState, nonce, helmet, asyncComponentState } = args;
 
   // The chunks that we need to fetch the assets (js/css) for and then include
   // said assets as script/style tags within our html.
@@ -40,7 +40,7 @@ export default function generateHTML(args) {
     'index',
   ];
 
-  if (codeSplitState) {
+  /*if (codeSplitState) {
     // We add all the chunks that our CodeSplitProvider tracked as being used
     // for this render.  This isn't actually required as the rehydrate function
     // of code-split-component which gets executed in our client bundle will
@@ -50,7 +50,7 @@ export default function generateHTML(args) {
     // Having the assets.json file available to us made implementing this
     // feature rather arbitrary.
     codeSplitState.chunks.forEach(chunk => chunksForRender.push(chunk));
-  }
+  }*/
 
   // Now we get the assets (js/css) for the chunks.
   const assetsForRender = getAssetsForClientChunks(chunksForRender);
@@ -88,8 +88,11 @@ export default function generateHTML(args) {
         ${
           // Bind our code split state so that the client knows which server
           // rendered modules need to be rehydrated.
-          codeSplitState
-            ? inlineScript(`window.${STATE_IDENTIFIER}=${serialize(codeSplitState)};`)
+          // codeSplitState
+          //   ? inlineScript(`window.${STATE_IDENTIFIER}=${serialize(codeSplitState)};`)
+          //   : ''
+          asyncComponentState
+            ? inlineScript(`window.ASYNC_COMPONENTS_STATE=${serialize(asyncComponentState)};`)
             : ''
         }
         ${

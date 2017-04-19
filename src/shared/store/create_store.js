@@ -1,9 +1,9 @@
 import { applyMiddleware, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
+import { loadingBarMiddleware } from 'react-redux-loading-bar'
 import makeRootReducer from './reducers'
 
 export default (initialState = {}) => {
-  
   // setup middlewares and enhancers
   const middleware = [thunk]
   const enhancers = []
@@ -18,7 +18,7 @@ export default (initialState = {}) => {
   const store = createStore(
     makeRootReducer(),
     initialState,
-    compose(applyMiddleware(...middleware), ...enhancers)
+    compose(applyMiddleware(...middleware), applyMiddleware(loadingBarMiddleware()), ...enhancers)
   )
   store.asyncReducers = {}
 

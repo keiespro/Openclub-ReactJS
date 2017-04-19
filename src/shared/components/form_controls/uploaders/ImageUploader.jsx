@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Icon, Spin, message } from 'antd'
+import { Icon, Spin, message, Modal } from 'antd'
 import Upload from 'rc-upload'
 import ImageCropper from 'components/modals/ImageCropper'
 import { bindActionCreators } from 'redux'
@@ -20,65 +20,85 @@ class ImageUploader extends Component {
     this.state = {
       uploading: uploadState.WAITING
     }
+
+    this.previewCanvas = null;
+    this.cropCanvas = this.cropCanvas.bind(this);
+    this.preprocess = this.preprocess.bind(this);
+    this.handleStart = this.handleStart.bind(this);
+    this.handleError = this.handleError.bind(this);
+    this.handleSucess = this.handleSuccess.bind(this);
   }
 
-  cropCanvas = (baseImage, cropDetails) => new Promise(resolve => {
-    // setup the actual image
-    const image = new Image()
-    image.src = baseImage
-    const iWidth = image.width
-    const iHeight = image.height
+  async cropCanvas(baseImage, cropDetails) {
+    // Setup the image
+    const image = new Image();
+    image.src = baseImage;
+    const { height: iHeight, width: iWidth } = image;
 
-    // do the actual crop
-    const sx = Math.floor((cropDetails.x / 100.0) * iWidth)
-    const sy = Math.floor((cropDetails.y / 100.0) * iHeight)
-    const sWidth = Math.floor((cropDetails.width / 100.0) * iWidth)
-    const sHeight = Math.floor(sWidth * cropDetails.aspect)
+    // Crop the image
+    const sx = Math.floor((cropDetails.x / 100.0) * iWidth);
+    const sy = Math.floor((cropDetails.y / 100.0) * iHeight);
+    const sWidth = Math.floor((cropDetails.width / 100.0) * iWidth);
+    const sHeight = Math.floor(sWidth * cropDetails.aspect);
 
-    const c = this.refs.previewCanvas
-    const ctx = c.getContext('2d')
-    c.width = sWidth
-    c.height = sHeight
+    const c = this.previewCanvas;
+    const ctx = c.getContext('2d');
+    c.width = sWidth;
+    c.height = sHeight;
 
-    ctx.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, sWidth, sHeight)
-    const output = c.toBlob(blob => {
-      resolve(blob)
-    }, 'image/jpeg')
-  })
+    ctx.drawImage(image, sx, sy, sWidth, sHeight, 0, 0, sWidth, sHeight);
+    const output = await new Promise((resolve) => c.toBlob(b => { resolve(b) }, 'image/jpeg'));
+    return output;
+  }
 
-  preprocess = file => new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    const self = this
-    reader.onload = e => {
-      self.props.show('imagecropper', {
-        src: e.target.result,
-        onResult: cropDetails => {
-          self.cropCanvas.call(self, e.target.result, cropDetails)
-            .then(blob => resolve(blob))
-        },
-        onCancel: () => reject()
-      })
-    }
-    reader.onerror = err => {
-      reject(err)
-    }
-    reader.readAsDataURL(file)
-  })
+  async preprocess(file) {
+    this.setState({
+      uploading: uploadState.UPLOADING
+    })
+    const reader = new FileReader();
+    const self = this;
+    const blob = await new Promise((resolve, reject) => {
+      reader.onload = e => {
+        self.props.show('imagecropper', {
+          src: e.target.result,
+          onResult: cropDetails => {
+            self.cropCanvas.call(self, e.target.result, cropDetails)
+              .then(b => resolve(b))
+          },
+          onCancel: () => reject()
+        })
+      }
+      reader.onerror = err => {
+        self.setState({
+          uploading: uploadState.WAITING
+        })
+        reject(err)
+      }
+      reader.readAsDataURL(file)
+    })
+    this.setState({
+      uploading: uploadState.WAITING
+    })
+    return blob;
+  }
 
-  handleStart = file => {
+  handleStart() {
     this.setState({
       uploading: uploadState.UPLOADING
     })
   }
 
-  handleError = err => {
-    message.error('Upload Failed:' + err, 3)
+  handleError(err) {
+    Modal.error({
+      title: "Upload Failed",
+      content: err.message
+    })
     this.setState({
       uploading: uploadState.WAITING
     })
   }
 
-  handleSuccess = result => {
+  handleSuccess(result) {
     this.setState({
       uploading: uploadState.COMPLETE
     })
@@ -99,31 +119,32 @@ class ImageUploader extends Component {
     } : {}
 
     return (
-      <div>
-        <Upload
-          beforeUpload={this.preprocess}
-          onStart={this.handleStart}
-          onError={this.handleError}
-          onSuccess={this.handleSuccess}
-          headers={headers}
-          name={postname}
-          {...rest}
-        >
-          { uploading !== uploadState.COMPLETE &&
-          <div className="avatar-uploader">
-            { uploading === uploadState.WAITING &&
-              <Icon type="plus" className="avatar-uploader-trigger" />
+      <div className="image-upload-field">
+        <Spin spinning={uploading === uploadState.UPLOADING}>
+          <Upload
+            beforeUpload={this.preprocess}
+            onStart={this.handleStart}
+            onError={this.handleError}
+            onSuccess={this.handleSuccess}
+            headers={headers}
+            name={postname}
+            {...rest}
+          >
+            { uploading !== uploadState.COMPLETE &&
+            <div
+              className="avatar-uploader" style={{
+              backgroundImage: `url(${input.value})`,
+              backgroundSize: 'cover'
+            }}>
+              { uploading === uploadState.WAITING &&
+                <Icon type="plus" className="avatar-uploader-trigger" />
+              }
+            </div>
             }
-            { uploading === uploadState.UPLOADING &&
-              <div className="avatar-uploader-spinner">
-                <Spin/>
-              </div>
-            }
-          </div>
-          }
-          <canvas className={canvasClasses} ref="previewCanvas"/>
-        </Upload>
-        <ImageCropper aspect={aspect}/>
+            <canvas className={canvasClasses} ref={previewCanvas => { this.previewCanvas = previewCanvas }} />
+          </Upload>
+        </Spin>
+        <ImageCropper aspect={aspect} />
       </div>
     )
   }

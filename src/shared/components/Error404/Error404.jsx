@@ -1,7 +1,20 @@
 import React from 'react'
+import Alert from 'antd/lib/alert'
 
-const Error404 = () => (
-  <div>Sorry, that page was not found.</div>
+const Error = () => (
+  <div style={{ width: '100%', height: 'calc(100vh - 50px)', display: 'block' }}>
+    <Alert
+      message="Not Found"
+      description="Sorry, the page you requested could not be found."
+      type="error"
+      showIcon
+      style={{
+        maxWidth: 500,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        top: '5vh'
+      }}
+    />
+  </div>
 )
-
-export default Error404
+export default Error

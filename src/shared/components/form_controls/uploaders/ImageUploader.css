@@ -1,3 +1,7 @@
+.image-upload-field {
+  max-height: 150px;
+  max-width: 150px;
+}
 .avatar-uploader,
 .avatar-uploader-trigger,
 .avatar-uploader-spinner,
@@ -10,6 +14,10 @@
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;
+}
+.avatar-uploader .anticon {
+  display: table-cell;
+  vertical-align: middle;
 }
 .avatar-uploader-trigger {
   display: table-cell;

@@ -5,7 +5,9 @@ const Checkbox = ({ input, label }) => (
   <AntCheckbox
     {...input}
     defaultChecked={input.value ? true : false}
-  >{label}</AntCheckbox>
+  >
+    {label}
+  </AntCheckbox>
 )
 
 export default Checkbox

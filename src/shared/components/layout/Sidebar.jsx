@@ -1,47 +1,79 @@
-import React from 'react'
-import { Menu, Icon } from 'antd'
+import React, { Component, PropTypes } from 'react'
+import Icon from 'antd/lib/icon'
+import Menu, { Item, ItemGroup } from 'antd/lib/menu'
+import { keysFromFragments } from 'utils/route'
 import './Sidebar.scss'
 
-const SubMenu = Menu.SubMenu
+class Sidebar extends Component {
+  static propTypes = {
+    user: PropTypes.object,
+    location: PropTypes.object
+  }
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
+  constructor(props) {
+    super(props)
 
-const Sidebar = ({ user }) => {
-  if(user) {
-    return (
-      <aside className="oc-sidebar">
-        <div className="oc-sidebar-profile">
-          <a href=""><img src={user.images.square} alt="Profile" className="oc-sidebar-profile--img thumb64" /></a>
-          <div className="mt">{user.name}</div>
-        </div>
-        <Menu
-          theme="dark"
-          className="oc-sidebar-menu"
-          selectedKeys={['1']}
-          mode="inline"
-          defaultOpenKeys={['sub1', 'sub2', 'sub3']}
-        >
-          <SubMenu key="sub1" title={<span>OpenClub</span>}>
-            <Menu.Item key="/"><Icon type="home"/> Home</Menu.Item>
-            <Menu.Item key="/discover"><Icon type="global"/> Discover</Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub2" title={<span>Menu</span>}>
-            <Menu.Item key="/feed"><Icon type="home"/> Home</Menu.Item>
-            <Menu.Item key="/profile"><Icon type="idcard"/> Profile</Menu.Item>
-            <Menu.Item key="/notifications"><Icon type="bell"/> Notifications</Menu.Item>
-            <Menu.Item key="/events"><Icon type="calendar"/> Events</Menu.Item>
-            <Menu.Item key="/clubs"><Icon type="team"/> Clubs</Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub3" title={<span>My Clubs</span>}>
-            {user && user.clubs && user.clubs.map((c, index) =>
-              <Menu.Item
-                key={`/${c.slug}`}
-              ><img className="oc-sidebar-clubimage" src={c.images.thumb}/> {c.name}</Menu.Item>
-            )}
-          </SubMenu>
-        </Menu>
-      </aside>
-    )
-  }else{
-    return <div/>
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick(e) {
+    const { router } = this.context;
+
+    router.transitionTo('/' + e.key);
+  }
+  render() {
+    const { user, location } = this.props;
+
+    if (user) {
+      const myClubs = user.memberships || [];
+      const regexLocation = location.pathname ? location.pathname.match(/^\/([\d\w-_]+)\/?.*?/) : null;
+      const match = regexLocation ? regexLocation[1] : '';
+      const keys = [
+        'home', 'discover', 'feed', 'profile', 'notifications', 'events', 'clubs',
+        ...myClubs.map(c => c.club.slug)
+      ];
+      const selectedKeys = [keys.indexOf(match) > -1 ? match : ''];
+
+      if (!user.images) { user.images = {} }
+      return (
+        <aside className="oc-sidebar">
+          <div className="oc-sidebar-profile">
+            <a href=""><img src={user.images.square || user.images.thumb} alt="Profile" className="oc-sidebar-profile--img thumb64" /></a>
+            <div className="mt">{user.name}</div>
+          </div>
+          <Menu
+            theme="dark"
+            className="oc-sidebar-menu"
+            selectedKeys={selectedKeys}
+            mode="inline"
+            onClick={this.handleClick}
+            defaultOpenKeys={['sub1', 'sub2', 'sub3']}
+          >
+            <ItemGroup key="sub1" title={<span>OpenClub</span>}>
+              <Item key="feed"><Icon type="layout" /> Feed</Item>
+              <Item key="discover"><Icon type="global" /> Discover</Item>
+            </ItemGroup>
+            <ItemGroup key="sub2" title={<span>Menu</span>}>
+              <Item key="profile"><Icon type="idcard" /> Profile</Item>
+              <Item key="notifications"><Icon type="bell" /> Notifications</Item>
+              <Item key="events"><Icon type="calendar" /> Events</Item>
+              <Item key="clubs"><Icon type="team" /> Clubs</Item>
+            </ItemGroup>
+            <ItemGroup key="sub3" title={<span>My Clubs</span>}>
+              {myClubs.map(c =>
+                <Item
+                  key={`${c.club.slug}`}
+                >
+                  <img alt={c.club.name} className="oc-sidebar-clubimage" src={c.club.images ? c.club.images.thumb : '/empty-club.png'} /> {c.club.name}
+                </Item>
+              )}
+            </ItemGroup>
+          </Menu>
+        </aside>
+      )
+    }
+    return <div />
   }
 }
 
