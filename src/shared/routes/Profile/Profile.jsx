@@ -27,7 +27,6 @@ class Profile extends Component {
                 <Col xs={{span: 0}} md={{span: 6}}>
                   <Menu
                     onClick={this.menuClick}
-                    selectedKeys={this.state.selectedKeys}
                     mode="inline"
                   >
                   <Menu.ItemGroup key="sub1" title={<span>Profile Settings</span>}>

@@ -20,10 +20,12 @@ class UserProfile extends Component {
   }
   async handleSubmit(values, dispatch, props) {
     const { registeredFields } = props;
+    console.log(registeredFields, values);
     const { updateProfile } = this.props;
     // get clean value object and image diff
     // need to remove address because it brings __typename with it.
     if (registeredFields.address) delete registeredFields.address;
+
     const userProfile = stringKeyObjectFilter(values, registeredFields)
     userProfile.images = shallowObjectDiff(userProfile.images, values.images)
 
