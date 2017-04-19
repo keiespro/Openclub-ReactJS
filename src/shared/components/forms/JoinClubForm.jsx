@@ -2,7 +2,10 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Row, Col, Card, Alert } from 'antd'
 import { Field, reduxForm } from 'redux-form'
+import { EmbeddedProfile } from 'routes/Profile/Profile'
+import _ from 'lodash'
 import { required, maxLength, slug } from 'utils/form_validation/errors'
+import UserProfile from 'modules/forms/UserProfile'
 import {
   Form,
   FieldSet,
@@ -17,7 +20,9 @@ import Steps, { Step } from 'antd/lib/steps'
 class JoinClubForm extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func,
-    club: PropTypes.object
+    club: PropTypes.object,
+    form_values: PropTypes.object,
+    viewer: PropTypes.object
   }
   constructor(props) {
     super(props)
@@ -26,6 +31,7 @@ class JoinClubForm extends Component {
     this.state = {
       step: 'plan'
     }
+    this.changePlan = this.changePlan.bind(this)
   }
   nextStep() {
     this.setState({
@@ -34,18 +40,16 @@ class JoinClubForm extends Component {
   }
   prevStep() {
     this.setState({
-      step: this.steps[this.steps.indexOf(this.state.step) + 1]
+      step: this.steps[this.steps.indexOf(this.state.step) - 1]
     });
   }
   planStep() {
-    const { club } = this.props;
-    const { membership_plans } = club;
+    const { form_values: formValues } = this.props;
+    const status = !!(formValues && formValues.selectedPlan);
 
-    let status = !!(this.props.form_values && this.props.form_values.selectedPlan);
-    return {
-      status: status ? 'finish' : (this.state.step === 'plan' ? 'process' : 'wait'),
-      description: ``
-    }
+    if (status === true) return 'finish';
+    if (this.state.step === 'plan') return 'process';
+    return 'wait';
   }
   profileStep() {
     return {
@@ -57,12 +61,13 @@ class JoinClubForm extends Component {
 
     }
   }
+  changePlan() {
+    this.nextStep();
+  }
   render() {
-    console.log(this.props);
-    const { club, handleSubmit } = this.props;
-    const { membership_plans } = club;
+    const { viewer, handleSubmit, club: { membership_plans: membershipPlans } } = this.props;
 
-    if (!membership_plans) {
+    if (!membershipPlans) {
       return (
         <Alert
           message="Uh oh!"
@@ -74,43 +79,32 @@ class JoinClubForm extends Component {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <Steps current={this.state.step}>
-          <Step key="plan" title="Select Plan" {...this.planStep()} />
-          <Step key="profile" title="Complete Profile" {...this.profileStep()} />
-          <Step key="confirm" title="Confirmation" {...this.confirmStep()} />
+        <Steps current={this.steps.indexOf(this.state.step)}>
+          <Step key="plan" title="Select Plan" status={this.planStep()} />
+          <Step key="profile" title="Complete Profile" status={this.profileStep()} />
+          <Step key="confirm" title="Confirmation" status={this.confirmStep()} />
         </Steps>
+        <div className="bottom-gap" />
+        <hr />
         <div className="bottom-gap-large" />
         { this.state.step === 'plan' && (
           <div>
             <h4 className="bottom-gap">Choose a plan</h4>
-            {membership_plans.map((plan) => (
-              <Col span={24} key={plan.name}>
-                <PlanCard plan={plan} />
-              </Col>
-            ))}
+            {membershipPlans.map(plan => <PlanCard plan={plan} onChange={this.changePlan} key={plan.name} />)}
           </div>
         )}
         { this.state.step === 'profile' && (
           <div>
             <h4 className="bottom-gap">Member Details</h4>
-              <FieldContainer required title="Name">
-                <Field
-                  name="name"
-                  type="text"
-                  help="What is your name?"
-                  validate={[required, maxLength(64)]}
-                  component={Input}
-                />
-              </FieldContainer>
-              <FieldContainer required title="Address">
-                <Field
-                  name="address"
-                  type="text"
-                  help="What is your address?"
-                  validate={[required, maxLength(64)]}
-                  component={Input}
-                />
-              </FieldContainer>
+            <UserProfile
+              viewer={viewer}
+              customSubmitCallback={this.nextStep.bind(this)}
+              customButtonRender={(submit, loading) => (
+                <div>
+                  <Button onClick={this.prevStep.bind(this)} size="large">Previous</Button>
+                  <Button type="primary" onClick={submit} className="pull-right" size="large" loading={loading}>Next</Button>
+                </div>
+              )} />
           </div>
         )}
         { this.state.step === 'confirm' && (
@@ -120,11 +114,11 @@ class JoinClubForm extends Component {
           </div>
         )}
         <div className="bottom-gap-large" />
-        <hr />
+        {this.state.step === 'confirm' && <Button onClick={this.prevStep.bind(this)} size="large">Previous</Button>}
+        {this.planStep() === 'finish' && this.state.step === 'plan' && <Button type="primary" onClick={this.nextStep.bind(this)} className="pull-right" size="large">Next</Button>}
+        {this.state.step === 'confirm' && <Button type="primary" htmlType="submit" className="pull-right" size="large">Join</Button>}
         <div className="bottom-gap" />
-        {this.state.step !== 'plan' && <Button onClick={this.prevStep.bind(this)}>Previous</Button>}
-        {this.state.step !== 'confirm' && <Button type="primary" onClick={this.nextStep.bind(this)}>Next</Button>}
-        {this.state.step === 'confirm' && <Button type="primary" htmlType="submit">Join</Button>}
+        <hr />
       </Form>
     )
   }
