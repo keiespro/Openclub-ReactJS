@@ -12,8 +12,11 @@ class AddressField extends Component {
   constructor(props) {
     super(props);
 
+    this.isReadyPriorToMounting = false;
+    this.isComponentMounted = false;
+
     this.state = {
-      ready: false
+      ready: this.isReadyPriorToMounting
     }
 
     this.googleMaps = null;
@@ -33,13 +36,20 @@ class AddressField extends Component {
     }
     return '';
   }
+  ready() {
+    if (this.isComponentMounted) {
+      this.setState({ ready: true })
+    } else {
+      this.isReadyPriorToMounting = true;
+    }
+  }
   async getGoogleMaps() {
     if (this.googleMaps) {
-      this.setState({ ready: true })
+      this.ready()
       return this.googleMaps;
     }
     this.googleMaps = await loadGoogleMapsAPI({ key: process.env.GOOGLE_API_KEY, libraries: 'places' })
-    this.setState({ ready: true })
+    this.ready();
     return this.googleMaps;
   }
   async handleChange(autocomplete, input) {
@@ -60,6 +70,8 @@ class AddressField extends Component {
     }
   }
   async componentDidMount() {
+    this.isComponentMounted = true;
+    if (this.isReadyPriorToMounting && !this.state.ready) this.ready();
     const googleMaps = await this.getGoogleMaps();
     const maps = 'maps' in googleMaps ? googleMaps.maps : googleMaps;
     const autocomplete = new maps.places.Autocomplete(findDOMNode(this.addressInput), { types: ['address'] });
