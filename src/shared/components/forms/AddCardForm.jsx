@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { ButtonGroup } from 'antd/lib/button'
 import {
   Form,
   FieldContainer,
@@ -36,12 +35,10 @@ class AddCardForm extends Component {
   render() {
     return (
       <Form onSubmit={this.submit}>
-        <FieldContainer title="Add Card" id="payment" ref={payment => { this.anchors.payment = payment }}>
+        <FieldContainer title="Add Card" id="payment">
           Enter the number of a card you wish to add to your profile.
           <StripeCreditCardField input={{onChange: this.handleCreditCardInput}} />
-          <ButtonGroup>
-            <Button className="bottom-gap" icon="plus" type="primary" onClick={this.handleCreditCardSubmit} loading={this.state.loading}>Add Card</Button>
-          </ButtonGroup>
+          <Button className="bottom-gap" icon="plus" type="primary" onClick={this.handleCreditCardSubmit} loading={this.state.loading}>Add Card</Button>
         </FieldContainer>
       </Form>
     )

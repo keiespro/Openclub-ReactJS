@@ -33,7 +33,7 @@ class UserProfileForm extends Component {
     const { token, handleSubmit, customButtonRender, submitting } = this.props;
 
     return (
-      <Form onSubmit={this.submit}>
+      <Form onSubmit={this.submit} className="max-form">
         <FieldContainer required title="Name">
           <Field
             name="name"
