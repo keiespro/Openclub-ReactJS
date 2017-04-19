@@ -30,7 +30,7 @@ class Feed extends Component {
   }
   render() {
     return (
-      <Row gutter={16}>
+      <Row gutter={8}>
         <Col span={16}>
           <div className="feed-container">
             <Content className="content">
