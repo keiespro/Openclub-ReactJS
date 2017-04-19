@@ -21,6 +21,7 @@ import AsyncEvents from './Events/Events'
 import AsyncFeed from './Feed/Feed'
 import AsyncJoin from './Join/Join'
 import AsyncSettings from './Settings/Settings'
+import AsyncMembership from './Membership/Membership'
 
 import './Club.scss'
 
@@ -124,6 +125,10 @@ class Club extends Component {
             <Match
               pattern={`/${params.club_id}/feed`}
               render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} />}
+            />
+            <Match
+              pattern={`/${params.club_id}/mymembership`}
+              render={routerProps => perm.userIsMember ? <AsyncMembership {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
             />
             <Match
               pattern={`/${params.club_id}/settings`}

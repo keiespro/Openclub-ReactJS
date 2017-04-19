@@ -69,6 +69,9 @@ const clubPermissions = (club, viewer) => {
 
   // User can view detailed members
   p.userCanViewDetailedMembers = p.userIsAdmin
+
+  // Let's return the membership too, because it's useful
+  p.membership = membership;
   return p;
 }
 
