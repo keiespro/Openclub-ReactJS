@@ -33,12 +33,12 @@ import { safeConfigGet } from 'utils/config'
 
 // base styling including bootstrap
 import 'font-awesome/scss/font-awesome.scss'
-import 'styles/_base.scss'
 // ant theming
 import 'antd/dist/antd.css'
 import 'rc-drawer/assets/index.css'
 
 // theme overrides
+import 'styles/_base.scss'
 import 'styles/overrides.scss'
 // app component styles
 import 'App.scss'
