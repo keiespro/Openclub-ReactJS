@@ -15,22 +15,27 @@ class ImageCropper extends Component {
         aspect: props.aspect || 1
       }
     }
+
+    this.cropCompleted = this.cropCompleted.bind(this);
+    this.imageLoaded = this.imageLoaded.bind(this);
+    this.handleOk = this.handleOk.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
-  cropCompleted = crop => {
+  cropCompleted(crop) {
     this.setState({ crop })
   }
 
-  imageLoaded = crop => {
+  imageLoaded(crop) {
     this.setState({ crop })
   }
 
-  handleOk = (oker, hider) => {
-    oker(this.state.crop)
+  async handleOk(oker, hider) {
+    await oker(this.state.crop)
     hider()
   }
 
-  handleCancel = (canceller, hider) => {
+  handleCancel(canceller, hider) {
     canceller()
     hider()
   }
@@ -39,8 +44,9 @@ class ImageCropper extends Component {
     const { show, handleHide, onResult, onCancel, src } = this.props
 
     return (
-      <Modal title="Adjust Image" cancelText="Cancel" okText="OK" maskClosable={false}
-        visible={show} onOk={() => this.handleOk(onResult, handleHide)} onCancel={() => this.handleCancel(onCancel, handleHide)}
+      <Modal
+        title="Adjust Image" cancelText="Cancel" okText="OK" maskClosable={false}
+        visible={show} onOk={this.handleOk.bind(this, onResult, handleHide)} onCancel={this.handleCancel.bind(this, onCancel, handleHide)}
       >
         <ReactCrop
           src={src}

@@ -157,7 +157,9 @@ export default function webpackConfigFactory(buildOptions) {
         'redux',
         'redux-thunk',
         'react-apollo',
-        'graphql-tag'
+        'graphql-tag',
+        'react-async-component',
+        'lodash'
       ]
     },
 
@@ -546,9 +548,7 @@ export default function webpackConfigFactory(buildOptions) {
             externals:
               // Add the polyfill io script as an external if it is enabled.
               [
-                config.polyfillIO.url,
-                'https://js.stripe.com/v2/',
-                'https://js.stripe.com/v3/'
+                config.polyfillIO.url
               ]
               // Add any included public folder assets.
               .concat(

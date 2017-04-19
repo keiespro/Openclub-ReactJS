@@ -6,6 +6,12 @@ body {
   font-size: $font-size-base;
 }
 
+.max-form {
+  @media #{$min-desktop} {
+    max-width: $screen-xs-min;
+  }
+}
+
 .ant-menu-inline .ant-menu-submenu-title,
 .ant-menu-inline .ant-menu-item,
 .ant-menu-item {

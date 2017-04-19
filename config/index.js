@@ -229,11 +229,16 @@ const config = {
         // webpack loaders in order to be processed (e.g. CSS/SASS etc).
         // For these cases you don't want to include them in the Vendor DLL.
         include: [
-          'react-async-component',
           'react',
           'react-dom',
-          'react-helmet',
+          'react-redux',
           'teardrop',
+          'redux',
+          'redux-thunk',
+          'react-apollo',
+          'graphql-tag',
+          'react-async-component',
+          'lodash'
         ],
 
         // The name of the vendor DLL.
