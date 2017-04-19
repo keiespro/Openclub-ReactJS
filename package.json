@@ -64,7 +64,7 @@
     "moment": "^2.17.1",
     "node-fetch": "^1.6.3",
     "normalize.css": "5.0.0",
-    "numeral": "^2.0.4",
+    "numeral": "^2.0.6",
     "oembed-auto": "0.0.3",
     "offline-plugin": "4.5.4",
     "payment": "^2.2.1",

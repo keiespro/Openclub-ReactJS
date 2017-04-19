@@ -5,13 +5,15 @@ import Select, { Option } from 'antd/lib/select'
 import { Field } from 'redux-form'
 import { durations } from 'constants/index'
 import _ from 'lodash'
+import n from 'numeral'
 import './PlanCard.scss'
 
 class PlanCard extends Component {
   static propTypes = {
     plan: PropTypes.object,
     input: PropTypes.object,
-    defaultValue: PropTypes.string
+    defaultValue: PropTypes.string,
+    onChange: PropTypes.func
   }
   constructor(props) {
     super(props)
@@ -26,6 +28,7 @@ class PlanCard extends Component {
   onChange(priceId) {
     const { _id } = this.props.plan;
     this.props.input.onChange(`${_id}::${priceId}`)
+    if (this.props.onChange) this.props.onChange(`${_id}::${priceId}`);
   }
   onSelectPlan() {
     const { prices } = this.props.plan;
@@ -61,8 +64,8 @@ class PlanCard extends Component {
     return (
       <Card title={plan.name} className={cardClasses}>
         <Col xs={24} md={8} className="pricing">
-          <h2>{currentPrice.price.amount ? `$${currentPrice.price.amount}` : 'FREE'}</h2>
-          {currentPrice.setup_price.amount_float > 0 ? <small>{`a $${currentPrice.setup_price.amount} one-time fee applies`}</small> : null}
+          <h2>{currentPrice.price.amount ? `$${n(currentPrice.price.amount).format('0,0.00')}` : 'FREE'}</h2>
+          {currentPrice.setup_price.amount_float > 0 ? <small>{`a $${n(currentPrice.setup_price.amount).format('0,0.00')} one-time fee applies`}</small> : null}
           {
             plan.prices && plan.prices.length > 1 ? (
               <Select onChange={this.setNewPriceOption} defaultValue="0">
@@ -75,7 +78,7 @@ class PlanCard extends Component {
           {selected ? <Button icon="check">Selected</Button> : <Button onClick={this.onSelectPlan} icon="plus" type="primary">Select Plan</Button>}
         </Col>
         <Col xs={24} md={16} className="description">
-          {plan.description}
+          {plan.description.split('\n').map((ln, k) => <span key={`${plan._id}-ln-${k}`}>{ln}<br /></span>)}
         </Col>
       </Card>
     );
