@@ -7,9 +7,10 @@ COPY package.json /usr/app
 RUN npm install
 
 COPY . /usr/app
-RUN npm run build
+RUN npm install && npm run build
 
-ENV PORT 80
+ENV SERVER_HOST 0.0.0.0
+ENV SERVER_PORT 80
 EXPOSE 80
 
-CMD [ "npm", "start" ]
+CMD [ "node", "build/server" ]

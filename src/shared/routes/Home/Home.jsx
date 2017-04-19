@@ -20,17 +20,25 @@ class HomeView extends Component {
         <div className="bg-full bg-pic1 container-fluid">
           <div className="container-content">
             <Row gutter={16} className="home-intro">
-              <Col xs={{span:24, offset:0}} md={{span:15, offset:1}} className="home-title">
+              <Col xs={{span:24, offset:0}} md={{span:15, offset:1}} className="home-title hidden-xs hidden-sm">
                 <div className="text">
                   <h1>Bringing your club to the social web.</h1>
-                  <a className="btn-xl btn" href="#" onClick={this.props.login}>Explore</a>
-                  <a className="btn-xl btn" href="https://www.openclub.co/#features" rel="noopener noreferrer" target="_blank">Features</a>
+                  <a className="btn-xl btn" href="https://en.openclub.co/#features" rel="noopener noreferrer" target="_blank">Find out more</a>
                 </div>
               </Col>
               <Col xs={{span:24, offset:0}} md={{span:6, offset:1}} className="home-login">
+                <div className="text hidden-md hidden-lg">
+                  <h1>Welcome to OpenClub.</h1>
+                </div>
                 <div id="home-lock-container" className="login"/>
+                <div className="text hidden-md hidden-lg">
+                  <a href="http://en.openclub.co/" style={{ color: 'white', textDecoration: 'underline' }}>Find out more</a>
+                </div>
               </Col>
             </Row>
+            <div className="home-footer">
+              Copyright © OpenClub Pty Ltd. | <a href="https://en.openclub.co/legal/terms">Terms of Service</a> | <a href="https://en.openclub.co/legal/privacy">Privacy Policy</a>
+            </div>
           </div>
           <ReactPlayer
             url="https://www.youtube.com/embed/131eQ5HePfg"
@@ -38,7 +46,7 @@ class HomeView extends Component {
             loop
             volume={0}
             playbackRate={0.6}
-            className="video-container hidden-sm hidden-xs"
+            className="video-container"
             width=""
             height=""
             style={{}}

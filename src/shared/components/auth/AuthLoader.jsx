@@ -1,12 +1,17 @@
-/**
- * This component handles talking to auth0, redux, and setting up
- * tokens. It doesn't render children until the initial process is complete
- */
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { checkAuthentication } from 'modules/auth/actions'
+import Spin from 'antd/lib/spin'
 
 class AuthLoader extends Component {
+  static propTypes = {
+    checkAuthentication: PropTypes.func,
+    children: PropTypes.oneOfType([
+      PropTypes.array,
+      PropTypes.element
+    ]),
+    auth0Loaded: PropTypes.bool
+  }
   componentWillMount() {
     this.props.checkAuthentication()
   }
@@ -15,9 +20,7 @@ class AuthLoader extends Component {
     const { auth0Loaded, children } = this.props
     // only render the app if the auth0 process has completed
     // or we are doing ssr
-    return (auth0Loaded || process.env.IS_SERVER) ? children : (
-      <div>Loading...</div>
-    )
+    return (auth0Loaded || process.env.IS_SERVER) ? React.cloneElement(children, {...this.props}) : <Spin tip="Loading..."><div style={{ display: 'block', width: '100%', height: '100vh' }} /></Spin>
   }
 }
 

@@ -1,19 +1,16 @@
 import React from 'react'
-import { Match } from 'teardrop'
-import { CodeSplit } from 'code-split-component'
-import { RoutePage } from 'components/layout'
+import { Match, MatchGroup } from 'teardrop'
+import { ContentArea } from 'components/layout'
+import AsyncCreateClub from './CreateClub'
+import Landing from './Landing'
 
 const ClubsView = props => (
-  <RoutePage>
-    <Match
-      pattern="/clubs/create"
-      render={routerProps =>
-        <CodeSplit chunkName="createclub" modules={{ CreateClub: require('./CreateClub') }}>
-          { ({ CreateClub }) => CreateClub && <CreateClub {...routerProps} /> }
-        </CodeSplit>
-      }
-    />
-  </RoutePage>
+  <ContentArea>
+    <MatchGroup>
+      <Match pattern="/clubs" component={Landing}/>
+      <Match pattern="/clubs/create" component={AsyncCreateClub}/>
+    </MatchGroup>
+  </ContentArea>
 )
 
 export default ClubsView

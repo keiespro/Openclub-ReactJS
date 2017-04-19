@@ -8,7 +8,7 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import appRootDir from 'app-root-dir';
 import WebpackMd5Hash from 'webpack-md5-hash';
-import CodeSplitPlugin from 'code-split-component/webpack';
+//import CodeSplitPlugin from 'code-split-component/webpack';
 import { removeEmpty, ifElse, merge, happyPackPlugin } from '../utils';
 import config, { clientConfig } from '../../config';
 
@@ -101,7 +101,7 @@ export default function webpackConfigFactory(buildOptions) {
         // the `node-source-map-support` module to allow for this).
         isNode
         // Always include source maps for any development build.
-        || isDev
+        || isDev || isProd // FIXME: remove prod
         // Allow for the following flag to force source maps even for production
         // builds.
         || config.includeSourceMapsForProductionBuilds,
@@ -149,6 +149,18 @@ export default function webpackConfigFactory(buildOptions) {
         // The source entry file for the bundle.
         path.resolve(appRootDir.get(), bundleConfig.srcEntryFile),
       ]),
+      vendor: [
+        'react',
+        'react-dom',
+        'react-redux',
+        'teardrop',
+        'redux',
+        'redux-thunk',
+        'react-apollo',
+        'graphql-tag',
+        'react-async-component',
+        'lodash'
+      ]
     },
 
     // Bundle output configuration.
@@ -203,7 +215,7 @@ export default function webpackConfigFactory(buildOptions) {
       // The code-split-component doesn't work nicely with React Hot Loader,
       // which we use in our development builds, so we will disable it (which
       // causes synchronous loading behaviour for the CodeSplit instances).
-      ifProd(() => new CodeSplitPlugin()),
+      //ifProd(() => new CodeSplitPlugin()),
 
       // We use this so that our generated [chunkhash]'s are only different if
       // the content for our respective chunks have changed.  This optimises
@@ -233,17 +245,18 @@ export default function webpackConfigFactory(buildOptions) {
       // use in each respective bundle.  For example, don't accidentally
       // expose a database connection string within your client bundle src!
       new webpack.DefinePlugin({
-        // Adding the NODE_ENV key is especially important as React relies
-        // on it to optimize production builds.
         'process.env.NODE_ENV': JSON.stringify(mode),
-        // Is this the "client" bundle?
         'process.env.IS_CLIENT': JSON.stringify(isClient),
-        // Is this the "server" bundle?
         'process.env.IS_SERVER': JSON.stringify(isServer),
-        // Is this a node bundle?
         'process.env.IS_NODE': JSON.stringify(isNode),
-        'process.env.AUTH0_CLIENT_ID': JSON.stringify(process.env.AUTH0_CLIENT_ID),
-        'process.env.AUTH0_DOMAIN': JSON.stringify(process.env.AUTH0_DOMAIN),
+        'process.env.AUTH0_CLIENT_ID': isServer ? 'process.env.AUTH0_CLIENT_ID' : 'window.__CLIENT_CONFIG__.env.AUTH0_CLIENT_ID',
+        'process.env.AUTH0_DOMAIN': isServer ? 'process.env.AUTH0_DOMAIN' : 'window.__CLIENT_CONFIG__.env.AUTH0_DOMAIN',
+        'process.env.GRAPH_URL': isServer ? 'process.env.GRAPH_URL' : 'window.__CLIENT_CONFIG__.env.GRAPH_URL',
+        'process.env.ICEPICK_URL': isServer ? 'process.env.ICEPICK_URL' : 'window.__CLIENT_CONFIG__.env.ICEPICK_URL',
+        'process.env.STREAM_APP_ID': isServer ? 'process.env.STREAM_APP_ID' : 'window.__CLIENT_CONFIG__.env.STREAM_APP_ID',
+        'process.env.STREAM_API_KEY': isServer ? 'process.env.STREAM_API_KEY' : 'window.__CLIENT_CONFIG__.env.STREAM_API_KEY',
+        'process.env.GOOGLE_API_KEY': isServer ? 'process.env.GOOGLE_API_KEY' : 'window.__CLIENT_CONFIG__.env.GOOGLE_API_KEY',
+        'process.env.STRIPE_PUBLISHABLE_KEY': isServer ? 'process.env.STRIPE_PUBLISHABLE_KEY' : 'window.__CLIENT_CONFIG__.env.STRIPE_PUBLISHABLE_KEY'
       }),
 
       // Generates a JSON file containing a map of all the output files for
@@ -378,7 +391,7 @@ export default function webpackConfigFactory(buildOptions) {
                 //
                 // We only include it in production as this library does not support
                 // React Hot Loader, which we use in development.
-                ifElse(isProd && (isServer || isClient))(
+                /*ifElse(isProd && (isServer || isClient))(
                   [
                     'code-split-component/babel',
                     {
@@ -389,7 +402,7 @@ export default function webpackConfigFactory(buildOptions) {
                       mode: target,
                     },
                   ],
-                ),
+                ),*/
               ].filter(x => x != null),
             },
             buildOptions,
@@ -501,6 +514,7 @@ export default function webpackConfigFactory(buildOptions) {
             // Our offline support will be done via a service worker.
             // Read more on them here:
             // http://bit.ly/2f8q7Td
+            autoUpdate: true,
             ServiceWorker: {
               // The name of the service worker script that will get generated.
               output: config.serviceWorker.fileName,
@@ -533,11 +547,9 @@ export default function webpackConfigFactory(buildOptions) {
             // Which external files should be included with the service worker?
             externals:
               // Add the polyfill io script as an external if it is enabled.
-              (
-                config.polyfillIO.enabled
-                  ? [config.polyfillIO.url]
-                  : []
-              )
+              [
+                config.polyfillIO.url
+              ]
               // Add any included public folder assets.
               .concat(
                 config.serviceWorker.includePublicAssets.reduce((acc, cur) => {

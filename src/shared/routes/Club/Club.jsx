@@ -1,85 +1,149 @@
 import React, { Component, PropTypes } from 'react'
 import { graphql } from 'react-apollo'
+import { connect } from 'react-redux'
+import { login } from 'modules/auth/actions'
+import Helmet from 'react-helmet'
 import gql from 'graphql-tag'
-import { Menu, Icon } from 'antd'
+import { Menu, Icon, Button, Dropdown } from 'antd'
+import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
 import ProfileHeader from 'components/profile/ProfileHeader'
+import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
+import { ContentArea } from 'components/layout'
+import Error404 from 'components/Error404/Error404'
+import Error from 'components/Error/Error'
+import { keysFromFragments } from 'utils/route'
+import Loading from 'components/Loading/Loading'
+import clubPermissions from 'utils/club_permissions'
+// Async routes
+import AsyncAbout from './About/About' // FIXME: Shitty hack to bypass System.import()
+import AsyncCommunity from './Community/Community'
+import AsyncEvents from './Events/Events'
+import AsyncFeed from './Feed/Feed'
+import AsyncJoin from './Join/Join'
+import AsyncSettings from './Settings/Settings'
+import AsyncMembership from './Membership/Membership'
+
 import './Club.scss'
 
-const SubMenu = Menu.SubMenu
-const MenuItemGroup = Menu.ItemGroup
-
-const Club = ({ data, children }) => {
-
-  const { club, loading } = data
-  //const { params, location } = this.props
-
-  //const collapseHeader = location.pathname.includes('/feed') === false;
-  const collapseHeader = false
-
-  if(loading){
-    return <div>Loading Club...</div>
+class Club extends Component {
+  static propTypes = {
+    data: PropTypes.object,
+    params: PropTypes.object,
+    viewer: PropTypes.object,
+    pathname: PropTypes.string,
+    location: PropTypes.object,
+    login: PropTypes.func
   }
-
-  if(!club){
-    return <div>Club not found!</div>
+  static contextTypes = {
+    router: PropTypes.object
   }
+  render() {
+    const { data, location, params, viewer, pathname } = this.props
+    if (!data) return <Error404 />;
 
-  const handleClick = e => {
-    console.log('menu item clicked')
-  }
+    const { router } = this.context
+    const { club, loading, error } = data
+    const collapseHeader = location.pathname ? !(/^.*\/.*\/(feed)/).test(location.pathname) : false;
 
-  return (
-    <section>
-      <ProfileHeader
-        name={club.name}
-        location={club.location}
-        images={club.images}
-        collapsed={collapseHeader}
-      />
-      <Menu
-        onClick={handleClick}
-        selectedKeys={['feed']}
-        mode="horizontal"
-      >
-        <Menu.Item key="feed">Feed</Menu.Item>
-        <Menu.Item key="events">Events</Menu.Item>
-        <Menu.Item key="about">About</Menu.Item>
-        <Menu.Item key="community">Community</Menu.Item>
-        <Menu.Item key="mymembership">My Membership</Menu.Item>
+    if (loading) return <Loading />
+    if (error) return <Error error={error} />
+    if (!club) return <Error404 />
 
-        <Menu.Item key="divider" disabled={true}> | </Menu.Item>
+    const perm = clubPermissions(club, viewer);
+    const handleClick = e => router.transitionTo(`/${club.slug}/${e.key}`);
 
-        <Menu.Item key="clubprofile">Club Profile</Menu.Item>
-        <Menu.Item key="members">Members</Menu.Item>
-        <Menu.Item key="approvals">Approvals</Menu.Item>
-        <Menu.Item key="invoices">Invoice</Menu.Item>
-        <Menu.Item key="finances">Fincances</Menu.Item>
-        <Menu.Item key="settings"><Icon type="setting"/></Menu.Item>
+    const onJoin = () => {
+      if (!viewer) { this.props.login(); return; }
+      router.transitionTo(`/${club.slug}/join`)
+    }
+
+    const selectedKeys = keysFromFragments(location.pathname, pathname, [
+      'feed', 'events', 'about', 'community', 'mymembership', 'settings'
+    ])
+
+    const followMenu = (
+      <Menu onClick={this.followAction}>
+        { perm.userIsFollower ? <Menu.Item key="unfollow">Unfollow</Menu.Item> : <Menu.Item key="follow">Follow</Menu.Item>}
+        { perm.userIsSubscribed ? <Menu.Item key="unmute">Turn notifications off</Menu.Item> : <Menu.Item key="mute">Turn notifications on</Menu.Item> }
       </Menu>
-
-      
-    {/*}
-      <MenuBar routePrefix={`/${params.club_id}`} route={location}>
-        <MenuBarItem label="Feed" to="/feed" />
-        <MenuBarItem label="Events" to="/events" />
-        <MenuBarItem label="About" to="/about" />
-        <MenuBarItem label="Community" to="/community" />
-        <MenuBarItem label="My Membership" to="/membership" />
-        <MenuBarItem divider />
-        <MenuBarItem label="Club Profile" to="/admin/profile" />
-        <MenuBarItem label="Members" to="/admin/members" />
-        <MenuBarItem label="Approvals" to="/admin/approvals" />
-        <MenuBarItem label="Invoices" to="/admin/invoices" />
-        <MenuBarItem label="Finances" to="/admin/finances" />
-        <MenuBarItem label={<i className="fa fa-gear" />} to="/admin/settings" />
-        <button className="btn btn-primary menu-btn-inner pull-right ripple pl-xl pr-xl">Join Club</button>
-      </MenuBar>
-      <Grid fluid>
-        {this.props.children}
-      </Grid>
-      */}
-    </section>
-  )
+    );
+    return (
+      <section className="oc-object-page-container">
+        <Helmet title={`${club.name}`} />
+        <ProfileHeader
+          name={club.name}
+          location={club.location}
+          images={club.images}
+          collapsed={collapseHeader}
+          onJoin={onJoin}
+          buttons={(
+            <div>
+              { (perm.userCanFollow || perm.userIsFollower) && (
+                <Dropdown overlay={followMenu}>
+                  <Button type="default" icon="user-add" size="large" className="join-button">
+                    {perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" />
+                  </Button>
+                </Dropdown>
+              )}
+              {
+                (perm.userCanJoin) && (
+                  <Button type="primary" icon="user-add" size="large" className="join-button" onClick={onJoin}>Join This Club</Button>
+                )
+              }
+            </div>
+          )}
+        />
+        <Menu
+          onClick={handleClick}
+          selectedKeys={selectedKeys}
+          mode="horizontal"
+        >
+          <Menu.Item key="feed">Feed</Menu.Item>
+          <Menu.Item key="about">About</Menu.Item>
+          <Menu.Item key="community">Community</Menu.Item>
+          { perm.userIsMember && <Menu.Item key="mymembership">My Membership</Menu.Item>}
+          { perm.userCanAccessSettings && <Menu.Item key="divider" disabled> | </Menu.Item>}
+          { perm.userCanAccessSettings && <Menu.Item key="settings"><Icon type="setting" /> Settings</Menu.Item>}
+        </Menu>
+        <ContentArea>
+          <ClubHeroHelper club={club} />
+          <MatchGroup>
+            <Match
+              exactly
+              pattern={`/${params.club_id}`}
+              render={() => {
+                if (!viewer) return <Redirect to={`/${params.club_id}/about`} />;
+                if (viewer && (perm.userIsMember || perm.userIsFollower)) {
+                  return <Redirect to={`/${params.club_id}/feed`} push />
+                }
+                return <Redirect to={`/${params.club_id}/about`} push />
+              }}
+            />
+            <Match pattern={`/${params.club_id}/about`}>
+              {routerProps => <AsyncAbout {...routerProps} club={club} perm={perm} />}
+            </Match>
+            <Match
+              pattern={`/${params.club_id}/feed`}
+              render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} />}
+            />
+            <Match
+              pattern={`/${params.club_id}/mymembership`}
+              render={routerProps => perm.userIsMember ? <AsyncMembership {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
+            />
+            <Match
+              pattern={`/${params.club_id}/settings`}
+              render={routerProps => perm.userCanAccessSettings ? <AsyncSettings {...routerProps} club={club} perm={perm} /> : <Error404 />}
+            />
+            <Match
+              pattern={`/${params.club_id}/join`}
+              render={routerProps => perm.userCanJoin ? <AsyncJoin {...routerProps} club={club} perm={perm} viewer={viewer} /> : <Error404 />}
+            />
+          <Miss component={Error404} />
+          </MatchGroup>
+        </ContentArea>
+      </section>
+    )
+  }
 }
 
 const clubQuery = gql`
@@ -96,15 +160,65 @@ const clubQuery = gql`
       settings{
         privacy
       }
+      membership_plans{
+        _id
+        name
+        description
+        public
+        prices{
+          _id
+          duration
+          price{
+            amount
+            amount_float
+          },
+          setup_price{
+            amount
+            amount_float
+          }
+        }
+      }
+      details{
+        about
+        location
+        minimum_age
+        founded
+        email
+        phone
+        website
+        facebook
+        instagram
+        linkedin
+        twitter
+      }
+      stripe_account{
+        data
+      }
     }
   }
 `
 
 const ClubWithApollo = graphql(clubQuery, {
-  options: ({ params }) => ({ variables: { slug: params.club_id }}),
+  options: props => {
+    if (!props.params) return false;
+    return {
+      variables: {
+        slug: props.params.club_id
+      }
+    }
+  },
+  skip: props => {
+    if (!props.params || !props.params.club_id) return true;
+    if (props.params.club_id) return !/^[\w\d]+(?:-[\w\d]+)*$/.test(props.params.club_id);
+    return true;
+  }
 })(Club)
 
-export default ClubWithApollo
+const ClubWithRedux = connect(state => ({}), {
+  login
+})(ClubWithApollo)
+
+export default ClubWithRedux;
 
 export {
   Club

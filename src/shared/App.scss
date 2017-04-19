@@ -3,3 +3,30 @@
 body {
   background-color: $body-bg;
 }
+.oc-object-page-container {
+  max-width: 1000px;
+  border-right: 1px solid #c0c0ca;
+  min-height: calc(100vh - 50px);
+}
+.rc-drawer-sidebar {
+  transform: translateX(-100%);
+  position: absolute;
+}
+.rc-drawer-content {
+  left: 0;
+}
+.open {
+  .rc-drawer-sidebar {
+    transform: translateX(0%);
+  }
+}
+@media #{$min-desktop} {
+  .loggedin {
+    .rc-drawer-sidebar {
+      transform: translateX(0%) !important;
+    }
+    .rc-drawer-content {
+      left: 240px;
+    }
+  }
+}

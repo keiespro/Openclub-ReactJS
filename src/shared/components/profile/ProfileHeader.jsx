@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react'
+import { Button } from 'antd'
 import cx from 'classnames'
 import './ProfileHeader.scss'
 
 class ProfileHeader extends Component {
   renderProfileBackdrop() {
     const { images, name, collapsed } = this.props
-    if (typeof images.square === 'undefined' && typeof name !== 'undefined') {
+    if((!images || !images.square) && name){
       return <div />
     }
+    const square = images.square ? images.square : '/empty-club.png'
     const classes = cx({
       'media-object': true,
       'img-rounded-corners': collapsed === false,
@@ -18,7 +20,7 @@ class ProfileHeader extends Component {
       <div className="media-left">
         <div className="profile-backdrop">
           <a href="#">
-            <img src={images.square} alt={name} className={classes} />
+            <img src={square} alt={name} className={classes} />
           </a>
         </div>
       </div>
@@ -42,12 +44,13 @@ class ProfileHeader extends Component {
     )
   }
   render() {
-    const { background } = this.props.images;
+    const { buttons } = this.props
+    const { background } = this.props.images || {}
 
-    const bgEle = typeof background === 'undefined' ? '#2b2b2b' : `url(${background})`
+    const bgEle = typeof background === 'undefined' ? 'url(/coverphoto.jpg)' : `url(${background})`
 
     const headerImageStyles = {
-      backgroundImage: `${bgEle}, linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.2) 100%)`,
+      backgroundImage: `${bgEle}`,
       backgroundPosition: 'center center',
       backgroundSize: 'cover'
     }
@@ -64,6 +67,9 @@ class ProfileHeader extends Component {
             <div className="details-container">
               {this.renderProfileBackdrop()}
               {this.renderHeading()}
+            </div>
+            <div className="header-buttons">
+              {buttons}
             </div>
           </div>
         </div>

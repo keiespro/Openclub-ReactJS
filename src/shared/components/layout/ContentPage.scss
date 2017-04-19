@@ -1,6 +1,14 @@
+@import "styles/Variables.scss";
+
 .oc-content-page {
-  margin: 20px;
   padding: 20px;
   background-color: #fff;
-  min-height: 100%;
+  margin-bottom: 20px;
+  @media #{$max-mobile} {
+    padding: 0px;
+  }
+}
+
+.oc-content-page-lg-font {
+  font-size: 15px;
 }

@@ -2,20 +2,27 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { ServerRouter, createServerRenderContext } from 'teardrop';
-import { CodeSplitProvider, createRenderContext } from 'code-split-component';
-import { ApolloProvider } from 'react-apollo';
+//import { CodeSplitProvider, createRenderContext } from 'code-split-component';
+import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
+import asyncBootstrapper from 'react-async-bootstrapper';
+import { ApolloProvider, renderToStringWithData } from 'react-apollo';
+import fetch from 'node-fetch'
 import Helmet from 'react-helmet';
+import LocaleProvider from 'antd/lib/locale-provider';
+import enUS from 'antd/lib/locale-provider/en_US'
 import generateHTML from './generateHTML';
 import createStore from '../../../shared/store/create_store';
 import apolloClient from '../../../shared/modules/apollo';
 import App from '../../../shared/App';
 import config from '../../../../config';
 
+global.fetch = fetch;
+
 /**
  * An express middleware that is capabable of service our React application,
  * supporting server side rendering of the application.
  */
-function reactApplicationMiddleware(request, response) {
+async function reactApplicationMiddleware(request, response) {
   // We should have had a nonce provided to us.  See the server/index.js for
   // more information on what this is.
   if (typeof response.locals.nonce !== 'string') {
@@ -46,60 +53,67 @@ function reactApplicationMiddleware(request, response) {
 
   // We also create a context for our <CodeSplitProvider> which will allow us
   // to query which chunks/modules were used during the render process.
-  const codeSplitContext = createRenderContext();
+  const asyncContext = createAsyncContext();
 
   // Setup redux
   const store = createStore();
 
-  // Create our React application and render it into a string.
-  const reactAppString = renderToString(
-    <CodeSplitProvider context={codeSplitContext}>
-      <ApolloProvider store={store} client={apolloClient}>
-        <ServerRouter location={request.url} context={reactRouterContext}>
-          <App store={store} />
-        </ServerRouter>
-      </ApolloProvider>
-    </CodeSplitProvider>,
+  const app = (
+    <AsyncComponentProvider asyncContext={asyncContext}>
+      <LocaleProvider locale={enUS}>
+        <ApolloProvider store={store} client={apolloClient}>
+          <ServerRouter location={request.url} context={reactRouterContext}>
+            {routerProps => (<App store={store} {...routerProps} />)}
+          </ServerRouter>
+        </ApolloProvider>
+      </LocaleProvider>
+    </AsyncComponentProvider>
   );
 
-  // Generate the html response.
-  const html = generateHTML({
-    // Provide the full app react element.
-    reactAppString,
-    // Nonce which allows us to safely declare inline scripts.
-    nonce,
-    // Running this gets all the helmet properties (e.g. headers/scripts/title etc)
-    // that need to be included within our html.  It's based on the rendered app.
-    // @see https://github.com/nfl/react-helmet
-    helmet: Helmet.rewind(),
-    // We provide our code split state so that it can be included within the
-    // html, and then the client bundle can use this data to know which chunks/
-    // modules need to be rehydrated prior to the application being rendered.
-    codeSplitState: codeSplitContext.getState(),
-    initialState: store.getState()
+  // do initial bootstrapping to resolve any async components for the server render
+  asyncBootstrapper(app).then(async () => {
+    // Create our React application and render it into a string.
+    const reactAppString = await renderToStringWithData(app)
+
+    // Generate the html response.
+    const html = generateHTML({
+      // Provide the full app react element.
+      reactAppString,
+      // Nonce which allows us to safely declare inline scripts.
+      nonce,
+      // Running this gets all the helmet properties (e.g. headers/scripts/title etc)
+      // that need to be included within our html.  It's based on the rendered app.
+      // @see https://github.com/nfl/react-helmet
+      helmet: Helmet.rewind(),
+      // We provide our code split state so that it can be included within the
+      // html, and then the client bundle can use this data to know which chunks/
+      // modules need to be rehydrated prior to the application being rendered.
+      asyncComponentState: asyncContext.getState(),
+      initialState: store.getState()
+    });
+
+    // Get the render result from the server render context.
+    const renderResult = reactRouterContext.getResult();
+
+    // Check if the render result contains a redirect, if so we need to set
+    // the specific status and redirect header and end the response.
+    if (renderResult.redirect) {
+      response.status(301).setHeader('Location', renderResult.redirect.pathname);
+      response.end();
+      return;
+    }
+
+    response
+      .status(
+        renderResult.missed
+          // If the renderResult contains a "missed" match then we set a 404 code.
+          // Our App component will handle the rendering of an Error404 view.
+          ? 404
+          // Otherwise everything is all good and we send a 200 OK status.
+          : 200,
+      )
+      .send(html);
   });
-
-  // Get the render result from the server render context.
-  const renderResult = reactRouterContext.getResult();
-
-  // Check if the render result contains a redirect, if so we need to set
-  // the specific status and redirect header and end the response.
-  if (renderResult.redirect) {
-    response.status(301).setHeader('Location', renderResult.redirect.pathname);
-    response.end();
-    return;
-  }
-
-  response
-    .status(
-      renderResult.missed
-        // If the renderResult contains a "missed" match then we set a 404 code.
-        // Our App component will handle the rendering of an Error404 view.
-        ? 404
-        // Otherwise everything is all good and we send a 200 OK status.
-        : 200,
-    )
-    .send(html);
 }
 
 export default (reactApplicationMiddleware);
