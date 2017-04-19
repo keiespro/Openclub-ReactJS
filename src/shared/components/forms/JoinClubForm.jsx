@@ -52,14 +52,13 @@ class JoinClubForm extends Component {
     return 'wait';
   }
   profileStep() {
-    return {
-
-    }
+    if (this.state.step === 'profile') return 'process'
+    if (this.state.step === 'confirm') return 'finish'
+    return 'wait';
   }
   confirmStep() {
-    return {
-
-    }
+    if (this.state.step === 'confirm') return 'process'
+    return 'wait'
   }
   changePlan() {
     this.nextStep();
