@@ -1,0 +1,25 @@
+ul.credit-card-list {
+  width: 100%;
+  li.card-li {
+    height: 35px;
+    div {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .card-logo {
+      font-size: 20px;
+      padding: 5px;
+    }
+    .card-number {
+      font-size: 16px;
+      padding: 5px;
+    }
+    .card-exp {
+      font-size: 16px;
+      padding: 5px;
+    }
+    &:nth-child(even) {
+      background-color: #fcfcfc;
+    }
+  }
+}
