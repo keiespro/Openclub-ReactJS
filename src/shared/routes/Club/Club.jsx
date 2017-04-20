@@ -147,7 +147,7 @@ class Club extends Component {
 }
 
 const clubQuery = gql`
-  query club($slug: String!) {
+  query club($slug: String!, $first: Int!) {
     club(slug: $slug) {
       _id
       name
@@ -194,6 +194,11 @@ const clubQuery = gql`
       stripe_account{
         data
       }
+      members(first: $first){
+        edges{
+          user_id
+        }
+      }
     }
   }
 `
@@ -203,7 +208,8 @@ const ClubWithApollo = graphql(clubQuery, {
     if (!props.params) return false;
     return {
       variables: {
-        slug: props.params.club_id
+        slug: props.params.club_id,
+        first: 25
       }
     }
   },
