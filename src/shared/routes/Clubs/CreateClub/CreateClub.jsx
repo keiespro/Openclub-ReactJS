@@ -7,7 +7,7 @@ import {
   ContentPage,
   PageHeader
 } from 'components/layout'
-import { message } from 'antd'
+import { message, Modal } from 'antd'
 
 const CreateClub = ({ mutate, submitting }, { router }) => {
 
@@ -21,7 +21,10 @@ const CreateClub = ({ mutate, submitting }, { router }) => {
       });
       router.transitionTo(`/${values.slug}`);
     } catch (err) {
-      console.error(err);
+      Modal.error({
+        title: "Error Creating Club",
+        content: err.message
+      })
     }
   }
 

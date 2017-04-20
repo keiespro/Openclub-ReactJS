@@ -2,9 +2,7 @@
  * Apollo integration with openclub for graphql API
  */
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
-import { createLogger } from 'utils/logger'
 
-const logger = createLogger('apollo')
 const networkInterface = createNetworkInterface({
   uri: process.env.GRAPH_URL
 })
@@ -36,13 +34,20 @@ const initMiddlewares = store => {
   }])
 
   const errorLog = {
-    applyAfterware({ response }, next) {
-      response.clone().json().then(({ errors }) => {
-        if (errors) {
-          logger.error(errors.map(e => e.message))
+    async applyAfterware({ response }, next) {
+      try {
+        if (response.status === 401) {
+          throw new Error('ApolloUnauthorisedError');
         }
-        next()
-      })
+        const { errors } = await response.clone().json();
+        if (errors) {
+          throw new Error(errors.map(e => e.message));
+        }
+      } catch (e) {
+        if (e.message === 'ApolloUnauthorisedError') localStorage.removeItem('openclub_token');
+        Promise.reject(e);
+      }
+      next();
     }
   }
 

@@ -47,7 +47,7 @@ const inlineLock = process.env.IS_CLIENT ? container => new Auth0Lock(process.en
  * there is a hash or not, which allows us to link auth properly into redux.
  * We convert the event into a promise that is consumable by actions
  */
-const hashParsed = new Promise((resolve, reject) => {
+const hashParsed = () => new Promise((resolve, reject) => {
   if (process.env.IS_SERVER) {
     resolve(false);
   }
@@ -65,7 +65,6 @@ const hashParsed = new Promise((resolve, reject) => {
   }
 
   lock.on('hash_parsed', resolveToken);
-  //inlineLock.on('hash_parsed', resolveToken)
 })
 
 export {

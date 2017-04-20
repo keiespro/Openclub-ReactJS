@@ -3,7 +3,7 @@ import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import Button from 'antd/lib/button'
 import Modal from 'antd/lib/modal'
-import { Alert, message } from 'antd'
+import { Alert, message, Modal } from 'antd'
 import StripeAccountForm from 'components/forms/StripeAccountForm'
 import StripeBankAccountForm from 'components/forms/StripeBankAccountForm'
 import { stringKeyObjectFilter } from 'utils/object_helpers'
@@ -51,7 +51,10 @@ class BankDetails extends Component {
       })
       message.success("Account details updated sucessfully!", 10);
     } catch (err) {
-      console.error(err);
+      Modal.error({
+        title: "Error Updating Account",
+        content: err.message
+      });
     }
   }
   async saveBankAccount(values, dispatch, props) {

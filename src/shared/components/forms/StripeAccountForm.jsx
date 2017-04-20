@@ -21,7 +21,7 @@ import {
   DateOfBirth,
   Terms
 } from 'components/custom_form_fields'
-import { Alert, Col, message, Spin } from 'antd'
+import { Alert, Col, message, Spin, Modal } from 'antd'
 import { required, maxLength, email, empty, number } from 'utils/form_validation/errors'
 import _ from 'lodash'
 
@@ -93,9 +93,11 @@ class StripeAccountForm extends Component {
           country_spec: query.data.countrySpec,
           country_spec_query: false
         });
-      } catch(e) {
-        console.error(e);
-        message.error(e.message, 5);
+      } catch (er) {
+        Modal.error({
+          title: 'Error',
+          content: er.message
+        })
         this.setState({ country_spec_query: false });
       }
     }
