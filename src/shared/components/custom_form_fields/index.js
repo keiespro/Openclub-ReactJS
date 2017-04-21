@@ -9,8 +9,10 @@ import MoneyField from './MoneyField'
 import StripeFileUploader from './StripeFileUploader'
 import StripeBankAccountField from './StripeBankAccountField'
 import StripeCreditCardField from './StripeCreditCardField'
+import Terms from './Terms'
 
 export {
+  Terms,
   DateOfBirth,
   StripeCountrySelector,
   MoneyField,
