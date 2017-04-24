@@ -113,6 +113,7 @@ class StripeAccountForm extends Component {
     if (!country_spec) return [];
 
     const { verification_fields } = country_spec;
+    console.log(verification_fields)
 
     return union(verification_fields[this.getType()][level], additionalFields)
   }
@@ -297,8 +298,14 @@ class StripeAccountForm extends Component {
           Our payment provider has additional verification requirements in this region that may require that you contact us. Please email support@openclub.co if you have any difficulties.
         </FieldContainer>
         {!existingAccount && (
-          <FieldContainer>
-            <Field component={Terms} name="tos_acceptance" />
+          <FieldContainer required title="Terms and Conditions" deleted={this.isFieldDisabled('tos_acceptance.date')}>
+            <Field
+              component={Terms}
+              name="tos_acceptance"
+              text="I agree to the OpenClub Club Engagement Agreement"
+              frameUrl="https://lawdocs.openclub.co/en_AU/club_engagement"
+              required
+              />
           </FieldContainer>
         )}
         <div className="bottom-gap-large" />
