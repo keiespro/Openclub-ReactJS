@@ -14,8 +14,6 @@ const DateOfBirth = props => {
     return moment(value);
   }
 
-  console.log(val());
-
   return (
     <Field
       {...props}

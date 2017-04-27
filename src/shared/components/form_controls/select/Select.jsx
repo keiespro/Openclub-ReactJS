@@ -10,7 +10,6 @@ const Select = ({ input, options, basic, meta, help, ...rest }) => {
     input.onChange(val);
   }
   const children = options.map(({ title, value }) => <Option key={value} value={value}>{title || value}</Option>)
-  // console.log(input, options, basic, meta, help, rest);
 
   const wrapClasses = cx(`${formPrefix}-item-control`, {
     'has-feedback': meta.touched,

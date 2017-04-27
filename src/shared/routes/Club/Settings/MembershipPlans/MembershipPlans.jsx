@@ -174,7 +174,6 @@ const MembershipPlansWithApollo = compose(
     options: {
       updateQueries: {
         club: (prev, { mutationResult }) => {
-          console.log(prev, mutationResult)
           const newPlan = mutationResult.data.createMembershipPlan
           const oldPlans = prev.club.membership_plans || []
           return {
@@ -192,7 +191,6 @@ const MembershipPlansWithApollo = compose(
     options: {
       updateQueries: {
         club: (prev, { mutationResult }) => {
-          console.log(mutationResult);
           const changedPlan = mutationResult.data.updateMembershipPlan
           let oldPlans = prev.club.membership_plans || []
           const index = _.findIndex(oldPlans, { _id: changedPlan._id });

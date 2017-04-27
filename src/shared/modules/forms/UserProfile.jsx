@@ -20,7 +20,6 @@ class UserProfile extends Component {
   }
   async handleSubmit(values, dispatch, props) {
     const { registeredFields } = props;
-    console.log(registeredFields, values);
     const { updateProfile } = this.props;
     // get clean value object and image diff
     // need to remove address because it brings __typename with it.

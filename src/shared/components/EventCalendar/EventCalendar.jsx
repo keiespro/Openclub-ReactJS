@@ -98,7 +98,6 @@ class EventCalendar extends Component {
         _.setWith(events, childPath, child, Object);
       }
     });
-    console.log(events);
     return (
 
       <div className="card calendar">

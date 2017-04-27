@@ -8,7 +8,6 @@ class Membership extends Component {
   }
   render() {
     const { membership } = this.props;
-    console.log(membership)
     return (
       <ContentPage>
         <PageHeader title="My membership" />

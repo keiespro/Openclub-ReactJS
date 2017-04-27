@@ -47,9 +47,7 @@ async function createCardElement(style, mountNode, err) {
     card.removeEventListener('change', boundErrorListener);
   }
   const submit = async () => {
-    console.log(card)
     const { token, error } = await stripe.createToken(card);
-    console.log(token, error)
     if (error) return err(error.message);
     return token;
   }

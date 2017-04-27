@@ -113,7 +113,6 @@ class StripeAccountForm extends Component {
     if (!country_spec) return [];
 
     const { verification_fields } = country_spec;
-    console.log(verification_fields)
 
     return union(verification_fields[this.getType()][level], additionalFields)
   }
