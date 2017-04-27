@@ -14,11 +14,11 @@ import {
   InputGroup,
   Select,
   Address,
-  Button
+  Button,
+  DatePicker
 } from 'components/form_controls'
 import {
   StripeCountrySelector,
-  DateOfBirth,
   Terms
 } from 'components/custom_form_fields'
 import { Alert, Col, message, Spin, Modal } from 'antd'
@@ -164,6 +164,8 @@ class StripeAccountForm extends Component {
 
     const businessTaxIdProvided = existingAccount ? club.stripe_account.data.legal_entity.business_tax_id_provided : false;
 
+    console.log(form_values);
+
     return (
       <Form onSubmit={handleSubmit}>
         <Spin
@@ -289,9 +291,12 @@ class StripeAccountForm extends Component {
           />
         </FieldContainer>
         <FieldContainer required={this.isFieldRequired('legal_entity.dob.month')} title="Date of Birth" deleted={this.isFieldDisabled('legal_entity.dob.month')}>
-          <DateOfBirth
+          <Field
             name="legal_entity.dob"
-          />
+            help="The date of birth of the account's legal representative."
+            validate={[this.ifFieldRequired('legal_entity.dob.month')]}
+            component={DatePicker}
+            />
         </FieldContainer>
         <FieldContainer required title="Additional Verifications" deleted={this.isFieldDisabled('legal_entity.additional_owners')}>
           Our payment provider has additional verification requirements in this region that may require that you contact us. Please email support@openclub.co if you have any difficulties.
