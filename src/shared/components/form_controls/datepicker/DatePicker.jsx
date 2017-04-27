@@ -4,14 +4,16 @@ import { DatePicker as AntDatePicker } from 'antd'
 
 const dateFormat = 'DD/MM/YYYY'
 
-const DatePicker = ({ input, meta, ...rest }) => {
+const DatePicker = ({ input, meta, onChange }) => {
   const handleChange = (val) => {
-    let change = input.onChange;
-    if ('onChange' in rest) change = rest.onChange;
-    change(val.toDate());
+    let pickedDate = val.toDate();
+    if (onChange) return onChange(pickedDate);
+    return input.onChange(pickedDate);
   }
 
-  return <AntDatePicker {...input} value={moment(input.value)} format={dateFormat} {...rest} onChange={handleChange} />
+  const { value, ...rest } = input;
+
+  return <AntDatePicker {...rest} defaultValue={input.value instanceof Date ? moment(input.value) : input.value} format={dateFormat} onChange={handleChange} />
 }
 
 export default DatePicker
