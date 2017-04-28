@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'
+import NewsFeed from 'components/newsfeed/NewsFeed';
 
 class Feed extends Component {
   static propTypes = {
@@ -10,7 +11,7 @@ class Feed extends Component {
     return (
       <div>
         <Helmet title={`${club.name} — Feed`} />
-        <span>Feed here mang</span>
+        <NewsFeed feedOwnerId={club._id} feedOwnerType="clubs" />
       </div>
     )
   }
