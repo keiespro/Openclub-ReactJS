@@ -39,8 +39,8 @@ class FileUploader extends Component {
     } : {}
 
     const uploadButtonText = (fileList.length > 0)
-      ? 'Click to Change'
-      : 'Click to Upload'
+      ? 'Change File Selection'
+      : `Click to choose ${multiple ? 'files' : 'file'}`
 
     return (
       <Upload
@@ -53,7 +53,7 @@ class FileUploader extends Component {
         {...rest}
         onChange={this.handleChange}
       >
-        <Button>
+        <Button size="large">
           <Icon type="upload" /> {uploadButtonText}
         </Button>
       </Upload>

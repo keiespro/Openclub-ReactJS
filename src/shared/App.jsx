@@ -15,7 +15,7 @@ import AsyncLoginPage from 'routes/LoginPage'
 import AsyncFeed from 'routes/Feed'
 import AsyncProfile from 'routes/Profile/Profile'
 import AsyncDiscover from 'routes/Discover'
-import AsyncClubs from 'routes/Clubs'
+import AsyncClubs from 'routes/Clubs/Clubs'
 import AsyncClub from 'routes/Club'
 import AsyncNotifications from 'routes/Notifications'
 import AsyncEvents from 'routes/Events'
@@ -126,7 +126,7 @@ class App extends Component {
               <Match pattern="/profile" render={() => data.user ? <AsyncProfile viewer={data.user} /> : <Unauthorised />} />
               {/* CLUB PAGES */}
               <Match pattern="/test" component={AsyncTest} />
-              <Match pattern="/clubs" component={AsyncClubs} />
+              <Match pattern="/clubs" render={routerProps => <AsyncClubs viewer={data.user} {...routerProps} />} />
               <Match pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
               {/* 404 */}
               <Miss component={Error404} />

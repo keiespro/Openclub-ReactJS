@@ -6,7 +6,7 @@ import { defaultCategories } from 'constants/index'
 
 import './Landing.scss'
 
-class ClubsLanding extends Component {
+class ClubInvitations extends Component {
   static contextTypes = {
     router: PropTypes.object.isRequired
   }
@@ -17,22 +17,19 @@ class ClubsLanding extends Component {
     this.context.router.transitionTo(link);
   }
   render() {
-    console.log(this.props);
     return (
       <ContentPage>
         <Row>
           <Col span={20}>
-            <h4>Clubs</h4>
+            <h4>Invitations</h4>
           </Col>
           <Col span={4}>
             <Button type="primary" icon="plus" style={{ float: 'right' }} onClick={this.goTo.bind(this, '/clubs/create')}>Create a Club</Button>
           </Col>
         </Row>
         <div className="bottom-gap-large" />
-        <CategoryCarousel categories={defaultCategories} />
-        <hr />
       </ContentPage>
     )
   }
 }
-export default ClubsLanding
+export default ClubInvitations

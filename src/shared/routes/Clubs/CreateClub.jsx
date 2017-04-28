@@ -4,7 +4,6 @@ import gql from 'graphql-tag'
 import { browserHistory } from 'teardrop'
 import CreateClubForm from 'components/forms/CreateClubForm'
 import {
-  ContentPage,
   PageHeader
 } from 'components/layout'
 import { message, Modal } from 'antd'
@@ -19,6 +18,10 @@ const CreateClub = ({ mutate, submitting }, { router }) => {
           club: values.club
         }
       });
+      Modal.success({
+        title: "Club Created",
+        content: "Your club page has been created. Follow the steps to complete the setup and invite members to your club."
+      });
       router.transitionTo(`/${values.slug}`);
     } catch (err) {
       Modal.error({
@@ -29,13 +32,16 @@ const CreateClub = ({ mutate, submitting }, { router }) => {
   }
 
   return (
-    <ContentPage>
-      <PageHeader title="Create a Club" />
+    <div>
+      <h3>Create a club</h3>
       <p>
-        Power your social group, sporting club, association or business with OpenClub. Connect within the communities that matter to you. OpenClub is free to setup.
+        Power your social group, sporting club, association or business with OpenClub. Connect within the communities that matter to you.
+        <br />OpenClub is free to get started for unlimited members and events.
       </p>
-      <CreateClubForm onSubmit={createTheClub} submitting={submitting} />
-    </ContentPage>
+      <div style={{ maxWidth: 480 }}>
+        <CreateClubForm onSubmit={createTheClub} submitting={submitting} />
+      </div>
+    </div>
   )
 }
 
