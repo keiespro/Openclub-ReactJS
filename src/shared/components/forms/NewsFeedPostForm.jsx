@@ -6,6 +6,8 @@ import { Spin, Button, Dropdown, Menu, Icon, Input } from 'antd'
 import { ContentPage } from 'components/layout';
 import cx from 'classnames';
 import './NewsFeedPostForm.scss';
+import Card from 'antd/lib/card'
+import PostAttachment from 'components/cards/PostAttachment'
 
 const URLexpression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/
 
@@ -90,8 +92,15 @@ class NewsFeedPost extends Component {
       }
     });
   }
+  formatContent(content) {
+    if (!content) return <div />;
+    return <PostAttachment attachment={content} />
+  }
   render() {
-    const embed = 'html' in this.state.embed ? this.state.embed.html : '';
+    console.log(this.state.embed.content);
+    const { embed } = this.state;
+    const content = embed ? embed.content : {};
+
     const privacyOptions = [
       {
         title: 'Public',
@@ -114,7 +123,9 @@ class NewsFeedPost extends Component {
         <div className="newsfeed-post">
           <Input type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder="Share something..." />
           {this.state.activeRequest ? <Spin tip="Loading attachment..." /> : null}
-          {embed !== '' ? <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} /> : null}
+          <div>
+            {this.formatContent(content)}
+          </div>
           <div className="buttons">
             <Dropdown overlay={privacyMenu}>
               <Button><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
@@ -136,7 +147,7 @@ class NewsFeedPost extends Component {
 const embedMutation = gql`
 mutation embedMutation($url: String!) {
   embed(url: $url) {
-    html
+    content
   }
 }
 `
