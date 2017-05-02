@@ -67,7 +67,7 @@ class Feed extends Component {
                   Terms of Service
                 </a> | <a href="https://www.openclub.co/legal/privacy" target="_blank">
                   Privacy Policy
-                </a> | <a href="/help" target="_blank">
+                </a> | <a href="/help" target="_blank" rel="noopener noreferrer">
                  Help
                </a>
               </div>
