@@ -33,6 +33,7 @@ class ClubsView extends Component {
     setTimeout(this.setState({ ready: true }), 150); //eslint-disable-line
   }
   render() {
+    const { viewer } = this.props;
     const { setActiveKey, props: { location: { pathname }} } = this;
     const [, activeKey] = pathname.match(/\/clubs\/?([\w\d-]+)?\/?/);
 
@@ -50,14 +51,14 @@ class ClubsView extends Component {
             onChange={setActiveKey.bind(this)}
             >
             <TabPane tab={<span><i className="fa fa-fw fa-search-plus" /> Suggestions</span>} key="suggestions" />
-            <TabPane tab={<span><i className="fa fa-fw fa-envelope-open-o" /> Invitations</span>} key="invitations" />
-            <TabPane tab={<span><i className="fa fa-fw fa-address-card-o" /> My Clubs</span>} key="my" />
+            {viewer && <TabPane tab={<span><i className="fa fa-fw fa-envelope-open-o" /> Invitations</span>} key="invitations" />}
+            {viewer && <TabPane tab={<span><i className="fa fa-fw fa-address-card-o" /> My Clubs</span>} key="my" />}
           </Tabs>
           <MatchGroup>
             <Match pattern="/clubs" component={Landing} viewer={this.props.viewer} />
-            <Match pattern="/clubs/create" component={CreateClub} />
-            <Match pattern="/clubs/invitations" component={Invitations} />
-            <Match pattern="/clubs/my" render={routerProps => <My viewer={this.props.viewer} {...routerProps} />} />
+            {viewer && <Match pattern="/clubs/create" component={CreateClub} />}
+            {viewer && <Match pattern="/clubs/invitations" component={Invitations} />}
+            {viewer && <Match pattern="/clubs/my" render={routerProps => <My viewer={this.props.viewer} {...routerProps} />} />}
             <Miss component={Error404} />
           </MatchGroup>
         </ContentPage>

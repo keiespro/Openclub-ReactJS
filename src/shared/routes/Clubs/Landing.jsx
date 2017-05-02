@@ -12,7 +12,8 @@ import './Landing.scss'
 
 class ClubsLanding extends Component {
   static propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object,
+    viewer: PropTypes.object
   }
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -39,10 +40,10 @@ class ClubsLanding extends Component {
       <div>
         <h3>Suggested Clubs</h3>
         <hr className="bottom-gap-large" />
-        <Row gutter={24} type="flex" justify="space-between">
+        <Row type="flex" justify="space-between">
           {list.map(club => (
             <Col xs={24} md={12} lg={8} key={club._id}>
-              <ClubCard club={club} />
+              <ClubCard club={club} viewer={this.props.viewer} />
             </Col>
           ))}
         </Row>
