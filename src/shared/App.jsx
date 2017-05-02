@@ -159,6 +159,7 @@ const currentViewer = gql`
       }
       memberships {
         club_id
+        feed_permissions
         roles
         club
       }

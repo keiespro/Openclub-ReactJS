@@ -4,14 +4,15 @@ import NewsFeed from 'components/newsfeed/NewsFeed';
 
 class Feed extends Component {
   static propTypes = {
-    club: PropTypes.object
+    club: PropTypes.object,
+    viewer: PropTypes.object
   }
   render() {
-    const { club } = this.props;
+    const { club, viewer } = this.props;
     return (
       <div>
         <Helmet title={`${club.name} — Feed`} />
-        <NewsFeed feedOwnerId={club._id} feedOwnerType="clubs" />
+        <NewsFeed feedOwnerId={club._id} feedOwnerType="clubs" viewer={this.props.viewer} />
       </div>
     )
   }

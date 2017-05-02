@@ -106,7 +106,7 @@ class Club extends Component {
           { perm.userCanAccessSettings && <Menu.Item key="settings"><Icon type="setting" /> Settings</Menu.Item>}
         </Menu>
         <ContentArea>
-          <ClubHeroHelper club={club} />
+          {perm.userCanAccessSettings && <ClubHeroHelper club={club} />}
           <MatchGroup>
             <Match
               exactly
@@ -124,7 +124,7 @@ class Club extends Component {
             </Match>
             <Match
               pattern={`/${params.club_id}/feed`}
-              render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} />}
+              render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} viewer={viewer} />}
             />
             <Match
               pattern={`/${params.club_id}/mymembership`}

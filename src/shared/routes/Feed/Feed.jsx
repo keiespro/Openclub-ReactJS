@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Row, Col, Layout } from 'antd'
 import NewsFeed from 'components/newsfeed'
-import NewsFeedPostForm from 'components/forms/NewsFeedPostForm'
 import { CalendarItem } from 'components/EventCalendar'
 
 import './Feed.scss';
@@ -33,12 +32,7 @@ class Feed extends Component {
       <Row gutter={8}>
         <Col span={16}>
           <div className="feed-container">
-            <Content className="content">
-              <NewsFeedPostForm handleSubmit={this.handleSubmit} activeRequest={this.state.activeRequest} />
-            </Content>
-            <Content className="content">
-              <NewsFeed posts={this.state.posts} />
-            </Content>
+            <NewsFeed posts={this.state.posts} />
           </div>
         </Col>
         <Col span={8}>

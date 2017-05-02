@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import { Spin, Button, Dropdown, Menu, Icon, Input } from 'antd'
+import { ContentPage } from 'components/layout';
 import cx from 'classnames';
 import './NewsFeedPostForm.scss';
 
@@ -109,17 +110,19 @@ class NewsFeedPost extends Component {
       </Menu>
     );
     const comp = (
-      <div className="newsfeed-post">
-        <Input type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder="Share something..." />
-        {this.state.activeRequest ? <Spin tip="Loading attachment..." /> : null}
-        {embed !== '' ? <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} /> : null}
-        <div className="buttons">
-          <Dropdown overlay={privacyMenu}>
-            <Button><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
-          </Dropdown>
-          <Button type="primary" onClick={this.submit} disabled={this.props.activeRequest}>Post</Button>
+      <ContentPage>
+        <div className="newsfeed-post">
+          <Input type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder="Share something..." />
+          {this.state.activeRequest ? <Spin tip="Loading attachment..." /> : null}
+          {embed !== '' ? <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} /> : null}
+          <div className="buttons">
+            <Dropdown overlay={privacyMenu}>
+              <Button><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
+            </Dropdown>
+            <Button type="primary" onClick={this.submit} disabled={this.props.activeRequest}>Post</Button>
+          </div>
         </div>
-      </div>
+      </ContentPage>
     );
     if (this.props.activeRequest) {
       return (<Spin tip="Posting...">
