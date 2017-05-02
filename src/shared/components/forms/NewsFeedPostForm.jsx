@@ -60,8 +60,8 @@ class NewsFeedPost extends Component {
       text: this.state.input,
       privacy: this.state.privacy.key
     };
-    if ('html' in this.state.embed) {
-      submission.attachment = this.state.embed.html
+    if (this.state.embed && this.state.embed.content) {
+      submission.attachment = this.state.embed.content
     }
     const success = () => {
       this.setState(this.resetState);

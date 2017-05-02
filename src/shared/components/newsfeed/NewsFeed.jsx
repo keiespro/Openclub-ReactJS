@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Row, Col, Icon, Button, Dropdown, Menu } from 'antd';
+import { Row, Col, Icon, Button, Dropdown, Menu, Modal } from 'antd';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import cx from 'classnames';
@@ -21,6 +21,24 @@ class NewsFeed extends Component {
   getPermissions(perm = false) {
     const { viewer, data: { feed }} = this.props;
     return perm ? feedPermissions(viewer, feed).indexOf(perm) > -1 : feedPermissions(viewer, feed);
+  }
+  async handleSubmit(post, cb) {
+    const { createPost, feedOwnerId, feedOwnerType } = this.props;
+
+    try {
+      await createPost({
+        variables: {
+          feedOwnerId,
+          feedOwnerType,
+          post
+        }
+      });
+    } catch (err) {
+      Modal.error({
+        title: 'Uh-oh!',
+        content: err
+      });
+    }
   }
   render() {
     console.log(this.props);
@@ -94,7 +112,7 @@ const NewsFeedGQL = gql`
   }
 `
 
-const PostToFeed = gql`
+const createPostGQL = gql`
   mutation createPost($feedOwnerId: MongoID!, $feedOwnerType: String!, $post: postType!) {
     createPost(feedOwnerId: $feedOwnerId, feedOwnerType: $feedOwnerType, post: $post) {
       _id
@@ -103,6 +121,13 @@ const PostToFeed = gql`
       images{
         thumb
         background
+      }
+      user{
+        name
+        images{
+          square
+        }
+        fbid
       }
       privacy
     }
@@ -123,8 +148,8 @@ const NewsFeedQuery = compose(graphql(NewsFeedGQL, {
   skip: props => {
     if (!props.feedOwnerId) return true;
   }
-}), graphql(PostToFeed, {
-  name: 'newPost',
+}), graphql(createPostGQL, {
+  name: 'createPost',
   options: {
     updateQueries: {
       feed: (prev, { mutationResult }) => ({

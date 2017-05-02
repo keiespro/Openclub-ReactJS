@@ -12,7 +12,7 @@ const ACTION_HANDLERS = {
   }),
   [SEEN_NOTIFICATIONS]: state => ({
     ...state,
-    results: state.results.map(v => { v.unseen = false; return v; }),
+    results: state.results && state.results.length > 0 ? state.results.map(v => { v.unseen = false; return v; }) : [],
     unseen: 0,
   }),
   [NEW_NOTIFICATIONS]: (state, { results }) => {

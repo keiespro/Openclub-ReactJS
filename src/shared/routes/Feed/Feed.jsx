@@ -32,7 +32,6 @@ class Feed extends Component {
       <Row gutter={8}>
         <Col span={16}>
           <div className="feed-container">
-            <NewsFeed posts={this.state.posts} />
           </div>
         </Col>
         <Col span={8}>
