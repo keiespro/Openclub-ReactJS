@@ -6,10 +6,7 @@ import './ProfileHeader.scss'
 class ProfileHeader extends Component {
   renderProfileBackdrop() {
     const { images, name, collapsed } = this.props
-    if((!images || !images.square) && name){
-      return <div />
-    }
-    const square = images.square ? images.square : '/empty-club.png'
+    const square = images && images.square ? images.square : '/empty-club.png'
     const classes = cx({
       'media-object': true,
       'img-rounded-corners': collapsed === false,

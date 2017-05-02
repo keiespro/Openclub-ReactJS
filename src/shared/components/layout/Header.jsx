@@ -36,14 +36,24 @@ const notificationMenu = (
 
 const Header = ({ user, showSearch, notifications, open, seen, toggle }) => (
   <div className="oc-header">
-    <div className="oc-header-context hidden-md hidden-lg">
+    { !user && <div className="oc-header-context">
       <div className="oc-header-usermenu">
-        <Button shape="circle" type="primary" ghost icon={open ? 'menu-fold' : 'menu-unfold'} onClick={toggle} />
+        <Link to="/clubs">Clubs</Link> | <Link to="/events">Events</Link>
       </div>
+    </div>}
+    <div className="oc-header-context hidden-md hidden-lg">
+      { user && <div className="oc-header-usermenu">
+        <Button shape="circle" type="primary" ghost icon={open ? 'menu-fold' : 'menu-unfold'} onClick={toggle} />
+      </div> }
     </div>
     <Link to="/" className="oc-header-logo">
       <Logo color="#008FCC" />
     </Link>
+    { !user && <div className="oc-header-context right">
+      <div className="oc-header-usermenu">
+        <Link to="/">Login / Sign Up</Link>
+      </div>
+    </div>}
     { user &&
     <div className="oc-header-context right">
       <div className="oc-header-usermenu">

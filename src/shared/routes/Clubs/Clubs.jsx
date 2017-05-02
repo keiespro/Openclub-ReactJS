@@ -16,7 +16,8 @@ import Error404 from 'components/Error404/Error404'
 class ClubsView extends Component {
   static propTypes = {
     location: PropTypes.object,
-    viewer: PropTypes.object
+    viewer: PropTypes.object,
+    login: PropTypes.func
   }
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -38,9 +39,7 @@ class ClubsView extends Component {
     const [, activeKey] = pathname.match(/\/clubs\/?([\w\d-]+)?\/?/);
 
     const createClubButton = (
-      <Button onClick={setActiveKey.bind(this, 'create')} type="primary" disabled={activeKey === 'create'}>
-        <i className="fa fa-fw fa-plus-circle" /> Create Club
-      </Button>
+      <Button onClick={viewer ? setActiveKey.bind(this, 'create') : this.props.login.bind(this)} type="primary" disabled={activeKey === 'create'}><i className="fa fa-fw fa-plus-circle" /> Create a Club Page</Button>
     )
     return (
       <ContentArea>

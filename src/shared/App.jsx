@@ -126,7 +126,7 @@ class App extends Component {
               <Match pattern="/profile" render={() => data.user ? <AsyncProfile viewer={data.user} /> : <Unauthorised />} />
               {/* CLUB PAGES */}
               <Match pattern="/test" component={AsyncTest} />
-              <Match pattern="/clubs" render={routerProps => <AsyncClubs viewer={data.user} {...routerProps} />} />
+              <Match pattern="/clubs" render={routerProps => <AsyncClubs viewer={data.user} login={this.props.login} {...routerProps} />} />
               <Match pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
               {/* 404 */}
               <Miss component={Error404} />
