@@ -45,11 +45,11 @@ class UserProfileForm extends Component {
         </FieldContainer>
         <FieldContainer title="Profile Photo">
           <Field
-            name="images.thumb"
+            name="images.square"
             component={ImageUploader}
             token={token}
-            postname="thumb"
-            action={`${process.env.ICEPICK_URL}/upload/image/thumb`}
+            postname="square"
+            action={`${process.env.ICEPICK_URL}/upload/image/square`}
           />
         </FieldContainer>
         <FieldContainer title="Address">
