@@ -1,7 +1,12 @@
+// Dependencies
 import React, { Component, PropTypes } from 'react'
+import { Row, Col, Button } from 'antd'
+import { graphql, compose } from 'react-apollo'
+import gql from 'graphql-tag';
+
+// Components
 import ContentPage from 'components/layout/ContentPage'
 import CategoryCarousel from 'components/category_carousel'
-import { Row, Col, Button } from 'antd'
 import { defaultCategories } from 'constants/index'
 
 import './Landing.scss'
@@ -35,4 +40,32 @@ class ClubsLanding extends Component {
     )
   }
 }
-export default ClubsLanding
+
+const clubsQueryGQL = gql`
+  query clubs($first: Int!, $cursor: MongoID) {
+    clubs(first:$first, cursor:$cursor) {
+      edges{
+        _id
+        name
+        slug
+        details{
+          about
+          location
+        }
+        images {
+          square
+          background
+        }
+      }
+    }
+  }
+`
+const ClubsApollo = graphql(clubsQueryGQL, {
+  options: () => ({
+    variables: {
+      first: 25
+    }
+  })
+})(ClubsLanding)
+
+export default ClubsApollo;
