@@ -56,9 +56,9 @@ class ClubsView extends Component {
           </Tabs>
           <MatchGroup>
             <Match pattern="/clubs" component={Landing} viewer={this.props.viewer} />
-            {viewer && <Match pattern="/clubs/create" component={CreateClub} />}
-            {viewer && <Match pattern="/clubs/invitations" component={Invitations} />}
-            {viewer && <Match pattern="/clubs/my" render={routerProps => <My viewer={this.props.viewer} {...routerProps} />} />}
+            <Match pattern="/clubs/create" component={viewer ? CreateClub : Error404} />
+            <Match pattern="/clubs/invitations" component={viewer ? Invitations : Error404} />
+            <Match pattern="/clubs/my" render={routerProps => viewer ? <My viewer={this.props.viewer} {...routerProps} /> : <Error404 {...routerProps} />} />
             <Miss component={Error404} />
           </MatchGroup>
         </ContentPage>
