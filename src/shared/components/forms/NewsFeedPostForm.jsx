@@ -27,7 +27,7 @@ class NewsFeedPost extends Component {
       privacy: {
         title: 'Public',
         icon: 'global',
-        key: 'public'
+        key: 'PUBLIC'
       },
       activeRequest: false
     }
@@ -105,12 +105,12 @@ class NewsFeedPost extends Component {
       {
         title: 'Public',
         icon: 'global',
-        key: 'public'
+        key: 'PUBLIC'
       },
       {
         title: 'Members only',
         icon: 'contacts',
-        key: 'members'
+        key: 'PRIVATE'
       },
     ]
     const privacyMenu = (

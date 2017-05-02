@@ -33,6 +33,7 @@ class NewsFeed extends Component {
           post
         }
       });
+      cb();
     } catch (err) {
       Modal.error({
         title: 'Uh-oh!',
@@ -46,8 +47,6 @@ class NewsFeed extends Component {
     const isPosts = data && data.feed && data.feed.posts;
     const postEdges = isPosts ? data.feed.posts.edges : [];
 
-    const posts = _.unionBy(...postEdges, '_id');
-
     if (this.getPermissions('view') === false) {
       return (
         <div className="posts-container">
@@ -59,10 +58,10 @@ class NewsFeed extends Component {
         </div>
       )
     }
-    if (posts.length <= 0) {
+    if (postEdges.length <= 0) {
       return (
         <div>
-          {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit} activeRequest={data.loading} />}
+          {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={data.loading} />}
           <div className="posts-container">
             <div className="no-posts">
               <h1><i className="fa fa-newspaper-o" /></h1>
@@ -75,8 +74,9 @@ class NewsFeed extends Component {
     }
     return (
       <div>
+        {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={data.loading} />}
         <div className="posts-container">
-          {posts.map(post => <FeedItem data={post} key={post._id} />)}
+          {postEdges.map(edge => <FeedItem data={edge.post} key={edge.post._id} />)}
         </div>
       </div>
     )
@@ -99,7 +99,7 @@ const NewsFeedGQL = gql`
           post{
             _id
             text
-            attachments
+            attachment
             images{
               thumb
               background
@@ -113,11 +113,11 @@ const NewsFeedGQL = gql`
 `
 
 const createPostGQL = gql`
-  mutation createPost($feedOwnerId: MongoID!, $feedOwnerType: String!, $post: postType!) {
-    createPost(feedOwnerId: $feedOwnerId, feedOwnerType: $feedOwnerType, post: $post) {
+  mutation createPost($feedOwnerId: MongoID, $feedOwnerType: String, $post: inputPost) {
+    createPost(ownerId: $feedOwnerId, ownerType: $feedOwnerType, post: $post) {
       _id
       text
-      attachments
+      attachment
       images{
         thumb
         background
@@ -152,15 +152,18 @@ const NewsFeedQuery = compose(graphql(NewsFeedGQL, {
   name: 'createPost',
   options: {
     updateQueries: {
-      feed: (prev, { mutationResult }) => ({
-        feed: {
-          ...prev.feed,
-          posts: {
-            ...prev.feed.posts,
-            edges: [[mutationResult.data.createPost], ...prev.feed.posts.edges]
+      feed: (prev, { mutationResult }) => {
+        console.log(prev, mutationResult);
+        return {
+          feed: {
+            ...prev.feed,
+            posts: {
+              ...prev.feed.posts,
+              edges: [{ post: mutationResult.data.createPost }, ...prev.feed.posts.edges]
+            }
           }
         }
-      })
+      }
     }
   }
 }))(NewsFeed);
