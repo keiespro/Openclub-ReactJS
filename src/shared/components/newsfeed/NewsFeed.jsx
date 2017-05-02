@@ -1,27 +1,36 @@
 import React, { Component, PropTypes } from 'react';
-import { Layout, Row, Col, Icon, Button, Dropdown, Menu } from 'antd';
-import { graphql } from 'react-apollo';
+import { Row, Col, Icon, Button, Dropdown, Menu } from 'antd';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import cx from 'classnames';
+import _ from 'lodash';
+
+import { ContentPage } from 'components/layout'
+import NewsFeedPostForm from 'components/forms/NewsFeedPostForm'
 import FeedItem from './FeedItem';
 import './NewsFeed.scss';
-
-const { Content } = Layout;
 
 class NewsFeed extends Component {
   static propTypes = {
     posts: PropTypes.array,
     feedOwnerId: PropTypes.string,
-    feedOwnerType: PropTypes.string
+    feedOwnerType: PropTypes.string,
+    data: PropTypes.object
   }
   render() {
-    console.log(this.props);
-    const posts = [];
+    const { data } = this.props;
+    const isPosts = data && data.feed && data.feed.posts;
+    const postEdges = isPosts ? data.feed.posts.edges : [];
+
+    const posts = _.unionBy(...postEdges, '_id');
     return (
       <div>
+        <ContentPage>
+          <NewsFeedPostForm handleSubmit={this.handleSubmit} activeRequest={false} />
+        </ContentPage>
         <div className="posts-container">
-          {posts.length > 0 ? posts.map((value, key) => (
-            <FeedItem data={value} key={`post-${key}`} />
+          {posts.length > 0 ? posts.map((value) => (
+            <FeedItem data={value} key={value._id} />
           )) : (
             <div className="no-posts">
               <h1>:(</h1>
@@ -36,7 +45,7 @@ class NewsFeed extends Component {
 }
 
 const NewsFeedGQL = gql`
-  query getFeed($feedOwnerId: MongoID, $feedOwnerType: String, $first: Int!) {
+  query feed($feedOwnerId: MongoID, $feedOwnerType: String, $first: Int!) {
     feed(feedOwnerId: $feedOwnerId, feedOwnerType: $feedOwnerType) {
       _id
       privacy
@@ -59,7 +68,22 @@ const NewsFeedGQL = gql`
   }
 `
 
-const NewsFeedQuery = graphql(NewsFeedGQL, {
+const PostToFeed = gql`
+  mutation createPost($feedOwnerId: MongoID!, $feedOwnerType: String!, $post: postType!) {
+    createPost(feedOwnerId: $feedOwnerId, feedOwnerType: $feedOwnerType, post: $post) {
+      _id
+      text
+      attachments
+      images{
+        thumb
+        background
+      }
+      privacy
+    }
+  }
+`
+
+const NewsFeedQuery = compose(graphql(NewsFeedGQL, {
   options: props => {
     if (!props.feedOwnerId) return false;
     return {
@@ -73,6 +97,21 @@ const NewsFeedQuery = graphql(NewsFeedGQL, {
   skip: props => {
     if (!props.feedOwnerId) return true;
   }
-})(NewsFeed);
+}), graphql(PostToFeed, {
+  name: 'newPost',
+  options: {
+    updateQueries: {
+      feed: (prev, { mutationResult }) => ({
+        feed: {
+          ...prev.feed,
+          posts: {
+            ...prev.feed.posts,
+            edges: [[mutationResult.data.createPost], ...prev.feed.posts.edges]
+          }
+        }
+      })
+    }
+  }
+}))(NewsFeed);
 
 export default NewsFeedQuery;
