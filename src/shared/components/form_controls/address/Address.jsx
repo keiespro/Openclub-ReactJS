@@ -7,7 +7,11 @@ import loadGoogleMapsAPI from 'load-google-maps-api'
 class AddressField extends Component {
   static propTypes = {
     input: PropTypes.object,
-    asString: PropTypes.bool
+    asString: PropTypes.bool,
+    types: PropTypes.array
+  }
+  static defaultProps = {
+    types: ['address']
   }
   constructor(props) {
     super(props);
@@ -70,11 +74,12 @@ class AddressField extends Component {
     }
   }
   async componentDidMount() {
+    console.log(this.props.types);
     this.isComponentMounted = true;
     if (this.isReadyPriorToMounting && !this.state.ready) this.ready();
     const googleMaps = await this.getGoogleMaps();
     const maps = 'maps' in googleMaps ? googleMaps.maps : googleMaps;
-    const autocomplete = new maps.places.Autocomplete(findDOMNode(this.addressInput), { types: ['address'] });
+    const autocomplete = new maps.places.Autocomplete(findDOMNode(this.addressInput), { types: this.props.types });
 
     const { input } = this.props;
     if (input.value && typeof input.value === 'object') input.onChange(input.value);
