@@ -42,7 +42,7 @@ class FeedItem extends Component {
           <div className="creator-title">
             <p className="m0 text-bold">{value.user && value.user.name ? value.user.name : 'No name'}</p>
             <small className="text-muted">
-              <Icon type={cx({ 'global': value.privacy === 'public', 'contacts': value.privacy === 'members' })} /> {cx({ 'Public': value.privacy === 'public', 'Members': value.privacy === 'members' })}
+              <Icon type={cx({ 'global': value.privacy === 'PUBLIC', 'contacts': value.privacy === 'PRIVATE' })} /> {cx({ 'Public': value.privacy === 'PUBLIC', 'Members': value.privacy === 'PRIVATE' })}
             </small>
           </div>
         </div>
