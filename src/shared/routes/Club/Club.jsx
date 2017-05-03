@@ -50,6 +50,7 @@ class Club extends Component {
     if (!club) return <Error404 />
 
     const perm = clubPermissions(club, viewer);
+    console.log(perm);
     const handleClick = e => router.transitionTo(`/${club.slug}/${e.key}`);
 
     const onJoin = () => {

@@ -52,12 +52,12 @@ class Sidebar extends Component {
           >
             <ItemGroup key="sub1" title={<span>OpenClub</span>}>
               <Item key="feed"><Icon type="layout" /> Feed</Item>
-              <Item key="discover"><Icon type="global" /> Discover</Item>
+              {process.env.NODE_ENV === 'development' && <Item key="discover"><Icon type="global" /> Discover</Item>}
             </ItemGroup>
             <ItemGroup key="sub2" title={<span>Menu</span>}>
               <Item key="profile"><Icon type="idcard" /> Profile</Item>
               <Item key="notifications"><Icon type="bell" /> Notifications</Item>
-              <Item key="events"><Icon type="calendar" /> Events</Item>
+              {process.env.NODE_ENV === 'development' && <Item key="events"><Icon type="calendar" /> Events</Item>}
               <Item key="clubs"><Icon type="team" /> Clubs</Item>
             </ItemGroup>
             <ItemGroup key="sub3" title={<span>My Clubs</span>}>

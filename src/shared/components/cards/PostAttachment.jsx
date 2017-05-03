@@ -70,7 +70,7 @@ class PostAttachment extends Component {
           onCancel={this.closeVideo.bind(this)}
           width="auto"
         >
-          <ReactPlayer url={video} className="video-player" />
+          <ReactPlayer url={url} className="video-player" />
         </Modal>}
         <div className="post-content">
           <div className="post-title"><a href={url} target="_blank" rel="noopener noreferrer">{headline}</a></div>

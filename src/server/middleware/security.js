@@ -29,7 +29,7 @@ const cspConfig = {
     ],
     fontSrc: ["'self'", 'at.alicdn.com'],
     objectSrc: ["'self'"],
-    mediaSrc: ["'self'"],
+    mediaSrc: ["*"],
     manifestSrc: ["'self'"],
     scriptSrc: [
       // Allow scripts hosted from our application.
