@@ -166,7 +166,7 @@ const NewsFeedQuery = compose(graphql(NewsFeedGQL, {
             ...prev.feed,
             posts: {
               ...prev.feed.posts,
-              edges: [{ post: mutationResult.data.createPost }, ...prev.feed.posts.edges]
+              edges: [{ post: mutationResult.data.createPost }, ...(prev.feed.posts && prev.feed.posts.edges ? prev.feed.posts.edges : [])]
             }
           }
         }
