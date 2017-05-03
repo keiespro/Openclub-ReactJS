@@ -36,11 +36,11 @@ class FeedItem extends Component {
         <div className="media">
           <div className="creator-image">
             <a href="">
-              <img src="" alt="" />
+              <img src={value.user && value.user.images && value.user.images.square ? value.user.images.square : '/blank.gif'} alt={value.user && value.user.name ? value.user.name : 'No name'} />
             </a>
           </div>
           <div className="creator-title">
-            <p className="m0 text-bold">USER NAME</p>
+            <p className="m0 text-bold">{value.user && value.user.name ? value.user.name : 'No name'}</p>
             <small className="text-muted">
               <Icon type={cx({ 'global': value.privacy === 'public', 'contacts': value.privacy === 'members' })} /> {cx({ 'Public': value.privacy === 'public', 'Members': value.privacy === 'members' })}
             </small>

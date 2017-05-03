@@ -98,6 +98,13 @@ const NewsFeedGQL = gql`
         edges{
           post{
             _id
+            user{
+              name
+              images{
+                square
+              }
+              fbid
+            }
             text
             attachment
             images{
