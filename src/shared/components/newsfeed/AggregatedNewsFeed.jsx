@@ -30,7 +30,6 @@ class AggregatedNewsFeed extends Component {
     }
     return (
       <div>
-        {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={data.loading} />}
         <div className="posts-container">
           {postEdges.map(edge => <FeedItem data={edge.post} key={edge.post._id} />)}
         </div>
