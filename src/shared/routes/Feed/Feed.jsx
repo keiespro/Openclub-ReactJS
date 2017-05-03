@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Row, Col, Layout } from 'antd'
-import NewsFeed from 'components/newsfeed'
+import AggregatedNewsFeed from 'components/newsfeed/AggregatedNewsFeed'
 import { CalendarItem } from 'components/EventCalendar'
 
 import './Feed.scss';
@@ -32,6 +32,7 @@ class Feed extends Component {
       <Row gutter={8}>
         <Col span={16}>
           <div className="feed-container">
+            <AggregatedNewsFeed viewer={this.props.viewer} />
           </div>
         </Col>
         <Col span={8}>
