@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import Card from 'antd/lib/card';
 
 import NewsFeedPostForm from 'components/forms/NewsFeedPostForm';
 import FeedItem from './FeedItem';
@@ -14,6 +15,10 @@ class AggregatedNewsFeed extends Component {
     const { data } = this.props;
     const isPosts = data && data.aggregateFeed && data.aggregateFeed.posts;
     const postEdges = isPosts ? data.aggregateFeed.posts.edges : [];
+
+    if (!data || data.loading) {
+      return <Card loading style={{ width: '100%' }} />
+    }
 
     if (postEdges.length <= 0) {
       return (

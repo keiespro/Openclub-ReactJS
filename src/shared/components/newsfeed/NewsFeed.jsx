@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Row, Col, Icon, Button, Dropdown, Menu, Modal } from 'antd';
+import { Card, Modal } from 'antd';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import cx from 'classnames';
@@ -45,6 +45,10 @@ class NewsFeed extends Component {
     const { data } = this.props;
     const isPosts = data && data.feed && data.feed.posts;
     const postEdges = isPosts ? data.feed.posts.edges : [];
+
+    if (!data || data.loading) {
+      return <Card loading style={{ width: '100%' }} />
+    }
 
     if (this.getPermissions('view') === false) {
       return (
