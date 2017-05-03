@@ -42,7 +42,6 @@ class NewsFeed extends Component {
     }
   }
   render() {
-    console.log(this.props);
     const { data } = this.props;
     const isPosts = data && data.feed && data.feed.posts;
     const postEdges = isPosts ? data.feed.posts.edges : [];
@@ -160,7 +159,6 @@ const NewsFeedQuery = compose(graphql(NewsFeedGQL, {
   options: {
     updateQueries: {
       feed: (prev, { mutationResult }) => {
-        console.log(prev, mutationResult);
         return {
           feed: {
             ...prev.feed,

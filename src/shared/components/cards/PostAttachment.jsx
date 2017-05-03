@@ -62,7 +62,7 @@ class PostAttachment extends Component {
       <Card bodyStyle={{ padding: 0 }}>
         { image ? <div className={cx({ 'post-image': true, 'video': !!video })}>
           <a onClick={this.onClick.bind(this)} href={url} target="_blank" rel="noopener noreferrer" className="post-image-layer" style={{ backgroundImage: `url(${image})`}} />
-        </div> : <i className="fa fa-globe" />}
+        </div> : <i className="fa fa-globe link-only" />}
         {video && <Modal
           style={{ top: 20 }}
           wrapClassName="video-modal"
