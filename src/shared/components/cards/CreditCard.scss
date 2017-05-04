@@ -1,0 +1,21 @@
+.credit-card {
+  display: table-row;
+  .brand, .card-number, .exp {
+    display: table-cell;
+    font-size: 16px;
+  }
+  .brand {
+    width: 10%;
+    img {
+      width: 100%;
+    }
+  }
+  .card-number {
+    width: 80%;
+    letter-spacing: 4px;
+    padding: 0 10px;
+  }
+  .exp {
+    width: 10%;
+  }
+}

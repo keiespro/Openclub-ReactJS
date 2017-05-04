@@ -62,6 +62,7 @@ const userProfileGQL = gql`
         square
       }
       stripe_account {
+        _id
         data
       }
     }
@@ -81,7 +82,8 @@ const updateProfileGQL = gql`
         square
       }
       stripe_account {
-        data
+        _id
+        cards
       }
     }
   }

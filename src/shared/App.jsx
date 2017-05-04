@@ -151,7 +151,8 @@ const currentViewer = gql`
         formatted_address
       }
       stripe_account {
-        data
+        _id
+        cards
       }
       images {
         thumb

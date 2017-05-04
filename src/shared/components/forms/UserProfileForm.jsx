@@ -33,7 +33,7 @@ class UserProfileForm extends Component {
     const { token, handleSubmit, customButtonRender, submitting } = this.props;
 
     return (
-      <Form onSubmit={this.submit} className="max-form">
+      <div className="max-form">
         <FieldContainer required title="Name">
           <Field
             name="name"
@@ -70,7 +70,7 @@ class UserProfileForm extends Component {
           />
         </FieldContainer>
         {customButtonRender ? customButtonRender(this.submit, submitting) : <Button loading={submitting} type="primary" htmlType="submit">Save Profile</Button>}
-      </Form>
+      </div>
     );
   }
 }

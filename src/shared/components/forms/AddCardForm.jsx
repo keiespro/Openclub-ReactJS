@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import {
-  Form,
   FieldContainer,
   Button,
 } from 'components/form_controls'
 import StripeCreditCardField from 'components/custom_form_fields/StripeCreditCardField'
+import Spin from 'antd/lib/spin'
 
 class AddCardForm extends Component {
   static propTypes = {
-    onSubmit: PropTypes.func
+    onSubmit: PropTypes.func,
   }
   constructor(props) {
     super(props);
@@ -17,30 +17,33 @@ class AddCardForm extends Component {
     this.handleCreditCardInput = this.handleCreditCardInput.bind(this);
 
     this.state = {
-      generateTokenFunction: null
+      generateTokenFunction: null,
+      loading: false
     }
   }
   async submit(e) {
     e.preventDefault();
+    this.setState({ loading: true });
     const { onSubmit } = this.props;
 
     const token = await this.state.generateTokenFunction();
     onSubmit(token);
+    this.setState({ loading: false })
   }
   handleCreditCardInput(submit) {
     this.setState({
-      generateTokenFunction: submit
+      generateTokenFunction: submit,
     });
   }
   render() {
     return (
-      <Form onSubmit={this.submit}>
-        <FieldContainer title="Add Card" id="payment">
-          Enter the number of a card you wish to add to your profile.
+      <Spin spinning={this.state.loading}>
+        <FieldContainer id="payment">
+          Please enter a credit card number that you wish to add to your OpenClub account.
           <StripeCreditCardField input={{onChange: this.handleCreditCardInput}} />
-          <Button className="bottom-gap" icon="plus" type="primary" onClick={this.handleCreditCardSubmit} loading={this.state.loading}>Add Card</Button>
+          <Button className="bottom-gap" icon="plus" type="primary" onClick={this.submit} loading={this.state.loading}>Add Card</Button>
         </FieldContainer>
-      </Form>
+      </Spin>
     )
   }
 }

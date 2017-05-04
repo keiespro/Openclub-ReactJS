@@ -20,11 +20,11 @@ const clubPermissions = (club, viewer) => {
   }
 
   if (!viewer) return p;
-  if (!viewer.memberships || viewer.memberships.length <= 0) return p;
+  // if (!viewer.memberships || viewer.memberships.length <= 0) return p;
 
   const mK = viewer ? _.findIndex(viewer.memberships, { club_id: club._id }) : false;
   const membership = mK !== false && mK > -1 ? viewer.memberships[mK] : {};
-
+  console.log(club);
   // Club has plans
   p.clubHasPlans = club.membership_plans && club.membership_plans.length > 0;
 

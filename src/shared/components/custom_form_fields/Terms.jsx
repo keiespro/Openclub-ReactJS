@@ -16,7 +16,8 @@ class Terms extends Component {
     return (
       <div>
         {frameUrl ? <iframe src={frameUrl} className="legal-doc" /> : <div dangerouslySetInnerHTML={{ __html: content }} className="legal-doc-content" />}
-        <Checkbox {...input} required={required}>{text}</Checkbox>
+        <Checkbox {...input} required={required} size="large">{text}</Checkbox><br />
+        <small>Your IP address and session data will be logged when you accept these terms.</small>
       </div>
     )
   }
