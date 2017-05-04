@@ -74,6 +74,10 @@ class App extends Component {
   toggleSidebar() {
     this.props.toggleSidebar()
   }
+  isHome() {
+    const { pathname = '' } = this.props.location || {};
+    return pathname === '/' || pathname === '/help';
+  }
   render() {
     const { data, location } = this.props;
     return (
@@ -97,7 +101,7 @@ class App extends Component {
           />
 
           <LoadNotifications user={data.user} />
-          <Header user={data.user} />
+          {!this.isHome() && <Header user={data.user} />}
           <Content>
             <MatchGroup>
               {/* HOMEPAGE REDIRECT */}
