@@ -72,6 +72,7 @@
     "prop-types": "^15.5.8",
     "qrcodesvg": "^1.0.2",
     "rc-drawer": "^0.4.9",
+    "rc-touchable": "^1.0.0",
     "rc-upload": "^2.3.4",
     "react": "15.4.2",
     "react-addons-css-transition-group": "^15.3.2",
