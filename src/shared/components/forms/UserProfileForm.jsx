@@ -9,6 +9,7 @@ import {
   Address,
   Button,
   ImageUploader,
+  DatePicker
 } from 'components/form_controls'
 
 class UserProfileForm extends Component {
@@ -56,9 +57,15 @@ class UserProfileForm extends Component {
           <Field
             name="address"
             help="Enter your address"
-            validate={[maxLength(64)]}
             component={Address}
           />
+        </FieldContainer>
+        <FieldContainer title="Birthday">
+          <Field
+            name="birthday"
+            help="Date of birth"
+            component={DatePicker}
+            />
         </FieldContainer>
         <FieldContainer title="Contact Email">
           <Field
@@ -69,7 +76,7 @@ class UserProfileForm extends Component {
             component={Input}
           />
         </FieldContainer>
-        {customButtonRender ? customButtonRender(this.submit, submitting) : <Button loading={submitting} type="primary" htmlType="submit">Save Profile</Button>}
+        {customButtonRender ? customButtonRender(this.submit, submitting) : <Button loading={submitting} type="primary" htmlType="submit" onClick={this.submit}>Save Profile</Button>}
       </div>
     );
   }

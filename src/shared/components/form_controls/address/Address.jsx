@@ -30,16 +30,6 @@ class AddressField extends Component {
     }
     this.timeout = null;
   }
-  produceDefaultValue() {
-    const { input } = this.props;
-    if (input.value && typeof input.value === 'object') {
-      if (input.value.formatted_address) return input.value.formatted_address;
-      if (input.value.line1 && input.value.city && input.value.country && input.value.state && input.value.postal_code && input.value.country) {
-        return `${input.value.line1}, ${input.value.city} ${input.value.state} ${input.value.postal_code}, ${input.value.country}`
-      }
-    }
-    return '';
-  }
   ready() {
     if (this.isComponentMounted) {
       this.setState({ ready: true })
@@ -74,7 +64,6 @@ class AddressField extends Component {
     }
   }
   async componentDidMount() {
-    console.log(this.props.types);
     this.isComponentMounted = true;
     if (this.isReadyPriorToMounting && !this.state.ready) this.ready();
     const googleMaps = await this.getGoogleMaps();
@@ -88,12 +77,22 @@ class AddressField extends Component {
   }
   render() {
     const { input } = this.props;
+    let defaultValue;
+
+    if (input.value && typeof input.value === 'object') {
+      if (input.value.formatted_address) defaultValue = input.value.formatted_address;
+      if (input.value.line1 && input.value.city && input.value.country && input.value.state && input.value.postal_code && input.value.country) {
+        defaultValue = `${input.value.line1}, ${input.value.city} ${input.value.state} ${input.value.postal_code}, ${input.value.country}`
+      }
+    }
+
+    console.log("DV", defaultValue);
 
     return (
       <Spin spinning={!this.state.ready} tip="Waiting on Google...">
         <Input
           autoComplete={false}
-          defaultValue={this.produceDefaultValue()}
+          defaultValue={defaultValue}
           ref={addressInput => { this.addressInput = addressInput }}
           disabled={!this.state.ready}
         />
