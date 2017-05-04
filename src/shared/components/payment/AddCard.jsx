@@ -36,7 +36,6 @@ class AddCard extends Component {
       this.setState({ loading: false })
       if (successCallback) successCallback();
     } catch (err) {
-      console.trace(err);
       Modal.error({
         title: "Error adding card",
         content: `Uh-oh! ${err}`

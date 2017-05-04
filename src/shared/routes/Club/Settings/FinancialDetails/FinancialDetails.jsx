@@ -168,6 +168,7 @@ const createAccountMutationQL = gql`
     createClubAccount(clubId: $clubId, account: $account){
       _id
       stripe_account{
+        _id
         data
       }
     }

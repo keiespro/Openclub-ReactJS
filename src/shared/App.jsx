@@ -153,6 +153,7 @@ const currentViewer = gql`
       stripe_account {
         _id
         cards
+        default_source
       }
       images {
         thumb

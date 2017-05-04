@@ -33,7 +33,8 @@ async function createCardElement(style, mountNode, err) {
   let card = null
 
   const errorListener = ({ error }) => {
-    if (error) err(error.message);
+    if (error) return err(error.message);
+    return err(null);
   }
 
   const boundErrorListener = errorListener.bind(this);

@@ -41,7 +41,7 @@ const initMiddlewares = store => {
         }
         const { errors } = await response.clone().json();
         if (errors) {
-          throw new Error(errors.map(e => e.message));
+          throw new Error(errors.map(e => e.message.replace('GraphQL error: ', '')));
         }
       } catch (e) {
         if (e.message === 'ApolloUnauthorisedError') localStorage.removeItem('openclub_token');

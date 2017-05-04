@@ -193,6 +193,7 @@ const clubQuery = gql`
         twitter
       }
       stripe_account{
+        _id
         data
       }
       members(first: $first){

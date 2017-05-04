@@ -55,7 +55,6 @@ class CardList extends Component {
       });
       message.success('Primary card updated', 15);
     } catch (err) {
-      console.trace(err);
       Modal.error({
         title: "Error changing primary card",
         content: error(err)
