@@ -3,7 +3,7 @@ import asyncExtensions from 'utils/asyncExtensions'
 
 export default asyncComponent({
   async resolve() {
-    return System.import('routes/Club/Club');
+    return process.env.IS_SERVER ? require('./Club') : System.import('routes/Club/Club');
   },
   ...asyncExtensions
 })

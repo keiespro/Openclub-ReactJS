@@ -35,19 +35,19 @@ const clubPermissions = (club, viewer) => {
   p.userIsAdmin = (membership.roles || []).indexOf('admin') > -1;
 
   // User is member of club
-  p.userIsMember = !membership.plan === false || p.userIsAdmin
+  p.userIsMember = !!membership.subscription || p.userIsAdmin
 
   // User is follower of club
-  p.userIsFollower = !membership.following === false
+  p.userIsFollower = !!membership.following
 
   // User is follower of club
-  p.userIsSubscribed = !membership.notifications === false
+  p.userIsSubscribed = !!membership.notifications
 
   // User can access settings
   p.userCanAccessSettings = p.userIsAdmin;
 
   // User can join club
-  p.userCanJoin = p.clubHasPublicPlans && !p.userIsMember && !p.userIsAdmin || true
+  p.userCanJoin = p.clubHasPublicPlans && !p.userIsMember && !p.userIsAdmin
 
   // User can follow club
   p.userCanFollow = !p.userIsFollower

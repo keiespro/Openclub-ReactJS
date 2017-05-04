@@ -15,8 +15,8 @@ import AsyncLoginPage from 'routes/LoginPage'
 import AsyncFeed from 'routes/Feed'
 import AsyncProfile from 'routes/Profile'
 import AsyncDiscover from 'routes/Discover'
-import AsyncClubs from 'routes/Clubs/Clubs'
-import AsyncClub from 'routes/Club'
+import AsyncClubs from 'routes/Clubs'
+import AsyncClub from 'routes/Club/Club'
 import AsyncNotifications from 'routes/Notifications'
 import AsyncEvents from 'routes/Events'
 import AsyncTest from 'routes/Test'
@@ -181,6 +181,24 @@ const currentViewer = gql`
         feed_permissions
         roles
         club
+        subscription{
+          start_date
+          pending_approval
+          auto_renew
+          membership_plan{
+            _id
+            name
+            prices{
+              price{
+                amount_float
+              }
+              setup_price{
+                amount_float
+              }
+            }
+          }
+          last_renewal_date
+        }
       }
     }
   }

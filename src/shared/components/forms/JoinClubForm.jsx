@@ -26,7 +26,8 @@ class JoinClubForm extends Component {
     handleSubmit: PropTypes.func,
     club: PropTypes.object,
     form_values: PropTypes.object,
-    viewer: PropTypes.object
+    viewer: PropTypes.object,
+    loading: PropTypes.bool
   }
   constructor(props) {
     super(props)
@@ -84,7 +85,7 @@ class JoinClubForm extends Component {
     }
   }
   render() {
-    const { form_values, viewer, handleSubmit, club: { membership_plans: membershipPlans = [], name: clubName = 'this club' } } = this.props;
+    const { loading, form_values, viewer, handleSubmit, club: { membership_plans: membershipPlans = [], name: clubName = 'this club' } } = this.props;
     const selectedPlan = this.getPlan();
 
     console.log(form_values);
@@ -164,7 +165,7 @@ class JoinClubForm extends Component {
               <h4>Club Agreement</h4>
               <p>{clubName} has their own agreement. Please accept this agreement before proceeding.</p>
               <Field
-                name="conditions_acceptance"
+                name="acceptTerms"
                 component={Terms}
                 content={"<div>Some terms and conditions</div>"}
                 text={`I accept ${clubName}'s agreement and any conditions of entry.`}
@@ -195,7 +196,7 @@ class JoinClubForm extends Component {
                   Let us take care of your renewals. Use automatic renewals for peace of mind, ensuring your membership stays current.
                   <Field
                     component={Checkbox}
-                    name="autorenew"
+                    name="autoRenew"
                     defaultValue
                     label={`Automatically renew my membership for ${n((selectedPlan.selectedPrice.price ? selectedPlan.selectedPrice.price.amount_float || 0 : 0)).format('0,0.00')}, ${selectedPlan.selectedPrice.duration.toLowerCase()}.`}
                     />
@@ -208,7 +209,7 @@ class JoinClubForm extends Component {
         <div className="bottom-gap-large" />
         {this.state.step === 'confirm' && <Button onClick={this.prevStep.bind(this)} size="large">Previous</Button>}
         {this.planStep() === 'finish' && this.state.step === 'plan' && <Button type="primary" onClick={this.nextStep.bind(this)} className="pull-right" size="large">Next</Button>}
-        {this.state.step === 'confirm' && <Button type="primary" htmlType="submit" className="pull-right" size="large">Join Club</Button>}
+        {this.state.step === 'confirm' && <Button type="primary" htmlType="submit" className="pull-right" size="large" loading={loading}>Join Club</Button>}
         <div className="bottom-gap" />
         <hr />
       </Form>

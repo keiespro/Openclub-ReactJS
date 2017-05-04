@@ -13,7 +13,11 @@ class Membership extends Component {
         <PageHeader title="My membership" />
         <hr className="bottom-gap-large" />
         <Col xs={24} md={12} className="bottom-gap-large">
-          You're a member!
+          Start: {membership.subscription.start_date}
+          Pending Approval: {membership.subscription.pending_approval}
+          Auto Renew: {membership.subscription.auto_renew}
+          Membership Plan: {membership.subscription.membership_plan.name}
+          Last Renewal: {membership.subscription.last_renewal_date}
         </Col>
       </ContentPage>
     )

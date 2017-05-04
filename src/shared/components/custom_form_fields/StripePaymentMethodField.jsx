@@ -72,7 +72,7 @@ const StripePaymentMethodApollo = graphql(stripeAccountQuery, {
   skip: props => !props.token
 })(StripePaymentMethod)
 
-const StripePaymentMethodField = props => <Field {...props} name="payment_method" size="large" component={StripePaymentMethodApollo} />
+const StripePaymentMethodField = props => <Field {...props} name="paymentSource" size="large" component={StripePaymentMethodApollo} />
 
 const StripePaymentMethodRedux = connect(state => ({
   token: state.auth.token
