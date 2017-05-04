@@ -34,8 +34,8 @@ class HomeView extends Component {
                   <Link className="btn-xl btn" to="/clubs">Discover Clubs</Link>
                   <hr />
                   <div className="links">
-                    <a href="https://en.openclub.co/au/#features" rel="noopener noreferrer" target="_blank">Features</a>
-                    <a href="https://en.openclub.co/au/#pricing" rel="noopener noreferrer" target="_blank">Pricing</a>
+                    <a href="https://en.openclub.co/au/features" rel="noopener noreferrer" target="_blank">Features</a>
+                    <a href="https://en.openclub.co/au/features#pricing" rel="noopener noreferrer" target="_blank">Pricing</a>
                     <a href="#" onClick={this.signUpSelector} rel="noopener noreferrer">Get Started</a>
                   </div>
                 </div>
