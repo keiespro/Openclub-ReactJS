@@ -13,8 +13,6 @@ class ManageCreditCards extends Component {
   constructor(props) {
     super(props);
 
-    this.addCreditCard = this.addCreditCard.bind(this);
-
     this.state = { loading: false }
   }
   makePrimary(id) {
@@ -30,6 +28,7 @@ class ManageCreditCards extends Component {
         {viewer.stripe_account && viewer.stripe_account.cards && viewer.stripe_account.cards.length > 0 && (
         <CardList
           cards={viewer.stripe_account.cards}
+          defaultCard={viewer.stripe_account.default_source}
           actions={card => (
             <ButtonGroup style={{ whiteSpace: 'nowrap' }}>
               <Tooltip placement="top" title="Make primary card"><Button type="primary" icon="credit-card" onClick={this.makePrimary.bind(this, card.id)}>Primary</Button></Tooltip>

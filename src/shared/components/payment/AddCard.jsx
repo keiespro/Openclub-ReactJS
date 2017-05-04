@@ -23,6 +23,7 @@ class AddCard extends Component {
     }
   }
   async addCreditCard(card) {
+    if (!card) return message.error('No card details have been added', 10);
     const { addCreditCard, successCallback } = this.props;
     try {
       this.setState({ loading: true })
@@ -35,6 +36,7 @@ class AddCard extends Component {
       this.setState({ loading: false })
       if (successCallback) successCallback();
     } catch (err) {
+      console.trace(err);
       Modal.error({
         title: "Error adding card",
         content: `Uh-oh! ${err}`

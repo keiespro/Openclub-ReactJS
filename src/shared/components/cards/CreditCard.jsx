@@ -31,7 +31,7 @@ class CreditCard extends Component {
     }
 
     const numberFormat = () => {
-      let format = brand === 'American Express' ? [4, 6, 1] : brand === 'Diners Club' ? [4, 6, 0] : [4, 4, 4, 0]; //eslint-disable-line
+      let format = brand === 'American Express' ? [4, 6, 1, 0] : brand === 'Diners Club' ? [4, 6, 0] : [4, 4, 4, 0]; //eslint-disable-line
       return <span style={{ whiteSpace: 'nowrap' }}>{ds('•', ' ', ...format)}{last4}</span>;
     }
 
