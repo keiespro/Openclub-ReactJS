@@ -48,7 +48,7 @@ class Join extends Component {
           autoRenew: values.autoRenew
         }
       })
-      this.context.router.transitionTo(`/${props.club.slug}/membership`);
+      this.context.router.transitionTo(`/${props.club.slug}/mymembership`);
     } catch (err) {
       Modal.error({
         title: 'Error joining club',

@@ -46,6 +46,15 @@ const clubPermissions = (club, viewer) => {
   // User can access settings
   p.userCanAccessSettings = p.userIsAdmin;
 
+  // User can access finances
+  p.userCanAccessFinances = p.userIsAdmin || ((membership.roles || []).indexOf('accountant') > -1)
+
+  // User can access members
+  p.userCanAccessMembers = p.userIsAdmin || ((membership.roles || []).indexOf('memberships') > -1)
+
+  // User can moderate feed
+  p.userCanModerateFeed = p.userIsAdmin || ((membership.roles || []).indexOf('moderator') > -1)
+
   // User can join club
   p.userCanJoin = p.clubHasPublicPlans && !p.userIsMember && !p.userIsAdmin
 
