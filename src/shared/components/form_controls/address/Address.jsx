@@ -86,8 +86,6 @@ class AddressField extends Component {
       }
     }
 
-    console.log("DV", defaultValue);
-
     return (
       <Spin spinning={!this.state.ready} tip="Waiting on Google...">
         <Input
