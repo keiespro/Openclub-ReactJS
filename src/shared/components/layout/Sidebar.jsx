@@ -27,6 +27,8 @@ class Sidebar extends Component {
   handleClick(e) {
     const { router } = this.context;
 
+    this.props.closeSidebar();
+
     router.transitionTo('/' + e.key);
   }
   onOpenChange(val) {
