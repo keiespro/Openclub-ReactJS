@@ -21,7 +21,6 @@ class FileUploader extends Component {
   handleChange = ({ fileList }) => {
     // enforce only single file selection
     fileList = fileList.slice(-1)
-    console.log(fileList)
     if(fileList.length > 0 && fileList[0].response){
       this.props.input.onChange(fileList[0].response.token)
     }
@@ -40,8 +39,8 @@ class FileUploader extends Component {
     } : {}
 
     const uploadButtonText = (fileList.length > 0)
-      ? 'Click to Change'
-      : 'Click to Upload'
+      ? 'Change File Selection'
+      : `Click to choose ${multiple ? 'files' : 'file'}`
 
     return (
       <Upload
@@ -54,7 +53,7 @@ class FileUploader extends Component {
         {...rest}
         onChange={this.handleChange}
       >
-        <Button>
+        <Button size="large">
           <Icon type="upload" /> {uploadButtonText}
         </Button>
       </Upload>

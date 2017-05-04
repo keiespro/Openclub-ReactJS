@@ -27,28 +27,26 @@ class CreateClubForm extends Component {
 
     return (
       <Form onSubmit={handleSubmit}>
-        <FieldContainer required title="Name">
-          <p>Give your club page a name - this can be anything but should be the name of your club or business.</p>
+        <FieldContainer required title="Club, Community or Organisation Name">
           <Field
             name="club.name"
             type="text"
-            help="You can change this at any time."
+            help="Enter the name you want to appear on your club page."
             validate={[required, maxLength(64)]}
             component={Input}
           />
         </FieldContainer>
-        <FieldContainer required title="URL">
-          <p>Choose your unique URL within OpenClub.</p>
+        <FieldContainer required title="Username">
           <Field
             name="slug"
             type="text"
-            help={`Your unique URL will be http://openclub.co/${slugString}. You cannot change this later.`}
+            help={<span>Choose a name that members can use to find your club.<br />{`http://openclub.co/${slugString}`}</span>}
             validate={[required, slug, maxLength(64), reservedSlugs]}
             component={Input}
           />
         </FieldContainer>
-        <FieldContainer title="Club Photo">
-          <p>Upload your club logo or a photo. We recommend at least 512px x 512px resolution.</p>
+        <FieldContainer title="Profile Photo">
+          <p>Upload a photo that members can use to identify your club.</p>
           <Field
             name="club.images.square"
             component={ImageUploader}
@@ -58,7 +56,9 @@ class CreateClubForm extends Component {
           />
         </FieldContainer>
         <FieldContainer title="Cover Photo">
-          <p>You can optionally provier a cover photo for your club page. You can upload this later.</p>
+          <p>Add to your appearance by adding a cover photo.<br />
+          <small>You can do this later.*</small>
+          </p>
           <Field
             name="club.images.background"
             token={token}
@@ -68,7 +68,9 @@ class CreateClubForm extends Component {
             listType="picture"
           />
         </FieldContainer>
-        <Button type="primary" htmlType="submit" loading={this.props.submitting}>Create</Button>
+        <Button type="primary" htmlType="submit" loading={this.props.submitting} size="large">
+          <i className="fa fa-fw fa-check" /> Next Step
+        </Button>
       </Form>
     )
   }

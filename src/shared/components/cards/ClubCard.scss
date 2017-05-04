@@ -1,0 +1,30 @@
+.club-card-cover, .club-card-profile {
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+.club-card-cover {
+  background-positon: 'center center';
+  background-size: 100%;
+  display: block;
+}
+.club-card-cover:after {
+  padding-top: 37.25%;
+  display: block;
+  content: '';
+}
+.club-card-profile {
+  width: 22%;
+  overflow: hidden;
+  border: 2px solid white;
+  position: absolute;
+  top: 28.25%;
+  left: 2%;
+}
+.club-card-content {
+  padding: 10px 16px;
+}
+.club-card-content p {
+  color: #999;
+}

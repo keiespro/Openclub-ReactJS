@@ -5,12 +5,37 @@ body {
   font-family: $font-family;
   font-size: $font-size-base;
 }
+a {
+  color: $brand-color;
+}
 
 .max-form {
   @media #{$min-desktop} {
     max-width: $screen-xs-min;
   }
 }
+
+.ant-btn-primary {
+  color: #fff;
+  background-color: $brand-color;
+  border-color: $brand-color;
+}
+.ant-menu-dark.ant-menu-inline .ant-menu-item-selected {
+  background-color: $brand-color;
+}
+.auth0-lock-badge-bottom {
+  display: none;
+}
+.auth0-lock-name {
+  display: none;
+}
+.auth0-lock.auth0-lock .auth0-lock-header {
+  height: auto;
+}
+.auth0-lock.auth0-lock .auth0-lock-header-bg {
+  height: 100%;
+}
+
 
 .ant-menu-inline .ant-menu-submenu-title,
 .ant-menu-inline .ant-menu-item,
@@ -43,4 +68,16 @@ body {
   i {
     font-size: 16px;
   }
+}
+.ant-checkbox-wrapper {
+  font-size: 15px;
+}
+.ant-checkbox-inner {
+  width: 18px;
+  height: 18px;
+}
+.ant-checkbox-checked .ant-checkbox-inner:after {
+  left: 5px;
+  width: 6px;
+  height: 11px;
 }

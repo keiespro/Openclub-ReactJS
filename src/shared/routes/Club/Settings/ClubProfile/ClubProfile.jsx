@@ -21,7 +21,6 @@ class ClubProfile extends Component {
     // get clean value object and image diff
     const realValues = stringKeyObjectFilter(values, props.registeredFields)
     realValues.images = shallowObjectDiff(realValues.images, club.images)
-    console.log(realValues);
 
     updateClub({
       variables: {
@@ -31,7 +30,6 @@ class ClubProfile extends Component {
     }).then(() => {
       message.success('Club successfully updated', 4)
     }).catch(err => {
-      console.log(err)
       message.error('Error updating club: ' + err, 4)
     })
   }

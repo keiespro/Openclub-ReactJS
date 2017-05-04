@@ -3,7 +3,7 @@ import asyncExtensions from 'utils/asyncExtensions'
 
 export default asyncComponent({
   async resolve() {
-    return System.import('routes/Test/Test');
+    return process.env.IS_SERVER || process.env.NODE_ENV !== 'production' ? require('./Test') : System.import('routes/Test/Test');
   },
   ...asyncExtensions
 })

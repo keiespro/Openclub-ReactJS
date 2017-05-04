@@ -33,7 +33,8 @@ async function createCardElement(style, mountNode, err) {
   let card = null
 
   const errorListener = ({ error }) => {
-    if (error) err(error.message);
+    if (error) return err(error.message);
+    return err(null);
   }
 
   const boundErrorListener = errorListener.bind(this);
@@ -47,9 +48,7 @@ async function createCardElement(style, mountNode, err) {
     card.removeEventListener('change', boundErrorListener);
   }
   const submit = async () => {
-    console.log(card)
     const { token, error } = await stripe.createToken(card);
-    console.log(token, error)
     if (error) return err(error.message);
     return token;
   }

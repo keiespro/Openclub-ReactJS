@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { openSidebar, closeSidebar, toggleSidebar } from 'modules/ui/actions'
 import Icon from 'antd/lib/icon'
 import Menu, { Item, ItemGroup } from 'antd/lib/menu'
 import { keysFromFragments } from 'utils/route'
@@ -7,7 +9,11 @@ import './Sidebar.scss'
 class Sidebar extends Component {
   static propTypes = {
     user: PropTypes.object,
-    location: PropTypes.object
+    location: PropTypes.object,
+    open: PropTypes.bool,
+    openSidebar: PropTypes.func,
+    closeSidebar: PropTypes.func,
+    toggleSidebar: PropTypes.func
   }
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -16,11 +22,17 @@ class Sidebar extends Component {
     super(props)
 
     this.handleClick = this.handleClick.bind(this)
+    this.onOpenChange = this.onOpenChange.bind(this);
   }
   handleClick(e) {
     const { router } = this.context;
 
+    this.props.closeSidebar();
+
     router.transitionTo('/' + e.key);
+  }
+  onOpenChange(val) {
+    console.log(val);
   }
   render() {
     const { user, location } = this.props;
@@ -46,18 +58,20 @@ class Sidebar extends Component {
             theme="dark"
             className="oc-sidebar-menu"
             selectedKeys={selectedKeys}
+            open={this.props.open}
             mode="inline"
             onClick={this.handleClick}
             defaultOpenKeys={['sub1', 'sub2', 'sub3']}
+            onOpenChange={this.onOpenChange}
           >
             <ItemGroup key="sub1" title={<span>OpenClub</span>}>
               <Item key="feed"><Icon type="layout" /> Feed</Item>
-              <Item key="discover"><Icon type="global" /> Discover</Item>
+              {process.env.NODE_ENV === 'development' && <Item key="discover"><Icon type="global" /> Discover</Item>}
             </ItemGroup>
             <ItemGroup key="sub2" title={<span>Menu</span>}>
               <Item key="profile"><Icon type="idcard" /> Profile</Item>
               <Item key="notifications"><Icon type="bell" /> Notifications</Item>
-              <Item key="events"><Icon type="calendar" /> Events</Item>
+              {process.env.NODE_ENV === 'development' && <Item key="events"><Icon type="calendar" /> Events</Item>}
               <Item key="clubs"><Icon type="team" /> Clubs</Item>
             </ItemGroup>
             <ItemGroup key="sub3" title={<span>My Clubs</span>}>
@@ -77,4 +91,10 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar
+export default connect(state => ({
+  open: state.ui.sidebar
+}), {
+  openSidebar,
+  closeSidebar,
+  toggleSidebar
+})(Sidebar)

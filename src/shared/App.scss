@@ -9,18 +9,25 @@ body {
   min-height: calc(100vh - 50px);
 }
 .rc-drawer-sidebar {
+  top: 50px !important;
   transform: translateX(-100%);
   position: absolute;
+}
+.rc-drawer-draghandle {
+  background-color: transparent;
 }
 .rc-drawer-content {
   left: 0;
 }
 .open {
   .rc-drawer-sidebar {
-    transform: translateX(0%);
+    transform: translateX(0%) !important;
   }
 }
 @media #{$min-desktop} {
+  .rc-drawer-sidebar {
+    top: 0px !important;
+  }
   .loggedin {
     .rc-drawer-sidebar {
       transform: translateX(0%) !important;

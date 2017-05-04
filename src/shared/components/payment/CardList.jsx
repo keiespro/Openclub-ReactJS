@@ -1,51 +1,173 @@
 import React, { Component, PropTypes } from 'react'
 import ds from 'deli-space'
 import cx from 'classnames'
+import Tooltip from 'antd/lib/tooltip';
+import Modal from 'antd/lib/modal';
+import message from 'antd/lib/message';
+import Button, { Group as ButtonGroup } from 'antd/lib/button';
+import gql from 'graphql-tag';
+import { compose, graphql } from 'react-apollo';
+import la from 'logandarrow'
+import error from 'utils/error';
+
+import CreditCard from 'components/cards/CreditCard'
 
 import './CardList.scss'
 
 class CardList extends Component {
   static propTypes = {
     cards: PropTypes.array,
-    actions: PropTypes.func
+    defaultCard: PropTypes.string,
+    deleteCreditCard: PropTypes.func,
+    changePrimaryCard: PropTypes.func
   }
   constructor(props) {
     super(props)
+
+    this.deleteCard = this.deleteCard.bind(this);
+    this.changePrimaryCard = this.changePrimaryCard.bind(this);
+  }
+  async deleteCard(card) {
+    const { deleteCreditCard } = this.props;
+
+    try {
+      await deleteCreditCard({
+        variables: {
+          card
+        }
+      });
+      message.success('Card Deleted', 15);
+    } catch (err) {
+      Modal.error({
+        title: "Error deleting card",
+        content: error(err)
+      });
+    }
+  }
+  async changePrimaryCard(card) {
+    const { changePrimaryCard } = this.props;
+
+    try {
+      await changePrimaryCard({
+        variables: {
+          card
+        }
+      });
+      message.success('Primary card updated', 15);
+    } catch (err) {
+      Modal.error({
+        title: "Error changing primary card",
+        content: error(err)
+      });
+    }
+  }
+  confirmDeleteCard(card, primary) {
+    Modal.confirm({
+      title: 'Delete Card',
+      content: primary ? 'Are you sure you wish to delete this card? Any automatic renewals will fail until you add a new card.' : 'Are you sure you wish to delete this card?',
+      onOk: this.deleteCard.bind(this, card),
+      okText: 'Delete Card',
+      cancelText: 'Cancel'
+    })
+  }
+  confirmChangePrimaryCard(card, primary) {
+    if (primary) {
+      message.warning('This is already your primary card.', 10);
+      return;
+    }
+    Modal.confirm({
+      title: 'Change Primary Card',
+      content: 'Are you sure you wish to change your primary card? Any automatic payments will now come from this card.',
+      onOk: this.changePrimaryCard.bind(this, card),
+      okText: 'Make Primary',
+      cancelText: 'Cancel'
+    })
   }
   render() {
-    const { actions, cards } = this.props;
+    const { cards, defaultCard } = this.props;
 
-    const brandLogo = card => {
-      const brandClasses = cx({
-        'fa': true,
-        'fa-cc-visa': card.brand === 'Visa',
-        'fa-cc-masteracard': card.brand === 'MasterCard',
-        'fa-cc-amex': card.brand === 'American Express',
-        'fa-cc-discover': card.brand === 'Discover',
-        'fa-cc-jcb': card.brand === 'JCB',
-        'fa-cc-diners-club': card.brand === 'Diners Club',
-        'fa-credit-card': card.brand === 'Unknown',
-      })
-      return <i className={brandClasses} />;
-    }
+    const isPrimary = id => id === defaultCard;
 
-    const numberFormat = card => {
-      let format = card.brand === 'American Express' ? [4, 6, 1] : card.brand === 'Diners Club' ? [4, 6, 0] : [4, 4, 4, 0]; //eslint-disable-line
-      return <span style={{ whiteSpace: 'nowrap' }}>{ds('•', ' ', ...format)}{card.last4}</span>;
-    }
+    const actions = (id) => (
+      <ButtonGroup>
+        <Tooltip title={cx({ 'Make Default': !isPrimary(id), 'Default Card': isPrimary(id) })}>
+          <Button
+            type={cx({ 'primary': !isPrimary(id), 'default': isPrimary(id) })}
+            icon={cx({ 'credit-card': !isPrimary(id), 'check': isPrimary(id)})}
+            onClick={this.confirmChangePrimaryCard.bind(this, id, isPrimary(id))}
+            />
+        </Tooltip>
+        <Tooltip title="Delete Card">
+          <Button
+            type="danger"
+            icon="delete"
+            onClick={this.confirmDeleteCard.bind(this, id, isPrimary(id))}
+            />
+        </Tooltip>
+      </ButtonGroup>
+    )
 
     return (
       <ul className="credit-card-list">
-        {cards.map(card => (
-            <li key={card.id} className="card-li">
-              <div className="card-logo">{brandLogo(card)}</div>
-              <div className="card-number">{numberFormat(card)}</div>
-              <div className="card-exp">{card.exp_month} / {card.exp_year}</div>
-              {actions ? actions(card) : null}
-            </li>
-        ))}
+        {cards.map(card => !card ? null : <li key={card.id} className="card-li"><CreditCard {...card} actions={actions(card.id)} /></li>)}
       </ul>
     )
   }
 }
-export default CardList;
+
+const DeleteCardQuery = gql`
+  mutation deleteCreditCard($card: String!) {
+    deleteCreditCard(card: $card) {
+      _id
+      stripe_account {
+        _id
+        cards
+        default_source
+      }
+    }
+  }
+`
+
+const ChangePrimaryCardQuery = gql`
+  mutation changePrimaryCard($card: String!) {
+    changePrimaryCard(card: $card) {
+      _id
+      stripe_account {
+        _id
+        cards
+        default_source
+      }
+    }
+  }
+`
+
+const CardListApollo = compose(
+  graphql(DeleteCardQuery, {
+      name: 'deleteCreditCard',
+      options: {
+        updateQueries: {
+          currentViewer: (prev, { mutationResult }) => la()({
+            user: {
+              ...prev.user,
+              ...mutationResult.data.deleteCreditCard
+            }
+          })
+        }
+      }
+    }),
+    graphql(ChangePrimaryCardQuery, {
+        name: 'changePrimaryCard',
+        options: {
+          updateQueries: {
+            currentViewer: (prev, { mutationResult }) => la()({
+              user: {
+                ...prev.user,
+                ...mutationResult.data.changePrimaryCard
+              }
+            })
+          }
+        }
+      })
+)(CardList);
+
+export default CardListApollo;

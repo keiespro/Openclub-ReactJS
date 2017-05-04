@@ -3,7 +3,7 @@ import asyncExtensions from 'utils/asyncExtensions'
 
 export default asyncComponent({
   async resolve() {
-    return System.import('routes/Clubs/CreateClub/CreateClub');
+    return process.env.NODE_ENV !== 'production' ? require('./Transactions') : System.import('routes/Club/Transactions/Transactions');
   },
   ...asyncExtensions
 })

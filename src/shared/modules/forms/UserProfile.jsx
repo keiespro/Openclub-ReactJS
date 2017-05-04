@@ -3,8 +3,11 @@ import { graphql, compose } from 'react-apollo'
 import UserProfileForm from 'components/forms/UserProfileForm'
 import { stringKeyObjectFilter, shallowObjectDiff } from 'utils/object_helpers'
 import message from 'antd/lib/message'
+import Loading from 'components/Loading/Loading'
 import Modal from 'antd/lib/modal'
 import gql from 'graphql-tag'
+import _ from 'lodash'
+import moment from 'moment'
 
 class UserProfile extends Component {
   static propTypes = {
@@ -20,13 +23,17 @@ class UserProfile extends Component {
   }
   async handleSubmit(values, dispatch, props) {
     const { registeredFields } = props;
-    console.log(registeredFields, values);
     const { updateProfile } = this.props;
-    // get clean value object and image diff
-    // need to remove address because it brings __typename with it.
-    if (registeredFields.address) delete registeredFields.address;
 
-    const userProfile = stringKeyObjectFilter(values, registeredFields)
+    if (values.address) {
+      values.address = _.omit(values.address, '__typename');
+    }
+
+    if (values.birthday instanceof Date) {
+      values.birthday = moment(values.birthday).format('YYYY-MM-DD');
+    }
+
+    let userProfile = stringKeyObjectFilter(values, registeredFields)
     userProfile.images = shallowObjectDiff(userProfile.images, values.images)
 
     try {
@@ -45,6 +52,7 @@ class UserProfile extends Component {
   }
   render() {
     const { submitting, token, initialValues, ...rest } = this.props;
+    if (!initialValues) return <Loading />
     return <UserProfileForm onSubmit={this.handleSubmit} submitting={submitting} token={token} initialValues={initialValues} {...rest} />
   }
 }
@@ -63,8 +71,11 @@ const userProfileGQL = gql`
         square
       }
       stripe_account {
+        _id
         data
       }
+      birthday
+      email_verified
     }
   }
 `
@@ -72,6 +83,7 @@ const userProfileGQL = gql`
 const updateProfileGQL = gql`
   mutation updateProfile($user:userUpdate!){
     updateUser(user: $user) {
+      _id
       name
       email
       address {
@@ -82,8 +94,11 @@ const updateProfileGQL = gql`
         square
       }
       stripe_account {
-        data
+        _id
+        cards
       }
+      birthday
+      email_verified
     }
   }
 `
