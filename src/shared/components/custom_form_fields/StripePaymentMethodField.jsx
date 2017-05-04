@@ -22,6 +22,7 @@ class StripePaymentMethod extends Component {
     super(props);
 
     this.addCard = this.addCard.bind(this)
+    this.setCard = this.setCard.bind(this);
     this.successCallback = this.successCallback.bind(this);
 
     this.state = {
@@ -34,6 +35,9 @@ class StripePaymentMethod extends Component {
   addCard() {
     this.setState({ addCard: true });
   }
+  setCard(token) {
+    this.props.input.onChange(token);
+  }
   render() {
     const { user, loading = true } = this.props.data;
     const { cards = [] } = user.stripe_account || {};
@@ -43,6 +47,7 @@ class StripePaymentMethod extends Component {
         <StripeCardList
           cards={cards}
           addCard={this.addCard}
+          setCard={this.setCard}
           />
         {(this.state.addCard || cards.length === 0) && <div style={{ display: 'block' }}>
           <AddCard successCallback={this.succcessCallback} />

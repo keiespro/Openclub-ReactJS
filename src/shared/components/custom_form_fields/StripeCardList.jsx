@@ -11,7 +11,8 @@ import './StripeCardList.scss'
 class StripeCardList extends Component {
   static propTypes = {
     cards: PropTypes.array,
-    addCard: PropTypes.func
+    addCard: PropTypes.func,
+    setCard: PropTypes.func
   }
   constructor(props) {
     super(props);
@@ -25,6 +26,7 @@ class StripeCardList extends Component {
   selectValue(id) {
     this.setState({ value: id });
     if (id === 'add' && this.props.addCard) this.props.addCard();
+    if (id !== 'add' && this.props.setCard) this.props.setCard(id);
   }
   componentDidMount() {
     const { cards = [] } = this.props;

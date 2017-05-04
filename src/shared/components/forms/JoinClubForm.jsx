@@ -84,8 +84,10 @@ class JoinClubForm extends Component {
     }
   }
   render() {
-    const { viewer, handleSubmit, club: { membership_plans: membershipPlans = [], name: clubName = 'this club' } } = this.props;
+    const { form_values, viewer, handleSubmit, club: { membership_plans: membershipPlans = [], name: clubName = 'this club' } } = this.props;
     const selectedPlan = this.getPlan();
+
+    console.log(form_values);
 
     if (!membershipPlans) {
       return (
