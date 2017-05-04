@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { seenNotifications } from 'modules/notifications/actions'
+import { toggleSidebar } from 'modules/ui/actions'
 import { Layout, Menu, Dropdown, Icon, Button, Badge } from 'antd'
 import { Link } from 'teardrop'
 import Logo from 'components/logo/Logo'
@@ -34,7 +35,7 @@ const notificationMenu = (
   </div>
 )
 
-const Header = ({ user, showSearch, notifications, open, seen, toggle }) => (
+const Header = ({ user, showSearch, notifications, seen, sidebarOpen, toggleSb }) => (
   <div className="oc-header">
     { !user && <div className="oc-header-context">
       <div className="oc-header-usermenu">
@@ -43,7 +44,7 @@ const Header = ({ user, showSearch, notifications, open, seen, toggle }) => (
     </div>}
     <div className="oc-header-context hidden-md hidden-lg">
       { user && <div className="oc-header-usermenu">
-        <Button shape="circle" type="primary" ghost icon={open ? 'menu-fold' : 'menu-unfold'} onClick={toggle} />
+        <Button shape="circle" type="primary" ghost icon={sidebarOpen ? 'menu-fold' : 'menu-unfold'} onClick={toggleSb} />
       </div> }
     </div>
     <Link to="/" className="oc-header-logo">
@@ -89,7 +90,9 @@ const Header = ({ user, showSearch, notifications, open, seen, toggle }) => (
 */
 
 export default connect(state => ({
-  notifications: state.notifications
+  notifications: state.notifications,
+  sidebarOpen: state.ui.sidebar
 }), {
-  seen: seenNotifications
+  seen: seenNotifications,
+  toggleSb: toggleSidebar
 })(Header)

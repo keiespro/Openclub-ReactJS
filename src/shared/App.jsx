@@ -13,7 +13,7 @@ import LoadingBar from 'react-redux-loading-bar'
 import AsyncHome from 'routes/Home'
 import AsyncLoginPage from 'routes/LoginPage'
 import AsyncFeed from 'routes/Feed'
-import AsyncProfile from 'routes/Profile/Profile'
+import AsyncProfile from 'routes/Profile'
 import AsyncDiscover from 'routes/Discover'
 import AsyncClubs from 'routes/Clubs/Clubs'
 import AsyncClub from 'routes/Club'
@@ -23,6 +23,7 @@ import AsyncTest from 'routes/Test'
 
 import { LoadNotifications } from 'components/notifications'
 import { logoutUser, login } from 'modules/auth/actions'
+import { toggleSidebar, openSidebar, closeSidebar } from 'modules/ui/actions'
 
 import Error404 from 'components/Error404/Error404'
 import Unauthorised from 'components/Unauthorised/Unauthorised'
@@ -51,22 +52,39 @@ class App extends Component {
   }
   static propTypes = {
     data: PropTypes.object,
+    login: PropTypes.func,
     location: PropTypes.object,
     logoutUser: PropTypes.func,
+    toggleSidebar: PropTypes.func,
+    openSidebar: PropTypes.func,
+    closeSidebar: PropTypes.func,
+    sidebarOpen: PropTypes.bool
   }
   constructor(props) {
     super(props)
     this.state = {
       open: false
     }
+    this.onOpenChange = this.onOpenChange.bind(this);
+  }
+  onOpenChange(to) {
+    if (to) this.props.openSidebar();
+    if (!to) this.props.closeSidebar();
   }
   toggleSidebar() {
-    this.setState({ open: !this.state.open })
+    this.props.toggleSidebar()
   }
   render() {
     const { data, location } = this.props;
     return (
-      <Drawer className={cx({'loggedin': data.user, 'open': this.state.open})} sidebar={<Sidebar user={data.user} location={location} />} style={{ overflow: 'auto' }}>
+      <Drawer
+        className={cx({'loggedin': data.user, 'open': this.props.sidebarOpen})}
+        sidebar={<Sidebar user={data.user} location={location} />}
+        style={{ overflow: 'auto' }}
+        onOpenChange={this.onOpenChange}
+        enableDragHandle
+        open={this.props.sidebarOpen}
+        >
         <LoadingBar style={{ zIndex: 999 }} />
         <Layout>
           <Helmet
@@ -79,7 +97,7 @@ class App extends Component {
           />
 
           <LoadNotifications user={data.user} />
-          <Header user={data.user} toggle={this.toggleSidebar.bind(this)} open={this.state.open} />
+          <Header user={data.user} />
           <Content>
             <MatchGroup>
               {/* HOMEPAGE REDIRECT */}
@@ -119,7 +137,6 @@ class App extends Component {
               <Match pattern="/(discover|search)" component={AsyncDiscover} />
               {/* EVENT PAGES */}
               <Match pattern="/events" component={AsyncEvents} />
-              {/*<Match exactly pattern="/event/:event_id" render={routerProps => <AsyncEvent {...routerProps} viewer={data.user} />} /> */}
               {/* USER AGGREGATED FEED */}
               <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
               {/* PROFILE */}
@@ -175,8 +192,15 @@ const AppWithApollo = graphql(currentViewer, {
 
 export default connect(state => ({
   auth0Loaded: state.auth.auth0Loaded,
-  token: state.auth.token
-}), { logoutUser, login })(AppWithApollo)
+  token: state.auth.token,
+  sidebarOpen: state.ui.sidebar
+}), {
+  logoutUser,
+  login,
+  toggleSidebar,
+  openSidebar,
+  closeSidebar
+})(AppWithApollo)
 
 export {
   App

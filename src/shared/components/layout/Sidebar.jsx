@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { openSidebar, closeSidebar, toggleSidebar } from 'modules/ui/actions'
 import Icon from 'antd/lib/icon'
 import Menu, { Item, ItemGroup } from 'antd/lib/menu'
 import { keysFromFragments } from 'utils/route'
@@ -7,7 +9,11 @@ import './Sidebar.scss'
 class Sidebar extends Component {
   static propTypes = {
     user: PropTypes.object,
-    location: PropTypes.object
+    location: PropTypes.object,
+    open: PropTypes.bool,
+    openSidebar: PropTypes.func,
+    closeSidebar: PropTypes.func,
+    toggleSidebar: PropTypes.func
   }
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -16,11 +22,15 @@ class Sidebar extends Component {
     super(props)
 
     this.handleClick = this.handleClick.bind(this)
+    this.onOpenChange = this.onOpenChange.bind(this);
   }
   handleClick(e) {
     const { router } = this.context;
 
     router.transitionTo('/' + e.key);
+  }
+  onOpenChange(val) {
+    console.log(val);
   }
   render() {
     const { user, location } = this.props;
@@ -46,9 +56,11 @@ class Sidebar extends Component {
             theme="dark"
             className="oc-sidebar-menu"
             selectedKeys={selectedKeys}
+            open={this.props.open}
             mode="inline"
             onClick={this.handleClick}
             defaultOpenKeys={['sub1', 'sub2', 'sub3']}
+            onOpenChange={this.onOpenChange}
           >
             <ItemGroup key="sub1" title={<span>OpenClub</span>}>
               <Item key="feed"><Icon type="layout" /> Feed</Item>
@@ -77,4 +89,10 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar
+export default connect(state => ({
+  open: state.ui.sidebar
+}), {
+  openSidebar,
+  closeSidebar,
+  toggleSidebar
+})(Sidebar)

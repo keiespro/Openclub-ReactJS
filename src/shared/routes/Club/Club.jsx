@@ -15,13 +15,13 @@ import { keysFromFragments } from 'utils/route'
 import Loading from 'components/Loading/Loading'
 import clubPermissions from 'utils/club_permissions'
 // Async routes
-import AsyncAbout from './About/About' // FIXME: Shitty hack to bypass System.import()
-import AsyncCommunity from './Community/Community'
-import AsyncEvents from './Events/Events'
-import AsyncFeed from './Feed/Feed'
-import AsyncJoin from './Join/Join'
-import AsyncSettings from './Settings/Settings'
-import AsyncMembership from './Membership/Membership'
+import AsyncAbout from './About' // FIXME: Shitty hack to bypass System.import()
+import AsyncCommunity from './Community'
+import AsyncEvents from './Events'
+import AsyncFeed from './Feed'
+import AsyncJoin from './Join'
+import AsyncSettings from './Settings'
+import AsyncMembership from './Membership'
 
 import './Club.scss'
 

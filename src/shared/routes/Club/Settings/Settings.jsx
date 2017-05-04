@@ -3,9 +3,9 @@ import { Menu, Icon, Row, Col } from 'antd'
 import { ContentPage, PageHeader } from 'components/layout'
 import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
 // Async pages
-import AsyncClubProfile from './ClubProfile/ClubProfile'
-import AsyncFinancialDetails from './FinancialDetails/FinancialDetails'
-import AsyncMembershipPlans from './MembershipPlans/MembershipPlans'
+import AsyncClubProfile from './ClubProfile'
+import AsyncFinancialDetails from './FinancialDetails'
+import AsyncMembershipPlans from './MembershipPlans'
 import Landing from './Landing'
 
 import './Settings.css'
