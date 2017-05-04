@@ -7,7 +7,8 @@ import './StripeCreditCardField.scss'
 
 class StripeCreditCardField extends Component {
   static propTypes = {
-    input: PropTypes.object
+    input: PropTypes.object,
+    storeError: PropTypes.func
   }
   constructor(props) {
     super(props);
@@ -17,16 +18,13 @@ class StripeCreditCardField extends Component {
       ready: false
     }
   }
-  displayError(error) {
-    this.setState({ error })
-  }
   ready() {
     this.setState({ ready: true })
   }
   async componentDidMount() {
     const { onChange } = this.props.input;
     try {
-      const { mount, unmount, submit } = await createCardElement({ hidePostalCode: true }, this.cc, this.displayError.bind(this));
+      const { mount, unmount, submit } = await createCardElement({ hidePostalCode: true }, this.cc, this.props.storeError);
 
       mount();
       this.unmount = unmount;

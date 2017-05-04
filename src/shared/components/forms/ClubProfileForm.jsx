@@ -63,9 +63,10 @@ class ClubProfileForm extends Component {
         <FieldContainer title="Club Location">
           <Field
             name="details.location"
-            help="Where is the club located?"
+            help="What city or suburb is the club located in?"
             validate={[maxLength(64)]}
             component={Address}
+            types={['(regions)']}
           />
         </FieldContainer>
         <FieldContainer title="About">

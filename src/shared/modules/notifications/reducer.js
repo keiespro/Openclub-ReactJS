@@ -12,11 +12,10 @@ const ACTION_HANDLERS = {
   }),
   [SEEN_NOTIFICATIONS]: state => ({
     ...state,
-    results: state.results.map(v => { v.unseen = false; return v; }),
+    results: state.results && state.results.length > 0 ? state.results.map(v => { v.unseen = false; return v; }) : [],
     unseen: 0,
   }),
   [NEW_NOTIFICATIONS]: (state, { results }) => {
-    console.log(results);
     let currentNotifications = _.differenceBy(state.notifications, results.deleted, 'id') || [];
     let newNotifications = currentNotifications;
     results.new.forEach(notification => {
@@ -30,7 +29,6 @@ const ACTION_HANDLERS = {
         newNotifications.unshift(notification);
       }
     })
-    console.log(newNotifications);
     return {
       unseen: state.unseen + results.new.length,
       notifications: newNotifications

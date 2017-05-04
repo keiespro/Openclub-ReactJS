@@ -44,3 +44,15 @@ body {
     font-size: 16px;
   }
 }
+.ant-checkbox-wrapper {
+  font-size: 15px;
+}
+.ant-checkbox-inner {
+  width: 18px;
+  height: 18px;
+}
+.ant-checkbox-checked .ant-checkbox-inner:after {
+  left: 5px;
+  width: 6px;
+  height: 11px;
+}

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Row, Col, Layout } from 'antd'
-import NewsFeed from 'components/newsfeed'
-import NewsFeedPostForm from 'components/forms/NewsFeedPostForm'
+import AggregatedNewsFeed from 'components/newsfeed/AggregatedNewsFeed'
 import { CalendarItem } from 'components/EventCalendar'
 
 import './Feed.scss';
@@ -33,12 +32,7 @@ class Feed extends Component {
       <Row gutter={8}>
         <Col span={16}>
           <div className="feed-container">
-            <Content className="content">
-              <NewsFeedPostForm handleSubmit={this.handleSubmit} activeRequest={this.state.activeRequest} />
-            </Content>
-            <Content className="content">
-              <NewsFeed posts={this.state.posts} />
-            </Content>
+            <AggregatedNewsFeed viewer={this.props.viewer} />
           </div>
         </Col>
         <Col span={8}>
@@ -67,8 +61,7 @@ class Feed extends Component {
                   Terms of Service
                 </a> | <a href="https://www.openclub.co/legal/privacy" target="_blank">
                   Privacy Policy
-                </a>
-                | <a href="/help" target="_blank">
+                </a> | <a href="/help" target="_blank" rel="noopener noreferrer">
                  Help
                </a>
               </div>

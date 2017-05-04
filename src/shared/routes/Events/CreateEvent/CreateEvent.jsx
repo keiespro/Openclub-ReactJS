@@ -18,7 +18,6 @@ const CreateEvent = ({ mutate }, { router }) => {
     }).then(({ data }) => {
       router.transitionTo(`/events/${data._id}`)
     }).catch(err => {
-      console.log(err)
       message('Error creating event: ' + err, 4)
     })
   }

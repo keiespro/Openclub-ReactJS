@@ -15,12 +15,14 @@ import { keysFromFragments } from 'utils/route'
 import Loading from 'components/Loading/Loading'
 import clubPermissions from 'utils/club_permissions'
 // Async routes
-import AsyncAbout from './About/About' // FIXME: Shitty hack to bypass System.import()
-import AsyncCommunity from './Community/Community'
-import AsyncEvents from './Events/Events'
-import AsyncFeed from './Feed/Feed'
+import AsyncAbout from './About' // FIXME: Shitty hack to bypass System.import()
+import AsyncCommunity from './Community'
+import AsyncEvents from './Events'
+import AsyncFeed from './Feed'
 import AsyncJoin from './Join/Join'
-import AsyncSettings from './Settings/Settings'
+import AsyncSettings from './Settings'
+import AsyncMembership from './Membership'
+import AsyncTransactions from './Transactions'
 
 import './Club.scss'
 
@@ -42,13 +44,14 @@ class Club extends Component {
 
     const { router } = this.context
     const { club, loading, error } = data
-    const collapseHeader = location.pathname ? !(/^.*\/.*\/(feed)/).test(location.pathname) : false;
+    const collapseHeader = location.pathname ? !(/^.*\/.*\/(feed|about)/).test(location.pathname) : false;
 
     if (loading) return <Loading />
     if (error) return <Error error={error} />
     if (!club) return <Error404 />
 
     const perm = clubPermissions(club, viewer);
+    console.log(perm);
     const handleClick = e => router.transitionTo(`/${club.slug}/${e.key}`);
 
     const onJoin = () => {
@@ -101,11 +104,12 @@ class Club extends Component {
           <Menu.Item key="about">About</Menu.Item>
           <Menu.Item key="community">Community</Menu.Item>
           { perm.userIsMember && <Menu.Item key="mymembership">My Membership</Menu.Item>}
-          { perm.userCanAccessSettings && <Menu.Item key="divider" disabled> | </Menu.Item>}
+          { (perm.userCanAccessFinances || perm.userCanAccessSettings) && <Menu.Item key="divider" disabled> | </Menu.Item>}
+          { perm.userCanAccessFinances && <Menu.Item key="transactions">Transactions</Menu.Item>}
           { perm.userCanAccessSettings && <Menu.Item key="settings"><Icon type="setting" /> Settings</Menu.Item>}
         </Menu>
         <ContentArea>
-          <ClubHeroHelper club={club} />
+          {perm.userCanAccessSettings && <ClubHeroHelper club={club} />}
           <MatchGroup>
             <Match
               exactly
@@ -123,7 +127,15 @@ class Club extends Component {
             </Match>
             <Match
               pattern={`/${params.club_id}/feed`}
-              render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} />}
+              render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} viewer={viewer} />}
+            />
+            <Match
+              pattern={`/${params.club_id}/mymembership`}
+              render={routerProps => perm.userIsMember ? <AsyncMembership {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
+            />
+            <Match
+              pattern={`/${params.club_id}/transactions`}
+              render={routerProps => perm.userCanAccessFinances ? <AsyncTransactions {...routerProps} clubId={club._id} /> : <Error404 />}
             />
             <Match
               pattern={`/${params.club_id}/settings`}
@@ -142,7 +154,7 @@ class Club extends Component {
 }
 
 const clubQuery = gql`
-  query club($slug: String!) {
+  query club($slug: String!, $first: Int!) {
     club(slug: $slug) {
       _id
       name
@@ -187,7 +199,13 @@ const clubQuery = gql`
         twitter
       }
       stripe_account{
+        _id
         data
+      }
+      members(first: $first){
+        edges{
+          user_id
+        }
       }
     }
   }
@@ -198,7 +216,8 @@ const ClubWithApollo = graphql(clubQuery, {
     if (!props.params) return false;
     return {
       variables: {
-        slug: props.params.club_id
+        slug: props.params.club_id,
+        first: 25
       }
     }
   },

@@ -14,14 +14,14 @@ import {
   InputGroup,
   Select,
   Address,
-  Button
+  Button,
+  DatePicker
 } from 'components/form_controls'
 import {
   StripeCountrySelector,
-  DateOfBirth,
   Terms
 } from 'components/custom_form_fields'
-import { Alert, Col, message, Spin } from 'antd'
+import { Alert, Col, message, Spin, Modal } from 'antd'
 import { required, maxLength, email, empty, number } from 'utils/form_validation/errors'
 import _ from 'lodash'
 
@@ -93,9 +93,11 @@ class StripeAccountForm extends Component {
           country_spec: query.data.countrySpec,
           country_spec_query: false
         });
-      } catch(e) {
-        console.error(e);
-        message.error(e.message, 5);
+      } catch (er) {
+        Modal.error({
+          title: 'Error',
+          content: er.message
+        })
         this.setState({ country_spec_query: false });
       }
     }
@@ -161,6 +163,8 @@ class StripeAccountForm extends Component {
     const businessTaxId = form_values && form_values.country ? bankByCountry[form_values.country].taxId : 'Business Number';
 
     const businessTaxIdProvided = existingAccount ? club.stripe_account.data.legal_entity.business_tax_id_provided : false;
+
+    console.log(form_values);
 
     return (
       <Form onSubmit={handleSubmit}>
@@ -287,16 +291,25 @@ class StripeAccountForm extends Component {
           />
         </FieldContainer>
         <FieldContainer required={this.isFieldRequired('legal_entity.dob.month')} title="Date of Birth" deleted={this.isFieldDisabled('legal_entity.dob.month')}>
-          <DateOfBirth
+          <Field
             name="legal_entity.dob"
-          />
+            help="The date of birth of the account's legal representative."
+            validate={[this.ifFieldRequired('legal_entity.dob.month')]}
+            component={DatePicker}
+            />
         </FieldContainer>
         <FieldContainer required title="Additional Verifications" deleted={this.isFieldDisabled('legal_entity.additional_owners')}>
           Our payment provider has additional verification requirements in this region that may require that you contact us. Please email support@openclub.co if you have any difficulties.
         </FieldContainer>
         {!existingAccount && (
-          <FieldContainer>
-            <Field component={Terms} name="tos_acceptance" />
+          <FieldContainer required title="Terms and Conditions" deleted={this.isFieldDisabled('tos_acceptance.date')}>
+            <Field
+              component={Terms}
+              name="tos_acceptance"
+              text="I agree to the OpenClub Club Engagement Agreement"
+              frameUrl="https://lawdocs.openclub.co/en_AU/club_engagement"
+              required
+              />
           </FieldContainer>
         )}
         <div className="bottom-gap-large" />

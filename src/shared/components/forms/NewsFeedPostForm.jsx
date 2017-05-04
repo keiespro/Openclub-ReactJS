@@ -3,8 +3,11 @@ import { connect } from 'react-redux'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import { Spin, Button, Dropdown, Menu, Icon, Input } from 'antd'
+import { ContentPage } from 'components/layout';
 import cx from 'classnames';
 import './NewsFeedPostForm.scss';
+import Card from 'antd/lib/card'
+import PostAttachment from 'components/cards/PostAttachment'
 
 const URLexpression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/
 
@@ -24,7 +27,7 @@ class NewsFeedPost extends Component {
       privacy: {
         title: 'Public',
         icon: 'global',
-        key: 'public'
+        key: 'PUBLIC'
       },
       activeRequest: false
     }
@@ -57,8 +60,8 @@ class NewsFeedPost extends Component {
       text: this.state.input,
       privacy: this.state.privacy.key
     };
-    if ('html' in this.state.embed) {
-      submission.attachment = this.state.embed.html
+    if (this.state.embed && this.state.embed.content) {
+      submission.attachment = this.state.embed.content
     }
     const success = () => {
       this.setState(this.resetState);
@@ -89,18 +92,25 @@ class NewsFeedPost extends Component {
       }
     });
   }
+  formatContent(content) {
+    if (!content) return <div />;
+    return <PostAttachment attachment={content} />
+  }
   render() {
-    const embed = 'html' in this.state.embed ? this.state.embed.html : '';
+    console.log(this.state.embed.content);
+    const { embed } = this.state;
+    const content = embed ? embed.content : {};
+
     const privacyOptions = [
       {
         title: 'Public',
         icon: 'global',
-        key: 'public'
+        key: 'PUBLIC'
       },
       {
         title: 'Members only',
         icon: 'contacts',
-        key: 'members'
+        key: 'PRIVATE'
       },
     ]
     const privacyMenu = (
@@ -109,17 +119,21 @@ class NewsFeedPost extends Component {
       </Menu>
     );
     const comp = (
-      <div className="newsfeed-post">
-        <Input type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder="Share something..." />
-        {this.state.activeRequest ? <Spin tip="Loading attachment..." /> : null}
-        {embed !== '' ? <div className="embed" dangerouslySetInnerHTML={{ __html: embed }} /> : null}
-        <div className="buttons">
-          <Dropdown overlay={privacyMenu}>
-            <Button><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
-          </Dropdown>
-          <Button type="primary" onClick={this.submit} disabled={this.props.activeRequest}>Post</Button>
+      <ContentPage>
+        <div className="newsfeed-post">
+          <Input type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder="Share something..." />
+          {this.state.activeRequest ? <Spin tip="Loading attachment..." /> : null}
+          <div>
+            {this.formatContent(content)}
+          </div>
+          <div className="buttons">
+            <Dropdown overlay={privacyMenu}>
+              <Button><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
+            </Dropdown>
+            <Button type="primary" onClick={this.submit} disabled={this.props.activeRequest}>Post</Button>
+          </div>
         </div>
-      </div>
+      </ContentPage>
     );
     if (this.props.activeRequest) {
       return (<Spin tip="Posting...">
@@ -133,7 +147,7 @@ class NewsFeedPost extends Component {
 const embedMutation = gql`
 mutation embedMutation($url: String!) {
   embed(url: $url) {
-    html
+    content
   }
 }
 `

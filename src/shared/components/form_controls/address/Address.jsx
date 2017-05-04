@@ -7,7 +7,11 @@ import loadGoogleMapsAPI from 'load-google-maps-api'
 class AddressField extends Component {
   static propTypes = {
     input: PropTypes.object,
-    asString: PropTypes.bool
+    asString: PropTypes.bool,
+    types: PropTypes.array
+  }
+  static defaultProps = {
+    types: ['address']
   }
   constructor(props) {
     super(props);
@@ -25,16 +29,6 @@ class AddressField extends Component {
       this.googleMaps = 'google' in window ? window.google : null;
     }
     this.timeout = null;
-  }
-  produceDefaultValue() {
-    const { input } = this.props;
-    if (input.value && typeof input.value === 'object') {
-      if (input.value.formatted_address) return input.value.formatted_address;
-      if (input.value.line1 && input.value.city && input.value.country && input.value.state && input.value.postal_code && input.value.country) {
-        return `${input.value.line1}, ${input.value.city} ${input.value.state} ${input.value.postal_code}, ${input.value.country}`
-      }
-    }
-    return '';
   }
   ready() {
     if (this.isComponentMounted) {
@@ -74,7 +68,7 @@ class AddressField extends Component {
     if (this.isReadyPriorToMounting && !this.state.ready) this.ready();
     const googleMaps = await this.getGoogleMaps();
     const maps = 'maps' in googleMaps ? googleMaps.maps : googleMaps;
-    const autocomplete = new maps.places.Autocomplete(findDOMNode(this.addressInput), { types: ['address'] });
+    const autocomplete = new maps.places.Autocomplete(findDOMNode(this.addressInput), { types: this.props.types });
 
     const { input } = this.props;
     if (input.value && typeof input.value === 'object') input.onChange(input.value);
@@ -83,12 +77,20 @@ class AddressField extends Component {
   }
   render() {
     const { input } = this.props;
+    let defaultValue;
+
+    if (input.value && typeof input.value === 'object') {
+      if (input.value.formatted_address) defaultValue = input.value.formatted_address;
+      if (input.value.line1 && input.value.city && input.value.country && input.value.state && input.value.postal_code && input.value.country) {
+        defaultValue = `${input.value.line1}, ${input.value.city} ${input.value.state} ${input.value.postal_code}, ${input.value.country}`
+      }
+    }
 
     return (
       <Spin spinning={!this.state.ready} tip="Waiting on Google...">
         <Input
           autoComplete={false}
-          defaultValue={this.produceDefaultValue()}
+          defaultValue={defaultValue}
           ref={addressInput => { this.addressInput = addressInput }}
           disabled={!this.state.ready}
         />

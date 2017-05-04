@@ -8,7 +8,11 @@ const cspConfig = {
     childSrc: [
       "'self'",
       'www.youtube.com',
-      'js.stripe.com'
+      'js.stripe.com',
+      'lawdocs.openclub.co',
+      'graph.openclub.co',
+      'cdn.openclub.co',
+      'assets.openclub.co'
     ],
     // Note: Setting this to stricter than * breaks the service worker. :(
     // I can't figure out how to get around this, so if you know of a safer
@@ -25,7 +29,7 @@ const cspConfig = {
     ],
     fontSrc: ["'self'", 'at.alicdn.com'],
     objectSrc: ["'self'"],
-    mediaSrc: ["'self'"],
+    mediaSrc: ["*"],
     manifestSrc: ["'self'"],
     scriptSrc: [
       // Allow scripts hosted from our application.

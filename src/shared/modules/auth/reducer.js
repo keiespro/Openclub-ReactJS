@@ -1,4 +1,4 @@
-import { AUTH_INIT, AUTH_LOADED, LOCK_SUCCESS, LOGOUT_REQUEST } from './actions'
+import { AUTH_INIT, LOCK_SUCCESS, LOCK_ERROR, LOGOUT_REQUEST } from './actions'
 
 const initialState = {
   token: typeof localStorage === 'undefined' ? null : localStorage.getItem('openclub_token'),
@@ -8,16 +8,17 @@ const initialState = {
 const ACTION_HANDLERS = {
   [AUTH_INIT]: (state, { token }) => ({
     ...state,
-    token
-  }),
-  [AUTH_LOADED]: state => ({
-    ...state,
+    token,
     auth0Loaded: true
   }),
   [LOCK_SUCCESS]: (state, { token }) => ({
     ...state,
     token,
-    errorMessage: ''
+    errorMessage: '',
+    auth0Loaded: true
+  }),
+  [LOCK_ERROR]: (state) => ({
+    auth0Loaded: true
   }),
   [LOGOUT_REQUEST]: state => ({
     ...state,

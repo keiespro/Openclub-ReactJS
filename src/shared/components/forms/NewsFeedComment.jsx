@@ -40,6 +40,4 @@ class NewsFeedComment extends Component {
   }
 }
 
-const NewsFeedCommentForm = Form.create()(NewsFeedComment);
-
-export default NewsFeedCommentForm;
+export default NewsFeedComment;

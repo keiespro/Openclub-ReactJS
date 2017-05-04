@@ -9,12 +9,18 @@ import MoneyField from './MoneyField'
 import StripeFileUploader from './StripeFileUploader'
 import StripeBankAccountField from './StripeBankAccountField'
 import StripeCreditCardField from './StripeCreditCardField'
+import StripePaymentMethodField from './StripePaymentMethodField'
+import StripeCardList from './StripeCardList'
+import Terms from './Terms'
 
 export {
+  Terms,
   DateOfBirth,
   StripeCountrySelector,
   MoneyField,
   StripeFileUploader,
+  StripeCardList,
   StripeBankAccountField,
-  StripeCreditCardField
+  StripeCreditCardField,
+  StripePaymentMethodField
 }

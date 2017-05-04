@@ -9,6 +9,7 @@ import {
   Address,
   Button,
   ImageUploader,
+  DatePicker
 } from 'components/form_controls'
 
 class UserProfileForm extends Component {
@@ -33,7 +34,7 @@ class UserProfileForm extends Component {
     const { token, handleSubmit, customButtonRender, submitting } = this.props;
 
     return (
-      <Form onSubmit={this.submit} className="max-form">
+      <div className="max-form">
         <FieldContainer required title="Name">
           <Field
             name="name"
@@ -45,20 +46,26 @@ class UserProfileForm extends Component {
         </FieldContainer>
         <FieldContainer title="Profile Photo">
           <Field
-            name="images.thumb"
+            name="images.square"
             component={ImageUploader}
             token={token}
-            postname="thumb"
-            action={`${process.env.ICEPICK_URL}/upload/image/thumb`}
+            postname="square"
+            action={`${process.env.ICEPICK_URL}/upload/image/square`}
           />
         </FieldContainer>
         <FieldContainer title="Address">
           <Field
             name="address"
             help="Enter your address"
-            validate={[maxLength(64)]}
             component={Address}
           />
+        </FieldContainer>
+        <FieldContainer title="Birthday">
+          <Field
+            name="birthday"
+            help="Date of birth"
+            component={DatePicker}
+            />
         </FieldContainer>
         <FieldContainer title="Contact Email">
           <Field
@@ -69,8 +76,8 @@ class UserProfileForm extends Component {
             component={Input}
           />
         </FieldContainer>
-        {customButtonRender ? customButtonRender(this.submit, submitting) : <Button loading={submitting} type="primary" htmlType="submit">Save Profile</Button>}
-      </Form>
+        {customButtonRender ? customButtonRender(this.submit, submitting) : <Button loading={submitting} type="primary" htmlType="submit" onClick={this.submit}>Save Profile</Button>}
+      </div>
     );
   }
 }

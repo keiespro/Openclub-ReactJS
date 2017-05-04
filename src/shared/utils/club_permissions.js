@@ -20,11 +20,11 @@ const clubPermissions = (club, viewer) => {
   }
 
   if (!viewer) return p;
-  if (!viewer.memberships || viewer.memberships.length <= 0) return p;
+  // if (!viewer.memberships || viewer.memberships.length <= 0) return p;
 
   const mK = viewer ? _.findIndex(viewer.memberships, { club_id: club._id }) : false;
   const membership = mK !== false && mK > -1 ? viewer.memberships[mK] : {};
-
+  console.log(club);
   // Club has plans
   p.clubHasPlans = club.membership_plans && club.membership_plans.length > 0;
 
@@ -35,19 +35,28 @@ const clubPermissions = (club, viewer) => {
   p.userIsAdmin = (membership.roles || []).indexOf('admin') > -1;
 
   // User is member of club
-  p.userIsMember = !membership.plan === false || p.userIsAdmin
+  p.userIsMember = !!membership.subscription || p.userIsAdmin
 
   // User is follower of club
-  p.userIsFollower = !membership.following === false
+  p.userIsFollower = !!membership.following
 
   // User is follower of club
-  p.userIsSubscribed = !membership.notifications === false
+  p.userIsSubscribed = !!membership.notifications
 
   // User can access settings
   p.userCanAccessSettings = p.userIsAdmin;
 
+  // User can access finances
+  p.userCanAccessFinances = p.userIsAdmin || ((membership.roles || []).indexOf('accountant') > -1)
+
+  // User can access members
+  p.userCanAccessMembers = p.userIsAdmin || ((membership.roles || []).indexOf('memberships') > -1)
+
+  // User can moderate feed
+  p.userCanModerateFeed = p.userIsAdmin || ((membership.roles || []).indexOf('moderator') > -1)
+
   // User can join club
-  p.userCanJoin = p.clubHasPublicPlans && !p.userIsMember && !p.userIsAdmin || true
+  p.userCanJoin = p.clubHasPublicPlans && !p.userIsMember && !p.userIsAdmin
 
   // User can follow club
   p.userCanFollow = !p.userIsFollower
@@ -69,6 +78,9 @@ const clubPermissions = (club, viewer) => {
 
   // User can view detailed members
   p.userCanViewDetailedMembers = p.userIsAdmin
+
+  // Let's return the membership too, because it's useful
+  p.membership = membership;
   return p;
 }
 

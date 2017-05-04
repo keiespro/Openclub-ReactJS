@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { Icon, Dropdown, Menu, Button } from 'antd'
 import cx from 'classnames'
 import NewsFeedComment from 'components/forms/NewsFeedComment'
+import PostAttachment from 'components/cards/PostAttachment'
 
 class FeedItem extends Component {
   static propTypes = {
@@ -29,18 +30,19 @@ class FeedItem extends Component {
         <Menu.Item key="delete" style={{ color: 'red' }}><Icon type="delete" /> Delete</Menu.Item>
       </Menu>
     );
-    return (<div className="post">
+    return (
+    <div className="post">
       <div className="post-heading">
         <div className="media">
           <div className="creator-image">
             <a href="">
-              <img src="" alt="" />
+              <img src={value.user && value.user.images && value.user.images.square ? value.user.images.square : '/blank.gif'} alt={value.user && value.user.name ? value.user.name : 'No name'} />
             </a>
           </div>
           <div className="creator-title">
-            <p className="m0 text-bold">Dude's Name</p>
+            <p className="m0 text-bold">{value.user && value.user.name ? value.user.name : 'No name'}</p>
             <small className="text-muted">
-              <Icon type={cx({ 'global': value.privacy === 'public', 'contacts': value.privacy === 'members' })} /> {cx({ 'Public': value.privacy === 'public', 'Members': value.privacy === 'members' })}
+              <Icon type={cx({ 'global': value.privacy === 'PUBLIC', 'contacts': value.privacy === 'PRIVATE' })} /> {cx({ 'Public': value.privacy === 'PUBLIC', 'Members': value.privacy === 'PRIVATE' })}
             </small>
           </div>
         </div>
@@ -53,7 +55,7 @@ class FeedItem extends Component {
       <div className="post-content">
         <div className="p">
           {value.text}
-          {'attachment' in value ? <div className="attachment" dangerouslySetInnerHTML={{ __html: value.attachment }} /> : null}
+          { value.attachment ? <PostAttachment attachment={value.attachment} /> : null}
         </div>
       </div>
       <div className="post-actions">
@@ -64,7 +66,6 @@ class FeedItem extends Component {
           <Button onClick={this.toggleComments} type="primary"><Icon type="message" /> Comment</Button>
         )}
         <div className={cx({'hidden': this.state.comments_expanded === false})}>
-          <NewsFeedComment />
         </div>
       </div>
     </div>)
