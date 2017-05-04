@@ -18,8 +18,7 @@ const additionalSignUpFields = [
 // singleton Auth0 lock
 const lock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN, {
   theme: {
-    logo: 'https://a.whack.wtf/openclub/logo/logo.png',
-    primaryColor: '#008FCC'
+    logo: 'https://a.whack.wtf/openclub/logo/logo.png'
   },
   languageDictionary: {
     title: 'Log In to OpenClub'
@@ -31,9 +30,6 @@ const lock = process.env.IS_CLIENT ? new Auth0Lock(process.env.AUTH0_CLIENT_ID, 
 
 const inlineLock = process.env.IS_CLIENT ? container => new Auth0Lock(process.env.AUTH0_CLIENT_ID, process.env.AUTH0_DOMAIN, {
   container,
-  theme: {
-    primaryColor: '#008fcc'
-  },
   auth, // set above
   additionalSignUpFields
 }) : () => true

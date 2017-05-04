@@ -50,7 +50,7 @@ const clubPermissions = (club, viewer) => {
   p.userCanAccessFinances = p.userIsAdmin || ((membership.roles || []).indexOf('accountant') > -1)
 
   // User can access members
-  p.userCanAccessMembers = p.userIsAdmin || ((membership.roles || []).indexOf('memberships') > -1)
+  p.userCanAccessMembers = p.userIsAdmin || ((membership.roles || []).indexOf('curator') > -1)
 
   // User can moderate feed
   p.userCanModerateFeed = p.userIsAdmin || ((membership.roles || []).indexOf('moderator') > -1)
