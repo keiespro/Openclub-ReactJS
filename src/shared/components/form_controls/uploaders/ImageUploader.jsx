@@ -119,7 +119,7 @@ class ImageUploader extends Component {
     } : {}
 
     return (
-      <div className="image-upload-field">
+      <div className={classnames({ 'image-upload-field': true, 'aspect': !!aspect})}>
         <Spin spinning={uploading === uploadState.UPLOADING}>
           <Upload
             beforeUpload={this.preprocess}
@@ -132,14 +132,10 @@ class ImageUploader extends Component {
           >
             { uploading !== uploadState.COMPLETE &&
             <div
-              className="avatar-uploader" style={{
+              className={classnames({ 'avatar-uploader': true, 'waiting': uploadState.WAITING })} style={{
               backgroundImage: `url(${input.value})`,
-              backgroundSize: 'cover'
-            }}>
-              { uploading === uploadState.WAITING &&
-                <Icon type="plus" className="avatar-uploader-trigger" />
-              }
-            </div>
+              backgroundSize: 'cover',
+            }} />
             }
             <canvas className={canvasClasses} ref={previewCanvas => { this.previewCanvas = previewCanvas }} />
           </Upload>
