@@ -26,7 +26,7 @@ class ImageUploader extends Component {
     this.preprocess = this.preprocess.bind(this);
     this.handleStart = this.handleStart.bind(this);
     this.handleError = this.handleError.bind(this);
-    this.handleSucess = this.handleSuccess.bind(this);
+    this.handleSuccess = this.handleSuccess.bind(this);
   }
 
   async cropCanvas(baseImage, cropDetails) {
