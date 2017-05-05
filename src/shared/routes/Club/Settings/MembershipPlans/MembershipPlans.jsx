@@ -7,6 +7,7 @@ import MembershipPlanForm from 'components/forms/MembershipPlanForm'
 import { durations } from 'constants/index'
 import { stringKeyObjectFilter } from 'utils/object_helpers'
 import _ from 'lodash'
+import error from 'utils/error'
 
 class MembershipPlans extends Component {
   static propTypes = {
@@ -49,7 +50,7 @@ class MembershipPlans extends Component {
       message.success('Plan change was successful.');
       this.setState({ showAdd: false });
     } catch (err) {
-      message.error('Uh-oh! ' + err);
+      message.error('Uh-oh! ' + error(err));
     }
   }
   render() {

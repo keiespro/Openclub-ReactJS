@@ -8,6 +8,7 @@ import StripeAccountForm from 'components/forms/StripeAccountForm'
 import StripeBankAccountForm from 'components/forms/StripeBankAccountForm'
 import { stringKeyObjectFilter } from 'utils/object_helpers'
 import { createBankAccount } from 'utils/stripe'
+import error from 'utils/error';
 
 class BankDetails extends Component {
   static propTypes = {
@@ -53,7 +54,7 @@ class BankDetails extends Component {
     } catch (err) {
       Modal.error({
         title: "Error Updating Account",
-        content: err.message
+        content: error(err)
       });
     }
   }
@@ -81,7 +82,7 @@ class BankDetails extends Component {
     } catch (err) {
       Modal.error({
         title: "Error Adding Account",
-        content: err.message
+        content: error(err)
       });
       this.setState({ submitting: false })
     }
@@ -102,7 +103,7 @@ class BankDetails extends Component {
     } catch (err) {
       Modal.error({
         title: "Error Deleting Account",
-        content: err.message
+        content: error(err)
       });
       this.setState({ submitting: false })
     }

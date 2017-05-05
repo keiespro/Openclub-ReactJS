@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Spin from 'antd/lib/spin';
 import Modal from 'antd/lib/modal';
 import message from 'antd/lib/message';
+import error from 'utils/error';
 
 import AddCardForm from 'components/forms/AddCardForm'
 
@@ -38,7 +39,7 @@ class AddCard extends Component {
     } catch (err) {
       Modal.error({
         title: "Error adding card",
-        content: `Uh-oh! ${err}`
+        content: `Uh-oh! ${error(err)}`
       })
       this.setState({ loading: false })
     }

@@ -2,6 +2,8 @@ import apolloClient from 'modules/apollo'
 import gql from 'graphql-tag'
 import { browserHistory } from 'teardrop'
 import { lock, inlineLock, hashParsed } from 'utils/Auth0'
+import message from 'antd/lib/message';
+import error from 'utils/error';
 
 // Auth0 lock actions
 export const AUTH_INIT = 'AUTH_INIT'
@@ -54,15 +56,19 @@ const authMutation = gql`
   }
 `
 
+let activeRequest = false;
+
 // checks current authentication status of the lock
 export function checkAuthentication() {
   return async dispatch => {
+    if (activeRequest) return false;
     if (process.env.IS_CLIENT) {
       const token = localStorage.getItem('openclub_token');
       dispatch(authInit(token))
       if (token) return;
     }
     try {
+      activeRequest = true;
       const accessToken = await hashParsed();
       if (accessToken) {
         const { data } = await apolloClient.mutate({
@@ -73,9 +79,12 @@ export function checkAuthentication() {
         const { token } = data.signin;
         localStorage.setItem('openclub_token', token);
         dispatch(lockSuccess(token));
+        activeRequest = false;
       }
-    } catch (error) {
-      dispatch(lockError(error));
+    } catch (e) {
+      message.error(error(e), 15);
+      dispatch(lockError(e));
+      activeRequest = false;
     }
   }
 }

@@ -8,6 +8,7 @@ import Modal from 'antd/lib/modal'
 import gql from 'graphql-tag'
 import _ from 'lodash'
 import moment from 'moment'
+import error from 'utils/error'
 
 class UserProfile extends Component {
   static propTypes = {
@@ -46,7 +47,7 @@ class UserProfile extends Component {
     } catch (err) {
       Modal.error({
         title: "Error Updating Profile",
-        content: `Uh-oh! ${err}`
+        content: `Uh-oh! ${error(err)}`
       })
     }
   }

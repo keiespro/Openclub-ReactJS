@@ -7,6 +7,7 @@ import {
   PageHeader
 } from 'components/layout'
 import { message, Modal } from 'antd'
+import error from 'utils/error';
 
 const CreateClub = ({ mutate, submitting }, { router }) => {
 
@@ -26,7 +27,7 @@ const CreateClub = ({ mutate, submitting }, { router }) => {
     } catch (err) {
       Modal.error({
         title: "Error Creating Club",
-        content: err.message
+        content: error(err)
       })
     }
   }
@@ -52,14 +53,28 @@ CreateClub.contextTypes = {
 const createMutation = gql`
   mutation createClub($slug: String!, $club: clubInput!){
     createClub(slug: $slug, club: $club){
-      _id
-      name
-      images{
-        thumb
-        background
-        square
+      club_id
+      feed_permissions
+      roles
+      club
+      subscription{
+        start_date
+        pending_approval
+        auto_renew
+        membership_plan{
+          _id
+          name
+          prices{
+            price{
+              amount_float
+            }
+            setup_price{
+              amount_float
+            }
+          }
+        }
+        last_renewal_date
       }
-      slug
     }
   }
 `
@@ -73,7 +88,7 @@ const CreateClubWithApollo = graphql(createMutation, {
           user: {
             ...prev.user,
             memberships: [
-              ...prev.user.memberships,
+              ...prev.user.memberships || [],
               newClub
             ]
           }
