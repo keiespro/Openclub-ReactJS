@@ -21,7 +21,7 @@ class ClubHeroHelper extends Component {
     // TODO: bank details setup
 
     return (
-      <ContentPage>
+      <ContentPage className="club-hero">
         <Steps current={step}>
           <Step title="Club Profile" description="Complete your club profile" />
           <Step title="Membership Plans" description="Create membership plans so that members can join" />

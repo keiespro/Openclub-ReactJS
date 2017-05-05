@@ -39,7 +39,7 @@ class ClubsView extends Component {
     const [, activeKey] = pathname.match(/\/clubs\/?([\w\d-]+)?\/?/);
 
     const createClubButton = (
-      <Button onClick={viewer ? setActiveKey.bind(this, 'create') : this.props.login.bind(this)} type="primary" disabled={activeKey === 'create'}><i className="fa fa-fw fa-plus-circle" /> Create a Club Page</Button>
+      <Button onClick={viewer ? setActiveKey.bind(this, 'create') : this.props.login.bind(this)} type="primary" disabled={activeKey === 'create'} className="btn-resp" title="Create a Club"><i className="fa fa-fw fa-plus-circle" /> Create a Club</Button>
     )
     return (
       <ContentArea>
@@ -49,8 +49,8 @@ class ClubsView extends Component {
             tabBarExtraContent={createClubButton}
             onChange={setActiveKey.bind(this)}
             >
-            <TabPane tab={<span><i className="fa fa-fw fa-search-plus" /> Suggestions</span>} key="suggestions" />
-            {viewer && <TabPane tab={<span><i className="fa fa-fw fa-envelope-open-o" /> Invitations</span>} key="invitations" />}
+            <TabPane tab={<span><i className="fa fa-fw fa-search-plus" /> Explore</span>} key="suggestions" />
+            {viewer && <TabPane tab={<span><i className="fa fa-fw fa-envelope-open-o" /> Invites</span>} key="invitations" />}
             {viewer && <TabPane tab={<span><i className="fa fa-fw fa-address-card-o" /> My Clubs</span>} key="my" />}
           </Tabs>
           <MatchGroup>

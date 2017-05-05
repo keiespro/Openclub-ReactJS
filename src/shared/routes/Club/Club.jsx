@@ -2,9 +2,11 @@ import React, { Component, PropTypes } from 'react'
 import { graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { login } from 'modules/auth/actions'
+import Tabs, { TabPane } from 'antd/lib/tabs'
 import Helmet from 'react-helmet'
 import gql from 'graphql-tag'
-import { Menu, Icon, Button, Dropdown } from 'antd'
+import { Menu, Icon, Dropdown } from 'antd'
+import Button, { Group as ButtonGroup } from 'antd/lib/button'
 import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
 import ProfileHeader from 'components/profile/ProfileHeader'
 import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
@@ -52,16 +54,18 @@ class Club extends Component {
 
     const perm = clubPermissions(club, viewer);
     console.log(perm);
-    const handleClick = e => router.transitionTo(`/${club.slug}/${e.key}`);
+    const handleClick = e => {
+      router.transitionTo(`/${club.slug}/${e}`);
+    }
 
     const onJoin = () => {
       if (!viewer) { this.props.login(); return; }
       router.transitionTo(`/${club.slug}/join`)
     }
 
-    const selectedKeys = keysFromFragments(location.pathname, pathname, [
+    const selectedKey = keysFromFragments(location.pathname, pathname, [
       'feed', 'events', 'about', 'community', 'mymembership', 'settings'
-    ])
+    ])[0]
 
     const followMenu = (
       <Menu onClick={this.followAction}>
@@ -78,36 +82,24 @@ class Club extends Component {
           images={club.images}
           collapsed={collapseHeader}
           onJoin={onJoin}
-          buttons={(
-            <div>
-              { (perm.userCanFollow || perm.userIsFollower) && (
-                <Dropdown overlay={followMenu}>
-                  <Button type="default" icon="user-add" size="large" className="join-button">
-                    {perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" />
-                  </Button>
-                </Dropdown>
-              )}
-              {
-                (perm.userCanJoin) && (
-                  <Button type="primary" icon="user-add" size="large" className="join-button" onClick={onJoin}>Join This Club</Button>
-                )
-              }
-            </div>
-          )}
         />
-        <Menu
-          onClick={handleClick}
-          selectedKeys={selectedKeys}
-          mode="horizontal"
-        >
-          <Menu.Item key="feed">Feed</Menu.Item>
-          <Menu.Item key="about">About</Menu.Item>
-          <Menu.Item key="community">Community</Menu.Item>
-          { perm.userIsMember && <Menu.Item key="mymembership">My Membership</Menu.Item>}
-          { (perm.userCanAccessFinances || perm.userCanAccessSettings) && <Menu.Item key="divider" disabled> | </Menu.Item>}
-          { perm.userCanAccessFinances && <Menu.Item key="transactions">Transactions</Menu.Item>}
-          { perm.userCanAccessSettings && <Menu.Item key="settings"><Icon type="setting" /> Settings</Menu.Item>}
-        </Menu>
+        <Tabs
+          activeKey={selectedKey}
+          tabBarExtraContent={
+            <ButtonGroup>
+              {perm.userCanJoin && <Button type="primary" icon="user-add" size="large" className="btn-resp" onClick={onJoin}>Join This Club</Button>}
+              <Dropdown overlay={followMenu}><Button type="default" size="large" className="btn-resp" icon="user">{perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" /></Button></Dropdown>
+            </ButtonGroup>
+          }
+          onChange={handleClick}
+          >
+          <TabPane tab="Feed" key="feed" />
+          <TabPane tab="About" key="about" />
+          <TabPane tab="Community" key="community" />
+          {perm.userIsMember && <TabPane tab="My Membership" key="mymembership" />}
+          {perm.userCanAccessFinances && <TabPane tab="Transactions" key="transactions" />}
+          {perm.userCanAccessSettings && <TabPane tab="Settings" key="settings" />}
+        </Tabs>
         <ContentArea>
           {perm.userCanAccessSettings && <ClubHeroHelper club={club} />}
           <MatchGroup>

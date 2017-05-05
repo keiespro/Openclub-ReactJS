@@ -30,7 +30,7 @@ class Feed extends Component {
   render() {
     return (
       <Row gutter={8}>
-        <Col span={16}>
+        <Col lg={16} xs={24}>
           <div className="feed-container">
             <AggregatedNewsFeed viewer={this.props.viewer} />
             <Content className="content">

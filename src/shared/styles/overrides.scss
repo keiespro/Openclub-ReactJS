@@ -35,7 +35,19 @@ a {
 .auth0-lock.auth0-lock .auth0-lock-header-bg {
   height: 100%;
 }
-
+.ant-tabs-nav-scroll {
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.ant-tabs-extra-content {
+  margin: 2px 3px 0 0;
+}
+.ant-tabs-bar {
+  background: white;
+}
+.ant-tabs-nav-container {
+  margin-bottom: 0
+}
 
 .ant-menu-inline .ant-menu-submenu-title,
 .ant-menu-inline .ant-menu-item,

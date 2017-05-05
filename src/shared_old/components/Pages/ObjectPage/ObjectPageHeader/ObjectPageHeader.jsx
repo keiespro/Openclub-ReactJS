@@ -21,12 +21,10 @@ class ObjectPageHeader extends Component {
       'thumb128': collapsed === false
     });
     return (
-      <div className="media-left">
-        <div className="profile-backdrop">
-          <a href="#">
-            <img src={imageSet.square} alt={name} className={classes} />
-          </a>
-        </div>
+      <div className="profile-backdrop">
+        <a href="#">
+          <img src={imageSet.square} alt={name} className={classes} />
+        </a>
       </div>
     );
   }
