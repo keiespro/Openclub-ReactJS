@@ -69,6 +69,7 @@ export default function generateHTML(args) {
         ${helmet ? helmet.link.toString() : ''}
         ${styleTags(assetsForRender.css)}
         ${helmet ? helmet.style.toString() : ''}
+        <meta name="viewport" content="user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1,width=device-width" />
       </head>
       <body>
         <div id='app'>${reactAppString || ''}</div>

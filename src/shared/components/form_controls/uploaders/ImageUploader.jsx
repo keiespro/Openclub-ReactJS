@@ -118,8 +118,10 @@ class ImageUploader extends Component {
       'Authorization': `Bearer ${token}`
     } : {}
 
+    console.log(uploading);
+
     return (
-      <div className={classnames({ 'image-upload-field': true, 'aspect': !!aspect})}>
+      <div className={classnames({ 'image-upload-field': true, 'aspect': aspect === 25 / 6})}>
         <Spin spinning={uploading === uploadState.UPLOADING}>
           <Upload
             beforeUpload={this.preprocess}
@@ -132,7 +134,7 @@ class ImageUploader extends Component {
           >
             { uploading !== uploadState.COMPLETE &&
             <div
-              className={classnames({ 'avatar-uploader': true, 'waiting': uploadState.WAITING })} style={{
+              className={classnames({ 'avatar-uploader': true, 'waiting': uploading === uploadState.WAITING })} style={{
               backgroundImage: `url(${input.value})`,
               backgroundSize: 'cover',
             }} />
@@ -140,7 +142,7 @@ class ImageUploader extends Component {
             <canvas className={canvasClasses} ref={previewCanvas => { this.previewCanvas = previewCanvas }} />
           </Upload>
         </Spin>
-        <ImageCropper aspect={aspect} />
+        {uploading === uploadState.UPLOADING && <ImageCropper aspect={aspect || 1} />}
       </div>
     )
   }

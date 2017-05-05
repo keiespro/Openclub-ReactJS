@@ -37,6 +37,8 @@ export default function generate(templateParams) {
         <title>${config.htmlPage.defaultTitle}</title>
         ${metaTags(config.htmlPage.meta)}
         ${linkTags(config.htmlPage.links)}
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
       </head>
       <body>
         <div id='app'></div>

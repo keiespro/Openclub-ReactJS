@@ -11,8 +11,7 @@ class ImageCropper extends Component {
       crop: {
         x: 5,
         y: 0,
-        width: 90,
-        aspect: props.aspect || 1
+        width: 90
       }
     }
 
@@ -50,7 +49,10 @@ class ImageCropper extends Component {
       >
         <ReactCrop
           src={src}
-          crop={this.state.crop}
+          crop={{
+            ...this.state.crop,
+            aspect: this.props.aspect ? this.props.aspect : 1
+          }}
           onComplete={this.cropCompleted}
           onImageLoaded={this.imageLoaded}
         />
