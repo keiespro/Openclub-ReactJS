@@ -2,6 +2,7 @@
  * Apollo integration with openclub for graphql API
  */
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
+import message from 'antd/lib/message';
 
 const networkInterface = createNetworkInterface({
   uri: process.env.GRAPH_URL
@@ -37,6 +38,7 @@ const initMiddlewares = store => {
     async applyAfterware({ response }, next) {
       try {
         if (response.status === 401) {
+          message.error('You are no logged in. Please return to the homepage to login.', 15);
           throw new Error('ApolloUnauthorisedError');
         }
         const { errors } = await response.clone().json();

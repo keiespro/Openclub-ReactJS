@@ -9,7 +9,7 @@ const { Content } = Layout;
 
 class Feed extends Component {
   static propTypes = {
-    data: PropTypes.object
+    viewer: PropTypes.object
   }
   constructor(props) {
     super(props);
@@ -33,33 +33,13 @@ class Feed extends Component {
         <Col span={16}>
           <div className="feed-container">
             <AggregatedNewsFeed viewer={this.props.viewer} />
-          </div>
-        </Col>
-        <Col span={8}>
-          <div className="feed-sidebar">
-            <Content className="content">
-              <div className="sponsored-content">
-                <h3>Featured Clubs</h3>
-                - Placeholder
-                - Placeholder
-                - Placeholder
-              </div>
-            </Content>
-            <Content className="content">
-              <div className="upcoming-events">
-                <h3>Suggested Events</h3>
-                <CalendarItem date={new Date('12 Jan 2017')} attending liked title="Splended alcoholism and co"/>
-                <CalendarItem date={new Date('19 Mar 2017')} attending title="How to use OpenClub"/>
-                <CalendarItem date={new Date('11 May 2017')} attending title="Dance Party"/>
-              </div>
-            </Content>
             <Content className="content">
               <div className="company-details">
                 © OpenClub Pty Ltd.
                 <br />
-                <a href="https://www.openclub.co/legal/terms" target="_blank">
+                <a href="https://www.openclub.co/legal/terms" target="_blank" rel="noopener noreferrer">
                   Terms of Service
-                </a> | <a href="https://www.openclub.co/legal/privacy" target="_blank">
+                </a> | <a href="https://www.openclub.co/legal/privacy" target="_blank" rel="noopener noreferrer">
                   Privacy Policy
                 </a> | <a href="/help" target="_blank" rel="noopener noreferrer">
                  Help
