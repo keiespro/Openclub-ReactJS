@@ -4,6 +4,7 @@ import { seenNotifications } from 'modules/notifications/actions'
 import { Button, Table, Icon } from 'antd'
 import { objectIcon } from 'constants/index'
 import cx from 'classnames'
+import _ from 'lodash'
 import './NotificationTable.scss'
 
 class Notifications extends Component {
@@ -27,30 +28,50 @@ class Notifications extends Component {
     this.context.router.transitionTo(link.replace(/^\//, ''));
   }
   render() {
+    const findValue = (data, key) => {
+      let value;
+      if (data[key]) value = data[`${key}_data`] ? data[`${key}_data`] : data[key];
+      if (data.activities instanceof Array && data.activities.length > 0 && _.first(data.activities)) {
+        let firstActivity = _.first(data.activities);
+        value = firstActivity[`${key}_data`] || firstActivity[key] || firstActivity || false
+      }
+    }
     const findTarget = (value) => {
-      let target;
-      if (value.target) target = value.target;
-      if (value.activities && value.activities.constructor === Array && value.activities.length > 0) target = value.activities[0].target || '';
+      let target = findValue(value, 'target');
+      if (typeof target === 'object' && target.name) target = target.name;
       return target ? `${target}'s'` : 'your';
     }
-    const findObject = (value) => {
-      if (value.object) return value.object;
-      if (value.activities && value.activities.constructor === Array && value.activities.length > 0) return value.activities[0].object || '';
+    const findObjectName = (value) => {
+      let object = findValue(value, 'object');
+      if (typeof object === 'object' && object.name) object = object.name;
+    }
+    const findObjectRef = (value) => {
+      let object = findValue(value, 'object');
+      if (typeof object === 'string') return {};
+      return object;
+    }
+    const getLink = (value) => {
+      let object = findObjectRef(value);
+      if (object.type === 'club') return `/${object.slug}`;
+      if (object.type === 'event') return `/events/${object.slug}`;
+      if (object.type === 'post') return `/${object.slug}/feed/${object.post_id}`;
+      if (object.type === 'feed') return `/${object.slug}/feed`;
+      return false;
     }
     const formatActors = (value) => {
       if (!value.activity_count) {
         return value.actor || ''
       }
       if (value.activity_count === 1) {
-        return value.activities[0].actor
+        return value.activities[0].actor_data.name
       }
       if (value.activity_count === 2) {
-        return `${value.activities[0].actor} and ${value.activities[0].actor}`
+        return `${value.activities[0].actor_data.name} and ${value.activities[0].actor_data.name}`
       }
       if (value.activity_count > 2) {
         const remaining = value.activity_count - 2
         const personOrPeople = remaining === 1 ? 'person' : 'people'
-        return `${value.activities[0].actor}, ${value.activities[0].actor} and ${remaining} other ${personOrPeople}`
+        return `${value.activities[0].actor_data.name}, ${value.activities[0].actor_data.name} and ${remaining} other ${personOrPeople}`
       }
     }
 
@@ -63,7 +84,7 @@ class Notifications extends Component {
 
     if (max && notifications) notifications = notifications.slice(0, max)
 
-    const onRowClick = record => this.goTo.bind(this, record.link);
+    const onRowClick = record => this.goTo.bind(this, getLink(record));
     const rowKey = record => record.id;
     const rowClassName = record => cx({ 'notification-unseen': !record.is_seen });
     const recordImg = record => record.activities && record.activities.length > 0 && 'img' in record.activities[0] ? record.activities[0].img : (record.img || false);
@@ -75,7 +96,7 @@ class Notifications extends Component {
       },
       {
         key: 'notification',
-        render: (text, record) => <div>{`${formatActors(record)} ${record.verb} ${findTarget(record)} ${findObject(record)}`}</div>
+        render: (text, record) => <div>{`${formatActors(record)} ${record.verb} ${findTarget(record)} ${findObjectName(record)}`}</div>
       },
       {
         key: 'actions',

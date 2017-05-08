@@ -46,7 +46,6 @@ class FeedItem extends Component {
     })
   }
   render() {
-    console.log(this.props.data);
     const value = this.props.data;
     const postMenu = (
       <Menu onClick={this.postMenuClick}>

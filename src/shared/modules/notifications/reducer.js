@@ -16,10 +16,10 @@ const ACTION_HANDLERS = {
     unseen: 0,
   }),
   [NEW_NOTIFICATIONS]: (state, { results }) => {
-    let currentNotifications = _.differenceBy(state.notifications, results.deleted, 'id') || [];
+    let currentNotifications = _.filter(state.notifications, n => !_.includes(results.deleted, n.id));
     let newNotifications = currentNotifications;
     results.new.forEach(notification => {
-      const index = _.findIndex(newNotifications, n => n.group === notification.group && 'activities' in n && n.activities.constructor === Array)
+      const index = _.findIndex(newNotifications, n => n.group === notification.group && 'activities' in n && n.activities instanceof Array)
       if (index > -1) {
         newNotifications[index].activities.unshift(notification);
         newNotifications[index].activity_count = newNotifications[index].activities.length
