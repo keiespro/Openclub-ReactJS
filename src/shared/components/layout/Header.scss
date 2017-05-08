@@ -38,10 +38,20 @@
   background: white;
   border: 1px solid #eee;
   border-radius: 1px;
+  min-width: 300px;
+  max-width: 100%;
+  hr {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
   .header {
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 10px;
+    padding-top: 0px;
+    h4 {
+      font-size: 12px;
+      margin-bottom: 0px;
+    }
   }
   .footer {
     width: 100%;
