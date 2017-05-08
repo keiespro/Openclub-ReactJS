@@ -3,6 +3,7 @@
 import express from 'express';
 import compression from 'compression';
 import { resolve as pathResolve } from 'path';
+import ssl from 'express-sslify';
 import appRootDir from 'app-root-dir';
 import reactApplication from './middleware/reactApplication';
 import security from './middleware/security';
@@ -15,11 +16,9 @@ import config from '../../config';
 // Create our express based server.
 const app = express();
 
-// Don't expose any software information to potential hackers.
-app.use((req, res, next) => {
-  res.header("X-powered-by", "OpenClubGIX")
-  next()
-});
+app.enable('trust proxy')
+
+app.use(ssl.HTTPS({ trustProtoHeader: true }))
 
 // Security middlewares.
 app.use(...security);
