@@ -27,6 +27,12 @@ class Notifications extends Component {
     this.context.router.transitionTo(link.replace(/^\//, ''));
   }
   render() {
+    const findTarget = (value) => {
+      let target;
+      if (value.target) target = value.target;
+      if (value.activities && value.activities.constructor === Array && value.activities.length > 0) target = value.activities[0].target || '';
+      return target ? `${target}'s'` : 'your';
+    }
     const findObject = (value) => {
       if (value.object) return value.object;
       if (value.activities && value.activities.constructor === Array && value.activities.length > 0) return value.activities[0].object || '';
@@ -69,7 +75,7 @@ class Notifications extends Component {
       },
       {
         key: 'notification',
-        render: (text, record) => <div>{`${formatActors(record)} ${record.verb} your ${findObject(record)}`}</div>
+        render: (text, record) => <div>{`${formatActors(record)} ${record.verb} ${findTarget(record)} ${findObject(record)}`}</div>
       },
       {
         key: 'actions',
@@ -77,7 +83,7 @@ class Notifications extends Component {
       }
     ]
 
-    return <Table rowKey={rowKey} rowClassName={rowClassName} onRowClick={onRowClick} pagination={false} showHeader={false} columns={notificationCols} dataSource={notifications} onMouseOver={this.markAsSeen}/>
+    return <Table rowKey={rowKey} rowClassName={rowClassName} onRowClick={onRowClick} pagination={false} showHeader={false} columns={notificationCols} dataSource={notifications} onMouseOver={this.markAsSeen} />
   }
 }
 
