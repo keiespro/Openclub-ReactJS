@@ -118,6 +118,8 @@ const NewsFeedGQL = gql`
               }
               fbid
             }
+            likes
+            liked
             text
             attachment
             images{

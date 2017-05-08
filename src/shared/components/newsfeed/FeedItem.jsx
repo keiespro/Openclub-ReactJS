@@ -1,5 +1,10 @@
-import React, { Component, PropTypes } from 'react'
-import { Icon, Dropdown, Menu, Button } from 'antd'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import _ from 'lodash';
+
+import { Icon, Dropdown, Menu, Button, message } from 'antd'
 import cx from 'classnames'
 import NewsFeedComment from 'components/forms/NewsFeedComment'
 import PostAttachment from 'components/cards/PostAttachment'
@@ -12,10 +17,28 @@ class FeedItem extends Component {
     super(props);
 
     this.state = {
-      comments_expanded: false
+      comments_expanded: false,
+      loading: false
     }
 
     this.toggleComments = this.toggleComments.bind(this);
+  }
+  async likeDislike(likeDislike) {
+      const { likePost, data } = this.props;
+
+      try {
+        this.setState({ loading: true })
+        await likePost({
+          variables: {
+            postId: data._id,
+            likeDislike
+          }
+        });
+        this.setState({ loading: false })
+      } catch (err) {
+        message.error(err.message, 10);
+        this.setState({ loading: false })
+      }
   }
   toggleComments() {
     this.setState({
@@ -23,6 +46,7 @@ class FeedItem extends Component {
     })
   }
   render() {
+    console.log(this.props.data);
     const value = this.props.data;
     const postMenu = (
       <Menu onClick={this.postMenuClick}>
@@ -59,7 +83,7 @@ class FeedItem extends Component {
         </div>
       </div>
       <div className="post-actions">
-        <Button type="primary"><Icon type="like-o" /> Like</Button>
+        <Button type={value.liked ? "default" : "primary"} onClick={this.likeDislike.bind(this, !value.liked)} loading={this.state.loading}><Icon type={value.liked ? "like" : "like-o"} /> {value.liked ? "Liked" : "Like"} ({value.likes})</Button>
         {this.state.comments_expanded ? (
           <Button onClick={this.toggleComments}><Icon type="message" /> Close Comments</Button>
         ) : (
@@ -71,4 +95,41 @@ class FeedItem extends Component {
     </div>)
   }
 }
-export default FeedItem;
+
+const LikePostMutation = gql`
+  mutation likePost($postId: MongoID!, $likeDislike: Boolean!){
+    likePost(postId:$postId, likeDislike:$likeDislike){
+      _id
+      likes
+      liked
+    }
+  }
+`
+
+const FeedItemApollo = graphql(LikePostMutation, {
+  name: 'likePost',
+  options: {
+    updateQueries: {
+      feed: (prev, { mutationResult }) => {
+        let { feed } = prev;
+        const { likePost } = mutationResult.data;
+
+        if (!likePost) return feed;
+
+        const findIndex = _.findIndex(feed.posts.edges, e => e.post && e.post._id === likePost._id);
+        feed.posts.edges[findIndex] = {
+          post: {
+            ...feed.posts.edges[findIndex].post,
+            ...likePost,
+          }
+        };
+
+        return {
+          feed
+        };
+      }
+    }
+  }
+})(FeedItem)
+
+export default FeedItemApollo;
