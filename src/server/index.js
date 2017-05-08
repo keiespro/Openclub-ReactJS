@@ -16,9 +16,10 @@ import config from '../../config';
 // Create our express based server.
 const app = express();
 
-app.enable('trust proxy')
-
-app.use(ssl.HTTPS({ trustProtoHeader: true }))
+if (process.env.NODE_ENV === 'production') {
+  app.enable('trust proxy')
+  app.use(ssl.HTTPS({ trustProtoHeader: true }))
+}
 
 // Security middlewares.
 app.use(...security);
