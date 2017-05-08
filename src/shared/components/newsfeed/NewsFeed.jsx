@@ -18,6 +18,13 @@ class NewsFeed extends Component {
     data: PropTypes.object,
     viewer: PropTypes.object,
   }
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false
+    }
+  }
   getPermissions(perm = false) {
     const { viewer, data: { feed }} = this.props;
     return perm ? feedPermissions(viewer, feed).indexOf(perm) > -1 : feedPermissions(viewer, feed);
@@ -26,6 +33,7 @@ class NewsFeed extends Component {
     const { createPost, feedOwnerId, feedOwnerType } = this.props;
 
     try {
+      this.setState({ loading: true })
       await createPost({
         variables: {
           feedOwnerId,
@@ -33,12 +41,14 @@ class NewsFeed extends Component {
           post
         }
       });
+      this.setState({ loading: false })
       cb();
     } catch (err) {
       Modal.error({
         title: 'Uh-oh!',
         content: err
       });
+      this.setState({ loading: false })
     }
   }
   render() {
@@ -64,7 +74,7 @@ class NewsFeed extends Component {
     if (postEdges.length <= 0) {
       return (
         <div>
-          {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={data.loading} />}
+          {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
           <div className="posts-container">
             <div className="no-posts">
               <h1><i className="fa fa-newspaper-o" /></h1>
@@ -77,7 +87,7 @@ class NewsFeed extends Component {
     }
     return (
       <div>
-        {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={data.loading} />}
+        {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
         <div className="posts-container">
           {postEdges.map(edge => <FeedItem data={edge.post} key={edge.post._id} />)}
         </div>
@@ -144,7 +154,8 @@ const createPostGQL = gql`
   }
 `
 
-const NewsFeedQuery = compose(graphql(NewsFeedGQL, {
+const NewsFeedQuery = compose(
+graphql(NewsFeedGQL, {
   options: props => {
     if (!props.feedOwnerId) return false;
     return {
@@ -158,20 +169,27 @@ const NewsFeedQuery = compose(graphql(NewsFeedGQL, {
   skip: props => {
     if (!props.feedOwnerId) return true;
   }
-}), graphql(createPostGQL, {
+}),
+graphql(createPostGQL, {
   name: 'createPost',
   options: {
     updateQueries: {
       feed: (prev, { mutationResult }) => {
-        return {
-          feed: {
-            ...prev.feed,
-            posts: {
-              ...prev.feed.posts,
-              edges: [{ post: mutationResult.data.createPost }, ...(prev.feed.posts && prev.feed.posts.edges ? prev.feed.posts.edges : [])]
-            }
+        let { feed } = prev;
+        const { createPost } = mutationResult.data;
+
+        if (!createPost) return feed;
+
+        if (!feed.posts) {
+          feed.posts = {
+            edges: []
           }
         }
+
+        feed.posts.edges.unshift({ post: createPost });
+        return {
+          feed
+        };
       }
     }
   }

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
-import { Spin, Button, Dropdown, Menu, Icon, Input } from 'antd'
+import { Spin, Button, Dropdown, Menu, Icon, Input, message } from 'antd'
 import { ContentPage } from 'components/layout';
 import cx from 'classnames';
 import './NewsFeedPostForm.scss';
@@ -51,7 +51,6 @@ class NewsFeedPost extends Component {
         activeRequest: false
       });
     } catch (err) {
-      console.error('Error with embed' + err, 4); //eslint-disable-line
       this.setState({ activeRequest: false });
     }
   }
@@ -62,6 +61,10 @@ class NewsFeedPost extends Component {
     };
     if (this.state.embed && this.state.embed.content) {
       submission.attachment = this.state.embed.content
+    }
+    if (!submission.attachment && submission.text.length === 0) {
+      message.error('You must write or upload something to post.', 10);
+      return;
     }
     const success = () => {
       this.setState(this.resetState);
@@ -97,7 +100,6 @@ class NewsFeedPost extends Component {
     return <PostAttachment attachment={content} />
   }
   render() {
-    console.log(this.state.embed.content);
     const { embed } = this.state;
     const content = embed ? embed.content : {};
 

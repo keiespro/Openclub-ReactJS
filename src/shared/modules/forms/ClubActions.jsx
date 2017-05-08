@@ -20,10 +20,10 @@ class ClubActions extends Component {
     this.processAction = this.processAction.bind(this);
   }
   async updateMembership(membership) {
-    const { mutate, club } = this.props;
+    const { updateMembership, club } = this.props;
 
     try {
-      await mutate({
+      await updateMembership({
         variables: {
           clubId: club._id,
           membership
@@ -76,11 +76,11 @@ const updateMembershipMutation = gql`
 
 const ClubActionsApollo = compose(
   graphql(updateMembershipMutation, {
+    name: 'updateMembership',
     options: {
       updateQueries: {
         currentViewer: (prev, { mutationResult }) => {
           const { updateMembership } = mutationResult.data;
-          console.log(updateMembership, prev.user);
           let { memberships = [] } = prev.user;
 
           if (!updateMembership) return false;
