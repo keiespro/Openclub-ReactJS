@@ -16,6 +16,7 @@ import Error from 'components/Error/Error'
 import { keysFromFragments } from 'utils/route'
 import Loading from 'components/Loading/Loading'
 import clubPermissions from 'utils/club_permissions'
+import ClubActions from 'modules/forms/ClubActions'
 // Async routes
 import AsyncAbout from './About' // FIXME: Shitty hack to bypass System.import()
 import AsyncCommunity from './Community'
@@ -67,12 +68,8 @@ class Club extends Component {
       'feed', 'events', 'about', 'community', 'mymembership', 'settings'
     ])[0]
 
-    const followMenu = (
-      <Menu onClick={this.followAction}>
-        { perm.userIsFollower ? <Menu.Item key="unfollow">Unfollow</Menu.Item> : <Menu.Item key="follow">Follow</Menu.Item>}
-        { perm.userIsSubscribed ? <Menu.Item key="unmute">Turn notifications off</Menu.Item> : <Menu.Item key="mute">Turn notifications on</Menu.Item> }
-      </Menu>
-    );
+    const followMenu = <ClubActions club={club} perm={perm} viewer={viewer} />;
+
     return (
       <section className="oc-object-page-container">
         <Helmet title={`${club.name}`} />

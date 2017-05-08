@@ -181,10 +181,13 @@ const currentViewer = gql`
         square
       }
       memberships {
+        _id
         club_id
         feed_permissions
         roles
         club
+        following
+        notifications
         subscription{
           start_date
           pending_approval
