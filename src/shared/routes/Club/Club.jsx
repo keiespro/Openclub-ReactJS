@@ -54,7 +54,6 @@ class Club extends Component {
     if (!club) return <Error404 />
 
     const perm = clubPermissions(club, viewer);
-    console.log(perm);
     const handleClick = e => {
       router.transitionTo(`/${club.slug}/${e}`);
     }
@@ -210,11 +209,7 @@ const ClubWithApollo = graphql(clubQuery, {
       }
     }
   },
-  skip: props => {
-    if (!props.params || !props.params.club_id) return true;
-    if (props.params.club_id) return !/^[\w\d]+(?:-[\w\d]+)*$/.test(props.params.club_id);
-    return true;
-  }
+  skip: props => !props.params || !props.params.club_id || !/^[\w\d]+(?:-[\w\d]+)*$/.test(props.params.club_id)
 })(Club)
 
 const ClubWithRedux = connect(state => ({}), {

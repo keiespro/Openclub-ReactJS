@@ -66,10 +66,7 @@ class NewsFeedPost extends Component {
       message.error('You must write or upload something to post.', 10);
       return;
     }
-    const success = () => {
-      this.setState(this.resetState);
-    }
-    this.props.handleSubmit(submission, success.bind(this));
+    this.props.handleSubmit(submission);
   }
   handleInput(e) {
     if (e.keyCode === 13 && e.metaKey) {

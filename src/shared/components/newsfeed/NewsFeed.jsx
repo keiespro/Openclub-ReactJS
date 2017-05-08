@@ -15,7 +15,7 @@ class NewsFeed extends Component {
     posts: PropTypes.array,
     feedOwnerId: PropTypes.string,
     feedOwnerType: PropTypes.string,
-    data: PropTypes.object,
+    feed: PropTypes.object,
     viewer: PropTypes.object,
   }
   constructor(props) {
@@ -26,10 +26,10 @@ class NewsFeed extends Component {
     }
   }
   getPermissions(perm = false) {
-    const { viewer, data: { feed }} = this.props;
+    const { viewer, feed: { feed }} = this.props;
     return perm ? feedPermissions(viewer, feed).indexOf(perm) > -1 : feedPermissions(viewer, feed);
   }
-  async handleSubmit(post, cb) {
+  async handleSubmit(post) {
     const { createPost, feedOwnerId, feedOwnerType } = this.props;
 
     try {
@@ -42,21 +42,20 @@ class NewsFeed extends Component {
         }
       });
       this.setState({ loading: false })
-      cb();
     } catch (err) {
+      this.setState({ loading: false })
       Modal.error({
         title: 'Uh-oh!',
         content: err
       });
-      this.setState({ loading: false })
     }
   }
   render() {
-    const { data } = this.props;
-    const isPosts = data && data.feed && data.feed.posts;
-    const postEdges = isPosts ? data.feed.posts.edges : [];
+    const { feed } = this.props;
+    const isPosts = feed && feed.feed && feed.feed.posts;
+    const postEdges = isPosts ? feed.feed.posts.edges : [];
 
-    if (!data || data.loading) {
+    if (!feed || feed.loading) {
       return <Card loading style={{ width: '100%' }} />
     }
 
@@ -97,7 +96,7 @@ class NewsFeed extends Component {
 }
 
 const NewsFeedGQL = gql`
-  query feed($feedOwnerId: MongoID, $feedOwnerType: String, $first: Int!) {
+  query getNewsFeed($feedOwnerId: MongoID, $feedOwnerType: String, $first: Int!) {
     feed(feedOwnerId: $feedOwnerId, feedOwnerType: $feedOwnerType) {
       _id
       owner{
@@ -144,6 +143,8 @@ const createPostGQL = gql`
         thumb
         background
       }
+      likes
+      liked
       user{
         name
         images{
@@ -158,6 +159,7 @@ const createPostGQL = gql`
 
 const NewsFeedQuery = compose(
 graphql(NewsFeedGQL, {
+  name: 'feed',
   options: props => {
     if (!props.feedOwnerId) return false;
     return {
@@ -176,20 +178,19 @@ graphql(createPostGQL, {
   name: 'createPost',
   options: {
     updateQueries: {
-      feed: (prev, { mutationResult }) => {
+      getNewsFeed: (prev, { mutationResult }) => {
         let { feed } = prev;
         const { createPost } = mutationResult.data;
 
         if (!createPost) return feed;
 
-        if (!feed.posts) {
-          feed.posts = {
-            edges: []
-          }
-        }
+        if (!feed.posts) feed.posts = {};
+        if (!feed.posts.edges) feed.posts.edges = [];
 
         feed.posts.edges.unshift({ post: createPost });
+
         return {
+          ...prev,
           feed
         };
       }

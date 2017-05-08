@@ -109,7 +109,7 @@ const FeedItemApollo = graphql(LikePostMutation, {
   name: 'likePost',
   options: {
     updateQueries: {
-      feed: (prev, { mutationResult }) => {
+      getNewsFeed: (prev, { mutationResult }) => {
         let { feed } = prev;
         const { likePost } = mutationResult.data;
 

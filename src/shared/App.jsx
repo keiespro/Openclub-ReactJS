@@ -80,6 +80,7 @@ class App extends Component {
   }
   render() {
     const { data, location } = this.props;
+    if (data.loading) return <Loading />;
     return (
       <Drawer
         className={cx({'loggedin': data.user, 'open': this.props.sidebarOpen})}
