@@ -19,7 +19,7 @@ class HomeView extends Component {
       <section>
         <div className="bg-full bg-pic1 container-fluid">
           <div className="container-content">
-            <Row gutter={16} className="home-intro">
+            <Row gutter={16} className="home-intro" style={{ margin: 0 }}>
               <Col xs={{span:24, offset:0}} md={{span:15, offset:1}} className="home-title">
                 <div className="text">
                   <h1>Bringing your club to the social web.</h1>

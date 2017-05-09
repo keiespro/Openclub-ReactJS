@@ -24,7 +24,7 @@ class HomeView extends Component {
       <section>
         <div className="container-fluid">
           <div className="container-content">
-            <Row gutter={16} className="home-intro">
+            <Row gutter={16} className="home-intro" style={{ margin: 0 }}>
               <Col xs={24} md={15} className="home-title">
                 <div className="text">
                   <Logo color="#FFFFFF" className="logo" />

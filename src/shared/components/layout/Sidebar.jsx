@@ -79,7 +79,7 @@ class Sidebar extends Component {
                 <Item
                   key={`${c.club.slug}`}
                 >
-                  <img alt={c.club.name} className="oc-sidebar-clubimage" src={c.club.images ? c.club.images.thumb : '/empty-club.png'} /> {c.club.name}
+                  <img alt={c.club.name} className="oc-sidebar-clubimage" src={c.club.images ? c.club.images.square : '/empty-club.png'} /> {c.club.name}
                 </Item>
               )}
             </ItemGroup>

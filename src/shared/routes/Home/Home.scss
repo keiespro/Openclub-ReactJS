@@ -73,6 +73,7 @@
     text-align: center;
     vertical-align: middle;
     .links {
+      display: none;
       font-size: 15px;
       width: 100%;
       text-align: center;
@@ -87,7 +88,11 @@
         border-right: none;
       }
     }
+    hr {
+      display: none;
+    }
     @media #{$min-desktop} {
+      display: block;
       text-align: left;
       margin: 20px;
       h1 {
@@ -102,6 +107,11 @@
         @media #{$min-desktop-lg} {
            font-size: 35px;
         }
+      }
+      .links {
+        display: block;
+        padding: 10px;
+        font-size: 17px;
       }
       .btn {
         transition: background-color 0.25s, color 0.15s;
@@ -128,7 +138,10 @@
   }
 }
 .home-title {
-  margin-top: 100px
+  margin-top: 50px;
+  @media #{$min-desktop} {
+    margin-top: 100px;
+  }
 }
 .home-login {
   @media #{$min-desktop} {
@@ -140,11 +153,22 @@
   margin-top: 100px;
 }
 .login {
+  .auth0-lock.auth0-lock .auth0-lock-content {
+    padding: 0px;
+    top:10px;
+  }
+  .auth0-lock.auth0-lock, .auth0-lock.auth0-lock * {
+    box-sizing: border-box;
+  }
+  .auth0-lock.auth0-lock .auth0-lock-cred-pane {
+    border-radius: 0px;
+  }
   .auth0-lock.auth0-lock.auth0-lock-opened-in-frame {
     width: 100% !important;
   }
   .auth0-lock.auth0-lock .auth0-lock-widget {
     width: 100% !important;
+    border-radius: 0;
   }
   .auth0-lock {
     &.auth0-lock-opened-in-frame {
@@ -153,10 +177,14 @@
     .auth0-lock-widget {
       min-width: 100%;
       width: 100% !important;
-      border-radius: none;
+      border-radius: 0;
       .auth0-lock-widget-container {
         .auth0-lock-cred-pane {
           background: transparent;
+          padding-top: 20px;
+          .auth0-lock-quiet {
+            padding: 20px;
+          }
         }
         .auth0-lock-header {
           display: none;
@@ -164,7 +192,7 @@
         .auth0-lock-submit {
           transition: background-color 0.25s, color 0.15s;
           background-color: transparent !important;
-          border: 2px solid #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.7);
           border-radius: 2px;
           margin-top: 15px;
           font-weight: 400;
