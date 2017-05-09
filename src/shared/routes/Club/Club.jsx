@@ -55,7 +55,7 @@ class Club extends Component {
 
     const perm = clubPermissions(club, viewer);
     const handleClick = e => {
-      router.transitionTo(`/${club.slug}/${e}`);
+      router.transitionTo(`/${club.slug}/${e}`, true);
     }
 
     const onJoin = () => {
@@ -87,7 +87,7 @@ class Club extends Component {
               <Dropdown overlay={followMenu}><Button type="default" size="large" className="btn-resp" icon="user">{perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" /></Button></Dropdown>
             </ButtonGroup>
           }
-          onChange={handleClick}
+          onTabClick={handleClick}
           >
           <TabPane tab="Feed" key="feed" />
           <TabPane tab="About" key="about" />

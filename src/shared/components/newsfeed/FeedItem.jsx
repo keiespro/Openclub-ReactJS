@@ -1,34 +1,38 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import _ from 'lodash';
+import error from 'utils/error';
 
-import { Icon, Dropdown, Menu, Button, message } from 'antd'
+import { Icon, Dropdown, Menu, Button, message, Modal } from 'antd'
 import cx from 'classnames'
 import NewsFeedComment from 'components/forms/NewsFeedComment'
 import PostAttachment from 'components/cards/PostAttachment'
+import NewsFeedPostForm from 'components/forms/NewsFeedPostForm'
 
 class FeedItem extends Component {
   static propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object,
+    comment: PropTypes.func,
+    like: PropTypes.func
   }
   constructor(props) {
     super(props);
 
     this.state = {
       comments_expanded: false,
-      loading: false
+      loading: false,
     }
 
     this.toggleComments = this.toggleComments.bind(this);
   }
   async likeDislike(likeDislike) {
-      const { likePost, data } = this.props;
+      const { like, data } = this.props;
 
       try {
         this.setState({ loading: true })
-        await likePost({
+        await like({
           variables: {
             postId: data._id,
             likeDislike
@@ -36,9 +40,29 @@ class FeedItem extends Component {
         });
         this.setState({ loading: false })
       } catch (err) {
-        message.error(err.message, 10);
+        message.error(error(err), 10);
         this.setState({ loading: false })
       }
+  }
+  async submitComment(newComment) {
+    const { comment, data } = this.props;
+
+    try {
+      this.setState({ loading: true })
+      await comment({
+        variables: {
+          postId: data._id,
+          comment: newComment
+        }
+      });
+      this.setState({ loading: false })
+    } catch (err) {
+      this.setState({ loading: false })
+      Modal.error({
+        title: 'Uh-oh!',
+        content: error(err)
+      });
+    }
   }
   toggleComments() {
     this.setState({
@@ -86,18 +110,19 @@ class FeedItem extends Component {
         {this.state.comments_expanded ? (
           <Button onClick={this.toggleComments}><Icon type="message" /> Close Comments</Button>
         ) : (
-          <Button onClick={this.toggleComments} type="primary"><Icon type="message" /> Comment</Button>
+          <Button onClick={this.toggleComments} type="primary"><Icon type="message" /> Comment ({value.comments_count || 0})</Button>
         )}
         <div className={cx({'hidden': this.state.comments_expanded === false})}>
+          <NewsFeedPostForm handleSubmit={this.submitComment.bind(this)} activeRequest={this.state.loading} inline hidePrivacy />
         </div>
       </div>
     </div>)
   }
 }
 
-const LikePostMutation = gql`
-  mutation likePost($postId: MongoID!, $likeDislike: Boolean!){
-    likePost(postId:$postId, likeDislike:$likeDislike){
+const likeMutation = gql`
+  mutation like($postId: MongoID!, $likeDislike: Boolean!){
+    like(postId:$postId, likeDislike:$likeDislike){
       _id
       likes_count
       comments_count
@@ -106,21 +131,39 @@ const LikePostMutation = gql`
   }
 `
 
-const FeedItemApollo = graphql(LikePostMutation, {
-  name: 'likePost',
+const SubmitCommentMutation = gql`
+  mutation comment($postId: MongoID!, $comment: commentInput!) {
+    comment(postId: $postId, comment: $comment) {
+      _id
+      post_id
+      text
+      attachment
+      images{
+        square
+        background
+      }
+      likes_count
+      liked
+    }
+  }
+`
+
+const FeedItemApollo = compose(
+graphql(likeMutation, {
+  name: 'like',
   options: {
     updateQueries: {
       getNewsFeed: (prev, { mutationResult }) => {
         let { feed } = prev;
-        const { likePost } = mutationResult.data;
+        const { like } = mutationResult.data;
 
-        if (!likePost) return feed;
+        if (!like) return { feed };
 
-        const findIndex = _.findIndex(feed.posts.edges, e => e.post && e.post._id === likePost._id);
+        const findIndex = _.findIndex(feed.posts.edges, e => e.post && e.post._id === like._id);
         feed.posts.edges[findIndex] = {
           post: {
             ...feed.posts.edges[findIndex].post,
-            ...likePost,
+            ...like,
           }
         };
 
@@ -130,6 +173,37 @@ const FeedItemApollo = graphql(LikePostMutation, {
       }
     }
   }
-})(FeedItem)
+}),
+graphql(SubmitCommentMutation, {
+  name: 'comment',
+  options: {
+    updateQueries: {
+      getNewsFeed: (prev, { mutationResult }) => {
+        let { feed } = prev;
+        const { comment } = mutationResult.data;
+
+        console.log(comment);
+
+        if (!comment) return { feed };
+
+        const postIndex = _.findIndex(feed.posts.edges, e => e.post && e.post._id === comment.post_id);
+        let { post } = feed.posts.edges[postIndex];
+
+        if (!post.comments) post.comments = { edges: [] }
+        if (!post.comments.edges) post.comments.edges = [];
+
+        post.comments.edges.unshift({ comment });
+        post.comments_count++; //eslint-disable-line
+
+        feed.posts.edges[postIndex].post = post;
+
+        return {
+          feed
+        }
+      }
+    }
+  }
+})
+)(FeedItem)
 
 export default FeedItemApollo;

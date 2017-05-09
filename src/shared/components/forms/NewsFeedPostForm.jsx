@@ -2,7 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
-import { Spin, Button, Dropdown, Menu, Icon, Input, message } from 'antd'
+import { Spin, Button, Dropdown, Menu, Icon, message } from 'antd'
+import Form, { Item as FormItem } from 'antd/lib/form';
+import Input, { Group as InputGroup } from 'antd/lib/input';
 import { ContentPage } from 'components/layout';
 import cx from 'classnames';
 import './NewsFeedPostForm.scss';
@@ -15,7 +17,9 @@ class NewsFeedPost extends Component {
   static propTypes = {
     handleSubmit: PropTypes.func,
     mutate: PropTypes.func,
-    activeRequest: PropTypes.bool
+    activeRequest: PropTypes.bool,
+    inline: PropTypes.bool,
+    hidePrivacy: PropTypes.bool
   }
   constructor(props) {
     super(props);
@@ -54,11 +58,14 @@ class NewsFeedPost extends Component {
       this.setState({ activeRequest: false });
     }
   }
-  submit() {
+  submit(e) {
+    e.preventDefault();
     let submission = {
-      text: this.state.input,
-      privacy: this.state.privacy.key
+      text: this.state.input
     };
+    if (!this.props.hidePrivacy) {
+      submission.privacy = this.state.privacy.key;
+    }
     if (this.state.embed && this.state.embed.content) {
       submission.attachment = this.state.embed.content
     }
@@ -66,6 +73,7 @@ class NewsFeedPost extends Component {
       message.error('You must write or upload something to post.', 10);
       return;
     }
+    this.setState({ embed: {}, text: '' });
     this.props.handleSubmit(submission);
   }
   handleInput(e) {
@@ -97,6 +105,7 @@ class NewsFeedPost extends Component {
     return <PostAttachment attachment={content} />
   }
   render() {
+    const { hidePrivacy, inline } = this.props;
     const { embed } = this.state;
     const content = embed ? embed.content : {};
 
@@ -120,17 +129,18 @@ class NewsFeedPost extends Component {
     const comp = (
       <ContentPage>
         <div className="newsfeed-post">
-          <Input type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder="Share something..." />
-          {this.state.activeRequest ? <Spin tip="Loading attachment..." /> : null}
           <div>
             {this.formatContent(content)}
           </div>
-          <div className="buttons">
-            <Dropdown overlay={privacyMenu}>
-              <Button><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
-            </Dropdown>
-            <Button type="primary" onClick={this.submit} disabled={this.props.activeRequest}>Post</Button>
-          </div>
+          <Form onSubmit={this.submit}>
+            <InputGroup compact style={{ display: 'flex' }}>
+              <Input className={cx({ inline })} type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder="Share something..." style={{ flexGrow: 2 }} />
+              {!hidePrivacy && <Dropdown overlay={privacyMenu}>
+                <Button type="default"><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
+              </Dropdown>}
+              <Button type="primary" onClick={this.submit} disabled={this.props.activeRequest} htmlType="submit">Post</Button>
+            </InputGroup>
+          </Form>
         </div>
       </ContentPage>
     );
