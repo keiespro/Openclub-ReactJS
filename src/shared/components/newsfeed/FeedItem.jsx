@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { graphql, compose } from 'react-apollo';
+import { graphql, compose, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import _ from 'lodash';
 import error from 'utils/error';
@@ -13,7 +13,7 @@ import NewsFeedPostForm from 'components/forms/NewsFeedPostForm'
 
 class FeedItem extends Component {
   static propTypes = {
-    data: PropTypes.object,
+    post: PropTypes.object,
     comment: PropTypes.func,
     like: PropTypes.func
   }
@@ -23,18 +23,31 @@ class FeedItem extends Component {
     this.state = {
       comments_expanded: false,
       loading: false,
+      post: []
     }
 
     this.toggleComments = this.toggleComments.bind(this);
   }
+  async loadComments(cursor) {
+    const { post } = this.props;
+    const result = await this.props.client.query({
+      query: commentsQuery, //eslint-disable-line
+      variables: {
+        first: 25,
+        cursor,
+        postId: post._id
+      }
+    })
+    this.setState({ post: result });
+  }
   async likeDislike(likeDislike) {
-      const { like, data } = this.props;
+      const { like, post } = this.props;
 
       try {
         this.setState({ loading: true })
         await like({
           variables: {
-            postId: data._id,
+            postId: post._id,
             likeDislike
           }
         });
@@ -45,13 +58,13 @@ class FeedItem extends Component {
       }
   }
   async submitComment(newComment) {
-    const { comment, data } = this.props;
+    const { comment, post } = this.props;
 
     try {
       this.setState({ loading: true })
       await comment({
         variables: {
-          postId: data._id,
+          postId: post._id,
           comment: newComment
         }
       });
@@ -65,12 +78,13 @@ class FeedItem extends Component {
     }
   }
   toggleComments() {
+    if (!this.state.comments_expanded) this.loadComments();
     this.setState({
       comments_expanded: !this.state.comments_expanded
     })
   }
   render() {
-    const value = this.props.data;
+    const value = this.props.post;
     const postMenu = (
       <Menu onClick={this.postMenuClick}>
         <Menu.Item key="report"><Icon type="dislike" /> Report</Menu.Item>
@@ -120,8 +134,8 @@ class FeedItem extends Component {
   }
 }
 
-const postQuery = gql`
-  query post($postId: MongoID!, $first: Int!, $cursor: MongoID) {
+const commentsQuery = gql`
+  query post($postId: MongoID!, $first: Int!, $cursor: ID) {
     post(postId:$postId) {
       _id
       comments(first:$first, cursor:$cursor) {
@@ -135,9 +149,6 @@ const postQuery = gql`
               square
               background
             }
-            likes_count
-            liked
-            comments_count
           }
         }
       }
@@ -223,6 +234,6 @@ graphql(SubmitCommentMutation, {
     }
   })
 })
-)(FeedItem)
+)(FeedItem);
 
-export default FeedItemApollo;
+export default withApollo(FeedItemApollo);

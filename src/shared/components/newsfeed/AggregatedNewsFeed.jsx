@@ -36,7 +36,7 @@ class AggregatedNewsFeed extends Component {
     return (
       <div>
         <div className="posts-container">
-          {postEdges.map(edge => <FeedItem baseQuery="aggregateFeed" data={edge.post} key={edge.post._id} />)}
+          {postEdges.map(edge => <FeedItem baseQuery="aggregateFeed" post={edge.post} key={edge.post._id} />)}
         </div>
       </div>
     )
