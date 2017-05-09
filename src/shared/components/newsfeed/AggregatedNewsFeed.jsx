@@ -59,6 +59,9 @@ const NewsFeedGQL = gql`
               fbid
             }
             text
+            likes_count
+            comments_count
+            liked
             attachment
             images{
               thumb

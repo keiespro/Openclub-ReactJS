@@ -183,11 +183,11 @@ graphql(likeMutation, {
         if (!like) return prev;
 
         const findIndex = _.findIndex(prev[prevKey].posts.edges, e => e.post && e.post._id === like._id);
-        prev[prevKey].posts.edges[findIndex] = {
-          post: {
-            ...prev[prevKey].posts.edges[findIndex].post,
-            ...like,
-          }
+        console.log(like, prev[prevKey].posts.edges[findIndex].post);
+
+        prev[prevKey].posts.edges[findIndex].post = {
+          ...prev[prevKey].posts.edges[findIndex].post,
+          ...like,
         };
 
         return prev;
@@ -214,7 +214,11 @@ graphql(SubmitCommentMutation, {
         post.comments.edges.unshift({ comment });
         post.comments_count++; //eslint-disable-line
 
-        prev[prevKey].posts.edges[postIndex].post = post;
+        prev[prevKey].posts.edges[postIndex].post = {
+          ...prev[prevKey].posts.edges[postIndex].post,
+          ...post
+        };
+        console.log(prev[prevKey].posts.edges[postIndex].post);
 
         return prev;
       }
