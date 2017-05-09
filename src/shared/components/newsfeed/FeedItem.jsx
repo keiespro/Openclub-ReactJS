@@ -183,7 +183,6 @@ graphql(likeMutation, {
         if (!like) return prev;
 
         const findIndex = _.findIndex(prev[prevKey].posts.edges, e => e.post && e.post._id === like._id);
-        console.log(like, prev[prevKey].posts.edges[findIndex].post);
 
         prev[prevKey].posts.edges[findIndex].post = {
           ...prev[prevKey].posts.edges[findIndex].post,
@@ -218,7 +217,6 @@ graphql(SubmitCommentMutation, {
           ...prev[prevKey].posts.edges[postIndex].post,
           ...post
         };
-        console.log(prev[prevKey].posts.edges[postIndex].post);
 
         return prev;
       }
