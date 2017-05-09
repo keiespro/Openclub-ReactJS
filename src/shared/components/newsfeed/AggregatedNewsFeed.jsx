@@ -36,7 +36,7 @@ class AggregatedNewsFeed extends Component {
     return (
       <div>
         <div className="posts-container">
-          {postEdges.map(edge => <FeedItem data={edge.post} key={edge.post._id} />)}
+          {postEdges.map(edge => <FeedItem baseQuery="aggregateFeed" data={edge.post} key={edge.post._id} />)}
         </div>
       </div>
     )
@@ -46,6 +46,7 @@ class AggregatedNewsFeed extends Component {
 const NewsFeedGQL = gql`
   query aggregateFeed($first: Int!) {
     aggregateFeed {
+      _id
       posts(first: $first) {
         edges{
           post{

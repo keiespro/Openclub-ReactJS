@@ -87,7 +87,7 @@ class NewsFeed extends Component {
       <div>
         {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
         <div className="posts-container">
-          {postEdges.map(edge => <FeedItem data={edge.post} key={edge.post._id} />)}
+          {postEdges.map(edge => <FeedItem baseQuery="getNewsFeed" data={edge.post} key={edge.post._id} />)}
         </div>
       </div>
     )

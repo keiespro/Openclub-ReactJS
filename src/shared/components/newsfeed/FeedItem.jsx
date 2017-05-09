@@ -137,6 +137,7 @@ const postQuery = gql`
             }
             likes_count
             liked
+            comments_count
           }
         }
       }
@@ -149,7 +150,6 @@ const likeMutation = gql`
     like(postId:$postId, likeDislike:$likeDislike){
       _id
       likes_count
-      comments_count
       liked
     }
   }
@@ -166,8 +166,7 @@ const SubmitCommentMutation = gql`
         square
         background
       }
-      likes_count
-      liked
+      comments_count
     }
   }
 `
@@ -175,43 +174,39 @@ const SubmitCommentMutation = gql`
 const FeedItemApollo = compose(
 graphql(likeMutation, {
   name: 'like',
-  options: {
+  options: props => ({
     updateQueries: {
-      getNewsFeed: (prev, { mutationResult }) => {
-        let { feed } = prev;
+      [props.baseQuery]: (prev, { mutationResult }) => {
+        const prevKey = Object.keys(prev)[0];
         const { like } = mutationResult.data;
 
-        if (!like) return { feed };
+        if (!like) return prev;
 
-        const findIndex = _.findIndex(feed.posts.edges, e => e.post && e.post._id === like._id);
-        feed.posts.edges[findIndex] = {
+        const findIndex = _.findIndex(prev[prevKey].posts.edges, e => e.post && e.post._id === like._id);
+        prev[prevKey].posts.edges[findIndex] = {
           post: {
-            ...feed.posts.edges[findIndex].post,
+            ...prev[prevKey].posts.edges[findIndex].post,
             ...like,
           }
         };
 
-        return {
-          feed
-        };
+        return prev;
       }
     }
-  }
+  })
 }),
 graphql(SubmitCommentMutation, {
   name: 'comment',
-  options: {
+  options: props => ({
     updateQueries: {
-      getNewsFeed: (prev, { mutationResult }) => {
-        let { feed } = prev;
+      [props.baseQuery]: (prev, { mutationResult }) => {
+        const prevKey = Object.keys(prev)[0];
         const { comment } = mutationResult.data;
 
-        console.log(comment);
+        if (!comment) return prev;
 
-        if (!comment) return { feed };
-
-        const postIndex = _.findIndex(feed.posts.edges, e => e.post && e.post._id === comment.post_id);
-        let { post } = feed.posts.edges[postIndex];
+        const postIndex = _.findIndex(prev[prevKey].posts.edges, e => e.post && e.post._id === comment.post_id);
+        let { post } = prev[prevKey].posts.edges[postIndex];
 
         if (!post.comments) post.comments = { edges: [] }
         if (!post.comments.edges) post.comments.edges = [];
@@ -219,14 +214,12 @@ graphql(SubmitCommentMutation, {
         post.comments.edges.unshift({ comment });
         post.comments_count++; //eslint-disable-line
 
-        feed.posts.edges[postIndex].post = post;
+        prev[prevKey].posts.edges[postIndex].post = post;
 
-        return {
-          feed
-        }
+        return prev;
       }
     }
-  }
+  })
 })
 )(FeedItem)
 
