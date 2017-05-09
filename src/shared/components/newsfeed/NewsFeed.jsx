@@ -143,7 +143,8 @@ const createPostGQL = gql`
         thumb
         background
       }
-      likes
+      likes_count
+      comments_count
       liked
       user{
         name

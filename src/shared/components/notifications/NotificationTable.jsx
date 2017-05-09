@@ -21,7 +21,6 @@ class Notifications extends Component {
     super(props);
   }
   goTo(link) {
-    console.log(this.context.router.transitionTo);
     this.context.router.transitionTo(link);
   }
   render() {
