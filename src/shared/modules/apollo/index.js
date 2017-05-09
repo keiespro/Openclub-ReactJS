@@ -9,9 +9,10 @@ const networkInterface = createNetworkInterface({
 })
 
 export default new ApolloClient({
-  ssrMode: true,
+  ssrMode: process.env.IS_SERVER,
   networkInterface,
-  dataIdFromObject: obj => obj._id
+  dataIdFromObject: obj => obj._id,
+  ...process.env.IS_CLIENT && window.__APOLLO_STATE__ ? { initialState: window.__APOLLO_STATE__ } : {}
 });
 
 // adds store utilising middlewares to the apollo client

@@ -30,7 +30,7 @@ function scriptTags(jsFilePaths) {
 
 
 export default function generateHTML(args) {
-  const { reactAppString, initialState, nonce, helmet, asyncComponentState } = args;
+  const { reactAppString, initialState, nonce, helmet, asyncComponentState, apolloState } = args;
 
   // The chunks that we need to fetch the assets (js/css) for and then include
   // said assets as script/style tags within our html.
@@ -84,6 +84,13 @@ export default function generateHTML(args) {
           // so the client can register the correct initial state for the view.
           initialState
             ? inlineScript(`window.__APP_STATE__=${serialize(initialState)};`)
+            : ''
+        }
+        ${
+          // Bind the initial application state based on the server render
+          // so the client can register the correct initial state for the view.
+          apolloState
+            ? inlineScript(`window.__APOLLO_STATE__=${serialize(apolloState)};`)
             : ''
         }
         ${

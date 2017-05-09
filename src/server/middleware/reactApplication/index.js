@@ -1,8 +1,6 @@
 
 import React from 'react';
-import { renderToString } from 'react-dom/server';
 import { ServerRouter, createServerRenderContext } from 'teardrop';
-//import { CodeSplitProvider, createRenderContext } from 'code-split-component';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { ApolloProvider, renderToStringWithData } from 'react-apollo';
@@ -89,7 +87,8 @@ async function reactApplicationMiddleware(request, response) {
       // html, and then the client bundle can use this data to know which chunks/
       // modules need to be rehydrated prior to the application being rendered.
       asyncComponentState: asyncContext.getState(),
-      initialState: store.getState()
+      initialState: store.getState(),
+      apolloState: apolloClient.getInitialState()
     });
 
     // Get the render result from the server render context.

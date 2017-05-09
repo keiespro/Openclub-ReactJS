@@ -120,6 +120,30 @@ class FeedItem extends Component {
   }
 }
 
+const postQuery = gql`
+  query post($postId: MongoID!, $first: Int!, $cursor: MongoID) {
+    post(postId:$postId) {
+      _id
+      comments(first:$first, cursor:$cursor) {
+        edges{
+          comment{
+            _id
+            post_id
+            text
+            attachment
+            images{
+              square
+              background
+            }
+            likes_count
+            liked
+          }
+        }
+      }
+    }
+  }
+`
+
 const likeMutation = gql`
   mutation like($postId: MongoID!, $likeDislike: Boolean!){
     like(postId:$postId, likeDislike:$likeDislike){

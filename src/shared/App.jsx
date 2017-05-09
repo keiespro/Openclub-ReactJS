@@ -219,6 +219,9 @@ const currentViewer = gql`
 `
 
 const AppWithApollo = graphql(currentViewer, {
+  options: {
+    pollInterval: 60000
+  },
   skip: ownProps => !ownProps.token
 })(App)
 

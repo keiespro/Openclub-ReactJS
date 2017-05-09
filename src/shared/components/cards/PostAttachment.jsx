@@ -33,7 +33,7 @@ class PostAttachment extends Component {
 
     let headline = attachment.headline ? attachment.headline : '';
     let image = (attachment.image && attachment.image.length > 0) ? attachment.image[0].url : '';
-    let url = attachment.canonicalUrl || attachment.url || '';
+    let url = attachment.url || '';
     let description = attachment.description ? attachment.description : '';
     let video = attachment.video && attachment.video.length > 0 ? attachment.video[0].url : '';
 
