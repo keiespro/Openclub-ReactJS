@@ -81,22 +81,22 @@ const ClubActionsApollo = compose(
       updateQueries: {
         currentViewer: (prev, { mutationResult }) => {
           const { updateMembership } = mutationResult.data;
-          let { memberships = [] } = prev.user;
+          let user = prev.user;
 
-          if (!updateMembership) return false;
+          if (!user.memberships) user.memberships = [];
 
-          const membershipIndex = _.findIndex(memberships, { _id: updateMembership._id });
+          const membershipIndex = _.findIndex(user.memberships, { _id: updateMembership._id });
           if (membershipIndex > -1) {
-            memberships[membershipIndex] = {
-              ...memberships[membershipIndex],
-              ..._.omitBy(updateMembership, _.isNull)
-            };
-          } else {
-            memberships = _.sortBy([...memberships, updateMembership], '_id');
+            let membership = { ...user.memberships[membershipIndex], ...updateMembership };
+            if (membership.following === true || (membership.roles && membership.roles.length > 0) || membership.subscription) {
+              user.memberships[membershipIndex] = membership;
+            } else {
+              user.memberships = _.pullAllBy(user.memberships, [membership], '_id');
+            }
           }
           return {
-            ...prev.user,
-            memberships
+            ...prev,
+            user
           }
         }
       }
