@@ -82,7 +82,7 @@ class FeedItem extends Component {
         </div>
       </div>
       <div className="post-actions">
-        <Button type={value.liked ? "default" : "primary"} onClick={this.likeDislike.bind(this, !value.liked)} loading={this.state.loading}><Icon type={value.liked ? "like" : "like-o"} /> {value.liked ? "Liked" : "Like"} ({value.likes})</Button>
+        <Button type={value.liked ? "default" : "primary"} onClick={this.likeDislike.bind(this, !value.liked)} loading={this.state.loading}><Icon type={value.liked ? "like" : "like-o"} /> {value.liked ? "Liked" : "Like"} ({value.likes_count || 0})</Button>
         {this.state.comments_expanded ? (
           <Button onClick={this.toggleComments}><Icon type="message" /> Close Comments</Button>
         ) : (
@@ -99,7 +99,8 @@ const LikePostMutation = gql`
   mutation likePost($postId: MongoID!, $likeDislike: Boolean!){
     likePost(postId:$postId, likeDislike:$likeDislike){
       _id
-      likes
+      likes_count
+      comments_count
       liked
     }
   }

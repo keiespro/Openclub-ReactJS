@@ -2,6 +2,7 @@ import apolloClient from 'modules/apollo'
 import gql from 'graphql-tag'
 import { browserHistory } from 'teardrop'
 import { lock, inlineLock, hashParsed } from 'utils/Auth0'
+import { cancelSubscription } from 'modules/notifications/actions';
 import message from 'antd/lib/message';
 import error from 'utils/error';
 
@@ -92,6 +93,7 @@ export function checkAuthentication() {
 // Logs the user out
 export function logoutUser() {
   return dispatch => {
+    dispatch(cancelSubscription())
     dispatch(requestLogout())
     localStorage.removeItem('openclub_token')
     apolloClient.resetStore()

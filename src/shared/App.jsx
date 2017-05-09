@@ -21,7 +21,7 @@ import AsyncNotifications from 'routes/Notifications'
 import AsyncEvents from 'routes/Events'
 import AsyncTest from 'routes/Test'
 
-import { LoadNotifications } from 'components/notifications'
+import { initNotifications } from 'modules/notifications/actions'
 import { logoutUser, login } from 'modules/auth/actions'
 import { toggleSidebar, openSidebar, closeSidebar } from 'modules/ui/actions'
 
@@ -58,7 +58,8 @@ class App extends Component {
     toggleSidebar: PropTypes.func,
     openSidebar: PropTypes.func,
     closeSidebar: PropTypes.func,
-    sidebarOpen: PropTypes.bool
+    sidebarOpen: PropTypes.bool,
+    initNotifications: PropTypes.func
   }
   constructor(props) {
     super(props)
@@ -77,6 +78,12 @@ class App extends Component {
   isHome() {
     const { pathname = '' } = this.props.location || {};
     return pathname === '/' || pathname === '/help';
+  }
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data.user && !this.props.data.user) {
+      const { data } = nextProps;
+      this.props.initNotifications(data.user._id, data.user.notification_token);
+    }
   }
   render() {
     const { data, location } = this.props;
@@ -101,7 +108,6 @@ class App extends Component {
             script={safeConfigGet(['htmlPage', 'scripts'])}
           />
 
-          <LoadNotifications user={data.user} />
           {!this.isHome() && <Header user={data.user} />}
           <Content>
             <MatchGroup>
@@ -225,7 +231,8 @@ export default connect(state => ({
   login,
   toggleSidebar,
   openSidebar,
-  closeSidebar
+  closeSidebar,
+  initNotifications
 })(AppWithApollo)
 
 export {

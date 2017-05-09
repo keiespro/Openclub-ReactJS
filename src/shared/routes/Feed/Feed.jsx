@@ -9,7 +9,8 @@ const { Content } = Layout;
 
 class Feed extends Component {
   static propTypes = {
-    viewer: PropTypes.object
+    viewer: PropTypes.object,
+    location: PropTypes.object
   }
   constructor(props) {
     super(props);

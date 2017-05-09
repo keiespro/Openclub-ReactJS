@@ -12,11 +12,10 @@ import './NewsFeed.scss';
 
 class NewsFeed extends Component {
   static propTypes = {
-    posts: PropTypes.array,
     feedOwnerId: PropTypes.string,
     feedOwnerType: PropTypes.string,
     feed: PropTypes.object,
-    viewer: PropTypes.object,
+    viewer: PropTypes.object
   }
   constructor(props) {
     super(props);
@@ -96,7 +95,7 @@ class NewsFeed extends Component {
 }
 
 const NewsFeedGQL = gql`
-  query getNewsFeed($feedOwnerId: MongoID, $feedOwnerType: String, $first: Int!) {
+  query getNewsFeed($feedOwnerId: MongoID, $feedOwnerType: String, $first: Int!, $cursor: MongoID) {
     feed(feedOwnerId: $feedOwnerId, feedOwnerType: $feedOwnerType) {
       _id
       owner{
@@ -106,7 +105,7 @@ const NewsFeedGQL = gql`
       privacy
       permissions
       public_permissions
-      posts(first: $first) {
+      posts(first: $first, cursor: $cursor) {
         edges{
           post{
             _id
@@ -117,7 +116,8 @@ const NewsFeedGQL = gql`
               }
               fbid
             }
-            likes
+            likes_count
+            comments_count
             liked
             text
             attachment
@@ -166,7 +166,8 @@ graphql(NewsFeedGQL, {
       variables: {
         feedOwnerId: props.feedOwnerId,
         feedOwnerType: props.feedOwnerType,
-        first: 25
+        first: 25,
+        cursor: props.firstPostId
       }
     }
   },
