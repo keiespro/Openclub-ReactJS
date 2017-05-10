@@ -44,6 +44,7 @@ class MembershipPlanForm extends Component {
                 prefix="$"
                 validate={[required, maxLength(8)]}
                 component={Input}
+                required
               />
             </Col>
             <Col xs={6}>
@@ -51,6 +52,7 @@ class MembershipPlanForm extends Component {
                 name={`prices[${index}].duration`}
                 component={Select}
                 placeholder="Duration"
+                validate={[required]}
                 options={durations.list.map(d => ({ value: d, title: durations.lookup[d] }))}
               />
             </Col>
@@ -59,10 +61,11 @@ class MembershipPlanForm extends Component {
                 basic
                 name={`prices[${index}].setup_price.amount`}
                 type="text"
-                placeholder="Setup Fee (optional)"
+                placeholder="Setup fee"
                 prefix="$"
-                validate={[maxLength(8)]}
+                validate={[required, maxLength(8)]}
                 component={Input}
+                required
                 />
             </Col>
             <Col xs={2}>
@@ -97,12 +100,22 @@ class MembershipPlanForm extends Component {
             autosize
           />
         </FieldContainer>
-        <FieldContainer required title="Plan Availability">
+        <FieldContainer title="Plan Availability">
           <Field
             name="public"
-            label="Display plan publicly and allow members to join."
+            label="Public listed plan."
             component={Checkbox}
             autosize
+            defaultValue
+          />
+        </FieldContainer>
+        <FieldContainer title="Approval">
+          <Field
+            name="approval"
+            label="Approve new registrations."
+            component={Checkbox}
+            autosize
+            defaultValue={false}
           />
         </FieldContainer>
         <FieldContainer required title="Prices">

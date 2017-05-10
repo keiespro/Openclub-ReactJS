@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Button, message, Alert } from 'antd'
+import Modal from 'antd/lib/modal';
 import Table from 'components/table'
 import MembershipPlanForm from 'components/forms/MembershipPlanForm'
 import { durations } from 'constants/index'
@@ -50,7 +51,10 @@ class MembershipPlans extends Component {
       message.success('Plan change was successful.');
       this.setState({ showAdd: false });
     } catch (err) {
-      message.error('Uh-oh! ' + error(err));
+      Modal.error({
+        title: 'Error saving plan',
+        content: error(err)
+      })
     }
   }
   render() {
@@ -109,7 +113,7 @@ class MembershipPlans extends Component {
           <div className="membershipplans-newplan">
             <MembershipPlanForm
               form={`membership_form_new`}
-              initialValues={{public: true}}
+              initialValues={{public: true, approval: false}}
               onSubmit={this.savePlan}
               cancel={() => this.setState({ showAdd: false })}
               submitting={submitting}
@@ -192,14 +196,13 @@ const MembershipPlansWithApollo = compose(
     options: {
       updateQueries: {
         club: (prev, { mutationResult }) => {
-          const changedPlan = mutationResult.data.updateMembershipPlan
-          let oldPlans = prev.club.membership_plans || []
-          const index = _.findIndex(oldPlans, { _id: changedPlan._id });
-          oldPlans[index] = changedPlan;
+          const { updateMembershipPlan } = mutationResult.data
+          prev.club.membership_plans = prev.club.membership_plans || []
+          const index = _.findIndex(prev.club.membership_plans, { _id: updateMembershipPlan._id });
+          prev.club.membership_plans[index] = updateMembershipPlan;
           return {
             club: {
-              ...prev.club,
-              membership_plans: oldPlans
+              ...prev.club
             }
           }
         }

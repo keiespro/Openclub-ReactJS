@@ -17,6 +17,8 @@ const Select = ({ input, options, basic, meta, help, ...rest }) => {
     'has-warning': meta.touched && meta.warning
   })
 
+  if (!input.value) delete input.value;
+
   const select = (
     <AntSelect {...input} {...rest} onChange={handleChange}>
       {children}
