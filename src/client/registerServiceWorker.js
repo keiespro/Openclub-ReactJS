@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'production') {
         message: 'OpenClub Updates',
         description: 'A new version of OpenClub is available. Please reload when you are ready.',
         icon: React.createElement(Icon, { type: 'to-top '}),
-        btn: React.createElement(Button, { type: 'primary', onClick: window.location.reload()})
+        btn: React.createElement(Button, { type: 'primary', onClick: () => window.location.reload()})
       }),
       onUpdateFailed: () => Modal.error({
         title: 'Update Error',
