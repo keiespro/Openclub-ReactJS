@@ -192,7 +192,16 @@ const currentViewer = gql`
         club_id
         feed_permissions
         roles
-        club
+        club{
+          _id
+          name
+          images{
+            square
+            thumb
+            background
+          }
+          slug
+        }
         following
         notifications
         subscription{
