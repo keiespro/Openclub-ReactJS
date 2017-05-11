@@ -47,7 +47,7 @@ class Club extends Component {
 
     const { router } = this.context
     const { club, loading, error } = data
-    const collapseHeader = location.pathname ? !(new RegExp(`^\\/${club.slug}(\\/?(feed|about)\\/?)?$`)).test(location.pathname) : false;
+    const collapseHeader = location.pathname && club && club.slug ? !(new RegExp(`^\\/${club.slug}(\\/?(feed|about)\\/?)?$`)).test(location.pathname) : false;
     if (process.env.IS_CLIENT && loading) return <Loading />
     if (error) return <Error error={error} />
     if (!club) return <Error404 />
