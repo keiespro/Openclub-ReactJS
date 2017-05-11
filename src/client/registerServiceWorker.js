@@ -23,7 +23,7 @@ if (process.env.NODE_ENV === 'production') {
     // Install the offline plugin, which instantiates our service worker and app
     // cache to support precaching of assets and offline support.
     OfflinePluginRuntime.install({
-      onUpdating: () => message.loading('OpenClub is installing updates...', 10),
+      onUpdating: () => message.loading('OpenClub is installing updates...', 5),
       // When an update is ready we will tell the new SW to take control immediately.
       onUpdateReady: () => OfflinePluginRuntime.applyUpdate(),
       // After the new SW update has been applied we will reload the users page
@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'production') {
         message: 'OpenClub Updates',
         description: 'A new version of OpenClub is available. Please reload when you are ready.',
         icon: React.createElement(Icon, { type: 'to-top '}),
-        btn: React.createElement(Button, { type: 'primary', onClick: () => window.location.reload()})
+        btn: React.createElement(Button, { type: 'primary', onClick: () => window.location.reload()}, "Reload")
       }),
       onUpdateFailed: () => Modal.error({
         title: 'Update Error',
