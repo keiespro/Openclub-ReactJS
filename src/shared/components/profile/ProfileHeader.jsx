@@ -45,7 +45,6 @@ class ProfileHeader extends Component {
     )
   }
   render() {
-    console.log('Header', this.props)
     const { buttons } = this.props
     const { background } = this.props.images || {}
 
