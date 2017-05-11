@@ -63,6 +63,12 @@ const clubPermissions = (club, viewer) => {
   // User can post to club
   p.userCanPost = p.userIsAdmin || p.userIsMember;
 
+  // Function to return true/false if user belongs to a post
+  p.userOwnsPost = (_id) => _id === viewer._id;
+
+  // Function to return true/false if user can delete post
+  p.userCanDeletePost = (_id) => p.userOwnsPost(_id) || p.userIsAdmin || p.userCanModerateFeed;
+
   // User can update club details
   p.userCanUpdateDetails = p.userIsAdmin;
 

@@ -5,7 +5,7 @@ export default function (viewer, feed) {
   let basePermissions = feed ? feed.public_permissions || [] : [];
 
   if (viewer && viewer.memberships) {
-    let index = _.findIndex(viewer.memberships, { club_id: feed.owner._id });
+    let index = _.findIndex(viewer.memberships, { club_id: feed.owner.owner_id });
     let membership = viewer.memberships[index];
 
     if (membership) {

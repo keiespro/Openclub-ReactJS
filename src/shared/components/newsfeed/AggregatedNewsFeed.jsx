@@ -10,9 +10,10 @@ import './NewsFeed.scss';
 class AggregatedNewsFeed extends Component {
   static propTypes = {
     data: PropTypes.object,
+    viewer: PropTypes.object
   }
   render() {
-    const { data } = this.props;
+    const { data, viewer } = this.props;
     const isPosts = data && data.aggregateFeed && data.aggregateFeed.posts;
     const postEdges = isPosts ? data.aggregateFeed.posts.edges : [];
 
@@ -36,7 +37,7 @@ class AggregatedNewsFeed extends Component {
     return (
       <div>
         <div className="posts-container">
-          {postEdges.map(edge => <FeedItem baseQuery="aggregateFeed" post={edge.post} key={edge.post._id} />)}
+          {postEdges.map(edge => <FeedItem baseQuery="aggregateFeed" post={edge.post} key={edge.post._id} viewer={viewer} />)}
         </div>
       </div>
     )
@@ -51,6 +52,7 @@ const NewsFeedGQL = gql`
         edges{
           post{
             _id
+            user_id
             user{
               name
               images{
@@ -63,6 +65,10 @@ const NewsFeedGQL = gql`
             comments_count
             liked
             attachment
+            owner{
+              type
+              slug
+            }
             images{
               thumb
               background

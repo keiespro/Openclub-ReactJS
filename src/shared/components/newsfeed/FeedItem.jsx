@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose, withApollo } from 'react-apollo';
+import { Link } from 'teardrop';
 import gql from 'graphql-tag';
 import _ from 'lodash';
 import error from 'utils/error';
@@ -15,7 +16,9 @@ class FeedItem extends Component {
   static propTypes = {
     post: PropTypes.object,
     comment: PropTypes.func,
-    like: PropTypes.func
+    like: PropTypes.func,
+    perm: PropTypes.object,
+    viewer: PropTypes.object
   }
   constructor(props) {
     super(props);
@@ -27,6 +30,8 @@ class FeedItem extends Component {
     }
 
     this.toggleComments = this.toggleComments.bind(this);
+    this.postMenuClick = this.postMenuClick.bind(this);
+    this.deletePost = this.deletePost.bind(this);
   }
   async loadComments(cursor) {
     const { post } = this.props;
@@ -77,18 +82,40 @@ class FeedItem extends Component {
       });
     }
   }
+  async deletePost() {
+    const { deletePost, post } = this.props;
+
+    try {
+      this.setState({ loading: true });
+      await deletePost({
+        variables: {
+          postId: post._id
+        }
+      });
+    } catch (err) {
+      Modal.error({
+        title: 'Uh-oh!',
+        content: error(err)
+      });
+      this.setState({ loading: false })
+    }
+  }
   toggleComments() {
     if (!this.state.comments_expanded) this.loadComments();
     this.setState({
       comments_expanded: !this.state.comments_expanded
     })
   }
+  postMenuClick({key}) {
+    if (key === 'delete') this.deletePost();
+    if (key === 'report') window.open("https://help.openclub.co/hc/en-us/requests/new");
+  }
   render() {
-    const value = this.props.post;
+    const { post: value, perm, viewer } = this.props;
     const postMenu = (
       <Menu onClick={this.postMenuClick}>
-        <Menu.Item key="report"><Icon type="dislike" /> Report</Menu.Item>
-        <Menu.Item key="delete" style={{ color: 'red' }}><Icon type="delete" /> Delete</Menu.Item>
+        {viewer._id !== value.user_id && <Menu.Item key="report"><Icon type="dislike" /> Report</Menu.Item>}
+        {((perm && perm.userCanDeletePost(value.user_id)) || viewer._id === value.user_id) && <Menu.Item key="delete" style={{ color: 'red' }}><Icon type="delete" /> Delete</Menu.Item>}
       </Menu>
     );
     return (
@@ -104,6 +131,8 @@ class FeedItem extends Component {
             <p className="m0 text-bold">{value.user && value.user.name ? value.user.name : 'No name'}</p>
             <small className="text-muted">
               <Icon type={cx({ 'global': value.privacy === 'PUBLIC', 'contacts': value.privacy === 'PRIVATE' })} /> {cx({ 'Public': value.privacy === 'PUBLIC', 'Members': value.privacy === 'PRIVATE' })}
+              {value.owner && value.owner.slug && value.owner.type === 'clubs' && <span> | Posted in <Link to={`/${value.owner.slug}/feed`}>@{value.owner.slug}</Link></span>}
+              {value.owner && value.owner.slug && value.owner.type === 'events' && <span> | Posted in <Link to={`/event/${value.owner.slug}/feed`}>@{value.owner.slug}</Link></span>}
             </small>
           </div>
         </div>
@@ -162,6 +191,14 @@ const likeMutation = gql`
       _id
       likes_count
       liked
+    }
+  }
+`
+
+const deleteMutation = gql`
+  mutation deletePost($postId: MongoID!){
+    deletePost(postId: $postId) {
+      _id
     }
   }
 `
@@ -228,6 +265,23 @@ graphql(SubmitCommentMutation, {
           ...prev[prevKey].posts.edges[postIndex].post,
           ...post
         };
+
+        return prev;
+      }
+    }
+  })
+}),
+graphql(deleteMutation, {
+  name: 'deletePost',
+  options: props => ({
+    updateQueries: {
+      [props.baseQuery]: (prev, { mutationResult }) => {
+        const prevKey = Object.keys(prev)[0];
+        const { deletePost } = mutationResult.data;
+
+        if (!deletePost._id) return prev;
+
+        _.remove(prev[prevKey].posts.edges, e => e.post._id === deletePost._id);
 
         return prev;
       }

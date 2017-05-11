@@ -6,10 +6,11 @@ class Feed extends Component {
   static propTypes = {
     club: PropTypes.object,
     viewer: PropTypes.object,
-    location: PropTypes.object
+    location: PropTypes.object,
+    perm: PropTypes.object
   }
   render() {
-    const { club, viewer, location } = this.props;
+    const { club, viewer, location, perm } = this.props;
 
     const regex = /^\/[\w\d]+\/feed\/([\w\d]+)/;
     let firstPostId;
@@ -21,7 +22,7 @@ class Feed extends Component {
     return (
       <div>
         <Helmet title={`${club.name} — Feed`} />
-        <NewsFeed feedOwnerId={club._id} feedOwnerType="clubs" viewer={this.props.viewer} firstPostId={firstPostId} />
+        <NewsFeed feedOwnerId={club._id} feedOwnerType="clubs" viewer={viewer} firstPostId={firstPostId} perm={perm} />
       </div>
     )
   }

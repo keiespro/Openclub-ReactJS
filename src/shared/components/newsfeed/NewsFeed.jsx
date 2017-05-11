@@ -15,7 +15,8 @@ class NewsFeed extends Component {
     feedOwnerId: PropTypes.string,
     feedOwnerType: PropTypes.string,
     feed: PropTypes.object,
-    viewer: PropTypes.object
+    viewer: PropTypes.object,
+    perm: PropTypes.object
   }
   constructor(props) {
     super(props);
@@ -50,7 +51,7 @@ class NewsFeed extends Component {
     }
   }
   render() {
-    const { feed } = this.props;
+    const { feed, viewer } = this.props;
     const isPosts = feed && feed.feed && feed.feed.posts;
     const postEdges = isPosts ? feed.feed.posts.edges : [];
 
@@ -87,7 +88,7 @@ class NewsFeed extends Component {
       <div>
         {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
         <div className="posts-container">
-          {postEdges.map(edge => <FeedItem baseQuery="getNewsFeed" post={edge.post} key={edge.post._id} />)}
+          {postEdges.map(edge => <FeedItem baseQuery="getNewsFeed" post={edge.post} key={edge.post._id} perm={this.props.perm} viewer={viewer} />)}
         </div>
       </div>
     )
@@ -99,7 +100,7 @@ const NewsFeedGQL = gql`
     feed(feedOwnerId: $feedOwnerId, feedOwnerType: $feedOwnerType) {
       _id
       owner{
-        _id
+        owner_id
         type
       }
       privacy
@@ -109,12 +110,18 @@ const NewsFeedGQL = gql`
         edges{
           post{
             _id
+            user_id
             user{
               name
               images{
                 square
               }
               fbid
+            }
+            owner{
+              owner_id
+              type
+              slug
             }
             likes_count
             comments_count
@@ -142,6 +149,11 @@ const createPostGQL = gql`
       images{
         thumb
         background
+      }
+      owner{
+        owner_id
+        type
+        slug
       }
       likes_count
       comments_count
@@ -181,20 +193,16 @@ graphql(createPostGQL, {
   options: {
     updateQueries: {
       getNewsFeed: (prev, { mutationResult }) => {
-        let { feed } = prev;
         const { createPost } = mutationResult.data;
 
-        if (!createPost) return feed;
+        if (!createPost) return prev;
 
-        if (!feed.posts) feed.posts = {};
-        if (!feed.posts.edges) feed.posts.edges = [];
+        if (!prev.feed.posts) prev.feed.posts = { edges: [] };
+        if (!prev.feed.posts.edges) prev.feed.posts.edges = [];
 
-        feed.posts.edges.unshift({ post: createPost });
+        prev.feed.posts.edges.unshift({ post: createPost });
 
-        return {
-          ...prev,
-          feed
-        };
+        return prev;
       }
     }
   }
