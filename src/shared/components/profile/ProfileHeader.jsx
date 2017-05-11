@@ -3,7 +3,11 @@ import { Button } from 'antd'
 import cx from 'classnames'
 import './ProfileHeader.scss'
 
+
 class ProfileHeader extends Component {
+  static defaultProps = {
+    collapsed: false
+  }
   renderProfileBackdrop() {
     const { images, name, collapsed } = this.props
     const square = images && images.square ? images.square : '/empty-club.png'
@@ -41,6 +45,7 @@ class ProfileHeader extends Component {
     )
   }
   render() {
+    console.log('Header', this.props)
     const { buttons } = this.props
     const { background } = this.props.images || {}
 
