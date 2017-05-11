@@ -21,7 +21,21 @@
   width: $sidebar-wd;
 }
 .oc-sidebar-clubimage {
-  width: 16px;
-  height: 16px;
+  width: 32px;
+  height: 32px;
+  margin-right: 8px;
   border-radius: 3px;
+}
+.ant-menu-item .anticon, .ant-menu-submenu-title .anticon {
+  width: 32px;
+  height: 32px;
+  display: inline-block;
+  background: $brand-color;
+  color: white;
+  line-height: 32px;
+  font-size: 20px;
+  border-radius: 3px;
+}
+.ant-menu-dark.ant-menu-inline .ant-menu-item, .ant-menu-dark.ant-menu-vertical .ant-menu-item {
+  font-size: 15px;
 }
