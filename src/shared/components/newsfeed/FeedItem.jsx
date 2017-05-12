@@ -153,10 +153,10 @@ class FeedItem extends Component {
           <Button onClick={this.toggleComments} type="primary"><Icon type="message" /> Comment ({value.comments_count || 0})</Button>
         )}
         <div className={cx({'hidden': this.state.comments_expanded === false})}>
+          <NewsFeedPostForm viewer={viewer} handleSubmit={this.submitComment.bind(this)} activeRequest={this.state.loading} inline hidePrivacy placeholder="Write a comment..."/>
           <div className="comments">
             {this.props.comments && this.props.comments.edges ? this.props.comments.edges.map(edge => <Comment key={edge.comment._id} {...edge.comment} />) : null}
           </div>
-          <NewsFeedPostForm handleSubmit={this.submitComment.bind(this)} activeRequest={this.state.loading} inline hidePrivacy />
         </div>
       </div>
     </div>)
@@ -258,19 +258,27 @@ graphql(SubmitCommentMutation, {
 
         if (!comment) return prev;
 
-        const postIndex = _.findIndex(prev[prevKey].posts.edges, e => e.post && e.post._id === comment.post_id);
-        let { post } = prev[prevKey].posts.edges[postIndex];
+        if (prevKey === 'feed') {
+          const postIndex = _.findIndex(prev[prevKey].posts.edges, e => e.post && e.post._id === comment.post_id);
+          let { post } = prev[prevKey].posts.edges[postIndex];
 
-        if (!post.comments) post.comments = { edges: [] }
-        if (!post.comments.edges) post.comments.edges = [];
+          if (!post.comments) post.comments = { edges: [] }
+          if (!post.comments.edges) post.comments.edges = [];
 
-        post.comments.edges.unshift({ comment });
-        post.comments_count++; //eslint-disable-line
+          post.comments.edges.unshift({ comment });
+          post.comments_count++; //eslint-disable-line
 
-        prev[prevKey].posts.edges[postIndex].post = {
-          ...prev[prevKey].posts.edges[postIndex].post,
-          ...post
-        };
+          prev[prevKey].posts.edges[postIndex].post = {
+            ...prev[prevKey].posts.edges[postIndex].post,
+            ...post
+          };
+        }
+        if (prevKey === 'post') {
+          if (!prev[prevKey].comments) prev.comments = { edges: [] }
+          if (!prev[prevKey].comments.edges) prev.comments.edges = [];
+
+          prev[prevKey].comments.edges.unshift({ comment })
+        }
 
         return prev;
       }

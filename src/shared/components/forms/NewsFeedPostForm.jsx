@@ -10,6 +10,7 @@ import cx from 'classnames';
 import './NewsFeedPostForm.scss';
 import Card from 'antd/lib/card'
 import PostAttachment from 'components/cards/PostAttachment'
+import userImage from 'utils/user_photo'
 
 const URLexpression = /\b((?:[a-z][\w-]+:(?:\/{1,3}|[a-z0-9%])|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))/
 
@@ -19,7 +20,8 @@ class NewsFeedPost extends Component {
     mutate: PropTypes.func,
     activeRequest: PropTypes.bool,
     inline: PropTypes.bool,
-    hidePrivacy: PropTypes.bool
+    hidePrivacy: PropTypes.bool,
+    viewer: PropTypes.object
   }
   constructor(props) {
     super(props);
@@ -105,7 +107,7 @@ class NewsFeedPost extends Component {
     return <PostAttachment attachment={content} />
   }
   render() {
-    const { hidePrivacy, inline } = this.props;
+    const { hidePrivacy, inline, viewer } = this.props;
     const { embed } = this.state;
     const content = embed ? embed.content : {};
 
@@ -134,6 +136,9 @@ class NewsFeedPost extends Component {
           </div>
           <Form onSubmit={this.submit}>
             <InputGroup compact style={{ display: 'flex' }}>
+              <div className="media">
+                <div className="creator-image small"><img src={userImage(viewer, 'thumb')} alt={viewer.name} role="presentation" /></div>
+              </div>
               <Input className={cx({ inline })} type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder="Share something..." style={{ flexGrow: 2 }} />
               {!hidePrivacy && <Dropdown overlay={privacyMenu}>
                 <Button type="default"><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>

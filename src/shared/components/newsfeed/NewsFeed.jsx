@@ -73,7 +73,7 @@ class NewsFeed extends Component {
     if (postEdges.length <= 0) {
       return (
         <div>
-          {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
+          {this.getPermissions('post') && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
           <div className="posts-container">
             <div className="no-posts">
               <h1><i className="fa fa-newspaper-o" /></h1>
@@ -86,7 +86,7 @@ class NewsFeed extends Component {
     }
     return (
       <div>
-        {this.getPermissions('post') && <NewsFeedPostForm handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
+        {this.getPermissions('post') && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
         <div className="posts-container">
           {postEdges.map(edge => <FeedItem baseQuery="getNewsFeed" post={edge.post} key={edge.post._id} perm={this.props.perm} viewer={viewer} />)}
         </div>
