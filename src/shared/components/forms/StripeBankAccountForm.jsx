@@ -12,7 +12,7 @@ import {
 } from 'components/form_controls'
 import { required, maxLength } from 'utils/form_validation/errors'
 
-const StripeBankAccountForm = ({ handleSubmit, submitting, country }) => {
+const StripeBankAccountForm = ({ handleSubmit, submitting, country, change }) => {
   return (
     <Form onSubmit={handleSubmit}>
       <FieldContainer required title="Account Holder Type">
@@ -44,7 +44,7 @@ const StripeBankAccountForm = ({ handleSubmit, submitting, country }) => {
         />
       </FieldContainer>
       <FieldContainer>
-        <Button type="primary" htmlType="submit" loading={submitting}>Submit Bank Account</Button>
+        <Button type="primary" htmlType="submit" loading={submitting}>{change ? 'Change Bank Account' : 'Submit Bank Account'}</Button>
       </FieldContainer>
     </Form>
   )

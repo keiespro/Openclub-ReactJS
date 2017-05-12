@@ -39,7 +39,7 @@
   "dependencies": {
     "animate.css": "^3.5.2",
     "antd": "^2.9.3",
-    "apollo-client": "^1.0.0-rc.2",
+    "apollo-client": "^1.2.0",
     "app-root-dir": "1.0.2",
     "auth0-lock": "^10.12.3",
     "axios": "^0.15.3",
@@ -58,6 +58,7 @@
     "google-locations": "^0.2.0",
     "helmet": "3.3.0",
     "hpp": "0.2.1",
+    "immutability-helper": "^2.2.0",
     "ionicons": "^3.0.0",
     "jquery": "^3.1.1",
     "load-google-maps-api": "0.0.3",

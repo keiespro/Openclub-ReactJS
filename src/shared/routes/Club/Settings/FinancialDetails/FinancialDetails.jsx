@@ -9,6 +9,7 @@ import StripeBankAccountForm from 'components/forms/StripeBankAccountForm'
 import { stringKeyObjectFilter } from 'utils/object_helpers'
 import { createBankAccount } from 'utils/stripe'
 import error from 'utils/error';
+import _ from 'lodash';
 
 class BankDetails extends Component {
   static propTypes = {
@@ -25,7 +26,6 @@ class BankDetails extends Component {
 
     this.saveDetails = this.saveDetails.bind(this)
     this.saveBankAccount = this.saveBankAccount.bind(this);
-    this.deleteBankAccount = this.deleteBankAccount.bind(this);
   }
   async saveDetails(values, dispatch, props) {
     const { createAccount, updateAccount, club } = this.props;
@@ -71,7 +71,8 @@ class BankDetails extends Component {
         country: club.stripe_account.data.country,
         currency: club.stripe_account.data.default_currency
       });
-      await saveBankAccount({
+      if (source.error) throw new Error(source.error.message);
+      const up = await saveBankAccount({
         variables: {
           clubId: club._id,
           source: source.token.id
@@ -82,27 +83,6 @@ class BankDetails extends Component {
     } catch (err) {
       Modal.error({
         title: "Error Adding Account",
-        content: error(err)
-      });
-      this.setState({ submitting: false })
-    }
-  }
-  async deleteBankAccount(id) {
-    const { deleteBankAccount, club } = this.props;
-
-    try {
-      this.setState({ submitting: true })
-      await deleteBankAccount({
-        variables: {
-          clubId: club._id,
-          source: id
-        }
-      })
-      this.setState({ submitting: false })
-      message.success("Bank account has been deleted successfully.");
-    } catch (err) {
-      Modal.error({
-        title: "Error Deleting Account",
         content: error(err)
       });
       this.setState({ submitting: false })
@@ -129,19 +109,38 @@ class BankDetails extends Component {
         />
       );
     }
-    if (club.stripe_account.data && club.stripe_account.data.external_accounts.data.length === 0) {
-      return <StripeBankAccountForm club={club} country={club.stripe_account.data.country} onSubmit={this.saveBankAccount} submitting={submitting || this.state.submitting} />
+    const account = _.get(club, 'stripe_account.data.external_accounts.data[0]');
+
+    if (!account) {
+      return (
+        <div>
+          <Alert
+            message="Please add bank account"
+            description="Your account is ready to receive funds. However, you have not nominated a bank account. Please enter account details below to proceed."
+            type="warning"
+            showIcon
+          />
+          <StripeBankAccountForm club={club} country={club.stripe_account.data.country} onSubmit={this.saveBankAccount} submitting={submitting || this.state.submitting} />
+        </div>
+      )
     }
-    const account = club.stripe_account.data.external_accounts.data[0];
     return (
       <div>
         <Alert
           message="Account Connected"
-          description={`Funds will be automatically deposited into your ${account.bank_name} account ending in ${account.last4} every ${club.stripe_account.data.payout_schedule.delay_days} days after transactions occur. Funds will be deposited in ${account.currency.toUpperCase()}. Please contact support if you have any concerns.`}
+          description={(
+            <div>
+              A deposit account has been connected.<br />
+            <strong>Delay: </strong>{_.get(club, 'stripe_account.data.payout_schedule.delay_days')} days after clearing<br />
+            <strong>Currency: </strong>{(_.get(account, 'currency') || '').toUpperCase()}<br />
+            <strong>Account Holder: </strong>{_.get(account, 'account_holder_name')}<br />
+            <strong>Bank Account: </strong>{_.get(account, 'bank_name')} {_.get(account, 'routing_number')} ......{_.get(account, 'last4')}
+            </div>
+          )}
           type="success"
           showIcon
         />
-      <Button type="danger" onClick={this.confirmDeleteBankAccount.bind(this, account.id)} disabled>Delete Bank Account</Button>
+      <StripeBankAccountForm club={club} country={club.stripe_account.data.country} onSubmit={this.saveBankAccount} submitting={submitting || this.state.submitting} change />
       </div>
     );
   }
@@ -181,6 +180,7 @@ const updateAccountMutationQL = gql`
     updateClubAccount(clubId: $clubId, account: $account){
       _id
       stripe_account{
+        _id
         data
       }
     }
@@ -192,6 +192,7 @@ const saveBankAccountQL = gql`
     saveBankAccount(clubId: $clubId, source: $source){
       _id
       stripe_account{
+        _id
         data
       }
     }
@@ -203,6 +204,7 @@ const deleteBankAccountQL = gql`
     deleteBankAccount(clubId: $clubId, source: $source){
       _id
       stripe_account{
+        _id
         data
       }
     }

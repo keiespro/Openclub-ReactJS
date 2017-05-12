@@ -147,9 +147,7 @@ class FeedItem extends Component {
       </div>
       <div className="post-actions">
         <Button type={value.liked ? "default" : "primary"} onClick={this.likeDislike.bind(this, !value.liked)} loading={this.state.loading}><Icon type={value.liked ? "like" : "like-o"} /> {value.liked ? "Liked" : "Like"} ({value.likes_count || 0})</Button>
-        {this.state.comments_expanded ? (
-          <Button onClick={this.toggleComments}><Icon type="message" /> Close Comments</Button>
-        ) : (
+        {this.state.comments_expanded ? null : (
           <Button onClick={this.toggleComments} type="primary"><Icon type="message" /> Comment ({value.comments_count || 0})</Button>
         )}
         <div className={cx({'hidden': this.state.comments_expanded === false})}>
