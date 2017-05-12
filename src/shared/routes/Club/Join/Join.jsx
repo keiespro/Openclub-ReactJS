@@ -71,7 +71,16 @@ const JoinMutation = gql`
   mutation joinClub($clubId:MongoID!, $planId:MongoID!, $priceId:MongoID, $paymentSource:String, $acceptTerms:Boolean, $autoRenew:Boolean) {
     join(clubId:$clubId, planId:$planId, priceId:$priceId, paymentSource:$paymentSource, acceptTerms:$acceptTerms, autoRenew:$autoRenew) {
       _id
-      club
+      club{
+        _id
+        name
+        images{
+          square
+          background
+          thumb
+        }
+        slug
+      }
       roles
       feed_permissions
       subscription{
