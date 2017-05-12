@@ -47,19 +47,19 @@ class Club extends Component {
 
     const { router } = this.context
     const { club, loading, error } = data
-    const collapseHeader = location.pathname && club && club.slug ? !(new RegExp(`^\\/${club.slug}(\\/?(feed|about)\\/?)?$`)).test(location.pathname) : false;
+    const collapseHeader = location.pathname && params && params.club_id ? !(new RegExp(`^\\/${params.club_id}(\\/?(feed|about)\\/?)?$`)).test(location.pathname) : false;
     if (process.env.IS_CLIENT && loading) return <Loading />
     if (error) return <Error error={error} />
     if (!club) return <Error404 />
 
     const perm = clubPermissions(club, viewer);
     const handleClick = e => {
-      router.transitionTo(`/${club.slug}/${e}`, true);
+      router.transitionTo(`/${params.club_id}/${e}`, true);
     }
 
     const onJoin = () => {
       if (!viewer) { this.props.login(); return; }
-      router.transitionTo(`/${club.slug}/join`)
+      router.transitionTo(`/${params.club_id}/join`)
     }
 
     const selectedKey = keysFromFragments(location.pathname, pathname, [
@@ -104,9 +104,9 @@ class Club extends Component {
               render={() => {
                 if (!viewer) return <Redirect to={`/${params.club_id}/about`} />;
                 if (viewer && (perm.userIsMember || perm.userIsFollower)) {
-                  return <Redirect to={`/${params.club_id}/feed`} push />
+                  return <Redirect to={`/${params.club_id}/feed`} />
                 }
-                return <Redirect to={`/${params.club_id}/about`} push />
+                return <Redirect to={`/${params.club_id}/about`} />
               }}
             />
             <Match pattern={`/${params.club_id}/about`}>
@@ -114,7 +114,7 @@ class Club extends Component {
             </Match>
             <Match
               pattern={`/${params.club_id}/feed`}
-              render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} viewer={viewer} />}
+              render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} viewer={viewer} slug={params.club_id} />}
             />
             <Match
               pattern={`/${params.club_id}/mymembership`}

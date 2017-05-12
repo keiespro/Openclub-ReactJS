@@ -179,8 +179,7 @@ graphql(NewsFeedGQL, {
       variables: {
         feedOwnerId: props.feedOwnerId,
         feedOwnerType: props.feedOwnerType,
-        first: 25,
-        cursor: props.firstPostId
+        first: 25
       }
     }
   },

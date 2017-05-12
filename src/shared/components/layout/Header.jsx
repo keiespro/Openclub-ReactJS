@@ -7,6 +7,7 @@ import { Link } from 'teardrop'
 import Logo from 'components/logo/Logo'
 import './Header.scss'
 import { NotificationTable } from 'components/notifications'
+import userPhoto from 'utils/user_photo'
 
 const AntHeader = Layout.Header
 
@@ -59,12 +60,12 @@ const Header = ({ user, showSearch, notifications, seen, sidebarOpen, toggleSb }
     <div className="oc-header-context right">
       <div className="oc-header-usermenu">
         <Dropdown overlay={notificationMenu} trigger={['click']}>
-          <Badge count={notifications.unseen} className="notifications-toggle">
+          <Badge dot={notifications.unseen > 0} className="notifications-toggle">
             <Button shape="circle" type="primary" icon="bell" ghost onClick={seen} />
           </Badge>
         </Dropdown>
         <Dropdown overlay={userMenu} trigger={['click']}>
-          <img src={user.images.thumb} alt="Profile" className="oc-header-userimage" />
+          <img src={userPhoto(user, 'thumb')} alt="Profile" className="oc-header-userimage" />
         </Dropdown>
       </div>
     </div>

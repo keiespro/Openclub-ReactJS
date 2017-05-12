@@ -25,7 +25,7 @@ class Notifications extends Component {
   }
   render() {
     const findTarget = (value) => {
-      let target = _.get(value, 'activities[0].target_data.name') || _.get(value, 'activities[0].target');
+      let target = _.get(value, 'activities[0].target_data.name') || _.get(value, 'activities[0].target_data.slug') || _.get(value, 'activities[0].target');
       if (typeof target === 'string') {
         if (!_.endsWith(target, "'s'") && _.endsWith(target, "s")) {
           target = `${target}'`
@@ -44,7 +44,7 @@ class Notifications extends Component {
 
       if (type === 'club') return `/${slug}`;
       if (type === 'event') return `/events/${slug}/${postId}`;
-      if (type === 'post') return `/${ownerType === 'event' ? 'events/' + slug : slug}/feed/${postId}`;
+      if (type === 'post') return `/${ownerType === 'event' ? 'events/' + slug : slug}/feed/post/${postId}`;
       if (type === 'feed') return `/${slug}/feed`;
       return false;
     }

@@ -117,7 +117,7 @@ class App extends Component {
                 pattern="/"
                 render={routerProps => {
                   if (data.user) {
-                    return <Redirect to="/feed" push />;
+                    return <Redirect to="/feed" />;
                   }
                   if (data.loading) {
                     return <Loading />;
@@ -141,7 +141,7 @@ class App extends Component {
                   return null;
                 }}
               />
-              <Match pattern="/logout" render={() => { this.props.logoutUser(); return <Redirect to="/" push /> }} />
+              <Match pattern="/logout" render={() => { this.props.logoutUser(); return <Redirect to="/" /> }} />
               {/* NOTIFICATIONS */}
               <Match pattern="/notifications" render={() => data.user ? <AsyncNotifications viewer={data.user} /> : <Unauthorised />} />
               {/* EVENT PAGES */}

@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import Helmet from 'react-helmet'
 import NewsFeed from 'components/newsfeed/NewsFeed';
+import PostPage from 'components/newsfeed/PostPage'
+import { MatchGroup, Match } from 'teardrop';
 
 class Feed extends Component {
   static propTypes = {
@@ -10,7 +12,8 @@ class Feed extends Component {
     perm: PropTypes.object
   }
   render() {
-    const { club, viewer, location, perm } = this.props;
+    console.log(this.props);
+    const { club, viewer, location, perm, slug } = this.props;
 
     const regex = /^\/[\w\d]+\/feed\/([\w\d]+)/;
     let firstPostId;
@@ -22,7 +25,10 @@ class Feed extends Component {
     return (
       <div>
         <Helmet title={`${club.name} — Feed`} />
-        <NewsFeed feedOwnerId={club._id} feedOwnerType="clubs" viewer={viewer} firstPostId={firstPostId} perm={perm} />
+        <MatchGroup>
+          <Match pattern={`/${slug}/feed`} render={() => <NewsFeed feedOwnerId={club._id} feedOwnerType="clubs" viewer={viewer} firstPostId={firstPostId} perm={perm} />} />
+          <Match pattern={`/${slug}/feed/post/:post_id`} render={params => <PostPage perm={perm} viewer={viewer} {...params} />} />
+        </MatchGroup>
       </div>
     )
   }

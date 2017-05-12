@@ -11,20 +11,25 @@ import cx from 'classnames'
 import NewsFeedComment from 'components/forms/NewsFeedComment'
 import PostAttachment from 'components/cards/PostAttachment'
 import NewsFeedPostForm from 'components/forms/NewsFeedPostForm'
+import Comment from './Comment'
 
 class FeedItem extends Component {
+  static contextTypes = {
+    router: PropTypes.object.isRequired
+  }
   static propTypes = {
     post: PropTypes.object,
     comment: PropTypes.func,
     like: PropTypes.func,
     perm: PropTypes.object,
-    viewer: PropTypes.object
+    viewer: PropTypes.object,
+    comments: PropTypes.object
   }
   constructor(props) {
     super(props);
 
     this.state = {
-      comments_expanded: false,
+      comments_expanded: !!this.props.comments,
       loading: false,
       post: []
     }
@@ -32,18 +37,6 @@ class FeedItem extends Component {
     this.toggleComments = this.toggleComments.bind(this);
     this.postMenuClick = this.postMenuClick.bind(this);
     this.deletePost = this.deletePost.bind(this);
-  }
-  async loadComments(cursor) {
-    const { post } = this.props;
-    const result = await this.props.client.query({
-      query: commentsQuery, //eslint-disable-line
-      variables: {
-        first: 25,
-        cursor,
-        postId: post._id
-      }
-    })
-    this.setState({ post: result });
   }
   async likeDislike(likeDislike) {
       const { like, post } = this.props;
@@ -101,7 +94,11 @@ class FeedItem extends Component {
     }
   }
   toggleComments() {
-    if (!this.state.comments_expanded) this.loadComments();
+    const { comments, post: { owner, _id } } = this.props;
+    if (!comments) {
+      this.context.router.transitionTo(`${owner.type === 'events' ? '/events/' : '/'}${owner.slug}/feed/post/${_id}`);
+      return;
+    }
     this.setState({
       comments_expanded: !this.state.comments_expanded
     })
@@ -156,6 +153,9 @@ class FeedItem extends Component {
           <Button onClick={this.toggleComments} type="primary"><Icon type="message" /> Comment ({value.comments_count || 0})</Button>
         )}
         <div className={cx({'hidden': this.state.comments_expanded === false})}>
+          <div className="comments">
+            {this.props.comments && this.props.comments.edges ? this.props.comments.edges.map(edge => <Comment key={edge.comment._id} {...edge.comment} />) : null}
+          </div>
           <NewsFeedPostForm handleSubmit={this.submitComment.bind(this)} activeRequest={this.state.loading} inline hidePrivacy />
         </div>
       </div>
@@ -214,7 +214,13 @@ const SubmitCommentMutation = gql`
         square
         background
       }
-      comments_count
+      user{
+        name
+        images{
+          square
+        }
+        fbid
+      }
     }
   }
 `

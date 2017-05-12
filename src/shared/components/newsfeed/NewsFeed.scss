@@ -22,26 +22,6 @@
       padding: 16px;
       display: flex;
       margin: 0;
-      .media {
-        overflow: hidden;
-        zoom: 1;
-        margin: 0;
-        .creator-image {
-          display: table-cell;
-          vertical-align: top;
-          padding-right: 10px;
-          a > img {
-            width: 48px!important;
-            height: 48px!important;
-            border-radius: 50%;
-          }
-        }
-        .creator-title {
-          padding-top: 4px!important;
-          vertical-align: middle;
-          display: table-cell;
-        }
-      }
       .post-action-menu {
         position: absolute;
         right: 15px;
@@ -52,6 +32,46 @@
       border-top: 1px solid hsla(0,0%,64%,.12);
       button {
         margin-right: 10px;
+      }
+    }
+    .media {
+      overflow: hidden;
+      zoom: 1;
+      margin: 0;
+      .creator-image {
+        display: table-cell;
+        vertical-align: top;
+        padding-right: 10px;
+        a > img, img {
+          width: 48px!important;
+          height: 48px!important;
+          border-radius: 50%;
+        }
+      }
+      .creator-title {
+        padding-top: 4px!important;
+        vertical-align: middle;
+        display: table-cell;
+      }
+    }
+    .comments {
+      .comment:nth-child(even) {
+        background-color: #eff0f1;
+      }
+      .comment {
+        display: table-row;
+        .media {
+          display: table-cell;
+          vertical-align: top;
+          .creator-image {
+            padding-right: 0;
+            padding: 5px;
+          }
+        }
+        .comment-body {
+          display: table-cell;
+          padding: 5px;
+        }
       }
     }
   }
