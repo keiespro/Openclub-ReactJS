@@ -115,7 +115,7 @@ const GraphQLWrapper = compose(
     name: 'updateProfile',
     options: {
       updateQueries: {
-        currentViewer: (prev, { mutationResult }) => ({
+        user: (prev, { mutationResult }) => ({
           user: {
             ...prev.user,
             ...mutationResult.data.updateUser

@@ -74,7 +74,7 @@ const AddCardApollo = graphql(addCreditCardGQL, {
     name: 'addCreditCard',
     options: {
       updateQueries: {
-        currentViewer: (prev, { mutationResult }) => ({
+        user: (prev, { mutationResult }) => ({
           user: {
             ...prev.user,
             ...mutationResult.data.addCreditCard

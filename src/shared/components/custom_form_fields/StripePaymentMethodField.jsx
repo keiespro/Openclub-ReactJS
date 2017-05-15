@@ -58,7 +58,7 @@ class StripePaymentMethod extends Component {
 }
 
 const stripeAccountQuery = gql`
-query currentViewer {
+query user {
   user{
     stripe_account {
       _id

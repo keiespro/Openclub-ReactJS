@@ -146,7 +146,7 @@ const CardListApollo = compose(
       name: 'deleteCreditCard',
       options: {
         updateQueries: {
-          currentViewer: (prev, { mutationResult }) => la()({
+          user: (prev, { mutationResult }) => la()({
             user: {
               ...prev.user,
               ...mutationResult.data.deleteCreditCard
@@ -159,7 +159,7 @@ const CardListApollo = compose(
         name: 'changePrimaryCard',
         options: {
           updateQueries: {
-            currentViewer: (prev, { mutationResult }) => la()({
+            user: (prev, { mutationResult }) => la()({
               user: {
                 ...prev.user,
                 ...mutationResult.data.changePrimaryCard

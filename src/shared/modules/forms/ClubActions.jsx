@@ -79,7 +79,7 @@ const ClubActionsApollo = compose(
     name: 'updateMembership',
     options: {
       updateQueries: {
-        currentViewer: (prev, { mutationResult }) => {
+        user: (prev, { mutationResult }) => {
           const { updateMembership } = mutationResult.data;
           let user = prev.user;
 

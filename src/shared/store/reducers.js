@@ -5,7 +5,7 @@ import { loadingBarReducer as loadingBar } from 'react-redux-loading-bar'
 import auth from 'modules/auth/reducer'
 import notifications from 'modules/notifications'
 import ui from 'modules/ui'
-import { reducer as apollo} from 'modules/apollo'
+import { reducer as apollo } from 'modules/apollo'
 
 const makeRootReducer = asyncReducers => combineReducers({
   form,

@@ -8,23 +8,12 @@ const networkInterface = createNetworkInterface({
   uri: process.env.GRAPH_URL
 })
 
-const apollo = new ApolloClient({
-  ssrMode: process.env.IS_SERVER,
-  networkInterface,
-  dataIdFromObject: obj => obj._id,
-  ...process.env.IS_CLIENT && window.__APOLLO_STATE__ ? { initialState: window.__APOLLO_STATE__ } : {}
-});
-
-export default apollo;
-
-export const reducer = apollo.reducer();
-
 // adds store utilising middlewares to the apollo client
-const initMiddlewares = store => {
+export const initMiddlewares = ({ getState }) => (reduxNext) => (action) => {
   networkInterface.use([{
     applyMiddleware: ({ options }, next) => {
       // check if a token is available
-      const { token } = store.getState().auth
+      const { token } = getState().auth
 
       if (token) {
         // create headers if needed
@@ -59,8 +48,17 @@ const initMiddlewares = store => {
   }
 
   networkInterface.useAfter([errorLog])
+  reduxNext(action);
 }
 
-export {
-  initMiddlewares
-}
+const apollo = new ApolloClient({
+  ssrMode: process.env.IS_SERVER,
+  networkInterface,
+  dataIdFromObject: obj => obj._id
+});
+
+export const reducer = apollo.reducer();
+
+export const middleware = apollo.middleware();
+
+export default apollo;

@@ -53,7 +53,7 @@ const createMutation = gql`
 const CreateEventWithApollo = graphql(createMutation, {
   options: {
     updateQueries: {
-      currentViewer: (prev, { mutationResult }) => {
+      user: (prev, { mutationResult }) => {
         const newEvent = mutationResult.data.createEvent
         return {
           user: {

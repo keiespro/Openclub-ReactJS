@@ -4,7 +4,6 @@ import { graphql } from 'react-apollo'
 import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
 import Helmet from 'react-helmet'
 import cx from 'classnames'
-import gql from 'graphql-tag'
 import Drawer from 'rc-drawer'
 import { Layout } from 'antd'
 import LoadingBar from 'react-redux-loading-bar'
@@ -31,6 +30,8 @@ import Loading from 'components/Loading/Loading'
 import Header from 'components/layout/Header'
 import Sidebar from 'components/layout/Sidebar'
 import { safeConfigGet } from 'utils/config'
+
+import userQuery from 'queries/user'
 
 // base styling including bootstrap
 import 'font-awesome/scss/font-awesome.scss'
@@ -167,71 +168,12 @@ class App extends Component {
   }
 }
 
-const currentViewer = gql`
-  query currentViewer {
-    user {
-      _id
-      email
-      name
-      notification_token
-      helpdesk_jwt
-      address {
-        formatted_address
-      }
-      stripe_account {
-        _id
-        cards
-        default_source
-      }
-      images {
-        thumb
-        square
-      }
-      memberships {
-        _id
-        club_id
-        feed_permissions
-        roles
-        club{
-          _id
-          name
-          images{
-            square
-            thumb
-            background
-          }
-          slug
-        }
-        following
-        notifications
-        subscription{
-          start_date
-          pending_approval
-          auto_renew
-          membership_plan{
-            _id
-            name
-            prices{
-              price{
-                amount_float
-              }
-              setup_price{
-                amount_float
-              }
-            }
-          }
-          last_renewal_date
-        }
-      }
-    }
-  }
-`
-
-const AppWithApollo = graphql(currentViewer, {
+const AppWithApollo = graphql(userQuery, {
   // options: {
   //   pollInterval: 60000
   // },
-  skip: ownProps => !ownProps.token
+  skip: ownProps => !ownProps.token,
+  options: { notifyOnNetworkStatusChange: true },
 })(App)
 
 export default connect(state => {

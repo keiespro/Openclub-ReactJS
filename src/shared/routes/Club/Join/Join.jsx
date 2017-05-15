@@ -110,7 +110,7 @@ const JoinApollo = graphql(JoinMutation,
     name: 'joinClub',
     options: {
       updateQueries: {
-        currentViewer: (prev, { mutationResult }) => {
+        user: (prev, { mutationResult }) => {
           let memberships = prev.user.memberships || [];
           const foundIndex = _.findIndex(memberships, { _id: mutationResult.data.joinClub._id });
           if (foundIndex > -1) {

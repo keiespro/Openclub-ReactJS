@@ -13,14 +13,12 @@ import createStore from '../shared/store/create_store';
 import apolloClient, { initMiddlewares } from '../shared/modules/apollo';
 import LocaleProvider from 'antd/lib/locale-provider'
 import enUS from 'antd/lib/locale-provider/en_US'
+import 'utils/offlineMode'
 
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
 
 const store = createStore('__APP_STATE__' in window ? window.__APP_STATE__ : {});
-
-// setup the apollo middlewares once the store has been created
-initMiddlewares(store);
 
 function renderApp(TheApp) {
   const rehydrateState = window.ASYNC_COMPONENTS_STATE;
