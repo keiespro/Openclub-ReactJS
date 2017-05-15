@@ -8,12 +8,16 @@ const networkInterface = createNetworkInterface({
   uri: process.env.GRAPH_URL
 })
 
-export default new ApolloClient({
+const apollo = new ApolloClient({
   ssrMode: process.env.IS_SERVER,
   networkInterface,
   dataIdFromObject: obj => obj._id,
   ...process.env.IS_CLIENT && window.__APOLLO_STATE__ ? { initialState: window.__APOLLO_STATE__ } : {}
 });
+
+export default apollo;
+
+export const reducer = apollo.reducer();
 
 // adds store utilising middlewares to the apollo client
 const initMiddlewares = store => {

@@ -228,17 +228,20 @@ const currentViewer = gql`
 `
 
 const AppWithApollo = graphql(currentViewer, {
-  options: {
-    pollInterval: 60000
-  },
+  // options: {
+  //   pollInterval: 60000
+  // },
   skip: ownProps => !ownProps.token
 })(App)
 
-export default connect(state => ({
-  auth0Loaded: state.auth.auth0Loaded,
-  token: state.auth.token,
-  sidebarOpen: state.ui.sidebar
-}), {
+export default connect(state => {
+  console.log('STATE', state);
+  return {
+    auth0Loaded: state.auth.auth0Loaded,
+    token: state.auth.token,
+    sidebarOpen: state.ui.sidebar
+  }
+}, {
   logoutUser,
   login,
   toggleSidebar,

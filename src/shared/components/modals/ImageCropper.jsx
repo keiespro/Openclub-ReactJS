@@ -40,6 +40,7 @@ class ImageCropper extends Component {
   }
 
   render() {
+    console.log(this.state);
     const { show, handleHide, onResult, onCancel, src } = this.props
 
     return (

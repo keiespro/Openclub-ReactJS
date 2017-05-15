@@ -39,7 +39,7 @@ class ImageUploader extends Component {
     const sx = Math.floor((cropDetails.x / 100.0) * iWidth);
     const sy = Math.floor((cropDetails.y / 100.0) * iHeight);
     const sWidth = Math.floor((cropDetails.width / 100.0) * iWidth);
-    const sHeight = Math.floor(sWidth * cropDetails.aspect);
+    const sHeight = Math.floor((cropDetails.height / 100.0) * iHeight);
 
     const c = this.previewCanvas;
     const ctx = c.getContext('2d');
@@ -65,7 +65,7 @@ class ImageUploader extends Component {
             self.cropCanvas.call(self, e.target.result, cropDetails)
               .then(b => resolve(b))
           },
-          onCancel: () => reject()
+          onCancel: () => Promise.reject()
         })
       }
       reader.onerror = err => {
@@ -106,7 +106,7 @@ class ImageUploader extends Component {
   }
 
   render() {
-    const { input, meta, show, token, aspect, postname, ...rest } = this.props
+    const { input, meta, show, token, aspect, postname, width, height, ...rest } = this.props
     const { uploading } = this.state
 
     const canvasClasses = classnames('preview-canvas avatar-uploader', {
@@ -117,8 +117,6 @@ class ImageUploader extends Component {
     const headers = token ? {
       'Authorization': `Bearer ${token}`
     } : {}
-
-    console.log(uploading);
 
     return (
       <div className={classnames({ 'image-upload-field': true, 'aspect': aspect === 25 / 6})}>

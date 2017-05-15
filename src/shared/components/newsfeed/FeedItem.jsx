@@ -225,26 +225,7 @@ const SubmitCommentMutation = gql`
 
 const FeedItemApollo = compose(
 graphql(likeMutation, {
-  name: 'like',
-  options: props => ({
-    updateQueries: {
-      [props.baseQuery]: (prev, { mutationResult }) => {
-        const prevKey = Object.keys(prev)[0];
-        const { like } = mutationResult.data;
-
-        if (!like) return prev;
-
-        const findIndex = _.findIndex(prev[prevKey].posts.edges, e => e.post && e.post._id === like._id);
-
-        prev[prevKey].posts.edges[findIndex].post = {
-          ...prev[prevKey].posts.edges[findIndex].post,
-          ...like,
-        };
-
-        return prev;
-      }
-    }
-  })
+  name: 'like'
 }),
 graphql(SubmitCommentMutation, {
   name: 'comment',
