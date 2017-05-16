@@ -107,25 +107,7 @@ const JoinMutation = gql`
 
 const JoinApollo = graphql(JoinMutation,
   {
-    name: 'joinClub',
-    options: {
-      updateQueries: {
-        user: (prev, { mutationResult }) => {
-          let memberships = prev.user.memberships || [];
-          const foundIndex = _.findIndex(memberships, { _id: mutationResult.data.joinClub._id });
-          if (foundIndex > -1) {
-            memberships[foundIndex] = mutationResult.data.joinClub;
-          }
-          memberships = _.sortBy([...memberships, mutationResult.data.joinClub], '_id');
-          return {
-            user: {
-              ...prev.user,
-              memberships
-            }
-          }
-        }
-      }
-    }
+    name: 'joinClub'
   }
 )(Join)
 

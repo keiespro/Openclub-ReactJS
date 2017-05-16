@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
-import { Icon } from 'antd'
+import _ from 'lodash';
 import { required, maxLength, slug, reservedSlugs } from 'utils/form_validation/errors'
 import {
   Form,

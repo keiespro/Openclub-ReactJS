@@ -223,7 +223,7 @@ const JoinClubReduxForm = reduxForm({
 const JoinClubReduxConnect = connect(state => {
   if (!state.form || 'join_club' in state.form === false) return {};
   return {
-    form_values: _.get(state, 'form.join_club', {}),
+    form_values: _.get(state, 'form.join_club.values', {}),
     initialValues: {
       autoRenew: true,
       acceptTerms: false

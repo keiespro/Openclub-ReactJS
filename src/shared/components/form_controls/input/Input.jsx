@@ -4,7 +4,6 @@ import { Input as AntInput } from 'antd'
 import classNames from 'classnames'
 
 const Input = ({ input, meta, help, type, basic, ...rest }) => {
-
   const wrapClasses = classNames(`${formPrefix}-item-control`, {
     'has-feedback': meta.touched,
     'has-error': meta.touched && meta.error,

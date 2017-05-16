@@ -37,6 +37,11 @@ export default gql`
         }
         following
         notifications
+        directory_visible
+        display_email
+        display_phone
+        display_messenger
+        bio
         subscription{
           start_date
           pending_approval

@@ -24,7 +24,7 @@ import AsyncEvents from './Events'
 import AsyncFeed from './Feed'
 import AsyncJoin from './Join/Join'
 import AsyncSettings from './Settings'
-import AsyncMembership from './Membership'
+import AsyncMembership from './Membership/Membership'
 import AsyncTransactions from './Transactions'
 
 import './Club.scss'
@@ -130,7 +130,7 @@ class Club extends Component {
             />
             <Match
               pattern={`/${params.club_id}/join`}
-              render={routerProps => perm.userCanJoin ? <AsyncJoin {...routerProps} club={club} perm={perm} viewer={viewer} /> : <Error404 />}
+              render={routerProps => perm.clubHasPublicPlans ? <AsyncJoin {...routerProps} club={club} perm={perm} viewer={viewer} /> : <Error404 />}
             />
           <Miss component={Error404} />
           </MatchGroup>
