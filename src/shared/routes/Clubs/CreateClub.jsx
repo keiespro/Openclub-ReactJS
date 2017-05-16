@@ -8,8 +8,11 @@ import {
 } from 'components/layout'
 import { message, Modal } from 'antd'
 import error from 'utils/error';
+import { tracking } from 'modules/mixpanel';
 
 const CreateClub = ({ mutate, submitting }, { router }) => {
+
+  tracking(mixpanel => mixpanel.track('Visit Create Club'));
 
   const createTheClub = async values => {
     try {

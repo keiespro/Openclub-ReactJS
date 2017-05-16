@@ -1,10 +1,8 @@
-import apolloClient from 'modules/apollo'
-import gql from 'graphql-tag'
-import { browserHistory } from 'teardrop'
 import { lock, inlineLock, hashParsed } from 'utils/Auth0'
 import { cancelSubscription } from 'modules/notifications/actions';
 import message from 'antd/lib/message';
 import error from 'utils/error';
+import authMutation from 'mutations/auth'
 
 // Auth0 lock actions
 export const AUTH_INIT = 'AUTH_INIT'
@@ -49,14 +47,6 @@ export function login() {
   }
 }
 
-const authMutation = gql`
-  mutation signin($accessToken: ID!) {
-    signin(access_token: $accessToken) {
-      token
-    }
-  }
-`
-
 let activeRequest = false;
 
 // checks current authentication status of the lock
@@ -72,21 +62,35 @@ export function checkAuthentication() {
       activeRequest = true;
       const accessToken = await hashParsed();
       if (accessToken) {
-        const { data } = await apolloClient.mutate({
-          mutation: authMutation,
-          variables: { accessToken }
-        });
+        console.log('hash_parsed', accessToken);
+
+        console.log(mutation);
+        const { data } = mutation;
         if (!data) throw new Error('No data returned from server.')
         const { token } = data.signin;
+        console.log(token);
         localStorage.setItem('openclub_token', token);
         dispatch(lockSuccess(token));
         activeRequest = false;
       }
     } catch (e) {
+      console.trace(e);
+
       message.error(error(e), 15);
       dispatch(lockError(e));
       activeRequest = false;
     }
+  }
+}
+
+export function loginSuccess(token) {
+  return dispatch => {
+    dispatch(lockSuccess(token))
+  }
+}
+export function loginError(e) {
+  return dispatch => {
+    dispatch(lockError(e))
   }
 }
 
@@ -95,7 +99,5 @@ export function logoutUser() {
   return dispatch => {
     dispatch(cancelSubscription())
     dispatch(requestLogout())
-    localStorage.removeItem('openclub_token')
-    apolloClient.resetStore()
   }
 }
