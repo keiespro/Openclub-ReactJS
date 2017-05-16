@@ -21,7 +21,10 @@ mixpanel()
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
 
-const store = createStore('__APP_STATE__' in window ? window.__APP_STATE__ : {});
+const applicationState = '__APP_STATE__' in window ? window.__APP_STATE__ : {};
+if (applicationState.auth) delete applicationState.auth;
+
+const store = createStore(applicationState);
 
 function renderApp(TheApp) {
   const rehydrateState = window.ASYNC_COMPONENTS_STATE;
