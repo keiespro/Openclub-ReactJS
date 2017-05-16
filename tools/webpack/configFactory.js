@@ -256,7 +256,8 @@ export default function webpackConfigFactory(buildOptions) {
         'process.env.STREAM_APP_ID': isServer ? 'process.env.STREAM_APP_ID' : 'window.__CLIENT_CONFIG__.env.STREAM_APP_ID',
         'process.env.STREAM_API_KEY': isServer ? 'process.env.STREAM_API_KEY' : 'window.__CLIENT_CONFIG__.env.STREAM_API_KEY',
         'process.env.GOOGLE_API_KEY': isServer ? 'process.env.GOOGLE_API_KEY' : 'window.__CLIENT_CONFIG__.env.GOOGLE_API_KEY',
-        'process.env.STRIPE_PUBLISHABLE_KEY': isServer ? 'process.env.STRIPE_PUBLISHABLE_KEY' : 'window.__CLIENT_CONFIG__.env.STRIPE_PUBLISHABLE_KEY'
+        'process.env.STRIPE_PUBLISHABLE_KEY': isServer ? 'process.env.STRIPE_PUBLISHABLE_KEY' : 'window.__CLIENT_CONFIG__.env.STRIPE_PUBLISHABLE_KEY',
+        'process.env.MIXPANEL_TOKEN': isServer ? 'process.env.MIXPANEL_TOKEN' : 'window.__CLIENT_CONFIG__.env.MIXPANEL_TOKEN'
       }),
 
       // Generates a JSON file containing a map of all the output files for
