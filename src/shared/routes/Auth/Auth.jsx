@@ -29,16 +29,18 @@ class Auth extends Component {
   }
   async componentDidMount() {
     const { auth, success, error } = this.props;
+    const logonPath = localStorage.getItem('logonPath') || '';
     // Wait for the has to parse
     let token = localStorage.getItem('openclub_token');
     if (token) {
       success(token);
-      this.context.router.transitionTo('/');
+      localStorage.removeItem('logonPath');
+      this.context.router.replaceWith('/' + logonPath);
       return;
     }
     try {
       const accessToken = await hashParsed();
-      if (!accessToken) return this.context.router.transitionTo('/login');
+      if (!accessToken) return this.context.router.replaceWith('/login');
       const mutation = await auth({
         variables: {
           accessToken
@@ -48,7 +50,8 @@ class Auth extends Component {
       if (!data || !data.signin || !data.signin.token) throw new Error('OpenClub did not return a valid sign in token.');
       localStorage.setItem('openclub_token', data.signin.token);
       success(data.signin.token);
-      this.context.router.replaceWith('/');
+      localStorage.removeItem('logonPath');
+      this.context.router.replaceWith('/' + logonPath);
     } catch (err) {
       notification.error({
         message: 'Uh-oh',

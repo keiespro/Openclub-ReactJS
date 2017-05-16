@@ -91,11 +91,6 @@ class App extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data.user && !this.props.data.user) {
       const { data } = nextProps;
-      if (localStorage.getItem('logonPath')) {
-        let logonPath = localStorage.getItem('logonPath');
-        localStorage.removeItem('logonPath');
-        this.context.router.transitionTo(`/${logonPath}`);
-      }
       tracking(mixpanel => {
         mixpanel.identify(data.user._id)
         mixpanel.track('Logged in');
@@ -106,6 +101,15 @@ class App extends Component {
   render() {
     const { data, location } = this.props;
     if (data.loading) return <Loading />;
+
+    const logonCheckPath = (path) => {
+      if (process.env.IS_CLIENT && !data.user) {
+        localStorage.setItem('logonPath', path);
+        return true;
+      }
+      return false;
+    }
+
     return (
       <Drawer
         className={cx({'loggedin': data.user, 'open': this.props.sidebarOpen})}
@@ -143,9 +147,7 @@ class App extends Component {
                   if (data.user) {
                     return <Redirect to="/feed" />;
                   }
-                  if (process.env.IS_CLIENT && !data.loading && !data.user) {
-                    return <Redirect to="/login" />;
-                  }
+                  if (logonCheckPath('')) return <Redirect to="/auth" />;
                   return null;
                 }
               }
@@ -164,10 +166,7 @@ class App extends Component {
                     window.location = `https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`
                     return <Loading />;
                   }
-                  if (process.env.IS_CLIENT) {
-                    localStorage.setItem('logonPath', 'help');
-                    return <Redirect to="/login" />
-                  }
+                  if (logonCheckPath('help')) return <Redirect to="/auth" />;
                 }}
               />
               {/* NOTIFICATIONS */}
@@ -179,19 +178,14 @@ class App extends Component {
               {/* USER AGGREGATED FEED */}
               <Match
                 pattern="/feed" render={() => {
-                  if (!data.user && data.loading === false) {
-                    return <Redirect to="/" />;
-                  }
+                  if (logonCheckPath('feed')) return <Redirect to="/auth" />;
                   return <AsyncFeed viewer={data.user} />
                 }
               } />
               {/* PROFILE */}
               <Match
                 pattern="/profile" render={() => {
-                  if (!data.user && data.loading === false) {
-                    localStorage.setItem('logonPath', 'profile');
-                    return <Redirect to="/" />
-                  }
+                  if (logonCheckPath('profile')) return <Redirect to="/auth" />;
                   return <AsyncProfile viewer={data.user} />;
                 }}
               />
