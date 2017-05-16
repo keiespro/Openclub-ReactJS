@@ -161,7 +161,7 @@ const config = {
     meta: [
       {
         name: 'description',
-        content: 'We\'re a platform for digital club management—connecting it to the social web. Events, ticketing, reporting, scheduling...',
+        content: "Discover clubs and events in your local community on OpenClub. Sign up today...",
       },
       // Default content encoding.
       { name: 'charset', content: 'utf-8' },
@@ -171,19 +171,31 @@ const config = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       // Providing a theme color is good if you are doing a progressive
       // web application.
-      { name: 'theme-color', content: '#008FCC' },
+      { name: "apple-mobile-web-app-title", content: "OpenClub" },
+      { name: "application-name", content: "OpenClub" },
+      { name: "msapplication-TileColor", content: "#008fcc" },
+      { name: "msapplication-TileImage", content: "/mstile-144x144.png" },
+      { name: "theme-color", content: "#2b2b2b" },
+      { name: "twitter:card", content: "app" },
+      { name: "twitter:site", content: "@openclubapp" },
+      { name: "twitter:description", content: "Discover clubs and events in your local community on OpenClub. Manage you club, communicate with members and promote within the OpenClub community. Join OpenClub today." },
+      { name: "twitter:app:name:iphone", content: "OpenClub" },
+      { name: "twitter:app:id:iphone", content: "" },
+      { name: "twitter:app:name:ipad", content: "OpenClub" },
+      { name: "twitter:app:id:ipad", content: "" },
+      { name: "twitter:app:name:googleplay", content: "OpenClub" },
+      { name: "twitter:app:id:googleplay", content: "" },
+      { property: "og:image", content: "/promo-photo.jpg" },
+      { property: "og:url", content: "https://www.openclub.co/" }
     ],
     links: [
-      // When building a progressive web application you need to supply
-      // a manifest.json as well as a variety of icon types. This can be
-      // tricky. Luckily there is a service to help you with this.
-      // http://realfavicongenerator.net/
       { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
-      { rel: 'icon', type: 'image/png', href: '/favicon-32x32.png', sizes: '32x32' },
-      { rel: 'icon', type: 'image/png', href: '/favicon-16x16.png', sizes: '16x16' },
-      { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#00a9d9' },
-      // Make sure you update your manifest.json to match your application.
-      { rel: 'manifest', href: '/manifest.json' },
+      { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+      { rel: "icon", type: "image/png", sizes: "194x194", href: "/favicon-194x194.png" },
+      { rel: "icon", type: "image/png", sizes: "192x192", href: "/android-chrome-192x192.png" },
+      { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
+      { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#008fcc' },
+      { rel: 'manifest', href: '/manifest.json' }
     ],
     scripts: [
       { src: 'https://js.stripe.com/v3/', type: 'text/javascript' }
@@ -353,7 +365,8 @@ const config = {
     STREAM_APP_ID: process.env.STREAM_APP_ID,
     STREAM_API_KEY: process.env.STREAM_API_KEY,
     GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
-    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY
+    STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
+    MIXPANEL_TOKEN: process.env.MIXPANEL_TOKEN
   }
 };
 
