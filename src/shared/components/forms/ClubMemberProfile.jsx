@@ -61,12 +61,14 @@ class ClubMemberProfile extends Component {
                 label="Show my email in the club directory"
                 onChange={() => setTimeout(() => handleSubmit(), 1)}
               />
+              <br />
               <Field
                 name="display_phone"
                 component={Checkbox}
                 label="Show my phone number in the club directory"
                 onChange={() => setTimeout(() => handleSubmit(), 1)}
               />
+              <br />
               <Field
                 name="display_messenger"
                 component={Checkbox}

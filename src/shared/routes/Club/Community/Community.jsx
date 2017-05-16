@@ -20,8 +20,7 @@ class Community extends Component {
     return (
       <div>
         {club.members.edges.map(member => <div key={member._id}>
-          {member.profile.name}
-          {member.profile.email}
+          {member.profile.name}, {member.profile.images && member.profile.images.square}, {member.profile.email}, {member.profile.fbid}, {member.profile.phone}
         </div>)}
       </div>
     );
