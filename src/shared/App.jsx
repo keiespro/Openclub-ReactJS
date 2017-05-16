@@ -10,7 +10,6 @@ import LoadingBar from 'react-redux-loading-bar'
 
 // Async routes
 import AsyncHome from 'routes/Home'
-import AsyncLoginPage from 'routes/LoginPage'
 import AsyncFeed from 'routes/Feed'
 import AsyncProfile from 'routes/Profile'
 import AsyncDiscover from 'routes/Discover'
@@ -19,9 +18,11 @@ import AsyncClub from 'routes/Club/Club'
 import AsyncNotifications from 'routes/Notifications'
 import AsyncEvents from 'routes/Events'
 import AsyncTest from 'routes/Test'
+import Auth from 'routes/Auth'
+import Logout from 'routes/Auth/Logout'
 
 import { initNotifications } from 'modules/notifications/actions'
-import { logoutUser, login } from 'modules/auth/actions'
+import { logoutUser, login, checkAuthentication } from 'modules/auth/actions'
 import { toggleSidebar, openSidebar, closeSidebar } from 'modules/ui/actions'
 
 import Error404 from 'components/Error404/Error404'
@@ -32,6 +33,9 @@ import Sidebar from 'components/layout/Sidebar'
 import { safeConfigGet } from 'utils/config'
 
 import userQuery from 'queries/user'
+
+// utils
+import { tracking } from 'modules/mixpanel'
 
 // base styling including bootstrap
 import 'font-awesome/scss/font-awesome.scss'
@@ -60,7 +64,11 @@ class App extends Component {
     openSidebar: PropTypes.func,
     closeSidebar: PropTypes.func,
     sidebarOpen: PropTypes.bool,
-    initNotifications: PropTypes.func
+    initNotifications: PropTypes.func,
+    checkAuthentication: PropTypes.func
+  }
+  static contextTypes = {
+    router: PropTypes.object.isRequired
   }
   constructor(props) {
     super(props)
@@ -78,11 +86,20 @@ class App extends Component {
   }
   isHome() {
     const { pathname = '' } = this.props.location || {};
-    return pathname === '/' || pathname === '/help';
+    return pathname === '/login';
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.data.user && !this.props.data.user) {
       const { data } = nextProps;
+      if (localStorage.getItem('logonPath')) {
+        let logonPath = localStorage.getItem('logonPath');
+        localStorage.removeItem('logonPath');
+        this.context.router.transitionTo(`/${logonPath}`);
+      }
+      tracking(mixpanel => {
+        mixpanel.identify(data.user._id)
+        mixpanel.track('Logged in');
+      });
       this.props.initNotifications(data.user._id, data.user.notification_token);
     }
   }
@@ -102,12 +119,15 @@ class App extends Component {
         <Layout>
           <Helmet
             htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}
-            titleTemplate={safeConfigGet(['htmlPage', 'titleTemplate'])}
             defaultTitle={safeConfigGet(['htmlPage', 'defaultTitle'])}
             meta={safeConfigGet(['htmlPage', 'meta'])}
             link={safeConfigGet(['htmlPage', 'links'])}
             script={safeConfigGet(['htmlPage', 'scripts'])}
-          />
+          >
+            <title>OpenClub — be social, be organised, be an open club</title>
+            <link rel="canonical" href="https://www.openclub.co/" />
+            <meta name="description" content="Discover clubs and events in your local community on OpenClub. Sign up today..." />
+          </Helmet>
 
           {!this.isHome() && <Header user={data.user} />}
           <Content>
@@ -116,33 +136,40 @@ class App extends Component {
               <Match
                 exactly
                 pattern="/"
-                render={routerProps => {
-                  if (data.user) {
-                    return <Redirect to="/feed" />;
-                  }
+                render={() => {
                   if (data.loading) {
                     return <Loading />;
                   }
-                  if (!data.loading) {
-                    return <AsyncHome {...routerProps} />;
+                  if (data.user) {
+                    return <Redirect to="/feed" />;
+                  }
+                  if (process.env.IS_CLIENT && !data.loading && !data.user) {
+                    return <Redirect to="/login" />;
                   }
                   return null;
-                  }
-                } />
+                }
+              }
+            />
               {/* UTIL PAGES */}
+              <Match pattern="/login" render={routerProps => <AsyncHome {...routerProps} user={data.user} />} />
+              <Match pattern="/auth" component={Auth} />
+              <Match pattern="/logout" component={Logout} />
               <Match
                 pattern="/help"
-                render={routerProps => {
+                render={() => {
+                  if (data.loading) {
+                    return <Loading />;
+                  }
                   if (data.user) {
                     window.location = `https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`
+                    return <Loading />;
                   }
-                  if (!data.loading) {
-                    return <AsyncLoginPage {...routerProps} />;
+                  if (process.env.IS_CLIENT) {
+                    localStorage.setItem('logonPath', 'help');
+                    return <Redirect to="/login" />
                   }
-                  return null;
                 }}
               />
-              <Match pattern="/logout" render={() => { this.props.logoutUser(); return <Redirect to="/" /> }} />
               {/* NOTIFICATIONS */}
               <Match pattern="/notifications" render={() => data.user ? <AsyncNotifications viewer={data.user} /> : <Unauthorised />} />
               {/* EVENT PAGES */}
@@ -150,9 +177,24 @@ class App extends Component {
               {/* EVENT PAGES */}
               <Match pattern="/events" component={AsyncEvents} />
               {/* USER AGGREGATED FEED */}
-              <Match pattern="/feed" render={() => <AsyncFeed viewer={data.user} />} />
+              <Match
+                pattern="/feed" render={() => {
+                  if (!data.user && data.loading === false) {
+                    return <Redirect to="/" />;
+                  }
+                  return <AsyncFeed viewer={data.user} />
+                }
+              } />
               {/* PROFILE */}
-              <Match pattern="/profile" render={() => data.user ? <AsyncProfile viewer={data.user} /> : <Unauthorised />} />
+              <Match
+                pattern="/profile" render={() => {
+                  if (!data.user && data.loading === false) {
+                    localStorage.setItem('logonPath', 'profile');
+                    return <Redirect to="/" />
+                  }
+                  return <AsyncProfile viewer={data.user} />;
+                }}
+              />
               {/* CLUB PAGES */}
               <Match pattern="/test" component={AsyncTest} />
               <Match pattern="/clubs" render={routerProps => <AsyncClubs viewer={data.user} login={this.props.login} {...routerProps} />} />
@@ -169,27 +211,23 @@ class App extends Component {
 }
 
 const AppWithApollo = graphql(userQuery, {
-  // options: {
-  //   pollInterval: 60000
-  // },
   skip: ownProps => !ownProps.token,
   options: { notifyOnNetworkStatusChange: true },
 })(App)
 
-export default connect(state => {
-  console.log('STATE', state);
-  return {
+export default connect(state => ({
     auth0Loaded: state.auth.auth0Loaded,
     token: state.auth.token,
-    sidebarOpen: state.ui.sidebar
-  }
-}, {
+    sidebarOpen: state.ui.sidebar,
+    authenticating: state.auth.authenticating
+}), {
   logoutUser,
   login,
   toggleSidebar,
   openSidebar,
   closeSidebar,
-  initNotifications
+  initNotifications,
+  checkAuthentication
 })(AppWithApollo)
 
 export {

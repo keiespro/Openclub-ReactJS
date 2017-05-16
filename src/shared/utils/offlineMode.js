@@ -11,14 +11,12 @@ Offline.options = {
   requests: true,
   checks: {
     xhr: {
-      url: process.env.GRAPH_URL
+      url: process.env.GRAPH_URL + '/alive'
     }
   }
 }
 
 Offline.on('confirmed-down', (...args) => {
-  console.log(args);
-
   OfflineNotification = notification.error({
     message: 'You are offline',
     description: 'OpenClub is currently operating in offline mode. Please reconnect to make requests and access new data.',
@@ -27,7 +25,6 @@ Offline.on('confirmed-down', (...args) => {
 });
 
 Offline.on('up', (...args) => {
-  console.log(args);
   if (OfflineNotification) OfflineNotification.destroy();
 
   message.success('Connection re-established');

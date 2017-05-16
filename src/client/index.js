@@ -13,8 +13,11 @@ import createStore from '../shared/store/create_store';
 import apolloClient, { initMiddlewares } from '../shared/modules/apollo';
 import LocaleProvider from 'antd/lib/locale-provider'
 import enUS from 'antd/lib/locale-provider/en_US'
+import { setup as mixpanel } from 'modules/mixpanel';
 import 'utils/offlineMode'
 
+
+mixpanel()
 // Get the DOM Element that will host our React application.
 const container = document.querySelector('#app');
 
@@ -34,9 +37,7 @@ function renderApp(TheApp) {
           <ApolloProvider client={apolloClient} store={store}>
             <BrowserRouter>
               {routerProps => (
-                <AuthLoader>
-                  <TheApp {...routerProps} />
-                </AuthLoader>
+                <TheApp {...routerProps} />
               )}
             </BrowserRouter>
           </ApolloProvider>

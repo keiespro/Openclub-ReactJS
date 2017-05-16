@@ -65,8 +65,8 @@ export function initNotifications(userId, userToken) {
     const feed = stream.feed(feedGroups.NOTIFICATIONS, userId, userToken);
     const notifications = await feed.get({ limit: 25 });
     dispatch(reduceLoadNotifications(notifications));
-    const subscription = feed.subscribe(n => dispatch(reduceNewNotifications(n)));
-    dispatch(reduceStoreSubscription(subscription));
+    window.subscription = feed.subscribe(n => dispatch(reduceNewNotifications(n)));
+    dispatch(reduceStoreSubscription(window.subscription));
   }
 }
 

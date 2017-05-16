@@ -1,8 +1,7 @@
-import mixpanel from 'mixpanel-browser';
-
-mixpanel.init(process.env.MIXPANEL_TOKEN);
-
-export default callback => {
-  if (process.env.IS_SERVER) return false;
-  callback(mixpanel);
+export const setup = async () => {
+  if (process.env.IS_SERVER) return null;
+  window.mixpanel = await System.import('mixpanel-browser');
+  window.mixpanel.init(process.env.MIXPANEL_TOKEN);
 }
+
+export const tracking = cb => process.env.IS_CLIENT ? cb(window.mixpanel) : false;

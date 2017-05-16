@@ -3,7 +3,7 @@ import Auth0Lock from 'auth0-lock';
 const origin = process.env.IS_CLIENT ? location.origin : 'http://app.openclub.co';
 
 const auth = {
-  redirectUrl: `${origin}/`,
+  redirectUrl: `${origin}/auth`,
   responseType: 'token',
   sso: true
 }
@@ -49,22 +49,18 @@ const inlineLock = process.env.IS_CLIENT ? container => new Auth0Lock(process.en
  */
 const hashParsed = () => new Promise((resolve, reject) => {
   if (process.env.IS_SERVER) {
-    resolve(false);
+    return resolve(false);
   }
 
-  const resolveToken = (result) => {
-    if (result && result.accessToken) {
-      resolve(result.accessToken)
-    } else if (result) {
-      // a non token result is an error
-      reject(result)
-    } else {
-      // a null result is a pass through
-      resolve(result)
-    }
-  }
+  setTimeout(() => {
+    reject(new Error('Login has timed out.'));
+  }, 10000);
 
-  lock.on('hash_parsed', resolveToken);
+  lock.on('hash_parsed', (result) => {
+    if (result && result.accessToken) resolve(result.accessToken);
+    if (result) reject(result);
+    resolve(result);
+  });
 })
 
 export {
