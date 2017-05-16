@@ -197,7 +197,6 @@ class JoinClubForm extends Component {
                   <Field
                     component={Checkbox}
                     name="autoRenew"
-                    defaultValue
                     label={`Automatically renew my membership for ${n((selectedPlan.selectedPrice.price ? selectedPlan.selectedPrice.price.amount_float || 0 : 0)).format('0,0.00')}, ${selectedPlan.selectedPrice.duration.toLowerCase()}.`}
                     />
                   </p>
@@ -224,7 +223,11 @@ const JoinClubReduxForm = reduxForm({
 const JoinClubReduxConnect = connect(state => {
   if (!state.form || 'join_club' in state.form === false) return {};
   return {
-    form_values: 'values' in state.form.join_club ? state.form.join_club.values : {}
+    form_values: _.get(state, 'form.join_club', {}),
+    initialValues: {
+      autoRenew: true,
+      acceptTerms: false
+    }
   }
 })(JoinClubReduxForm)
 
