@@ -117,6 +117,10 @@ class Club extends Component {
               render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} viewer={viewer} slug={params.club_id} />}
             />
             <Match
+              pattern={`/${params.club_id}/community`}
+              render={routerProps => perm.userIsMember ? <AsyncCommunity {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
+            />
+            <Match
               pattern={`/${params.club_id}/mymembership`}
               render={routerProps => perm.userIsMember ? <AsyncMembership {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
             />
@@ -141,7 +145,7 @@ class Club extends Component {
 }
 
 const clubQuery = gql`
-  query club($slug: String!, $first: Int!) {
+  query club($slug: String!) {
     club(slug: $slug) {
       _id
       name
@@ -188,11 +192,6 @@ const clubQuery = gql`
       stripe_account{
         _id
         data
-      }
-      members(first: $first){
-        edges{
-          user_id
-        }
       }
     }
   }
