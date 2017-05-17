@@ -20,7 +20,7 @@ Offline.on('confirmed-down', (...args) => {
   OfflineNotification = notification.error({
     message: 'You are offline',
     description: 'OpenClub is currently operating in offline mode. Please reconnect to make requests and access new data.',
-    duration: 0
+    duration: 10
   });
 });
 

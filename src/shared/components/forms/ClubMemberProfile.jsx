@@ -23,6 +23,7 @@ class ClubMemberProfile extends Component {
             component={Checkbox}
             label="Follow the club feed"
             onChange={() => setTimeout(() => handleSubmit(), 1)}
+            isSwitch
           />
           <br />
           <Field
@@ -30,6 +31,7 @@ class ClubMemberProfile extends Component {
             component={Checkbox}
             label="Notify me of new posts"
             onChange={() => setTimeout(() => handleSubmit(), 1)}
+            isSwitch
           />
         </FieldContainer>
         <FieldContainer title="Member Directory">
@@ -38,6 +40,7 @@ class ClubMemberProfile extends Component {
             component={Checkbox}
             label="Display my profile in the club directory"
             onChange={() => setTimeout(() => handleSubmit(), 1)}
+            isSwitch
           />
         {formValues.directory_visible && (
           <div>
@@ -60,6 +63,7 @@ class ClubMemberProfile extends Component {
                 component={Checkbox}
                 label="Show my email in the club directory"
                 onChange={() => setTimeout(() => handleSubmit(), 1)}
+                isSwitch
               />
               <br />
               <Field
@@ -67,6 +71,7 @@ class ClubMemberProfile extends Component {
                 component={Checkbox}
                 label="Show my phone number in the club directory"
                 onChange={() => setTimeout(() => handleSubmit(), 1)}
+                isSwitch
               />
               <br />
               <Field
@@ -74,6 +79,7 @@ class ClubMemberProfile extends Component {
                 component={Checkbox}
                 label="Let other members contact me via Facebook Messenger"
                 onChange={() => setTimeout(() => handleSubmit(), 1)}
+                isSwitch
               />
             </FieldContainer>
           </div>
