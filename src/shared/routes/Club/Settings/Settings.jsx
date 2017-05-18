@@ -12,12 +12,14 @@ import './Settings.css'
 
 const Settings = ({ club, location, pattern }, { router }) => {
   const handleClick = e => {
+    if (e.key === 'overview') e.key = '';
     router.transitionTo(`/${club.slug}/settings/${e.key}`)
   }
   const match = location.pathname ? location.pathname.match(/^.*\/.*\/([\d\w-_]+)\/?/)[1] : '';
   const selectedKeys = [match];
 
   const Items = [
+      <Menu.Item key="overview">General</Menu.Item>,
       <Menu.Item key="profile">Profile</Menu.Item>,
       <Menu.Item key="plans">Membership Plans</Menu.Item>,
       <Menu.Item key="payments">Financial Details</Menu.Item>

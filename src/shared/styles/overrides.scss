@@ -99,3 +99,11 @@ a {
 .ant-timeline-item-content {
   font-size: 14px;
 }
+.ant-select {
+  font-size: 15px;
+}
+.ant-select-selection--multiple > ul > li, .ant-select-selection--multiple .ant-select-selection__rendered > ul > li {
+  margin-top: 0px;
+  height: 25px;
+  line-height: 25px;
+}

@@ -74,14 +74,6 @@ const mutation = gql`
 
 const ClubProfileWithApollo = graphql(mutation, {
   name: 'updateClub',
-  options: {
-    updateQueries: {
-      club: (prev, { mutationResult }) => ({
-        ...prev.club,
-        ...mutationResult
-      })
-    }
-  }
 })(ClubProfile)
 
 export default ClubProfileWithApollo

@@ -156,7 +156,9 @@ const clubQuery = gql`
       }
       slug
       settings{
-        privacy
+        directory_privacy
+        feed_permissions
+        feed_public_permissions
       }
       membership_plans{
         _id
