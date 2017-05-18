@@ -51,7 +51,6 @@ class ClubActions extends Component {
     this.updateMembership(membership);
   }
   render() {
-    console.log('PD', this.props);
     const { perm } = this.props;
     return (
       <Menu onClick={this.processAction}>
@@ -81,23 +80,17 @@ const ClubActionsApollo = compose(
       updateQueries: {
         user: (prev, { mutationResult }) => {
           const { updateMembership } = mutationResult.data;
-          let user = prev.user;
+          if (!prev.user.memberships || prev.user.memberships instanceof Array === false) {
+            prev.user.memberships = [];
+            prev.user.memberships.push(updateMembership);
+            return prev;
+          }
 
-          if (!user.memberships) user.memberships = [];
-
-          const membershipIndex = _.findIndex(user.memberships, { _id: updateMembership._id });
+          const membershipIndex = _.findIndex(prev.user.memberships, { _id: updateMembership._id });
           if (membershipIndex > -1) {
-            let membership = { ...user.memberships[membershipIndex], ...updateMembership };
-            if (membership.following === true || (membership.roles && membership.roles.length > 0) || membership.subscription) {
-              user.memberships[membershipIndex] = membership;
-            } else {
-              user.memberships = _.pullAllBy(user.memberships, [membership], '_id');
-            }
+            prev.user.memberships[membershipIndex] = updateMembership;
           }
-          return {
-            ...prev,
-            user
-          }
+          return prev;
         }
       }
     }

@@ -56,10 +56,26 @@ CreateClub.contextTypes = {
 const createMutation = gql`
   mutation createClub($slug: String!, $club: clubInput!){
     createClub(slug: $slug, club: $club){
+      _id
       club_id
       feed_permissions
+      following
+      notifications
+      directory_visible
+      display_email
+      display_messenger
+      display_phone
+      bio
       roles
-      club
+      club{
+        _id
+        name
+        slug
+        images{
+          square
+          background
+        }
+      }
       subscription{
         start_date
         pending_approval
@@ -86,16 +102,10 @@ const CreateClubWithApollo = graphql(createMutation, {
   options: {
     updateQueries: {
       user: (prev, { mutationResult }) => {
-        const newClub = mutationResult.data.createClub
-        return {
-          user: {
-            ...prev.user,
-            memberships: [
-              ...prev.user.memberships || [],
-              newClub
-            ]
-          }
-        }
+        const { createClub } = mutationResult.data;
+        if (!prev.user.memberships || prev.user.memberships instanceof Array === false) prev.user.memberships = [];
+        prev.user.memberships.push(createClub);
+        return prev;
       }
     }
   }

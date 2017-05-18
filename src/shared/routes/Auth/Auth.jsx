@@ -53,6 +53,7 @@ class Auth extends Component {
       localStorage.removeItem('logonPath');
       this.context.router.replaceWith('/' + logonPath);
     } catch (err) {
+      console.log(err, err.message);
       notification.error({
         message: 'Uh-oh',
         content: parseError(err.message),

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import _ from 'lodash';
 import { openSidebar, closeSidebar, toggleSidebar } from 'modules/ui/actions'
 import Icon from 'antd/lib/icon'
 import Menu, { Item, ItemGroup } from 'antd/lib/menu'
@@ -23,7 +24,6 @@ class Sidebar extends Component {
     super(props)
 
     this.handleClick = this.handleClick.bind(this)
-    this.onOpenChange = this.onOpenChange.bind(this);
   }
   handleClick(e) {
     const { router } = this.context;
@@ -32,14 +32,15 @@ class Sidebar extends Component {
 
     router.transitionTo('/' + e.key);
   }
-  onOpenChange(val) {
-    console.log(val);
-  }
   render() {
     const { user, location } = this.props;
 
     if (user) {
       const myClubs = user.memberships || [];
+
+      const subscriptions = _.filter(myClubs, c => !!c.subscription || (c.roles && c.roles.length > 0))
+      const followings = _.filter(myClubs, c => !c.subscription && c.following)
+
       const regexLocation = location.pathname ? location.pathname.match(/^\/([\d\w-_]+)\/?.*?/) : null;
       const match = regexLocation ? regexLocation[1] : '';
       const keys = [
@@ -63,7 +64,6 @@ class Sidebar extends Component {
             mode="inline"
             onClick={this.handleClick}
             defaultOpenKeys={['sub1', 'sub2', 'sub3']}
-            onOpenChange={this.onOpenChange}
           >
             <ItemGroup key="sub1" title={<span>OpenClub</span>}>
               <Item key="feed"><Icon type="layout" /> Feed</Item>
@@ -75,15 +75,27 @@ class Sidebar extends Component {
               {process.env.NODE_ENV === 'development' && <Item key="events"><Icon type="calendar" /> Events</Item>}
               <Item key="clubs"><Icon type="team" /> Clubs</Item>
             </ItemGroup>
-            <ItemGroup key="sub3" title={<span>My Clubs</span>}>
-              {myClubs.map(c =>
+            {subscriptions.length > 0 && <ItemGroup key="sub3" title={<span>My Clubs</span>}>
+              {subscriptions.map(c =>
                 <Item
                   key={`${c.club.slug}`}
                 >
                   <img alt={c.club.name} className="oc-sidebar-clubimage" src={c.club.images ? c.club.images.square : '/empty-club.png'} /> {c.club.name}
                 </Item>
               )}
-            </ItemGroup>
+            </ItemGroup>}
+            {followings.length > 0 && <ItemGroup key="sub4" title={<span>Following</span>}>
+              {followings.map(c =>
+                <Item
+                  key={`${c.club.slug}`}
+                >
+                  <img alt={c.club.name} className="oc-sidebar-clubimage" src={c.club.images ? c.club.images.square : '/empty-club.png'} /> {c.club.name}
+                </Item>
+              )}
+            </ItemGroup>}
+            <Item key="clubs/create" style={{ position: 'absolute', bottom: 10 }}>
+              <Icon type="plus circle" /> Create a Club
+            </Item>
           </Menu>
         </aside>
       )
