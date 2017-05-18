@@ -1,3 +1,8 @@
+.club-card {
+  width: 100%;
+  max-width: 375px;
+  flex-grow: 1;
+}
 .club-card-cover, .club-card-profile {
   img {
     display: block;
@@ -24,7 +29,27 @@
 }
 .club-card-content {
   padding: 10px 16px;
+  h3 {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .description {
+    max-height: 48px;
+    overflow: hidden;
+    line-height: 16px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+  }
 }
 .club-card-content p {
   color: #999;
+}
+.club-card-actions {
+  position: absolute;
+  top: 39%;
+  right: 5px;
 }

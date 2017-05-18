@@ -40,11 +40,9 @@ class ClubsLanding extends Component {
       <div>
         <h3>Suggested Clubs</h3>
         <hr className="bottom-gap-large" />
-        <Row type="flex" justify="space-between">
+        <Row type="flex" justify="flex-start">
           {list.map(club => (
-            <Col xs={24} md={12} lg={8} key={club._id}>
-              <ClubCard club={club} viewer={this.props.viewer} />
-            </Col>
+            <ClubCard club={club} viewer={this.props.viewer} />
           ))}
         </Row>
       </div>
@@ -66,6 +64,29 @@ const clubsQueryGQL = gql`
         images {
           square
           background
+        }
+        settings{
+          directory_privacy
+          feed_permissions
+          feed_public_permissions
+        }
+        membership_plans{
+          _id
+          name
+          description
+          public
+          prices{
+            _id
+            duration
+            price{
+              amount
+              amount_float
+            },
+            setup_price{
+              amount
+              amount_float
+            }
+          }
         }
       }
     }
