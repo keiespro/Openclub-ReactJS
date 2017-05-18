@@ -57,14 +57,16 @@ class ClubCard extends Component {
     return (
       <Card className="club-card" bodyStyle={{ padding: 0 }} style={{ margin: 10, height: 'calc(100% - 10px)' }}>
         <div className="club-card-cover" style={{ backgroundImage: `url('${images.background || '/coverphoto.jpg'}')`}}>
-          <div className="club-card-profile">
-            <Link to={`/${club.slug}`}><img src={images.square || '/empty-club.png'} alt={club.name} /></Link>
-          </div>
-          <div className="club-card-actions">
-            <ButtonGroup>
-              {perm.userCanJoin && <Button type="primary" icon="user-add" size="large" className="btn-resp" onClick={onJoin}>Join This Club</Button>}
-              <Dropdown key={`${club.slug}-dd`} overlay={followMenu}><Button type="default" size="large" className="btn-resp" icon="user">{perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" /></Button></Dropdown>
-            </ButtonGroup>
+          <div className="club-card-header">
+            <div className="club-card-profile">
+              <Link to={`/${club.slug}`}><img src={images.square || '/empty-club.png'} alt={club.name} /></Link>
+            </div>
+            <div className="club-card-actions">
+              <ButtonGroup>
+                {perm.userCanJoin && <Button type="primary" icon="user-add" size="large" className="btn-resp" onClick={onJoin}>Join This Club</Button>}
+                <Dropdown key={`${club.slug}-dd`} overlay={followMenu}><Button type="default" size="large" className="btn-resp" icon="user">{perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" /></Button></Dropdown>
+              </ButtonGroup>
+            </div>
           </div>
         </div>
         <div className="club-card-content">
