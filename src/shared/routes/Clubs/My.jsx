@@ -20,15 +20,16 @@ class ClubInvitations extends Component {
   render() {
     if (!this.props.viewer) return <div />;
     const memberships = this.props.viewer.memberships || [];
+
+    const subscriptions = _.filter(memberships, c => !!c.subscription || (c.roles && c.roles.length > 0))
+
     return (
       <div>
         <h3>My Clubs</h3>
         <hr className="bottom-gap-large" />
         <Row type="flex" justify="space-between">
-          {memberships.map(membership => (
-            <Col xs={24} md={12} lg={8} key={membership.club._id}>
-              <ClubCard club={membership.club} viewer={this.props.viewer} />
-            </Col>
+          {subscriptions.map(membership => (
+            <ClubCard club={membership.club} viewer={this.props.viewer} />
           ))}
         </Row>
       </div>
