@@ -39,7 +39,7 @@ class Sidebar extends Component {
       const myClubs = user.memberships || [];
 
       const subscriptions = _.filter(myClubs, c => !!c.subscription || (c.roles && c.roles.length > 0))
-      const followings = _.filter(myClubs, c => !c.subscription && c.following)
+      const followings = _.filter(myClubs, c => !c.subscription && c.following && !(c.roles && c.roles.length > 0))
 
       const regexLocation = location.pathname ? location.pathname.match(/^\/([\d\w-_]+)\/?.*?/) : null;
       const match = regexLocation ? regexLocation[1] : '';
@@ -93,7 +93,7 @@ class Sidebar extends Component {
                 </Item>
               )}
             </ItemGroup>}
-            <Item key="clubs/create" style={{ position: 'absolute', bottom: 10 }}>
+            <Item key="clubs/create" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, paddingTop: 3, backgroundColor: '#404040' }}>
               <Icon type="plus circle" /> Create a Club
             </Item>
           </Menu>

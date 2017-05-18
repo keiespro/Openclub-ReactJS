@@ -41,6 +41,7 @@ class ClubCard extends Component {
     return 'No location provided.';
   }
   render() {
+    console.log(this.props.viewer);
     const { club, viewer } = this.props;
     const { router } = this.context;
     const perm = clubPermissions(club, viewer);
