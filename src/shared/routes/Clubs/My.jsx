@@ -27,7 +27,7 @@ class ClubInvitations extends Component {
       <div>
         <h3>My Clubs</h3>
         <hr className="bottom-gap-large" />
-        <Row type="flex" justify="space-between">
+        <Row type="flex" justify="flex-start">
           {subscriptions.map(membership => (
             <ClubCard club={membership.club} viewer={this.props.viewer} />
           ))}
