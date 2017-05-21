@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import ClubCard from 'components/cards/ClubCard'
 import { Row, Col } from 'antd'
+import _ from 'lodash';
 
 import './Landing.scss'
 
