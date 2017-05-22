@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import _ from 'lodash';
 import Select, { Option } from 'antd/lib/select';
 import { email } from 'utils/form_validation/errors';
@@ -106,11 +106,24 @@ const facebookTokenQuery = gql`
   }
 `
 
-const ClubInviteWidgetApollo = graphql(facebookTokenQuery, {
-  options: {
-    skip: process.env.IS_SERVER === true,
-    fetchPolicy: 'cache-and-network'
+const inviteMutation = gql`
+  mutation clubInvite($clubId: MongoID!, $invitations: [invitationInput]){
+    clubInvite(clubId: $clubId, invitations: $invitations) {
+      _id
+    }
   }
-})(ClubInviteWidget);
+`
+
+const ClubInviteWidgetApollo = compose(
+  graphql(facebookTokenQuery, {
+    options: {
+      skip: process.env.IS_SERVER === true,
+      fetchPolicy: 'cache-and-network'
+    }
+  }),
+  graphql(inviteMutation, {
+    name: 'invite'
+  })
+)(ClubInviteWidget);
 
 export default ClubInviteWidgetApollo
