@@ -21,7 +21,7 @@ import ClubActions from 'modules/forms/ClubActions'
 import AsyncAbout from './About' // FIXME: Shitty hack to bypass System.import()
 import AsyncCommunity from './Community'
 import AsyncEvents from './Events'
-import AsyncFeed from './Feed'
+import AsyncFeed from './Feed/Feed'
 import AsyncJoin from './Join/Join'
 import AsyncSettings from './Settings'
 import AsyncMembership from './Membership/Membership'
