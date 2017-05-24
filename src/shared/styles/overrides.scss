@@ -9,6 +9,14 @@ a {
   color: $brand-color;
 }
 
+.ant-layout {
+  overflow-x: hidden;
+}
+
+.ant-layout-content {
+  overflow-x: hidden;
+}
+
 .max-form {
   @media #{$min-desktop} {
     max-width: $screen-xs-min;

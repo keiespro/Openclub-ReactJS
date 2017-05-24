@@ -13,7 +13,7 @@ import AsyncHome from 'routes/Home'
 import AsyncFeed from 'routes/Feed'
 import AsyncProfile from 'routes/Profile'
 import AsyncDiscover from 'routes/Discover'
-import AsyncClubs from 'routes/Clubs'
+import AsyncClubs from 'routes/Clubs/Clubs'
 import AsyncClub from 'routes/Club/Club'
 import AsyncNotifications from 'routes/Notifications'
 import AsyncEvents from 'routes/Events'
@@ -41,7 +41,6 @@ import { tracking } from 'modules/mixpanel'
 import 'font-awesome/scss/font-awesome.scss'
 // ant theming
 import 'antd/dist/antd.css'
-import 'rc-drawer/assets/index.css'
 
 // theme overrides
 import 'styles/_base.scss'
