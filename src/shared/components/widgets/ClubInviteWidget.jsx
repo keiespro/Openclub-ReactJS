@@ -7,7 +7,9 @@ import Select, { Option } from 'antd/lib/select';
 import { email } from 'utils/form_validation/errors';
 import Spin from 'antd/lib/spin';
 import Button from 'antd/lib/button';
+import message from 'antd/lib/message';
 
+import error from 'utils/error';
 import { ContentPage } from 'components/layout';
 
 
@@ -25,11 +27,36 @@ class ClubInviteWidget extends Component {
       selected: [],
       results: [],
       value: '',
-      querying: false
+      querying: false,
+      submitting: false
     }
-
+    this.invite = this.invite.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+  async invite() {
+    if (this.state.selected.length === 0) return message.info('Please enter values to invite.');
+
+    const { invite, club } = this.props;
+
+    const invitations = this.state.selected.map(recipient => ({
+      recipient
+    }));
+
+    try {
+      this.setState({ submitting: true });
+      await invite({
+        variables: {
+          clubId: club._id,
+          invitations
+        }
+      });
+      this.setState({ submitting: false });
+      message.success('Invites Sent', 10);
+    } catch (err) {
+      message.error(error(err), 20);
+      this.setState({ submitting: false });
+    }
   }
   async findFriends() {
     const { data } = this.props;
@@ -94,7 +121,7 @@ class ClubInviteWidget extends Component {
           >
           {children}
         </Select>
-        <Button type="primary" disabled={this.state.selected.length === 0} style={{ width: '100%' }}><i className="fa fa-plus" /> Invite to {club.name}</Button>
+        <Button onClick={this.invite} loading={this.state.submitting} type="primary" disabled={this.state.selected.length === 0} style={{ width: '100%' }}><i className="fa fa-plus" /> Invite to {club.name}</Button>
       </ContentPage>
     );
   }
@@ -107,10 +134,9 @@ const facebookTokenQuery = gql`
 `
 
 const inviteMutation = gql`
-  mutation clubInvite($clubId: MongoID!, $invitations: [invitationInput]){
+  mutation clubInvite($clubId: MongoID!, $invitations: [invitationInput]!){
     clubInvite(clubId: $clubId, invitations: $invitations) {
       _id
-      
     }
   }
 `
