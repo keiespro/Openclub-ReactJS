@@ -29,21 +29,31 @@ class ClubsLanding extends Component {
     this.paginate = this.paginate.bind(this);
   }
   async paginate() {
-    console.log(this.props.data);
-    const fetch = await this.props.data.fetchMore({
-      variables: {
-        first: 12,
-        cursor: _.get(this.props.data, 'clubs.page_info.next_page_cursor')
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        prev.clubs = {
-          ...prev.clubs,
-          ...fetchMoreResult,
-          edges: [...prev.clubs.edges, ...fetchMoreResult.edges]
+    const { fetchMore, clubs: { page_info: pageInfo = {} } = {} } = this.props.data;
+    console.log(pageInfo);
+    if (pageInfo.next_page_cursor) {
+      await fetchMore({
+        variables: {
+          first: 12,
+          cursor: _.get(this.props.data, 'clubs.page_info.next_page_cursor')
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return {
+            ...prev,
+            ...fetchMoreResult,
+            clubs: {
+              ...prev.clubs,
+              ...fetchMoreResult,
+              page_info: fetchMoreResult.clubs.page_info,
+              edges: _.uniqBy([...prev.clubs.edges, ...fetchMoreResult.clubs.edges], '_id')
+            }
+          }
         }
-      }
-    });
-    console.log(fetch);
+      });
+    }
+    // No cursor
+    return null;
   }
   goTo(link) {
     this.context.router.transitionTo(link);
@@ -63,7 +73,7 @@ class ClubsLanding extends Component {
             hasMore={pageInfo.has_next_page}
             next={this.paginate}
             loader={<Spin style={{ width: '100%' }} tip="Loading..." />}
-            endMessage={<div />}
+            endMessage=" "
             >
               {edges.map(club => <ClubCard key={club._id} club={club} viewer={this.props.viewer} />)}
           </InfiniteScroll>
