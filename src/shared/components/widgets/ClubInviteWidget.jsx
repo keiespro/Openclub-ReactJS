@@ -110,6 +110,7 @@ const inviteMutation = gql`
   mutation clubInvite($clubId: MongoID!, $invitations: [invitationInput]){
     clubInvite(clubId: $clubId, invitations: $invitations) {
       _id
+      
     }
   }
 `
