@@ -2,15 +2,12 @@
 import React, { Component, PropTypes } from 'react'
 import _ from 'lodash';
 import Row from 'antd/lib/row';
-import Col from 'antd/lib/col';
-import Button from 'antd/lib/button';
 import Spin from 'antd/lib/spin';
-import { graphql, compose } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag';
 
 // Components
 import InfiniteScroll from 'react-infinite-scroll-component'
-import apolloClient from 'modules/apollo'
 import ClubCard from 'components/cards/ClubCard'
 
 import './Landing.scss'
@@ -30,11 +27,10 @@ class ClubsLanding extends Component {
   }
   async paginate() {
     const { fetchMore, clubs: { page_info: pageInfo = {} } = {} } = this.props.data;
-    console.log(pageInfo);
     if (pageInfo.next_page_cursor) {
       await fetchMore({
         variables: {
-          first: 12,
+          first: 24,
           cursor: _.get(this.props.data, 'clubs.page_info.next_page_cursor')
         },
         updateQuery: (prev, { fetchMoreResult }) => {
@@ -59,10 +55,8 @@ class ClubsLanding extends Component {
     this.context.router.transitionTo(link);
   }
   render() {
-    const { data = {} } = this.props;
+    const { viewer, data = {} } = this.props;
     const { clubs: { page_info: pageInfo, edges = [] } = {} } = data;
-
-    console.log(edges, pageInfo);
 
     return (
       <div>
@@ -70,12 +64,12 @@ class ClubsLanding extends Component {
         <hr className="bottom-gap-large" />
         <Row type="flex" justify="flex-start">
           <InfiniteScroll
-            hasMore={pageInfo.has_next_page}
+            hasMore={pageInfo && pageInfo.has_next_page}
             next={this.paginate}
             loader={<Spin style={{ width: '100%' }} tip="Loading..." />}
             endMessage=" "
             >
-              {edges.map(club => <ClubCard key={club._id} club={club} viewer={this.props.viewer} />)}
+              {edges.map(club => <ClubCard key={club._id} club={club} viewer={viewer} />)}
           </InfiniteScroll>
         </Row>
       </div>
@@ -132,7 +126,7 @@ const clubsQueryGQL = gql`
 const ClubsApollo = graphql(clubsQueryGQL, {
   options: () => ({
     variables: {
-      first: 12
+      first: 24
     }
   })
 })(ClubsLanding)

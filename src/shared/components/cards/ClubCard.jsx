@@ -32,16 +32,15 @@ class ClubCard extends Component {
       separator: ' '
     });
     }
-    return 'No description provided.';
+    return '';
   }
   locationText(club) {
     if (club.details && club.details.location && club.details.location.formatted_address) {
       return club.details.location.formatted_address;
     }
-    return 'No location provided.';
+    return '';
   }
   render() {
-    console.log(this.props.viewer);
     const { club, viewer } = this.props;
     const { router } = this.context;
     const perm = clubPermissions(club, viewer);

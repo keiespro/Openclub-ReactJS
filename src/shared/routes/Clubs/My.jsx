@@ -19,8 +19,8 @@ class ClubInvitations extends Component {
     this.context.router.transitionTo(link);
   }
   render() {
-    if (!this.props.viewer) return <div />;
-    const memberships = this.props.viewer.memberships || [];
+    const { viewer } = this.props;
+    const { memberships = [] } = viewer;
 
     const subscriptions = _.filter(memberships, c => !!c.subscription || (c.roles && c.roles.length > 0))
 
@@ -30,7 +30,7 @@ class ClubInvitations extends Component {
         <hr className="bottom-gap-large" />
         <Row type="flex" justify="flex-start">
           {subscriptions.map(membership => (
-            <ClubCard club={membership.club} viewer={this.props.viewer} />
+            <ClubCard club={membership.club} viewer={viewer} />
           ))}
         </Row>
       </div>
