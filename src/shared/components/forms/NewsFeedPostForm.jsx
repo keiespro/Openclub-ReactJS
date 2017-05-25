@@ -21,7 +21,8 @@ class NewsFeedPost extends Component {
     activeRequest: PropTypes.bool,
     inline: PropTypes.bool,
     hidePrivacy: PropTypes.bool,
-    viewer: PropTypes.object
+    viewer: PropTypes.object,
+    placeholder: PropTypes.string
   }
   constructor(props) {
     super(props);
@@ -107,7 +108,9 @@ class NewsFeedPost extends Component {
     return <PostAttachment attachment={content} />
   }
   render() {
-    const { hidePrivacy, inline, viewer } = this.props;
+    const { hidePrivacy, inline, viewer, placeholder } = this.props;
+    if (!viewer) return <div />;
+
     const { embed } = this.state;
     const content = embed ? embed.content : {};
 
@@ -139,7 +142,7 @@ class NewsFeedPost extends Component {
               <div className="media">
                 <div className="creator-image small"><img src={userImage(viewer, 'thumb')} alt={viewer.name} role="presentation" /></div>
               </div>
-              <Input className={cx({ inline })} type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder="Share something..." style={{ flexGrow: 2 }} />
+              <Input className={cx({ inline })} type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder={placeholder || "Share something..."} style={{ flexGrow: 2 }} />
               {!hidePrivacy && <Dropdown overlay={privacyMenu}>
                 <Button type="default"><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
               </Dropdown>}

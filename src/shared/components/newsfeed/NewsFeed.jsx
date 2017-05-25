@@ -54,8 +54,7 @@ class NewsFeed extends Component {
   }
   render() {
     const { perm, feed, viewer } = this.props;
-    const isPosts = feed && feed.feed && feed.feed.posts;
-    const postEdges = isPosts ? feed.feed.posts.edges : [];
+    const posts = _.get(feed, 'feed.posts.edges', []);
 
     if (!feed || feed.loading) {
       return <Card loading style={{ width: '100%' }} />
@@ -72,10 +71,10 @@ class NewsFeed extends Component {
         </div>
       )
     }
-    if (postEdges.length <= 0) {
+    if (posts.length <= 0) {
       return (
         <div>
-          {this.getPermissions('post') && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
+          {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
           <div className="posts-container">
             <div className="no-posts">
               <h1><i className="fa fa-newspaper-o" /></h1>
@@ -88,9 +87,12 @@ class NewsFeed extends Component {
     }
     return (
       <div>
-        {this.getPermissions('post') && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
+        {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
         <div className="posts-container">
-          {postEdges.map(edge => <FeedItem baseQuery="getNewsFeed" post={edge.post} key={edge.post._id} perm={this.props.perm} viewer={viewer} />)}
+          {posts.map(edge => {
+            return <FeedItem baseQuery="getNewsFeed" post={edge.post} key={edge.post._id} perm={this.props.perm} viewer={viewer} />
+          }
+        )}
         </div>
       </div>
     )

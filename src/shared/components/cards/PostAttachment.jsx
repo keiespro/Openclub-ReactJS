@@ -4,6 +4,7 @@ import Card from 'antd/lib/card';
 import Modal from 'antd/lib/modal';
 import ReactPlayer from 'react-player';
 import cx from 'classnames';
+import _ from 'lodash';
 
 import './PostAttachment.scss';
 
@@ -37,7 +38,7 @@ class PostAttachment extends Component {
     let description = attachment.description ? attachment.description : '';
     let video = attachment.video && attachment.video.length > 0 ? attachment.video[0].url : '';
 
-    if (attachment.provider && attachment.provider.name) headline += ` - ${attachment.provider.name}`;
+    headline = _.get(attachment, 'provider.name', headline);
 
     return {
       headline,

@@ -94,7 +94,9 @@ class FeedItem extends Component {
     }
   }
   toggleComments() {
-    const { comments, post: { owner, _id } } = this.props;
+    const { post } = this.props;
+    const { comments, owner, _id } = post;
+
     if (!comments) {
       this.context.router.transitionTo(`${owner.type === 'events' ? '/events/' : '/'}${owner.slug}/feed/post/${_id}`);
       return;
@@ -111,8 +113,8 @@ class FeedItem extends Component {
     const { post: value, perm, viewer } = this.props;
     const postMenu = (
       <Menu onClick={this.postMenuClick}>
-        {viewer._id !== value.user_id && <Menu.Item key="report"><Icon type="dislike" /> Report</Menu.Item>}
-        {((perm && perm.userCanDeletePost(value.user_id)) || viewer._id === value.user_id) && <Menu.Item key="delete" style={{ color: 'red' }}><Icon type="delete" /> Delete</Menu.Item>}
+        {perm && !perm.userOwnsPost(value.user_id) && <Menu.Item key="report"><Icon type="dislike" /> Report</Menu.Item>}
+        {perm && perm.userCanDeletePost(value.user_id) && <Menu.Item key="delete" style={{ color: 'red' }}><Icon type="delete" /> Delete</Menu.Item>}
       </Menu>
     );
     return (
@@ -121,11 +123,11 @@ class FeedItem extends Component {
         <div className="media">
           <div className="creator-image">
             <a href="">
-              <img src={value.user && value.user.images && value.user.images.square ? value.user.images.square : '/blank.gif'} alt={value.user && value.user.name ? value.user.name : 'No name'} />
+              <img src={_.get(value, 'user.images.square', '/blank.gif')} alt={_.get(value, 'user.name', 'No name')} />
             </a>
           </div>
           <div className="creator-title">
-            <p className="m0 text-bold">{value.user && value.user.name ? value.user.name : 'No name'}</p>
+            <p className="m0 text-bold">{_.get(value, 'user.name', _.get(value, 'owner.slug', 'No Name'))}</p>
             <small className="text-muted">
               <Icon type={cx({ 'global': value.privacy === 'PUBLIC', 'contacts': value.privacy === 'PRIVATE' })} /> {cx({ 'Public': value.privacy === 'PUBLIC', 'Members': value.privacy === 'PRIVATE' })}
               {value.owner && value.owner.slug && value.owner.type === 'clubs' && <span> | Posted in <Link to={`/${value.owner.slug}/feed`}>@{value.owner.slug}</Link></span>}
@@ -151,7 +153,7 @@ class FeedItem extends Component {
           <Button onClick={this.toggleComments} type="primary"><Icon type="message" /> Comment ({value.comments_count || 0})</Button>
         )}
         <div className={cx({'hidden': this.state.comments_expanded === false})}>
-          <NewsFeedPostForm viewer={viewer} handleSubmit={this.submitComment.bind(this)} activeRequest={this.state.loading} inline hidePrivacy placeholder="Write a comment..."/>
+          {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.submitComment.bind(this)} activeRequest={this.state.loading} inline hidePrivacy placeholder="Write a comment..." />}
           <div className="comments">
             {this.props.comments && this.props.comments.edges ? this.props.comments.edges.map(edge => <Comment key={edge.comment._id} {...edge.comment} />) : null}
           </div>
