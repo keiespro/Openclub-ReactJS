@@ -18,7 +18,6 @@ class Feed extends Component {
     perm: PropTypes.object
   }
   render() {
-    console.log('feed');
     const { club, viewer, location, perm, slug } = this.props;
 
     const regex = /^\/[\w\d]+\/feed\/([\w\d]+)/;

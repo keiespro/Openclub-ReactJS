@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Card from 'antd/lib/card';
-
-import NewsFeedPostForm from 'components/forms/NewsFeedPostForm';
+import _ from 'lodash';
+import clubPermissions from 'utils/club_permissions';
 import FeedItem from './FeedItem';
 import './NewsFeed.scss';
 
@@ -16,6 +16,8 @@ class AggregatedNewsFeed extends Component {
     const { data, viewer } = this.props;
     const isPosts = data && data.aggregateFeed && data.aggregateFeed.posts;
     const postEdges = isPosts ? data.aggregateFeed.posts.edges : [];
+
+    console.log(data);
 
     if (!data || data.loading) {
       return <Card loading style={{ width: '100%' }} />
@@ -37,7 +39,7 @@ class AggregatedNewsFeed extends Component {
     return (
       <div>
         <div className="posts-container">
-          {postEdges.map(edge => <FeedItem baseQuery="aggregateFeed" post={edge.post} key={edge.post._id} viewer={viewer} />)}
+          {postEdges.map(edge => <FeedItem perm={clubPermissions(viewer, _.find(viewer.memberships, { club_id: _.get(edge, 'post.owner.owner_id') }))} baseQuery="aggregateFeed" post={edge.post} key={edge.post._id} viewer={viewer} />)}
         </div>
       </div>
     )

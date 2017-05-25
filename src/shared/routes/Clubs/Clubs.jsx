@@ -31,7 +31,7 @@ class ClubsView extends Component {
     this.context.router.transitionTo(`/clubs/${activeKey}`)
   }
   componentDidMount() {
-    setTimeout(this.setState({ ready: true }), 150); //eslint-disable-line
+    this.clubsLoadTimeout = setTimeout(this.setState({ ready: true }), 150); //eslint-disable-line
   }
   render() {
     const { viewer } = this.props;
