@@ -28,7 +28,7 @@ class ClubsLanding extends Component {
   async paginate() {
     const { fetchMore, clubs: { page_info: pageInfo = {} } = {} } = this.props.data;
     if (pageInfo.next_page_cursor) {
-      return fetchMore({
+      await fetchMore({
         variables: {
           first: 24,
           cursor: _.get(this.props.data, 'clubs.page_info.next_page_cursor')

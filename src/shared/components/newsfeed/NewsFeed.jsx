@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import cx from 'classnames';
 import _ from 'lodash';
 import message from 'antd/lib/message';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import NewsFeedPostForm from 'components/forms/NewsFeedPostForm';
 import feedPermissions from 'utils/feed_permissions';
@@ -25,6 +26,41 @@ class NewsFeed extends Component {
     this.state = {
       loading: false
     }
+
+    this.paginate = this.paginate.bind(this);
+  }
+  async paginate() {
+    const { feed } = this.props;
+    const { fetchMore } = feed;
+    const cursor = _.get(data, 'feed.posts.page_info.next_page_cursor');
+
+    if (cursor) {
+      await fetchMore({
+        variables: {
+          first: 15,
+          cursor
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return {
+            ...prev,
+            ...fetchMoreResult,
+            feed: {
+              ...prev.feed,
+              ...fetchMoreResult.feed,
+              posts: {
+                ...prev.feed.posts,
+                ...fetchMoreResult.feed.posts,
+                edges: _.uniqBy([...prev.feed.posts.edges, ...fetchMoreResult.feed.posts.edges], edge => {
+                  return edge.post._id
+                }),
+              }
+            }
+          }
+        }
+      })
+    }
+    return null;
   }
   getPermissions(perm = false) {
     const { viewer, feed: { feed }} = this.props;
@@ -55,6 +91,7 @@ class NewsFeed extends Component {
   render() {
     const { perm, feed, viewer } = this.props;
     const posts = _.get(feed, 'feed.posts.edges', []);
+    const pageInfo = _.get(feed, 'feed.posts.page_info', {});
 
     if (!feed || feed.loading) {
       return <Card loading style={{ width: '100%' }} />
@@ -89,10 +126,18 @@ class NewsFeed extends Component {
       <div>
         {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
         <div className="posts-container">
-          {posts.map(edge => {
-            return <FeedItem baseQuery="getNewsFeed" post={edge.post} key={edge.post._id} perm={this.props.perm} viewer={viewer} />
-          }
-        )}
+          <InfiniteScroll
+            pullDownToRefresh
+            pullDownToRefreshContent={<h3 style={{textAlign: 'center'}}>&#8595; Pull down to refresh</h3>}
+            releaseToRefreshContent={<h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>}
+            refreshFunction={() => feed.refetch()}
+            hasMore={pageInfo.has_next_page}
+            next={this.paginate}
+            endMessage=" "
+            loader={<Card className="post" loading style={{ width: '100%' }} />}
+          >
+            {posts.map(edge => <FeedItem baseQuery="getNewsFeed" post={edge.post} key={edge.post._id} perm={this.props.perm} viewer={viewer} />)}
+          </InfiniteScroll>
         </div>
       </div>
     )
@@ -184,7 +229,7 @@ graphql(NewsFeedGQL, {
       variables: {
         feedOwnerId: props.feedOwnerId,
         feedOwnerType: props.feedOwnerType,
-        first: 25
+        first: 15
       }
     }
   },

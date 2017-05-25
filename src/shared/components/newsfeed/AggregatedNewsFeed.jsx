@@ -9,8 +9,6 @@ import clubPermissions from 'utils/club_permissions';
 import FeedItem from './FeedItem';
 import './NewsFeed.scss';
 
-import la from 'logandarrow';
-
 class AggregatedNewsFeed extends Component {
   static propTypes = {
     data: PropTypes.object,
@@ -34,7 +32,7 @@ class AggregatedNewsFeed extends Component {
         },
         updateQuery: (prev, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
-          return la()({
+          return {
             ...prev,
             ...fetchMoreResult,
             aggregateFeed: {
@@ -48,7 +46,7 @@ class AggregatedNewsFeed extends Component {
                 }),
               }
             }
-          })
+          }
         }
       })
     }
