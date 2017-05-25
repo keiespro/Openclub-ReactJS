@@ -9,7 +9,6 @@ import { Menu, Icon, Dropdown } from 'antd'
 import Button, { Group as ButtonGroup } from 'antd/lib/button'
 import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
 import ProfileHeader from 'components/profile/ProfileHeader'
-import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
 import { ContentArea } from 'components/layout'
 import Error404 from 'components/Error404/Error404'
 import Error from 'components/Error/Error'
@@ -96,7 +95,6 @@ class Club extends Component {
           {perm.userCanAccessSettings && <TabPane tab="Settings" key="settings" />}
         </Tabs>
         <ContentArea>
-          {perm.userCanAccessSettings && <ClubHeroHelper club={club} />}
           <MatchGroup>
             <Match
               exactly

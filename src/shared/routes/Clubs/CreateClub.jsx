@@ -26,7 +26,7 @@ const CreateClub = ({ mutate, submitting }, { router }) => {
         title: "Club Created",
         content: "Your club page has been created. Follow the steps to complete the setup and invite members to your club."
       });
-      router.transitionTo(`/${values.slug}`);
+      router.transitionTo(`/${values.slug}/settings`);
     } catch (err) {
       Modal.error({
         title: "Error Creating Club",

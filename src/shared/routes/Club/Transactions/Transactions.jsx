@@ -33,7 +33,6 @@ class Transactions extends Component {
     this.negativePosition = (amount, f) => f.owner_id === this.props.clubId ? this.formatCurrency(0 - amount) : this.formatCurrency(amount);
   }
   render() {
-    console.log(this.props);
     const { data } = this.props;
     if (data.loading) return <div>Loading...</div>;
 
@@ -47,11 +46,11 @@ class Transactions extends Component {
           <Thead>
             <Tr>
               <Th>Date</Th>
-              <Th>From</Th>
-              <Th>For</Th>
               <Th>Amount</Th>
-              <Th>Fee</Th>
-              <Th>Deposit</Th>
+              <Th>Customer</Th>
+              <Th>Description</Th>
+              <Th>Transaction Fee</Th>
+              <Th>Total Deposit</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -59,9 +58,9 @@ class Transactions extends Component {
             {transactions.map(t => (
               <Tr>
                 <Td>{m(t.datestamp).format('DD/MM/YYYY')}</Td>
+                <Td>{t.amount ? this.negativePositive(t.amount.amount, t.from) : '-'}</Td>
                 <Td>{this.getType(t.from.type, t.from.meta)}</Td>
                 <Td>{this.getType(t.for.type, t.for.meta)}</Td>
-                <Td>{t.amount ? this.negativePositive(t.amount.amount, t.from) : '-'}</Td>
                 <Td>{t.fee ? this.formatCurrency(0 - t.fee.amount) : '-'}</Td>
                 <Td>{t.deposit_amount ? this.formatCurrency(t.deposit_amount.amount) : '-'}</Td>
               </Tr>

@@ -62,10 +62,12 @@ class SettingsLanding extends Component {
 
     return (
       <Form>
-        <h5 className="bottom-gap">News Feed</h5>
+        <h4 className="bottom-gap">News Feed</h4>
         <hr className="bottom-gap" />
         <div className="bottom-gap-large">
-          <p className="bottom-gap">The news feed allows your members to post content, questions, events and more. The feed is the starting point for members to engage with your club.</p>
+          <p className="bottom-gap">
+            The news feed allows your members to post content, questions, events and more. The feed is the starting point for members to engage with your club.
+          </p>
           <FieldContainer title="Public Feed Permissions">
             <Spin spinning={this.state.loading === 'settings.feed_public_permissions'}>
               <Select onChange={val => this.submitSetting('settings.feed_public_permissions', val)} value={_.get(club, 'settings.feed_public_permissions', ['view', 'post'])} mode="tags">
@@ -83,7 +85,7 @@ class SettingsLanding extends Component {
             </Spin>
           </FieldContainer>
         </div>
-        <h5 className="bottom-gap">Club Directory</h5>
+        <h4 className="bottom-gap">Club Directory</h4>
         <hr className="bottom-gap" />
         <div className="bottom-gap-large">
           <p className="bottom-gap">
@@ -105,7 +107,7 @@ class SettingsLanding extends Component {
           <small>OpenClub protects the privacy of its users by protecting certain information from being indexed.
           Members can choose to withhold certain details or to hide their profile from the directory at their own discretion.</small>
         </div>
-        <h5 className="bottom-gap">Profile</h5>
+        <h4 className="bottom-gap">Profile</h4>
         <hr className="bottom-gap" />
         <div className="bottom-gap-large">
           <p className="bottom-gap">Provide information that will be displayed to your members and the public.
