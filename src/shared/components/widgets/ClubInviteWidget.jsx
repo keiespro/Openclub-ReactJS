@@ -51,7 +51,7 @@ class ClubInviteWidget extends Component {
           invitations
         }
       });
-      this.setState({ submitting: false });
+      this.setState({ submitting: false, selected: [] });
       message.success('Invites Sent', 10);
     } catch (err) {
       message.error(error(err), 20);
