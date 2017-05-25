@@ -4,6 +4,7 @@ import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import cx from 'classnames';
 import _ from 'lodash';
+import message from 'antd/lib/message';
 
 import NewsFeedPostForm from 'components/forms/NewsFeedPostForm';
 import feedPermissions from 'utils/feed_permissions';
@@ -30,7 +31,8 @@ class NewsFeed extends Component {
     return perm ? feedPermissions(viewer, feed).indexOf(perm) > -1 : feedPermissions(viewer, feed);
   }
   async handleSubmit(post) {
-    const { createPost, feedOwnerId, feedOwnerType } = this.props;
+    const { perm, createPost, feedOwnerId, feedOwnerType } = this.props;
+    if (!perm.canPostFeed) return message.error('You do not have permissions to post to this feed.', 10);
 
     try {
       this.setState({ loading: true })
@@ -51,7 +53,7 @@ class NewsFeed extends Component {
     }
   }
   render() {
-    const { feed, viewer } = this.props;
+    const { perm, feed, viewer } = this.props;
     const isPosts = feed && feed.feed && feed.feed.posts;
     const postEdges = isPosts ? feed.feed.posts.edges : [];
 
@@ -59,7 +61,7 @@ class NewsFeed extends Component {
       return <Card loading style={{ width: '100%' }} />
     }
 
-    if (this.getPermissions('view') === false) {
+    if (!perm.canViewFeed) {
       return (
         <div className="posts-container">
           <div className="no-posts">
@@ -77,8 +79,8 @@ class NewsFeed extends Component {
           <div className="posts-container">
             <div className="no-posts">
               <h1><i className="fa fa-newspaper-o" /></h1>
-              <h2>Nothing to show!</h2>
-              <p>There aren't any posts in this feed.</p>
+              <h2>No Posts, yet.</h2>
+              <p>{perm.canPostFeed ? 'There aren\'t any posts — try posting something.' : 'There aren\'t any posts, yet. Stay tuned.'}</p>
             </div>
           </div>
         </div>

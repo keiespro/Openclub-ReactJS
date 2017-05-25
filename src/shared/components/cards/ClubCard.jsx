@@ -61,10 +61,10 @@ class ClubCard extends Component {
               <Link to={`/${club.slug}`}><img src={images.square || '/empty-club.png'} alt={club.name} /></Link>
             </div>
             <div className="club-card-actions">
-              <ButtonGroup>
+              {perm.canViewFeed ? <ButtonGroup>
                 {perm.userCanJoin && <Button type="primary" icon="user-add" size="large" className="btn-resp" onClick={onJoin}>Join This Club</Button>}
                 <Dropdown key={`${club.slug}-dd`} overlay={followMenu}><Button type="default" size="large" className="btn-resp" icon="user">{perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" /></Button></Dropdown>
-              </ButtonGroup>
+              </ButtonGroup> : null}
             </div>
           </div>
         </div>

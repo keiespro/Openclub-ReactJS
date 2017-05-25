@@ -52,6 +52,7 @@ class ClubActions extends Component {
   }
   render() {
     const { perm } = this.props;
+    if (!perm.canViewFeed) return <div />
     return (
       <Menu onClick={this.processAction}>
         { perm.userIsFollower && <MenuItem key="unfollow">Unfollow</MenuItem> }

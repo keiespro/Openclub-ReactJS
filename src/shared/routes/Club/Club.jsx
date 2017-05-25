@@ -80,17 +80,17 @@ class Club extends Component {
         />
         <Tabs
           activeKey={selectedKey}
-          tabBarExtraContent={
+          tabBarExtraContent={perm.canViewFeed ?
             <ButtonGroup>
               {perm.userCanJoin && <Button type="primary" icon="user-add" size="large" className="btn-resp" onClick={onJoin}>Join This Club</Button>}
               <Dropdown overlay={followMenu}><Button type="default" size="large" className="btn-resp" icon="user">{perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" /></Button></Dropdown>
-            </ButtonGroup>
+            </ButtonGroup> : null
           }
           onTabClick={handleClick}
           >
-          <TabPane tab="Feed" key="feed" />
+          {perm.canViewFeed && <TabPane tab="Feed" key="feed" />}
           <TabPane tab="About" key="about" />
-          <TabPane tab="Community" key="community" />
+          {perm.canViewDirectory && <TabPane tab="Community" key="community" />}
           {perm.userIsMember && <TabPane tab="My Membership" key="mymembership" />}
           {perm.userCanAccessFinances && <TabPane tab="Transactions" key="transactions" />}
           {perm.userCanAccessSettings && <TabPane tab="Settings" key="settings" />}
@@ -102,8 +102,7 @@ class Club extends Component {
               exactly
               pattern={`/${params.club_id}`}
               render={() => {
-                if (!viewer) return <Redirect to={`/${params.club_id}/about`} />;
-                if (viewer && (perm.userIsMember || perm.userIsFollower)) {
+                if (perm.canViewFeed) {
                   return <Redirect to={`/${params.club_id}/feed`} />
                 }
                 return <Redirect to={`/${params.club_id}/about`} />

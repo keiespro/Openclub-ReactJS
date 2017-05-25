@@ -37,7 +37,7 @@ class Feed extends Component {
               <Match pattern={`/${slug}/feed/post/:post_id`} render={params => <PostPage perm={perm} viewer={viewer} {...params} />} />
             </MatchGroup>
           </Col>
-          <Col lg={8} className="hidden-xs">
+          <Col lg={8} className="hidden-xs hidden-sm hidden-md">
             <ClubInviteWidget club={club} />
           </Col>
         </Row>
