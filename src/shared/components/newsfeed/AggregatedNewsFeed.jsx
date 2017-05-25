@@ -3,29 +3,70 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Card from 'antd/lib/card';
 import _ from 'lodash';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import Button from 'antd/lib/button';
 import clubPermissions from 'utils/club_permissions';
 import FeedItem from './FeedItem';
 import './NewsFeed.scss';
+
+import la from 'logandarrow';
 
 class AggregatedNewsFeed extends Component {
   static propTypes = {
     data: PropTypes.object,
     viewer: PropTypes.object
   }
+  constructor(props) {
+    super(props);
+
+    this.paginate = this.paginate.bind(this);
+  }
+  async paginate() {
+    const { data } = this.props;
+    const { fetchMore } = data;
+    const cursor = _.get(data, 'aggregateFeed.posts.page_info.next_page_cursor');
+
+    if (cursor) {
+      await fetchMore({
+        variables: {
+          first: 15,
+          cursor
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return la()({
+            ...prev,
+            ...fetchMoreResult,
+            aggregateFeed: {
+              ...prev.aggregateFeed,
+              ...fetchMoreResult.aggregateFeed,
+              posts: {
+                ...prev.aggregateFeed.posts,
+                ...fetchMoreResult.aggregateFeed.posts,
+                edges: _.uniqBy([...prev.aggregateFeed.posts.edges, ...fetchMoreResult.aggregateFeed.posts.edges], edge => {
+                  return edge.post._id
+                }),
+              }
+            }
+          })
+        }
+      })
+    }
+    return null;
+  }
   render() {
     const { data, viewer } = this.props;
-    const isPosts = data && data.aggregateFeed && data.aggregateFeed.posts;
-    const postEdges = isPosts ? data.aggregateFeed.posts.edges : [];
+    const pageInfo = _.get(data, 'aggregateFeed.posts.page_info', {});
+    const posts = _.get(data, 'aggregateFeed.posts.edges', []);
 
-    console.log(data);
-
-    if (!data || data.loading) {
+    if ((!data || data.loading) && posts.length === 0) {
       return <Card loading style={{ width: '100%' }} />
     }
 
-    if (postEdges.length <= 0) {
+    if (posts.length <= 0) {
       return (
         <div>
+          <Button onClick={data.refetch.bind(this)} type="primary" loading={data.loading}><i className="fa fa-refresh" /></Button>
           <div className="posts-container">
             <div className="no-posts">
               <h1><i className="fa fa-newspaper-o" /></h1>
@@ -38,8 +79,20 @@ class AggregatedNewsFeed extends Component {
     }
     return (
       <div>
+        <Button onClick={() => data.refetch()} type="primary" loading={data.loading}><i className="fa fa-refresh" /></Button>
         <div className="posts-container">
-          {postEdges.map(edge => <FeedItem perm={clubPermissions(viewer, _.find(viewer.memberships, { club_id: _.get(edge, 'post.owner.owner_id') }))} baseQuery="aggregateFeed" post={edge.post} key={edge.post._id} viewer={viewer} />)}
+          <InfiniteScroll
+            pullDownToRefresh
+            pullDownToRefreshContent={<h3 style={{textAlign: 'center'}}>&#8595; Pull down to refresh</h3>}
+            releaseToRefreshContent={<h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>}
+            refreshFunction={() => data.refetch()}
+            hasMore={pageInfo.has_next_page}
+            next={this.paginate}
+            endMessage=" "
+            loader={<Card className="post" loading style={{ width: '100%' }} />}
+          >
+            {posts.map(edge => <FeedItem perm={clubPermissions(viewer, _.find(viewer.memberships, { club_id: _.get(edge, 'post.owner.owner_id') }))} baseQuery="aggregateFeed" post={edge.post} key={edge.post._id} viewer={viewer} />)}
+          </InfiniteScroll>
         </div>
       </div>
     )
@@ -47,10 +100,13 @@ class AggregatedNewsFeed extends Component {
 }
 
 const NewsFeedGQL = gql`
-  query aggregateFeed($first: Int!) {
+  query aggregateFeed($first: Int!, $cursor: MongoID) {
     aggregateFeed {
-      _id
-      posts(first: $first) {
+      posts(first: $first, cursor: $cursor) {
+        page_info{
+          next_page_cursor
+          has_next_page
+        }
         edges{
           post{
             _id
@@ -88,7 +144,7 @@ const AggregatedNewsFeedQuery = graphql(NewsFeedGQL, {
     if (!props.viewer) return false;
     return {
       variables: {
-        first: 25
+        first: 15
       }
     }
   },

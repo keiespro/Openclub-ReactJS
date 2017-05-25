@@ -100,7 +100,7 @@ class NewsFeed extends Component {
 }
 
 const NewsFeedGQL = gql`
-  query getNewsFeed($feedOwnerId: MongoID, $feedOwnerType: String, $first: Int!, $cursor: MongoID) {
+  query feed($feedOwnerId: MongoID, $feedOwnerType: String, $first: Int!, $cursor: MongoID) {
     feed(feedOwnerId: $feedOwnerId, feedOwnerType: $feedOwnerType) {
       _id
       owner{
@@ -170,6 +170,7 @@ const createPostGQL = gql`
         fbid
       }
       privacy
+      user_id
     }
   }
 `
@@ -195,17 +196,20 @@ graphql(createPostGQL, {
   name: 'createPost',
   options: {
     updateQueries: {
-      getNewsFeed: (prev, { mutationResult }) => {
+      feed: (prev, { mutationResult }) => {
         const { createPost } = mutationResult.data;
-
         if (!createPost) return prev;
 
-        if (!prev.feed.posts) prev.feed.posts = { edges: [] };
-        if (!prev.feed.posts.edges) prev.feed.posts.edges = [];
-
-        prev.feed.posts.edges.unshift({ post: createPost });
-
-        return prev;
+        return {
+          ...prev,
+          feed: {
+            ...prev.feed,
+            posts: {
+              ...prev.feed.posts || {},
+              edges: [{ post: createPost }, ..._.get(prev, 'feed.posts.edges', [])]
+            }
+          }
+        }
       }
     }
   }
