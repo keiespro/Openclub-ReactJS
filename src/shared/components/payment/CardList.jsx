@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ds from 'deli-space'
 import cx from 'classnames'
 import Tooltip from 'antd/lib/tooltip';

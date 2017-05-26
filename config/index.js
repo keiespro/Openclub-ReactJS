@@ -232,7 +232,7 @@ const config = {
       // specify the inclusion of additional modules below.
       devVendorDLL: {
         // Enabled?
-        enabled: true,
+        enabled: false,
 
         // Specify any dependencies that you would like to include in the
         // Vendor DLL.

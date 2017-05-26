@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo'
 import UserProfileForm from 'components/forms/UserProfileForm'
 import { stringKeyObjectFilter, shallowObjectDiff } from 'utils/object_helpers'

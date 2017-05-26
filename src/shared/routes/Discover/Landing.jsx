@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import ContentPage from 'components/layout/ContentPage'
 import { Row, Col, Button } from 'antd'
 import CategoryCarousel from 'components/category_carousel'

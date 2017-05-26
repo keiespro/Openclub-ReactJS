@@ -1,9 +1,13 @@
+import React from 'react';
 import { asyncComponent } from 'react-async-component'
-import asyncExtensions from 'utils/asyncExtensions'
+import Error from 'components/Error/Error'
+import Loading from 'components/Loading/Loading'
 
-export default asyncComponent({
-  async resolve() {
-    return process.env.IS_SERVER || process.env.NODE_ENV !== 'production' ? require('./Club') : System.import('routes/Club/Club');
-  },
-  ...asyncExtensions
-})
+const AsyncClub = asyncComponent({
+  name: 'AsyncClub',
+  env: process.env.IS_SERVER ? 'node' : 'browser',
+  resolve: () => import('./Club'),
+  LoadingComponent: () => <Loading />,
+  ErrorComponent: (...props) => <Error {...props} />
+});
+export default AsyncClub;

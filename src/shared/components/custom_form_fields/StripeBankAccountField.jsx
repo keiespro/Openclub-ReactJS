@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Input, { Group as InputGroup } from 'antd/lib/input'
 import Alert from 'antd/lib/alert'
 import { bankByCountry } from 'constants/index'

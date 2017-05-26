@@ -1,5 +1,6 @@
 // Dependencies
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Match, MatchGroup, Miss } from 'teardrop'
 import Tabs, { TabPane } from 'antd/lib/tabs';
 import Button from 'antd/lib/button';

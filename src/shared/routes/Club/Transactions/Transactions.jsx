@@ -1,5 +1,6 @@
 // Dependencies
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table'

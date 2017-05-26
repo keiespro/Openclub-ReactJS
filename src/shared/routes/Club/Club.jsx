@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { login } from 'modules/auth/actions'
@@ -23,7 +24,7 @@ import AsyncEvents from './Events'
 import AsyncFeed from './Feed/Feed'
 import AsyncJoin from './Join/Join'
 import AsyncSettings from './Settings'
-import AsyncMembership from './Membership/Membership'
+import AsyncMembership from './Membership'
 import AsyncTransactions from './Transactions'
 
 import './Club.scss'

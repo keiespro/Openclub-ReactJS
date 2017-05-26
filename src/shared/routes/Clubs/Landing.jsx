@@ -1,5 +1,6 @@
 // Dependencies
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Row from 'antd/lib/row';
 import Spin from 'antd/lib/spin';

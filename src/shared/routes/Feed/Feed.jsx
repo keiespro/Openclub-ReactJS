@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Row, Col, Layout } from 'antd'
 import AggregatedNewsFeed from 'components/newsfeed/AggregatedNewsFeed'
 import { CalendarItem } from 'components/EventCalendar'

@@ -274,7 +274,7 @@ export default function webpackConfigFactory(buildOptions) {
 
       // We don't want webpack errors to occur during development as it will
       // kill our dev servers.
-      ifDev(() => new webpack.NoErrorsPlugin()),
+      ifDev(() => new webpack.NoEmitOnErrorsPlugin()),
 
       // We need this plugin to enable hot reloading of our client.
       ifDevClient(() => new webpack.HotModuleReplacementPlugin()),
@@ -350,68 +350,23 @@ export default function webpackConfigFactory(buildOptions) {
               babelrc: false,
 
               presets: [
-                // JSX
-                'react',
-                // Stage 3 javascript syntax.
-                // "Candidate: complete spec and initial browser implementations."
-                // Add anything lower than stage 3 at your own risk. :)
-                'stage-3',
-                // For our client bundles we transpile all the latest ratified
-                // ES201X code into ES5, safe for browsers.  We exclude module
-                // transilation as webpack takes care of this for us, doing
-                // tree shaking in the process.
-                ifClient(['latest', { es2015: { modules: false } }]),
-                // For a node bundle we use the awesome babel-preset-env which
-                // acts like babel-preset-latest in that it supports the latest
-                // ratified ES201X syntax, however, it will only transpile what
-                // is necessary for a target environment.  We have configured it
-                // to target our current node version.  This is cool because
-                // recent node versions have extensive support for ES201X syntax.
-                // Also, we have disabled modules transpilation as webpack will
-                // take care of that for us ensuring tree shaking takes place.
-                // NOTE: Make sure you use the same node version for development
-                // and production.
                 ifNode(['env', { targets: { node: true }, modules: false }]),
+                ifClient(['latest', { es2015: { modules: false } }]),
+                'react',
+                'stage-0',
               ].filter(x => x != null),
 
               plugins: [
-                'transform-class-properties',
-                // Required to support react hot loader.
+                'syntax-dynamic-import',
                 ifDevClient('react-hot-loader/babel'),
-                // This decorates our components with  __self prop to JSX elements,
-                // which React will use to generate some runtime warnings.
                 ifDev('transform-react-jsx-self'),
-                // Adding this will give us the path to our components in the
-                // react dev tools.
                 ifDev('transform-react-jsx-source'),
-                // The following plugin supports the code-split-component
-                // instances, taking care of all the heavy boilerplate that we
-                // would have had to do ourselves to get code splitting w/SSR
-                // support working.
-                // @see https://github.com/ctrlplusb/code-split-component
-                //
-                // We only include it in production as this library does not support
-                // React Hot Loader, which we use in development.
-                /*ifElse(isProd && (isServer || isClient))(
-                  [
-                    'code-split-component/babel',
-                    {
-                      // For our server bundle we will set the mode as being 'server'
-                      // which will ensure that our code split components can be
-                      // resolved synchronously, being much more helpful for
-                      // pre-rendering.
-                      mode: target,
-                    },
-                  ],
-                ),*/
               ].filter(x => x != null),
             },
             buildOptions,
           ),
         }],
       }),
-
-      // HappyPack 'css' instance for development client.
       ifDevClient(
         () => happyPackPlugin({
           name: 'happypack-devclient-css',
@@ -419,7 +374,6 @@ export default function webpackConfigFactory(buildOptions) {
             'style-loader',
             {
               path: 'css-loader',
-              // Include sourcemaps for dev experience++.
               query: { sourceMap: true },
             },
             {
@@ -435,17 +389,7 @@ export default function webpackConfigFactory(buildOptions) {
           ],
         }),
       ),
-
-      // END: HAPPY PACK PLUGINS
-      // -----------------------------------------------------------------------
-
-      // Service Worker - Offline Page generation.
-      //
-      // We use the HtmlWebpackPlugin to produce an "offline" html page that
-      // can be used by our service worker (see the OfflinePlugin below) in
-      // order support offline rendering of our application.
       ifProdClient(
-        // We will only create the service worker required page if enabled in config.
         ifElse(config.serviceWorker.enabled)(
           () => new HtmlWebpackPlugin({
             filename: config.serviceWorker.offlinePageFileName,
@@ -465,8 +409,6 @@ export default function webpackConfigFactory(buildOptions) {
               minifyURLs: true,
             },
             inject: true,
-            // We pass our config objects as values as they will be needed
-            // by the template.
             custom: {
               config,
               clientConfig,
@@ -474,33 +416,6 @@ export default function webpackConfigFactory(buildOptions) {
           }),
         ),
       ),
-
-      // Service Worker - generation.
-      //
-      // NOTE: It is HIGHLY recommended to keep this plugin as the last item
-      // within the list as it needs to be aware of all possible manipulations
-      // that may have be done to assets by the previous plugins. This is an
-      // offical request/recommendation by the plugin author.
-      //
-      // This is bound to our server/client bundles as we only expect to be
-      // serving the client bundle as a Single Page Application through the
-      // server.
-      //
-      // We use the offline-plugin to generate the service worker.  It also
-      // provides a runtime installation script which gets executed within
-      // the client.
-      // @see https://github.com/NekR/offline-plugin
-      //
-      // This plugin generates a service worker script which as configured below
-      // will precache all our generated client bundle assets as well as our
-      // static "public" folder assets.
-      //
-      // It has also been configured to make use of a HtmlWebpackPlugin
-      // generated "offline" page so that users can still used the application
-      // offline.
-      //
-      // Any time our static files or generated bundle files change the user's
-      // cache will be updated.
       ifProdClient(
         // We will only include the service worker if enabled in config.
         ifElse(config.serviceWorker.enabled)(
