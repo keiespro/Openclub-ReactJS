@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import classNames from 'classnames'
 import { formPrefix } from 'constants/index'
 
@@ -19,6 +20,18 @@ const FieldContainer = ({ deleted, required, title, children }) => {
       {children}
     </div>
   )
+}
+FieldContainer.propTypes = {
+  deleted: PropTypes.bool,
+  required: PropTypes.bool,
+  title: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.element
+  ]),
+  children: PropTypes.oneOfType([
+    PropTypes.element,
+    PropTypes.arrayOf(PropTypes.element)
+  ])
 }
 
 export default FieldContainer

@@ -104,68 +104,58 @@ class StripeAccountForm extends Component {
     }
   }
   getVerifications(level = 'minimum') {
-    const { stripe_account } = this.props.club;
-    let additionalFields = [];
-    if (stripe_account && stripe_account.data.verification && stripe_account.data.verification.fields_needed && stripe_account.data.verification.fields_needed.length > 0) {
-      additionalFields = stripe_account.data.verification.fields_needed;
-    }
-    const { country_spec } = this.state
+    const { stripe_account: stripeAccount } = this.props.club;
+    let additionalFields = _.get(stripeAccount, 'data.verifications.fields_needed', []);
 
-    if (!country_spec) return [];
+    const { country_spec: countrySpec } = this.state
 
-    const { verification_fields } = country_spec;
-
-    return union(verification_fields[this.getType()][level], additionalFields)
+    if (!countrySpec) return [];
+    const { verification_fields } = countrySpec;
+    return union(verification_fields[this.getType()][level], additionalFields);
   }
   getType() {
     const { form_values } = this.props;
-    return form_values && form_values.legal_entity && form_values.legal_entity.type ? form_values.legal_entity.type : 'company'
+    return _.get(form_values, 'legal_entity-type', 'company');
   }
   isFieldRequired(field) {
     return this.getVerifications('minimum').indexOf(field) > -1
   }
   isFieldDisabled(field) {
     const { form_values } = this.props;
-    if (form_values && form_values.legal_entity && form_values.legal_entity.type) return this.isFieldRequired(field) === false && this.getVerifications('additional').indexOf(field) < 0
+    if (_.get(form_values, 'legal_entity.type', false)) return this.isFieldRequired(field) === false && this.getVerifications('additional').indexOf(field) < 0
     return true;
   }
-  ifFieldRequired(field, res) {
+  ifFieldRequired(field) {
     return this.isFieldRequired(field) ? required : empty
   }
   requiredIf(condition) {
     return condition ? required : empty;
   }
   formatAdditionalFields() {
-    const additional_fields = this.getVerifications('additional');
-    return additional_fields.length > 0 ? additional_fields.map((value) => fieldExplainers[value]).join(', ') : '';
+    const additionalFields = this.getVerifications('additional');
+    return additionalFields.length > 0 ? additionalFields.map((value) => fieldExplainers[value]).join(', ') : '';
   }
   getAccountTypes() {
     if (!this.state.country_spec) return [];
-    const { verification_fields } = this.state.country_spec;
-    if (!verification_fields) return [];
+    const { verification_fields: verificationFields } = this.state.country_spec;
+    if (!verificationFields) return [];
     const types = [];
-    if ('company' in verification_fields) types.push(accountTypeOptions[0])
-    if ('individual' in verification_fields) types.push(accountTypeOptions[1])
+    if ('company' in verificationFields) types.push(accountTypeOptions[0])
+    if ('individual' in verificationFields) types.push(accountTypeOptions[1])
     return types;
   }
-  /*
-  stripe_account.name = club.name;
-
-  */
   render() {
     const { handleSubmit, additional_verifications, form_values, club, submitting } = this.props
     const { stripe_account } = club;
     const { country_spec } = this.state
 
-    const existingAccount = club.stripe_account && club.stripe_account.data;
+    const existingAccount = _.get(club, 'stripe_account.data', false);
 
     const accountTypes = this.getAccountTypes();
 
-    const businessTaxId = form_values && form_values.country ? bankByCountry[form_values.country].taxId : 'Business Number';
+    const businessTaxId = _.get(bankByCountry, `[${_.get(form_values, 'country', 'NONE')}].taxId`, 'Business Number')
 
-    const businessTaxIdProvided = existingAccount ? club.stripe_account.data.legal_entity.business_tax_id_provided : false;
-
-    console.log(form_values);
+    const businessTaxIdProvided = _.get(club, 'stripe_account.data.legal_entity.business_tax_id_provided', false);
 
     return (
       <Form onSubmit={handleSubmit}>
@@ -174,8 +164,8 @@ class StripeAccountForm extends Component {
           spinning={this.state.country_spec_query}
           >
           <FieldContainer required title="Country">
-            {stripe_account ? (
-              <div>{_.find(countries, { value: stripe_account.data.country }).title}<br />
+            {existingAccount ? (
+              <div>{_.find(countries, { value: _.get(stripe_account, 'data.country') }).title}<br />
               <small>Once a country is set, you cannot change it.</small></div>
             ) : (
               <StripeCountrySelector

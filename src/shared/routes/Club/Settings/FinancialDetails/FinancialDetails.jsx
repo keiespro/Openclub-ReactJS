@@ -73,7 +73,7 @@ class BankDetails extends Component {
         currency: club.stripe_account.data.default_currency
       });
       if (source.error) throw new Error(source.error.message);
-      const up = await saveBankAccount({
+      await saveBankAccount({
         variables: {
           clubId: club._id,
           source: source.token.id
@@ -121,7 +121,7 @@ class BankDetails extends Component {
             type="warning"
             showIcon
           />
-          <StripeBankAccountForm club={club} country={club.stripe_account.data.country} onSubmit={this.saveBankAccount} submitting={submitting || this.state.submitting} />
+        <StripeBankAccountForm club={club} country={_.get(club, 'stripe_account.data.country')} onSubmit={this.saveBankAccount} submitting={submitting || this.state.submitting} />
         </div>
       )
     }
@@ -141,7 +141,7 @@ class BankDetails extends Component {
           type="success"
           showIcon
         />
-      <StripeBankAccountForm club={club} country={club.stripe_account.data.country} onSubmit={this.saveBankAccount} submitting={submitting || this.state.submitting} change />
+      <StripeBankAccountForm club={club} country={_.get(club, 'stripe_account.data.country')} onSubmit={this.saveBankAccount} submitting={submitting || this.state.submitting} change />
       </div>
     );
   }
@@ -151,7 +151,7 @@ class BankDetails extends Component {
     return (
       <div className="oc-form">
         <h4 className="bottom-gap-large">Financial Details</h4>
-        <StripeAccountForm onSubmit={this.saveDetails} club={club} initialValues={club.stripe_account ? club.stripe_account.data : null} submitting={submitting} />
+        <StripeAccountForm onSubmit={this.saveDetails} club={club} initialValues={_.get(club, 'stripe_account.data')} submitting={submitting} />
         <div className="bottom-gap-large" />
         <hr />
         <div className="bottom-gap-large" />
