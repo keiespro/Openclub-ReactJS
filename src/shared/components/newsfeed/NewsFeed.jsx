@@ -1,9 +1,12 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Card, Modal } from 'antd';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import cx from 'classnames';
 import _ from 'lodash';
+import message from 'antd/lib/message';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import NewsFeedPostForm from 'components/forms/NewsFeedPostForm';
 import feedPermissions from 'utils/feed_permissions';
@@ -24,13 +27,49 @@ class NewsFeed extends Component {
     this.state = {
       loading: false
     }
+
+    this.paginate = this.paginate.bind(this);
+  }
+  async paginate() {
+    const { feed } = this.props;
+    const { fetchMore } = feed;
+    const cursor = _.get(data, 'feed.posts.page_info.next_page_cursor');
+
+    if (cursor) {
+      await fetchMore({
+        variables: {
+          first: 15,
+          cursor
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return {
+            ...prev,
+            ...fetchMoreResult,
+            feed: {
+              ...prev.feed,
+              ...fetchMoreResult.feed,
+              posts: {
+                ...prev.feed.posts,
+                ...fetchMoreResult.feed.posts,
+                edges: _.uniqBy([...prev.feed.posts.edges, ...fetchMoreResult.feed.posts.edges], edge => {
+                  return edge.post._id
+                }),
+              }
+            }
+          }
+        }
+      })
+    }
+    return null;
   }
   getPermissions(perm = false) {
     const { viewer, feed: { feed }} = this.props;
     return perm ? feedPermissions(viewer, feed).indexOf(perm) > -1 : feedPermissions(viewer, feed);
   }
   async handleSubmit(post) {
-    const { createPost, feedOwnerId, feedOwnerType } = this.props;
+    const { perm, createPost, feedOwnerId, feedOwnerType } = this.props;
+    if (!perm.canPostFeed) return message.error('You do not have permissions to post to this feed.', 10);
 
     try {
       this.setState({ loading: true })
@@ -51,15 +90,15 @@ class NewsFeed extends Component {
     }
   }
   render() {
-    const { feed, viewer } = this.props;
-    const isPosts = feed && feed.feed && feed.feed.posts;
-    const postEdges = isPosts ? feed.feed.posts.edges : [];
+    const { perm, feed, viewer } = this.props;
+    const posts = _.get(feed, 'feed.posts.edges', []);
+    const pageInfo = _.get(feed, 'feed.posts.page_info', {});
 
     if (!feed || feed.loading) {
       return <Card loading style={{ width: '100%' }} />
     }
 
-    if (this.getPermissions('view') === false) {
+    if (!perm.canViewFeed) {
       return (
         <div className="posts-container">
           <div className="no-posts">
@@ -70,15 +109,15 @@ class NewsFeed extends Component {
         </div>
       )
     }
-    if (postEdges.length <= 0) {
+    if (posts.length <= 0) {
       return (
         <div>
-          {this.getPermissions('post') && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
+          {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
           <div className="posts-container">
             <div className="no-posts">
               <h1><i className="fa fa-newspaper-o" /></h1>
-              <h2>Nothing to show!</h2>
-              <p>There aren't any posts in this feed.</p>
+              <h2>No Posts, yet.</h2>
+              <p>{perm.canPostFeed ? 'There aren\'t any posts — try posting something.' : 'There aren\'t any posts, yet. Stay tuned.'}</p>
             </div>
           </div>
         </div>
@@ -86,9 +125,20 @@ class NewsFeed extends Component {
     }
     return (
       <div>
-        {this.getPermissions('post') && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
+        {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
         <div className="posts-container">
-          {postEdges.map(edge => <FeedItem baseQuery="getNewsFeed" post={edge.post} key={edge.post._id} perm={this.props.perm} viewer={viewer} />)}
+          <InfiniteScroll
+            pullDownToRefresh
+            pullDownToRefreshContent={<h3 style={{textAlign: 'center'}}>&#8595; Pull down to refresh</h3>}
+            releaseToRefreshContent={<h3 style={{textAlign: 'center'}}>&#8593; Release to refresh</h3>}
+            refreshFunction={() => feed.refetch()}
+            hasMore={pageInfo.has_next_page}
+            next={this.paginate}
+            endMessage=" "
+            loader={<Card className="post" loading style={{ width: '100%' }} />}
+          >
+            {posts.map(edge => <FeedItem baseQuery="getNewsFeed" post={edge.post} key={edge.post._id} perm={this.props.perm} viewer={viewer} />)}
+          </InfiniteScroll>
         </div>
       </div>
     )
@@ -96,7 +146,7 @@ class NewsFeed extends Component {
 }
 
 const NewsFeedGQL = gql`
-  query getNewsFeed($feedOwnerId: MongoID, $feedOwnerType: String, $first: Int!, $cursor: MongoID) {
+  query feed($feedOwnerId: MongoID, $feedOwnerType: String, $first: Int!, $cursor: MongoID) {
     feed(feedOwnerId: $feedOwnerId, feedOwnerType: $feedOwnerType) {
       _id
       owner{
@@ -166,6 +216,7 @@ const createPostGQL = gql`
         fbid
       }
       privacy
+      user_id
     }
   }
 `
@@ -179,7 +230,7 @@ graphql(NewsFeedGQL, {
       variables: {
         feedOwnerId: props.feedOwnerId,
         feedOwnerType: props.feedOwnerType,
-        first: 25
+        first: 15
       }
     }
   },
@@ -191,17 +242,20 @@ graphql(createPostGQL, {
   name: 'createPost',
   options: {
     updateQueries: {
-      getNewsFeed: (prev, { mutationResult }) => {
+      feed: (prev, { mutationResult }) => {
         const { createPost } = mutationResult.data;
-
         if (!createPost) return prev;
 
-        if (!prev.feed.posts) prev.feed.posts = { edges: [] };
-        if (!prev.feed.posts.edges) prev.feed.posts.edges = [];
-
-        prev.feed.posts.edges.unshift({ post: createPost });
-
-        return prev;
+        return {
+          ...prev,
+          feed: {
+            ...prev.feed,
+            posts: {
+              ...prev.feed.posts || {},
+              edges: [{ post: createPost }, ..._.get(prev, 'feed.posts.edges', [])]
+            }
+          }
+        }
       }
     }
   }

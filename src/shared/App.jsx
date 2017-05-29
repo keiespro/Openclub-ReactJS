@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
@@ -14,7 +15,7 @@ import AsyncFeed from 'routes/Feed'
 import AsyncProfile from 'routes/Profile'
 import AsyncDiscover from 'routes/Discover'
 import AsyncClubs from 'routes/Clubs'
-import AsyncClub from 'routes/Club/Club'
+import AsyncClub from 'routes/Club'
 import AsyncNotifications from 'routes/Notifications'
 import AsyncEvents from 'routes/Events'
 import AsyncTest from 'routes/Test'
@@ -41,7 +42,6 @@ import { tracking } from 'modules/mixpanel'
 import 'font-awesome/scss/font-awesome.scss'
 // ant theming
 import 'antd/dist/antd.css'
-import 'rc-drawer/assets/index.css'
 
 // theme overrides
 import 'styles/_base.scss'

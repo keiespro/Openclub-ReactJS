@@ -13,7 +13,7 @@ const Error = ({ error }) => {
     showIcon: true,
     type: 'error'
   }
-  if (process.env.NODE_ENV !== 'production') console.trace(error); //eslint-disable-line
+  console.error(error);
   if (error.networkError) {
     config = {
       ...config,

@@ -1,8 +1,15 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Helmet from 'react-helmet'
 import NewsFeed from 'components/newsfeed/NewsFeed';
 import PostPage from 'components/newsfeed/PostPage'
 import { MatchGroup, Match } from 'teardrop';
+import Row from 'antd/lib/row';
+import Col from 'antd/lib/col';
+import _ from 'lodash';
+
+// WIDGETS
+import ClubInviteWidget from 'components/widgets/ClubInviteWidget'
 
 class Feed extends Component {
   static propTypes = {
@@ -12,7 +19,6 @@ class Feed extends Component {
     perm: PropTypes.object
   }
   render() {
-    console.log(this.props);
     const { club, viewer, location, perm, slug } = this.props;
 
     const regex = /^\/[\w\d]+\/feed\/([\w\d]+)/;
@@ -25,10 +31,17 @@ class Feed extends Component {
     return (
       <div>
         <Helmet title={`${club.name} — Feed`} />
-        <MatchGroup>
-          <Match pattern={`/${slug}/feed`} render={() => <NewsFeed feedOwnerId={club._id} feedOwnerType="clubs" viewer={viewer} firstPostId={firstPostId} perm={perm} />} />
-          <Match pattern={`/${slug}/feed/post/:post_id`} render={params => <PostPage perm={perm} viewer={viewer} {...params} />} />
-        </MatchGroup>
+        <Row gutter={16}>
+          <Col xs={24} lg={16}>
+            <MatchGroup>
+              <Match pattern={`/${slug}/feed`} render={() => <NewsFeed feedOwnerId={_.get(club, '_id')} feedOwnerType="clubs" viewer={viewer} firstPostId={firstPostId} perm={perm} />} />
+              <Match pattern={`/${slug}/feed/post/:post_id`} render={params => <PostPage perm={perm} viewer={viewer} {...params} />} />
+            </MatchGroup>
+          </Col>
+          <Col lg={8} className="hidden-xs hidden-sm hidden-md">
+            <ClubInviteWidget club={club} />
+          </Col>
+        </Row>
       </div>
     )
   }

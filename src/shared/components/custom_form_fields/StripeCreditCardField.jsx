@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { createCardElement } from 'utils/stripe'
 import Spin from 'antd/lib/spin'
 import message from 'antd/lib/message'

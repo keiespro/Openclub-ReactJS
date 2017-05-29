@@ -52,6 +52,7 @@ class ClubActions extends Component {
   }
   render() {
     const { perm } = this.props;
+    if (!perm.canViewFeed) return <div />
     return (
       <Menu onClick={this.processAction}>
         { perm.userIsFollower && <MenuItem key="unfollow">Unfollow</MenuItem> }
@@ -76,22 +77,28 @@ const updateMembershipMutation = gql`
 const ClubActionsApollo = compose(
   graphql(updateMembershipMutation, {
     name: 'updateMembership',
-    options: {
-      updateQueries: {
-        user: (prev, { mutationResult }) => {
-          const { updateMembership } = mutationResult.data;
-          if (!prev.user.memberships || prev.user.memberships instanceof Array === false) {
-            prev.user.memberships = [];
-            prev.user.memberships.push(updateMembership);
+    options: () => {
+      let refetch = [];
+      return {
+        updateQueries: {
+          user: (prev, { mutationResult }) => {
+            const { updateMembership } = mutationResult.data;
+            if (!prev.user.memberships || prev.user.memberships instanceof Array === false) {
+              prev.user.memberships = [];
+              prev.user.memberships.push(updateMembership);
+              return prev;
+            }
+
+            const membershipIndex = _.findIndex(prev.user.memberships, { _id: updateMembership._id });
+            if (membershipIndex > -1) {
+              prev.user.memberships[membershipIndex] = updateMembership;
+            } else {
+              refetch.push('user');
+            }
             return prev;
           }
-
-          const membershipIndex = _.findIndex(prev.user.memberships, { _id: updateMembership._id });
-          if (membershipIndex > -1) {
-            prev.user.memberships[membershipIndex] = updateMembership;
-          }
-          return prev;
-        }
+        },
+        refetchQueries: refetch
       }
     }
   })

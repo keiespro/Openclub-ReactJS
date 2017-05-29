@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Menu, Col, Row } from 'antd'
 import { ContentArea, ContentPage } from 'components/layout'
 import UserProfile from 'modules/forms/UserProfile'

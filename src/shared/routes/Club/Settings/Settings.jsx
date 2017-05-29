@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Menu, Icon, Row, Col } from 'antd'
 import { ContentPage, PageHeader } from 'components/layout'
 import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
@@ -6,23 +7,26 @@ import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
 import AsyncClubProfile from './ClubProfile'
 import AsyncFinancialDetails from './FinancialDetails'
 import AsyncMembershipPlans from './MembershipPlans'
+import AsyncImportMembers from './ImportMembers'
 import Landing from './Landing'
 
 import './Settings.css'
 
 const Settings = ({ club, location, pattern }, { router }) => {
   const handleClick = e => {
-    if (e.key === 'overview') e.key = '';
+    if (e.key === 'settings') e.key = '';
     router.transitionTo(`/${club.slug}/settings/${e.key}`)
   }
   const match = location.pathname ? location.pathname.match(/^.*\/.*\/([\d\w-_]+)\/?/)[1] : '';
+
   const selectedKeys = [match];
 
   const Items = [
-      <Menu.Item key="overview">General</Menu.Item>,
-      <Menu.Item key="profile">Profile</Menu.Item>,
-      <Menu.Item key="plans">Membership Plans</Menu.Item>,
-      <Menu.Item key="payments">Financial Details</Menu.Item>
+      <Menu.Item key="settings"><i className="fa fa-fw fa-gears" /> General</Menu.Item>,
+      <Menu.Item key="profile"><i className="fa fa-fw fa-address-card" /> Profile</Menu.Item>,
+      <Menu.Item key="plans"><i className="fa fa-fw fa-users" /> Membership Plans</Menu.Item>,
+      <Menu.Item key="payments"><i className="fa fa-fw fa-money" /> Financial Details</Menu.Item>,
+      <Menu.Item key="import"><i className="fa fa-fw fa-upload" /> Import Members</Menu.Item>
   ]
 
   return (
@@ -47,6 +51,7 @@ const Settings = ({ club, location, pattern }, { router }) => {
               <Match pattern="profile" render={routerProps => <AsyncClubProfile {...routerProps} club={club} />} />
               <Match pattern="plans" render={routerProps => <AsyncMembershipPlans {...routerProps} club={club} />} />
               <Match pattern="payments" render={routerProps => <AsyncFinancialDetails {...routerProps} club={club} />} />
+              <Match pattern="import" render={routerProps => <AsyncImportMembers {...routerProps} club={club} />} />
             </MatchGroup>
           </div>
         </Col>

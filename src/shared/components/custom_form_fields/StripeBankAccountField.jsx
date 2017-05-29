@@ -1,7 +1,9 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Input, { Group as InputGroup } from 'antd/lib/input'
 import Alert from 'antd/lib/alert'
 import { bankByCountry } from 'constants/index'
+import _ from 'lodash';
 
 class StripeBankAccountField extends Component {
   static propTypes = {
@@ -38,11 +40,8 @@ class StripeBankAccountField extends Component {
     this.setState(obj);
     this.update();
   }
-  countrySpec() {
-    return bankByCountry[this.props.country];
-  }
   render() {
-    const { account_number, routing_number, transit_number } = this.countrySpec();
+    const { account_number, routing_number, transit_number } = _.get(bankByCountry, `[${this.props.country}]`, {});
     return (
       <div>
         <InputGroup compact className="bottom-gap">

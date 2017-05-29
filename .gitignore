@@ -45,3 +45,4 @@ flow-coverage/
 .DS_Store
 
 dist
+yarn.lock

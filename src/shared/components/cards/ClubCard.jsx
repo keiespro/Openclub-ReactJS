@@ -1,5 +1,6 @@
 // Dependencies
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'teardrop';
 import _ from 'lodash';
 import { connect } from 'react-redux';
@@ -32,16 +33,15 @@ class ClubCard extends Component {
       separator: ' '
     });
     }
-    return 'No description provided.';
+    return '';
   }
   locationText(club) {
     if (club.details && club.details.location && club.details.location.formatted_address) {
       return club.details.location.formatted_address;
     }
-    return 'No location provided.';
+    return '';
   }
   render() {
-    console.log(this.props.viewer);
     const { club, viewer } = this.props;
     const { router } = this.context;
     const perm = clubPermissions(club, viewer);
@@ -62,10 +62,10 @@ class ClubCard extends Component {
               <Link to={`/${club.slug}`}><img src={images.square || '/empty-club.png'} alt={club.name} /></Link>
             </div>
             <div className="club-card-actions">
-              <ButtonGroup>
+              {perm.canViewFeed ? <ButtonGroup>
                 {perm.userCanJoin && <Button type="primary" icon="user-add" size="large" className="btn-resp" onClick={onJoin}>Join This Club</Button>}
                 <Dropdown key={`${club.slug}-dd`} overlay={followMenu}><Button type="default" size="large" className="btn-resp" icon="user">{perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" /></Button></Dropdown>
-              </ButtonGroup>
+              </ButtonGroup> : null}
             </div>
           </div>
         </div>

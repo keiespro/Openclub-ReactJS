@@ -1,11 +1,14 @@
 // Dependencies
-import React, { Component, PropTypes } from 'react'
-import { Row, Col, Button } from 'antd'
-import { graphql, compose } from 'react-apollo'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import _ from 'lodash';
+import Row from 'antd/lib/row';
+import Spin from 'antd/lib/spin';
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag';
 
 // Components
-import apolloClient from 'modules/apollo'
+import InfiniteScroll from 'react-infinite-scroll-component'
 import ClubCard from 'components/cards/ClubCard'
 
 import './Landing.scss'
@@ -20,30 +23,55 @@ class ClubsLanding extends Component {
   }
   constructor(props) {
     super(props)
+
+    this.paginate = this.paginate.bind(this);
   }
-  async paginate(last) {
-    const query = await apolloClient.query({
-      query: clubsQueryGQL, //eslint-disable-line
-      variables: {
-        first: 25,
-        cursor: last._id
-      }
-    });
+  async paginate() {
+    const { fetchMore, clubs: { page_info: pageInfo = {} } = {} } = this.props.data;
+    if (pageInfo.next_page_cursor) {
+      await fetchMore({
+        variables: {
+          first: 24,
+          cursor: _.get(this.props.data, 'clubs.page_info.next_page_cursor')
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return {
+            ...prev,
+            ...fetchMoreResult,
+            clubs: {
+              ...prev.clubs,
+              ...fetchMoreResult,
+              page_info: fetchMoreResult.clubs.page_info,
+              edges: _.uniqBy([...prev.clubs.edges, ...fetchMoreResult.clubs.edges], '_id')
+            }
+          }
+        }
+      });
+    }
+    // No cursor
+    return null;
   }
   goTo(link) {
     this.context.router.transitionTo(link);
   }
   render() {
-    const { data: { clubs }} = this.props;
-    const list = clubs ? [...clubs.edges] : [];
+    const { viewer, data = {} } = this.props;
+    const { clubs: { page_info: pageInfo, edges = [] } = {} } = data;
+
     return (
       <div>
         <h3>Suggested Clubs</h3>
         <hr className="bottom-gap-large" />
         <Row type="flex" justify="flex-start">
-          {list.map(club => (
-            <ClubCard club={club} viewer={this.props.viewer} />
-          ))}
+          <InfiniteScroll
+            hasMore={pageInfo && pageInfo.has_next_page}
+            next={this.paginate}
+            loader={<Spin style={{ width: '100%' }} tip="Loading..." />}
+            endMessage=" "
+            >
+              {edges.map(club => <ClubCard key={club._id} club={club} viewer={viewer} />)}
+          </InfiniteScroll>
         </Row>
       </div>
     )
@@ -53,6 +81,10 @@ class ClubsLanding extends Component {
 const clubsQueryGQL = gql`
   query clubs($first: Int!, $cursor: ID) {
     clubs(first:$first, cursor:$cursor) {
+      page_info{
+        next_page_cursor
+        has_next_page
+      }
       edges{
         _id
         name
@@ -95,7 +127,7 @@ const clubsQueryGQL = gql`
 const ClubsApollo = graphql(clubsQueryGQL, {
   options: () => ({
     variables: {
-      first: 25
+      first: 24
     }
   })
 })(ClubsLanding)

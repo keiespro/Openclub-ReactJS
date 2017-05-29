@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { browserHistory } from 'teardrop'
@@ -26,7 +27,7 @@ const CreateClub = ({ mutate, submitting }, { router }) => {
         title: "Club Created",
         content: "Your club page has been created. Follow the steps to complete the setup and invite members to your club."
       });
-      router.transitionTo(`/${values.slug}`);
+      router.transitionTo(`/${values.slug}/settings`);
     } catch (err) {
       Modal.error({
         title: "Error Creating Club",

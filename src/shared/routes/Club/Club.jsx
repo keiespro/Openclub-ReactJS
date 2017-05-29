@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { login } from 'modules/auth/actions'
@@ -9,7 +10,6 @@ import { Menu, Icon, Dropdown } from 'antd'
 import Button, { Group as ButtonGroup } from 'antd/lib/button'
 import { Match, MatchGroup, Miss, Redirect } from 'teardrop'
 import ProfileHeader from 'components/profile/ProfileHeader'
-import ClubHeroHelper from 'components/hero_helpers/ClubHeroHelper'
 import { ContentArea } from 'components/layout'
 import Error404 from 'components/Error404/Error404'
 import Error from 'components/Error/Error'
@@ -21,10 +21,10 @@ import ClubActions from 'modules/forms/ClubActions'
 import AsyncAbout from './About' // FIXME: Shitty hack to bypass System.import()
 import AsyncCommunity from './Community'
 import AsyncEvents from './Events'
-import AsyncFeed from './Feed'
+import AsyncFeed from './Feed/Feed'
 import AsyncJoin from './Join/Join'
 import AsyncSettings from './Settings'
-import AsyncMembership from './Membership/Membership'
+import AsyncMembership from './Membership'
 import AsyncTransactions from './Transactions'
 
 import './Club.scss'
@@ -80,30 +80,28 @@ class Club extends Component {
         />
         <Tabs
           activeKey={selectedKey}
-          tabBarExtraContent={
+          tabBarExtraContent={perm.canViewFeed ?
             <ButtonGroup>
               {perm.userCanJoin && <Button type="primary" icon="user-add" size="large" className="btn-resp" onClick={onJoin}>Join This Club</Button>}
               <Dropdown overlay={followMenu}><Button type="default" size="large" className="btn-resp" icon="user">{perm.userIsFollower ? 'Following' : 'Follow'} <Icon type="down" /></Button></Dropdown>
-            </ButtonGroup>
+            </ButtonGroup> : null
           }
           onTabClick={handleClick}
           >
-          <TabPane tab="Feed" key="feed" />
+          {perm.canViewFeed && <TabPane tab="Feed" key="feed" />}
           <TabPane tab="About" key="about" />
-          <TabPane tab="Community" key="community" />
+          {perm.canViewDirectory && <TabPane tab="Community" key="community" />}
           {perm.userIsMember && <TabPane tab="My Membership" key="mymembership" />}
           {perm.userCanAccessFinances && <TabPane tab="Transactions" key="transactions" />}
           {perm.userCanAccessSettings && <TabPane tab="Settings" key="settings" />}
         </Tabs>
         <ContentArea>
-          {perm.userCanAccessSettings && <ClubHeroHelper club={club} />}
           <MatchGroup>
             <Match
               exactly
               pattern={`/${params.club_id}`}
               render={() => {
-                if (!viewer) return <Redirect to={`/${params.club_id}/about`} />;
-                if (viewer && (perm.userIsMember || perm.userIsFollower)) {
+                if (perm.canViewFeed) {
                   return <Redirect to={`/${params.club_id}/feed`} />
                 }
                 return <Redirect to={`/${params.club_id}/about`} />

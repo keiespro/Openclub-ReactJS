@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const Logo = props => (
   <svg viewBox="0 0 498 121" version="1.1" {...props}>
