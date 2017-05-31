@@ -4,15 +4,24 @@ import Menu from 'antd/lib/menu';
 import Col from 'antd/lib/col';
 import Row from 'antd/lib/row';
 import Badge from 'antd/lib/badge';
+import Card from 'antd/lib/card';
+import Button from 'antd/lib/button';
+import Modal from 'antd/lib/modal';
+import message from 'antd/lib/message';
 import _ from 'lodash';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import { ContentArea, ContentPage } from 'components/layout'
 import UserProfile from 'modules/forms/UserProfile'
 import ManageCreditCards from 'modules/forms/ManageCreditCards'
 import { MatchGroup, Match, Redirect } from 'teardrop';
+import userPhoto from 'utils/user_photo';
+import parseError from 'utils/error';
 
 class Profile extends Component {
   static propTypes = {
-    viewer: PropTypes.object
+    viewer: PropTypes.object,
+    location: PropTypes.object
   }
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -22,7 +31,23 @@ class Profile extends Component {
 
     this.anchors = {};
   }
+  async deleteInvite(invitationId) {
+    const { deleteInvite } = this.props;
 
+    try {
+      await deleteInvite({
+        variables: {
+          invitationId
+        }
+      });
+      message.success('Deleted', 5);
+    } catch (err) {
+      Modal.error({
+        title: 'Uh-oh!',
+        content: parseError(err)
+      })
+    }
+  }
   render() {
     const { viewer, location } = this.props;
     const match = location.pathname ? location.pathname.match(/^.*\/([\d\w-_]+)\/?/)[1] : 'profile';
@@ -55,7 +80,7 @@ class Profile extends Component {
                   // Some variables
                   return (
                     <Row gutter={16}>
-                      <Col xs={24} mg={8} lg={8} className="xs-hidden sm-hidden">
+                      <Col xs={24} md={8} lg={8} className="xs-hidden sm-hidden">
                         <div>
                           <h3>Profile Details</h3>
                           <hr className="mt-lg mb-lg" />
@@ -109,7 +134,36 @@ class Profile extends Component {
               <Match
                 pattern="/profile/invitations"
                 render={() => {
-                  return <div>Coming Soon</div>
+                  const invitations = _.get(viewer, 'invitations', []);
+                  return (
+                    <div>
+                      {invitations.map(invitation => (
+                        <Card key={invitation._id} bodyStyle={{ padding: 0 }} key={invitation._id} className="mb-sm">
+                          <div className="table m0">
+                            <div className="cell oh" style={{ width: 90 }}>
+                              <img src={userPhoto(_.get(invitation, 'owner_entity.meta.images', {}))} style={{ maxWidth: '100%' }} alt={_.get(invitation, 'owner_entity.meta.name', 'No name')} role="presentation" />
+                            </div>
+                            <div className="cell p" style={{ verticalAlign: 'top' }}>
+                              <h4>{_.get(invitation, 'owner_entity.meta.name', 'No name')}</h4>
+                              {invitation.roles && (
+                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to manage {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                              )}
+                              {invitation.subscription && (
+                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has added your membership to {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                              )}
+                              {invitation.membership_plan_id && (
+                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to join {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                              )}
+                              {!invitation.membership_plan_id && !invitation.roles && !invitation.subscription && (
+                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to join a private plan on {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                              )}
+                              <Button type="primary" onClick={() => this.context.router.transitionTo(`/invite/${invitation.invitation_url}`)}>Open Invite</Button> <Button type="danger" onClick={() => Modal.confirm({ title: 'Are you sure?', content: 'Are you sure you want to delete this invite?', okText: 'Yes', cancelText: 'No', onOk: this.deleteInvite.bind(this, invitation._id) })}>Delete Invite</Button>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  )
                 }}
                 />
               <Match pattern="/profile/help" render={() => <Redirect to="/help" />} />
@@ -119,4 +173,27 @@ class Profile extends Component {
     );
   }
 }
-export default Profile;
+
+const deleteInvite = gql`
+  mutation deleteInvite($invitationId: MongoID!) {
+    deleteInvite(invitationId: $invitationId) {
+      _id
+    }
+  }
+`
+
+const ProfileApollo = graphql(deleteInvite, {
+  name: 'deleteInvite',
+  options: {
+    updateQueries: {
+      user: (prev, { mutationResult }) => {
+        if (!mutationResult.data.deleteInvite) return prev;
+        const clonedState = _.clone(prev);
+        _.remove(prev.user.invitations, invite => invite._id === mutationResult.data.deleteInvite._id);
+        return clonedState;
+      }
+    }
+  }
+})(Profile)
+
+export default ProfileApollo;

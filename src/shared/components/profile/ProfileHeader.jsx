@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd'
 import cx from 'classnames'
 import './ProfileHeader.scss'
-
+import _ from 'lodash';
 
 class ProfileHeader extends Component {
   static defaultProps = {
@@ -47,12 +47,9 @@ class ProfileHeader extends Component {
   }
   render() {
     const { buttons } = this.props
-    const { background } = this.props.images || {}
-
-    const bgEle = typeof background === 'undefined' ? 'url(/coverphoto.jpg)' : `url(${background})`
 
     const headerImageStyles = {
-      backgroundImage: `${bgEle}`,
+      backgroundImage: `url(${_.get(this.props, 'images.background') || '/coverphoto.jpg'})`,
       backgroundPosition: 'center center',
       backgroundSize: 'cover'
     }
