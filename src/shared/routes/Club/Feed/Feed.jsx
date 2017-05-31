@@ -39,7 +39,7 @@ class Feed extends Component {
             </MatchGroup>
           </Col>
           <Col lg={8} className="hidden-xs hidden-sm hidden-md">
-            <ClubInviteWidget club={club} />
+            {viewer && <ClubInviteWidget club={club} />}
           </Col>
         </Row>
       </div>
