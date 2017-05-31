@@ -55,7 +55,11 @@ const Settings = ({ club, location, pattern }, { router }) => {
     </ContentPage>
   )
 }
-
+Settings.propTypes = {
+  club: PropTypes.object,
+  location: PropTypes.object,
+  pattern: PropTypes.string
+}
 Settings.contextTypes = {
   router: PropTypes.object
 }
