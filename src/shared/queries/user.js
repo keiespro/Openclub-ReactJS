@@ -22,6 +22,24 @@ export default gql`
       }
       invitations{
         _id
+        owner_entity{
+          type
+          owner_id
+          meta
+        }
+        creator{
+          name
+          images{
+            square
+          }
+          email
+        }
+        subscription{
+          expiry_date
+        }
+        invitation_url
+        membership_plan_id
+        roles
       }
       memberships {
         _id
