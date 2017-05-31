@@ -27,7 +27,7 @@ class CreateClubForm extends Component {
       createForm.values.slug : '<your id here>'
 
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} className="m-sm">
         <FieldContainer required title="Club, Community or Organisation Name">
           <Field
             name="club.name"
@@ -42,7 +42,7 @@ class CreateClubForm extends Component {
             name="slug"
             type="text"
             addonBefore={location ? `${location.origin}/` : 'http://www.openclub.co/'}
-            help={<span>Choose a name that members can use to find your club.<br />{`http://openclub.co/${slugString}`}</span>}
+            help={<span>Choose a name that members can use to find your club.<br />{(location ? location.origin : 'http://www.openclub.co') + '/' + slugString}</span>}
             validate={[required, slug, maxLength(64), reservedSlugs]}
             component={Input}
           />
@@ -57,17 +57,14 @@ class CreateClubForm extends Component {
             action={`${process.env.ICEPICK_URL}/upload/image/square`}
           />
         </FieldContainer>
-        <FieldContainer title="Cover Photo">
-          <p>Add to your appearance by adding a cover photo.<br />
-          <small>You can do this later.*</small>
-          </p>
+        <FieldContainer title="Background Image">
           <Field
-            name="club.images.background"
+            name="images.background"
             token={token}
             postname="background"
             action={`${process.env.ICEPICK_URL}/upload/image/background`}
-            component={FileUploader}
-            listType="picture"
+            aspect={100 / 37}
+            component={ImageUploader}
           />
         </FieldContainer>
         <Button type="primary" htmlType="submit" loading={this.props.submitting} size="large">
