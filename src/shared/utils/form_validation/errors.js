@@ -1,6 +1,7 @@
 /**
  * List of error based validation functions and related messages
  */
+ import la from 'logandarrow'
 
 export const required = val => !val || val.length <= 0 ?
   'This field must have a value.' : undefined
