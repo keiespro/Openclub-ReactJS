@@ -27,6 +27,16 @@ a {
   }
 }
 
+.ant-btn-danger {
+  color: #ffffff;
+  background-color: #f04134;
+  border-color: #f04134;
+  &:hover {
+    background-color: #d73435;
+    border-color: #d73435;
+  }
+}
+
 .ant-btn-primary {
   color: #fff;
   background-color: $brand-color;
