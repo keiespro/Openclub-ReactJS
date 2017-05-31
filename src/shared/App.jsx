@@ -20,6 +20,7 @@ import AsyncNotifications from 'routes/Notifications'
 import AsyncEvents from 'routes/Events'
 import AsyncTest from 'routes/Test'
 import Auth from 'routes/Auth'
+import Invitation from 'routes/Invitation'
 import Logout from 'routes/Auth/Logout'
 
 import { initNotifications } from 'modules/notifications/actions'
@@ -176,6 +177,8 @@ class App extends Component {
               <Match pattern="/(discover|search)" component={AsyncDiscover} />
               {/* EVENT PAGES */}
               <Match pattern="/events" component={AsyncEvents} />
+              {/* INVITATION */}
+              <Match pattern="/invite/:invitationUrl" component={Invitation} />
               {/* USER AGGREGATED FEED */}
               <Match
                 pattern="/feed" render={() => {
