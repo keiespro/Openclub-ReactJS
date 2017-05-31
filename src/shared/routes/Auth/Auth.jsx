@@ -27,16 +27,10 @@ class Auth extends Component {
     this.state = {
       loading: true
     }
-  }
-  componentWillReceiveProps(nextProps) {
-    console.log(this.props, nextProps);
-    if (!this.props.user && nextProps.user) {
-      const logonPath = localStorage.getItem('logonPath') || '';
-      localStorage.removeItem('logonPath');
-      this.context.router.replaceWith('/' + logonPath);
-    }
+    this.to = null;
   }
   async componentDidMount() {
+    if (this.props.user) return true;
     const { auth, success, error } = this.props;
     // Wait for the has to parse
     let token = localStorage.getItem('openclub_token');
@@ -45,6 +39,7 @@ class Auth extends Component {
       return;
     }
     try {
+      if (!window.location.hash) return this.context.router.replaceWith('/login');
       const accessToken = await hashParsed();
       if (!accessToken) return this.context.router.replaceWith('/login');
       const mutation = await auth({
@@ -60,13 +55,20 @@ class Auth extends Component {
       console.log(err, err.message);
       notification.error({
         message: 'Uh-oh',
-        content: parseError(err.message),
+        description: parseError(err),
         duration: 10
       })
       return error(err);
     }
   }
   render() {
+    const { user } = this.props;
+    console.log(user);
+    if (user) {
+      const logonPath = localStorage.getItem('logonPath') || '';
+      localStorage.removeItem('logonPath');
+      return <Redirect to={logonPath} />
+    }
     return <Loading />
   }
 }

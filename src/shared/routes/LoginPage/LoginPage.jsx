@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { inlineLogin }  from 'modules/auth/actions'
+import { inlineLogin, hideInlineLogin }  from 'modules/auth/actions'
 import ReactPlayer from 'react-player'
 import { Row, Col } from 'antd'
 
@@ -10,10 +10,14 @@ import '../Home/Home.scss'
 class LoginPageView extends Component {
   static propTypes = {
       login: PropTypes.func,
-      inlineLogin: PropTypes.func
+      inlineLogin: PropTypes.func,
+      hideInlineLogin: PropTypes.func
   }
   componentDidMount() {
     this.props.inlineLogin('home-lock-container');
+  }
+  componentWillUnmount() {
+    this.props.hideInlineLogin('home-lock-container');
   }
   render() {
     return (
@@ -46,4 +50,4 @@ class LoginPageView extends Component {
   }
 }
 
-export default connect(null, { inlineLogin })(LoginPageView)
+export default connect(null, { inlineLogin, hideInlineLogin })(LoginPageView)

@@ -39,10 +39,18 @@ export function inlineLogin(id) {
   }
 }
 
+export function hideInlineLogin(id) {
+  return dispatch => {
+    dispatch(showInlineLock())
+    inlineLock(id).hide()
+  }
+}
+
 // Opens the Lock widget and dispatches actions along the way
 export function login() {
   return dispatch => {
     dispatch(showLock())
+    localStorage.setItem('logonPath', window.location.pathname);
     lock.show()
   }
 }
