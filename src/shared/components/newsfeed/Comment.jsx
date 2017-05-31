@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import { truncate } from 'lodash';
 import { Button, Badge } from 'antd';
+import m from 'moment';
 
 // Utils
 import userPhoto from 'utils/user_photo'
@@ -26,7 +27,7 @@ class Comment extends Component {
     }
   }
   render() {
-    const { likes, likes_count: likesCount, text, images, user, attachment, indexInArray, highlighted } = this.props;
+    const { datetime, likes, likes_count: likesCount, text, images, user, attachment, indexInArray, highlighted } = this.props;
     return (
       <div className="comment">
         <div className="media">
@@ -36,7 +37,7 @@ class Comment extends Component {
         </div>
         <div className="comment-body">
           <div className="creator-title">
-            <p className="m0 text-bold">{user.name || 'No name'}</p>
+            <p className="m0 text-bold">{user.name || 'No name'} <small>commented {m(datetime).fromNow()}</small></p>
           </div>
           <div className={cx('text', { 'expanded': this.state.expanded })}>
             {this.state.expanded ? text : truncate(text, { length: 128, separator: ' ' })} {!this.state.expanded && text.length > 128 && <a href="#" onClick={e => { e.preventDefault(); this.setState({ expanded: true }) }}>load more</a>}

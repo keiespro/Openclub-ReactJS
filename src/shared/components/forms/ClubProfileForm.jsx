@@ -58,7 +58,7 @@ class ClubProfileForm extends Component {
             token={token}
             postname="background"
             action={`${process.env.ICEPICK_URL}/upload/image/background`}
-            aspect={25 / 6}
+            aspect={100 / 37}
             component={ImageUploader}
           />
         </FieldContainer>

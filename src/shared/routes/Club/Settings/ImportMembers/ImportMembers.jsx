@@ -300,16 +300,18 @@ class ImportMembers extends Component {
               <p className="bottom-gap">
                 {"Please select the column headers and ensure that the data you have uploaded looks correct."}
               </p>
-              <table className="table bottom-gap">
-                <tbody>
-                  <tr style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
-                    {this.state.colConfig.map((row, key) => <td key={'head' + key}>{fieldType(key)}</td>)}
-                  </tr>
-                  {
-                    rawData.map((row, rowKey) => <tr key={rowKey}>{row.map((cell, cellKey) => <td key={`rd${rowKey}-${cellKey}`}>{cell}</td>)}</tr>)
-                  }
-                </tbody>
-              </table>
+              <div style={{ overflowX: 'scroll' }}>
+                <table className="table bottom-gap">
+                  <tbody>
+                    <tr style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+                      {this.state.colConfig.map((row, key) => <td key={'head' + key}>{fieldType(key)}</td>)}
+                    </tr>
+                    {
+                      rawData.map((row, rowKey) => <tr key={rowKey}>{row.map((cell, cellKey) => <td key={`rd${rowKey}-${cellKey}`}>{cell}</td>)}</tr>)
+                    }
+                  </tbody>
+                </table>
+              </div>
               {this.state.someExclusions && <Alert type="info" message="Rows Removed" description="Some rows have been removed because they were invalid." showIcon />}
               <hr className="bottom-gap top-gap" />
               <Button disabled={this.state.progress !== 0} type="primary" onClick={() => { this.input.click() }}><i className="fa fa-fw fa-upload" /> Upload Different CSV</Button>

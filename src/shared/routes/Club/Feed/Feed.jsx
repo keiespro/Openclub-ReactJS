@@ -34,7 +34,7 @@ class Feed extends Component {
         <Row gutter={16}>
           <Col xs={24} lg={16}>
             <MatchGroup>
-              <Match pattern={`/${slug}/feed`} render={() => <NewsFeed feedOwnerId={_.get(club, '_id')} feedOwnerType="clubs" viewer={viewer} firstPostId={firstPostId} perm={perm} />} />
+              <Match pattern={`/${slug}/feed`} render={() => <NewsFeed feedOwnerId={_.get(club, '_id')} feedOwnerType="clubs" slug={slug} viewer={viewer} firstPostId={firstPostId} perm={perm} />} />
               <Match pattern={`/${slug}/feed/post/:post_id`} render={params => <PostPage perm={perm} viewer={viewer} {...params} />} />
             </MatchGroup>
           </Col>

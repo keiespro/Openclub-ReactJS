@@ -5,6 +5,7 @@ import { Link } from 'teardrop';
 import gql from 'graphql-tag';
 import _ from 'lodash';
 import error from 'utils/error';
+import m from 'moment';
 
 import { Icon, Dropdown, Menu, Button, message, Modal } from 'antd'
 import cx from 'classnames'
@@ -98,7 +99,7 @@ class FeedItem extends Component {
     const { comments, owner, _id } = post;
 
     if (!comments) {
-      this.context.router.transitionTo(`${owner.type === 'events' ? '/events/' : '/'}${owner.slug}/feed/post/${_id}`);
+      this.context.router.transitionTo(`${owner && owner.type === 'events' ? '/events/' : '/'}${owner.slug}/feed/post/${_id}`);
       return;
     }
     this.setState({
@@ -129,9 +130,12 @@ class FeedItem extends Component {
           <div className="creator-title">
             <p className="m0 text-bold">{_.get(value, 'user.name', _.get(value, 'owner.slug', 'No Name'))}</p>
             <small className="text-muted">
-              <Icon type={cx({ 'global': value.privacy === 'PUBLIC', 'contacts': value.privacy === 'PRIVATE' })} /> {cx({ 'Public': value.privacy === 'PUBLIC', 'Members': value.privacy === 'PRIVATE' })}
-              {value.owner && value.owner.slug && value.owner.type === 'clubs' && <span> | Posted in <Link to={`/${value.owner.slug}/feed`}>@{value.owner.slug}</Link></span>}
-              {value.owner && value.owner.slug && value.owner.type === 'events' && <span> | Posted in <Link to={`/event/${value.owner.slug}/feed`}>@{value.owner.slug}</Link></span>}
+              <Icon type={cx({ 'global': value.privacy === 'public', 'contacts': value.privacy === 'private' })} /> {cx({ 'Public': value.privacy === 'public', 'Members': value.privacy === 'private' })}
+              <span> | </span>
+              {value.owner && value.owner.slug && value.owner.type === 'clubs' && <span>Posted in <Link to={`/${value.owner.slug}/feed`}>@{value.owner.slug}</Link></span>}
+              {value.owner && value.owner.slug && value.owner.type === 'events' && <span>Posted in <Link to={`/event/${value.owner.slug}/feed`}>@{value.owner.slug}</Link></span>}
+              <span> | </span>
+              {m(value.datetime).fromNow()}
             </small>
           </div>
         </div>
@@ -153,7 +157,11 @@ class FeedItem extends Component {
           <Button onClick={this.toggleComments} type="primary"><Icon type="message" /> Comment ({value.comments_count || 0})</Button>
         )}
         <div className={cx({'hidden': this.state.comments_expanded === false})}>
-          {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.submitComment.bind(this)} activeRequest={this.state.loading} inline hidePrivacy placeholder="Write a comment..." />}
+          {perm.canPostFeed && (
+            <div className="mt mb">
+              <NewsFeedPostForm viewer={viewer} handleSubmit={this.submitComment.bind(this)} activeRequest={this.state.loading} inline hidePrivacy placeholder="Write a comment..." />
+            </div>
+          )}
           <div className="comments">
             {this.props.comments && this.props.comments.edges ? this.props.comments.edges.map(edge => <Comment key={edge.comment._id} {...edge.comment} />) : null}
           </div>
@@ -206,20 +214,22 @@ const deleteMutation = gql`
 const SubmitCommentMutation = gql`
   mutation comment($postId: MongoID!, $comment: commentInput!) {
     comment(postId: $postId, comment: $comment) {
-      _id
-      post_id
-      text
-      attachment
-      images{
-        square
-        background
-      }
-      user{
-        name
+      comment {
+        _id
+        post_id
+        text
+        attachment
         images{
           square
+          background
         }
-        fbid
+        user{
+          name
+          images{
+            square
+          }
+          fbid
+        }
       }
     }
   }
@@ -246,7 +256,7 @@ graphql(SubmitCommentMutation, {
           if (!post.comments) post.comments = { edges: [] }
           if (!post.comments.edges) post.comments.edges = [];
 
-          post.comments.edges.unshift({ comment });
+          post.comments.edges.unshift(comment);
           post.comments_count++; //eslint-disable-line
 
           prev[prevKey].posts.edges[postIndex].post = {
@@ -258,7 +268,7 @@ graphql(SubmitCommentMutation, {
           if (!prev[prevKey].comments) prev.comments = { edges: [] }
           if (!prev[prevKey].comments.edges) prev.comments.edges = [];
 
-          prev[prevKey].comments.edges.unshift({ comment })
+          prev[prevKey].comments.edges.unshift(comment)
         }
 
         return prev;
@@ -273,12 +283,13 @@ graphql(deleteMutation, {
       [props.baseQuery]: (prev, { mutationResult }) => {
         const prevKey = Object.keys(prev)[0];
         const { deletePost } = mutationResult.data;
+        let clonedState = _.clone(prev);
 
         if (!deletePost._id) return prev;
 
-        _.remove(prev[prevKey].posts.edges, e => e.post._id === deletePost._id);
+        _.remove(clonedState[prevKey].posts.edges, e => e.post._id === deletePost._id);
 
-        return prev;
+        return clonedState;
       }
     }
   })
