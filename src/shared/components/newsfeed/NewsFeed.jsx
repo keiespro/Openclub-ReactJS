@@ -113,9 +113,7 @@ class NewsFeed extends Component {
     if (posts.length <= 0) {
       return (
         <div>
-          <ContentPage>
-            {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
-          </ContentPage>
+          {perm.canPostFeed && <ContentPage><NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} /></ContentPage>}
           <div className="posts-container">
             <div className="no-posts">
               <h1><i className="fa fa-newspaper-o" /></h1>
@@ -128,7 +126,7 @@ class NewsFeed extends Component {
     }
     return (
       <div>
-        {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
+        {perm.canPostFeed && <ContentPage><NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} /></ContentPage>}
         <div className="posts-container">
           <InfiniteScroll
             pullDownToRefresh
@@ -234,6 +232,7 @@ graphql(NewsFeedGQL, {
   options: props => {
     if (!props.feedOwnerId) return false;
     return {
+      fetchPolicy: 'cache-and-network',
       variables: {
         feedOwnerId: props.feedOwnerId,
         feedOwnerType: props.feedOwnerType,
