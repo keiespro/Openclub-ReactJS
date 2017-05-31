@@ -36,7 +36,7 @@ class UserProfileForm extends Component {
 
     return (
       <div className="max-form">
-        <FieldContainer required title="Name">
+        <FieldContainer required title="Full Name">
           <Field
             name="name"
             type="text"
@@ -45,7 +45,7 @@ class UserProfileForm extends Component {
             component={Input}
           />
         </FieldContainer>
-        <FieldContainer title="Profile Photo">
+        <FieldContainer title="Profile Picture">
           <Field
             name="images.square"
             component={ImageUploader}
@@ -54,26 +54,26 @@ class UserProfileForm extends Component {
             action={`${process.env.ICEPICK_URL}/upload/image/square`}
           />
         </FieldContainer>
-        <FieldContainer title="Address">
+        <FieldContainer title="Billing Address">
           <Field
             name="address"
             help="Enter your address"
             component={Address}
           />
         </FieldContainer>
-        <FieldContainer title="Birthday">
+        <FieldContainer required title="Date of Birth">
           <Field
             name="birthday"
             help="Date of birth"
             component={DatePicker}
             />
         </FieldContainer>
-        <FieldContainer title="Contact Email">
+        <FieldContainer required title="Email Address">
           <Field
             name="email"
             type="text"
             help="Email address"
-            validate={[email]}
+            validate={[required, email]}
             component={Input}
           />
         </FieldContainer>

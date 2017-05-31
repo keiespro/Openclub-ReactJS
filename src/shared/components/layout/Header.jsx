@@ -36,7 +36,7 @@ const notificationMenu = (
   </div>
 )
 
-const Header = ({ user, showSearch, notifications, seen, sidebarOpen, toggleSb }) => (
+const Header = ({ user, showSearch, notifications, seen, sidebarOpen, toggleSb }, { router }) => (
   <div className="oc-header">
     { !user && <div className="oc-header-context">
       <div className="oc-header-usermenu">
@@ -59,8 +59,9 @@ const Header = ({ user, showSearch, notifications, seen, sidebarOpen, toggleSb }
     { user &&
     <div className="oc-header-context right">
       <div className="oc-header-usermenu">
+        <Button className="mr" shape="circle" type="primary" icon="question" ghost onClick={() => router.transitionTo('/help')} />
         <Dropdown overlay={notificationMenu} trigger={['click']}>
-          <Badge dot={notifications.unseen > 0} className="notifications-toggle">
+          <Badge count={notifications.unseen || 0} className="notifications-toggle">
             <Button shape="circle" type="primary" icon="bell" ghost onClick={seen} />
           </Badge>
         </Dropdown>

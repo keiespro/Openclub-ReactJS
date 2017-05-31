@@ -37,14 +37,13 @@ import userQuery from 'queries/user'
 
 // utils
 import { tracking } from 'modules/mixpanel'
-
+import 'styles/_base.scss'
 // base styling including bootstrap
 import 'font-awesome/scss/font-awesome.scss'
 // ant theming
 import 'antd/dist/antd.css'
 
 // theme overrides
-import 'styles/_base.scss'
 import 'styles/overrides.scss'
 // app component styles
 import 'App.scss'
@@ -148,13 +147,13 @@ class App extends Component {
                     return <Redirect to="/feed" />;
                   }
                   if (logonCheckPath('')) return <Redirect to="/auth" />;
-                  return null;
+                  return <Loading />;
                 }
               }
             />
               {/* UTIL PAGES */}
               <Match pattern="/login" render={routerProps => <AsyncHome {...routerProps} user={data.user} />} />
-              <Match pattern="/auth" component={Auth} />
+              <Match pattern="/auth" render={routerProps => <Auth {...routerProps} user={data.user} />} />
               <Match pattern="/logout" component={Logout} />
               <Match
                 pattern="/help"
@@ -163,10 +162,12 @@ class App extends Component {
                     return <Loading />;
                   }
                   if (data.user) {
-                    window.location = `https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`
-                    return <Loading />;
+                    window.open(`https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`);
+                    window.setTimeout(() => this.context.router.transitionTo('/'), 10000);
+                    return <div>If a window does not appear in 3 seconds, <a href={`https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`} target="_blank">click here</a>.</div>;
                   }
                   if (logonCheckPath('help')) return <Redirect to="/auth" />;
+                  return <Loading />
                 }}
               />
               {/* NOTIFICATIONS */}
@@ -184,9 +185,9 @@ class App extends Component {
               } />
               {/* PROFILE */}
               <Match
-                pattern="/profile" render={() => {
+                pattern="/profile" render={routerProps => {
                   if (logonCheckPath('profile')) return <Redirect to="/auth" />;
-                  return <AsyncProfile viewer={data.user} />;
+                  return <AsyncProfile viewer={data.user} {...routerProps} />;
                 }}
               />
               {/* CLUB PAGES */}

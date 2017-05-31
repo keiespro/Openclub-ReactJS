@@ -12,7 +12,8 @@ const cspConfig = {
       'lawdocs.openclub.co',
       'graph.openclub.co',
       'cdn.openclub.co',
-      'assets.openclub.co'
+      'assets.openclub.co',
+      'blob:*'
     ],
     // Note: Setting this to stricter than * breaks the service worker. :(
     // I can't figure out how to get around this, so if you know of a safer
@@ -29,6 +30,7 @@ const cspConfig = {
     ],
     fontSrc: ["'self'", 'at.alicdn.com'],
     objectSrc: ["'self'"],
+    workerSrc: ["'self'", "blob:*"],
     mediaSrc: ["*"],
     manifestSrc: ["'self'"],
     scriptSrc: [

@@ -63,7 +63,7 @@ class SettingsLanding extends Component {
 
     return (
       <Form>
-        <h4 className="bottom-gap">News Feed</h4>
+        <h4 className="bottom-gap">News Feed Privacy</h4>
         <hr className="bottom-gap" />
         <div className="bottom-gap-large">
           <p className="bottom-gap">
@@ -86,7 +86,7 @@ class SettingsLanding extends Component {
             </Spin>
           </FieldContainer>
         </div>
-        <h4 className="bottom-gap">Club Directory</h4>
+        <h4 className="bottom-gap">Member Directory Privacy</h4>
         <hr className="bottom-gap" />
         <div className="bottom-gap-large">
           <p className="bottom-gap">
@@ -107,25 +107,6 @@ class SettingsLanding extends Component {
           </FieldContainer>
           <small>OpenClub protects the privacy of its users by protecting certain information from being indexed.
           Members can choose to withhold certain details or to hide their profile from the directory at their own discretion.</small>
-        </div>
-        <h4 className="bottom-gap">Profile</h4>
-        <hr className="bottom-gap" />
-        <div className="bottom-gap-large">
-          <p className="bottom-gap">Provide information that will be displayed to your members and the public.
-          This information will help people find your club within OpenClub, and on the web.</p>
-        <Button type="primary" onClick={transitionTo.bind(this, `/${club.slug}/settings/profile`)} icon="edit">Edit Profile</Button>
-        </div>
-        <h5 className="bottom-gap">Membership Plans</h5>
-        <hr className="bottom-gap" />
-        <div className="bottom-gap-large">
-          <p className="bottom-gap">Let people join your club by providing some membership plans.</p>
-          <Button type="primary" onClick={transitionTo.bind(this, `/${club.slug}/settings/plans`)} icon="edit">Edit Plans</Button>
-        </div>
-        <h5 className="bottom-gap">Financial Details</h5>
-        <hr className="bottom-gap" />
-        <div className="bottom-gap-large">
-          <p className="bottom-gap">Receive payments for your club membership payments and event tickets.</p>
-          <Button type="primary" onClick={transitionTo.bind(this, `/${club.slug}/settings/payments`)} icon="credit-card">Setup Payments</Button>
         </div>
       </Form>
     )

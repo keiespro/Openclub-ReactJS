@@ -20,6 +20,9 @@ export default gql`
         thumb
         square
       }
+      invitations{
+        _id
+      }
       memberships {
         _id
         club_id
@@ -44,6 +47,7 @@ export default gql`
         bio
         subscription{
           start_date
+          expiry_date
           pending_approval
           auto_renew
           membership_plan{
@@ -58,7 +62,6 @@ export default gql`
               }
             }
           }
-          last_renewal_date
         }
       }
     }

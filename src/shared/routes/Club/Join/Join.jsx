@@ -99,7 +99,7 @@ const JoinMutation = gql`
             }
           }
         }
-        last_renewal_date
+        expiry_date
       }
     }
   }

@@ -15,7 +15,8 @@ class Auth extends Component {
   static propTypes = {
     token: PropTypes.string,
     success: PropTypes.func,
-    error: PropTypes.func
+    error: PropTypes.func,
+    user: PropTypes.object
   }
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -27,15 +28,20 @@ class Auth extends Component {
       loading: true
     }
   }
+  componentWillReceiveProps(nextProps) {
+    console.log(this.props, nextProps);
+    if (!this.props.user && nextProps.user) {
+      const logonPath = localStorage.getItem('logonPath') || '';
+      localStorage.removeItem('logonPath');
+      this.context.router.replaceWith('/' + logonPath);
+    }
+  }
   async componentDidMount() {
     const { auth, success, error } = this.props;
-    const logonPath = localStorage.getItem('logonPath') || '';
     // Wait for the has to parse
     let token = localStorage.getItem('openclub_token');
     if (token) {
       success(token);
-      localStorage.removeItem('logonPath');
-      this.context.router.replaceWith('/' + logonPath);
       return;
     }
     try {
@@ -50,8 +56,6 @@ class Auth extends Component {
       if (!data || !data.signin || !data.signin.token) throw new Error('OpenClub did not return a valid sign in token.');
       localStorage.setItem('openclub_token', data.signin.token);
       success(data.signin.token);
-      localStorage.removeItem('logonPath');
-      this.context.router.replaceWith('/' + logonPath);
     } catch (err) {
       console.log(err, err.message);
       notification.error({

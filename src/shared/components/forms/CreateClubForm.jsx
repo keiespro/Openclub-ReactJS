@@ -41,6 +41,7 @@ class CreateClubForm extends Component {
           <Field
             name="slug"
             type="text"
+            addonBefore={location ? `${location.origin}/` : 'http://www.openclub.co/'}
             help={<span>Choose a name that members can use to find your club.<br />{`http://openclub.co/${slugString}`}</span>}
             validate={[required, slug, maxLength(64), reservedSlugs]}
             component={Input}

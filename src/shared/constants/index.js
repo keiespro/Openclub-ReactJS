@@ -3,16 +3,20 @@ export const formPrefix = 'ant-form'
 
 export const durations = {
   lookup: {
+    LIFETIME: 'Lifetime',
     YEARLY: 'Annually',
+    BIYEARLY: 'Biannually',
     MONTHLY: 'Monthly',
     WEEKLY: 'Weekly'
   },
   lookupPer: {
+    LIFETIME: 'one time',
     YEARLY: 'per year',
+    BIYEARLY: 'twice per year',
     MONTHLY: 'per month',
     WEEKLY: 'per week'
   },
-  list: ['YEARLY', 'MONTHLY', 'WEEKLY']
+  list: ['LIFETIME', 'YEARLY', 'BIYEARLY', 'MONTHLY', 'WEEKLY']
 }
 
 export const countries = [
