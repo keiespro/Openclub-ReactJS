@@ -43,7 +43,7 @@ class AddressField extends Component {
       this.ready()
       return this.googleMaps;
     }
-    this.googleMaps = await loadGoogleMapsAPI({ key: process.env.GOOGLE_API_KEY, libraries: 'places' })
+    this.googleMaps = await loadGoogleMapsAPI({ key: process.env.GOOGLE_API_KEY, libraries: ['places'] })
     this.ready();
     return this.googleMaps;
   }

@@ -7,6 +7,7 @@ import cx from 'classnames';
 import _ from 'lodash';
 import message from 'antd/lib/message';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { ContentPage } from 'components/layout';
 
 import NewsFeedPostForm from 'components/forms/NewsFeedPostForm';
 import feedPermissions from 'utils/feed_permissions';
@@ -90,7 +91,7 @@ class NewsFeed extends Component {
     }
   }
   render() {
-    const { perm, feed, viewer } = this.props;
+    const { perm, feed, viewer, feedOwnerId, feedOwnerType, slug } = this.props;
     const posts = _.get(feed, 'feed.posts.edges', []);
     const pageInfo = _.get(feed, 'feed.posts.page_info', {});
 
@@ -112,7 +113,7 @@ class NewsFeed extends Component {
     if (posts.length <= 0) {
       return (
         <div>
-          {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
+          {perm.canPostFeed && <ContentPage><NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} /></ContentPage>}
           <div className="posts-container">
             <div className="no-posts">
               <h1><i className="fa fa-newspaper-o" /></h1>
@@ -125,7 +126,7 @@ class NewsFeed extends Component {
     }
     return (
       <div>
-        {perm.canPostFeed && <NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} />}
+        {perm.canPostFeed && <ContentPage><NewsFeedPostForm viewer={viewer} handleSubmit={this.handleSubmit.bind(this)} activeRequest={this.state.loading} /></ContentPage>}
         <div className="posts-container">
           <InfiniteScroll
             pullDownToRefresh
@@ -137,7 +138,7 @@ class NewsFeed extends Component {
             endMessage=" "
             loader={<Card className="post" loading style={{ width: '100%' }} />}
           >
-            {posts.map(edge => <FeedItem baseQuery="getNewsFeed" post={edge.post} key={edge.post._id} perm={this.props.perm} viewer={viewer} />)}
+            {posts.map(edge => <FeedItem owner={{ _id: feedOwnerId, type: feedOwnerType, slug }} baseQuery="feed" post={edge.post} key={edge.post._id} perm={this.props.perm} viewer={viewer} />)}
           </InfiniteScroll>
         </div>
       </div>
@@ -160,6 +161,7 @@ const NewsFeedGQL = gql`
         edges{
           post{
             _id
+            datetime
             user_id
             user{
               name
@@ -193,30 +195,33 @@ const NewsFeedGQL = gql`
 const createPostGQL = gql`
   mutation createPost($feedOwnerId: MongoID, $feedOwnerType: String, $post: inputPost) {
     createPost(ownerId: $feedOwnerId, ownerType: $feedOwnerType, post: $post) {
-      _id
-      text
-      attachment
-      images{
-        thumb
-        background
-      }
-      owner{
-        owner_id
-        type
-        slug
-      }
-      likes_count
-      comments_count
-      liked
-      user{
-        name
+      post {
+        _id
+        datetime
+        text
+        attachment
         images{
-          square
+          thumb
+          background
         }
-        fbid
+        owner{
+          owner_id
+          type
+          slug
+        }
+        likes_count
+        comments_count
+        liked
+        user{
+          name
+          images{
+            square
+          }
+          fbid
+        }
+        privacy
+        user_id
       }
-      privacy
-      user_id
     }
   }
 `
@@ -227,6 +232,7 @@ graphql(NewsFeedGQL, {
   options: props => {
     if (!props.feedOwnerId) return false;
     return {
+      fetchPolicy: 'cache-and-network',
       variables: {
         feedOwnerId: props.feedOwnerId,
         feedOwnerType: props.feedOwnerType,
@@ -245,17 +251,9 @@ graphql(createPostGQL, {
       feed: (prev, { mutationResult }) => {
         const { createPost } = mutationResult.data;
         if (!createPost) return prev;
-
-        return {
-          ...prev,
-          feed: {
-            ...prev.feed,
-            posts: {
-              ...prev.feed.posts || {},
-              edges: [{ post: createPost }, ..._.get(prev, 'feed.posts.edges', [])]
-            }
-          }
-        }
+        let clonedState = _.clone(prev);
+        clonedState.feed.posts.edges.unshift(createPost);
+        return clonedState;
       }
     }
   }

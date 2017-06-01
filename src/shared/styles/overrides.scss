@@ -13,6 +13,10 @@ a {
   overflow-x: hidden;
 }
 
+.text-muted {
+  font-weight: 100;
+}
+
 .ant-layout-content {
   overflow-x: hidden;
 }
@@ -20,6 +24,16 @@ a {
 .max-form {
   @media #{$min-desktop} {
     max-width: $screen-xs-min;
+  }
+}
+
+.ant-btn-danger {
+  color: #ffffff;
+  background-color: #f04134;
+  border-color: #f04134;
+  &:hover {
+    background-color: #d73435;
+    border-color: #d73435;
   }
 }
 

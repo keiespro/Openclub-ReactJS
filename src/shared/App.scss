@@ -6,7 +6,10 @@ body {
 .oc-object-page-container {
   max-width: 1000px;
   border-right: 1px solid #c0c0ca;
+  border-left: 1px solid #c0c0ca;
   min-height: calc(100vh - 50px);
+  margin-left: auto;
+  margin-right: auto;
 }
 .rc-drawer-sidebar {
   top: 50px !important;

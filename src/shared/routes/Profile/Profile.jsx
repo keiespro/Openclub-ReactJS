@@ -1,63 +1,199 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Menu, Col, Row } from 'antd'
+import Menu from 'antd/lib/menu';
+import Col from 'antd/lib/col';
+import Row from 'antd/lib/row';
+import Badge from 'antd/lib/badge';
+import Card from 'antd/lib/card';
+import Button from 'antd/lib/button';
+import Modal from 'antd/lib/modal';
+import message from 'antd/lib/message';
+import _ from 'lodash';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import { ContentArea, ContentPage } from 'components/layout'
 import UserProfile from 'modules/forms/UserProfile'
 import ManageCreditCards from 'modules/forms/ManageCreditCards'
+import { MatchGroup, Match, Redirect } from 'teardrop';
+import userPhoto from 'utils/user_photo';
+import parseError from 'utils/error';
 
 class Profile extends Component {
   static propTypes = {
-    viewer: PropTypes.object
+    viewer: PropTypes.object,
+    location: PropTypes.object
+  }
+  static contextTypes = {
+    router: PropTypes.object.isRequired
   }
   constructor(props) {
     super(props)
 
     this.anchors = {};
-    this.menuClick = this.menuClick.bind(this);
   }
+  async deleteInvite(invitationId) {
+    const { deleteInvite } = this.props;
 
-  menuClick(e) {
-    this.anchors[e.key].scrollIntoView();
+    try {
+      await deleteInvite({
+        variables: {
+          invitationId
+        }
+      });
+      message.success('Deleted', 5);
+    } catch (err) {
+      Modal.error({
+        title: 'Uh-oh!',
+        content: parseError(err)
+      })
+    }
   }
   render() {
-    const { viewer } = this.props;
+    const { viewer, location } = this.props;
+    const match = location.pathname ? location.pathname.match(/^.*\/([\d\w-_]+)\/?/)[1] : 'profile';
+
+    const menuClick = (e) => {
+      if (e.key === 'profile') return this.context.router.transitionTo('/profile');
+      return this.context.router.transitionTo(`/profile/${e.key}`);
+    }
+
+    if (!viewer) return <div>You must be logged in to view this page.</div>
     return (
         <ContentArea>
-            <ContentPage>
-              <Row gutter={20}>
-                <Col xs={{span: 0}} md={{span: 6}}>
-                  <Menu
-                    onClick={this.menuClick}
-                    mode="inline"
-                  >
-                  <Menu.ItemGroup key="sub1" title={<span>Profile Settings</span>}>
-                    <Menu.Item key="overview">Overview</Menu.Item>
-                    <Menu.Item key="profile">Portable Profile</Menu.Item>
-                    <Menu.Item key="payment">Payment Details</Menu.Item>
-                  </Menu.ItemGroup>
-                  </Menu>
-                </Col>
-                <Col xs={{span: 24}} md={{span: 18}}>
-                  <h3 className="bottom-gap-large" id="overview" ref={overview => { this.anchors.overview = overview }}>OpenClub Profile</h3>
-                  <hr className="bottom-gap" />
-                  <div className="bottom-gap-large">
-                    <p>OpenClub securely stores your data and only shares certain bits with the clubs that you join. Your payment details are never shared and are stored securely with us.</p>
-                  </div>
-                  <hr className="bottom-gap-large" />
-                    <h3 className="bottom-gap" ref={profile => { this.anchors.profile = profile }}>Portable Profile</h3>
-                    <hr className="bottom-gap" />
-                    <div className="bottom-gap-large">
-                      <p className="bottom-gap">This is your portable profile. This data is shared with clubs you join. Your profile phot and name may appear publicly if you post on a public wall.</p>
-                      <UserProfile viewer={viewer} />
+          <ContentPage>
+            <div className="mb-xl">
+              <Menu
+                selectedKeys={[match]}
+                onClick={menuClick}
+                mode="horizontal"
+              >
+                <Menu.Item key="profile"><i className="fa fa-fw fa-list-ul" /> Profile Details</Menu.Item>
+                <Menu.Item key="payment"><i className="fa fa-fw fa-credit-card" /> Payment Details</Menu.Item>
+                <Menu.Item key="invitations"><i className="fa fa-fw fa-envelope-open-o" /> Invitations <Badge count={_.get(viewer, 'invitations', []).length} /></Menu.Item>
+                <Menu.Item key="help"><i className="fa fa-fw fa-question-circle" /> Help</Menu.Item>
+              </Menu>
+            </div>
+            <MatchGroup>
+              <Match
+                pattern="/profile"
+                render={() => {
+                  // Some variables
+                  return (
+                    <Row gutter={16}>
+                      <Col xs={24} md={8} lg={8} className="xs-hidden sm-hidden">
+                        <div>
+                          <h3>Profile Details</h3>
+                          <hr className="mt-lg mb-lg" />
+                          <h4 className="mb-sm">Portable</h4>
+                          <p className="mb-sm">
+                            Your OpenClub profile is portable between all of the clubs you join. When you update your information here, it will be reflected in all of the clubs connected to your account.
+                          </p>
+                          <h4 className="mb-sm">Privacy</h4>
+                          <p className="mb-sm">
+                            OpenClub will never share your private information, such as your date of birth or address, with club members or the public.
+                            The only information that may be displayed is in the club directory, which you have full control over.
+                          </p>
+                          <h4 className="mb-sm">Date of Birth</h4>
+                          <p className="mb-sm">
+                            Your date of birth may be required to join some clubs with age restrictions. If you have not provided a date of birth, you will be unable to join age-restricted clubs.
+                          </p>
+                        </div>
+                      </Col>
+                      <Col xs={24} mg={16} lg={8}>
+                        <div>
+                          <h4 className="mb-sm">Profile</h4>
+                          <UserProfile viewer={viewer} />
+                        </div>
+                      </Col>
+                    </Row>
+                  )
+                }}
+              />
+              <Match
+                pattern="/profile/payment"
+                render={() => {
+                  // Payment Details Page
+                  return (
+                    <Row gutter={16}>
+                      <Col xs={24} mg={8} lg={8}>
+                        <h3>Payment Details</h3>
+                        <hr className="mt-lg mb-lg" />
+                        <h4 className="mb-sm">Overview</h4>
+                        <p className="mb-sm">OpenClub can support up to 5 payment sources per person. The card details are stored on secure servers, and your card data can never be seen by anybody using or within OpenClub.</p>
+                        <h4 className="mb-sm">Primary Card</h4>
+                        <p className="mb-sm">If you have more than one card, you may set a primary card - the primary card will be the default selected card for any manual payments, and will be the default card when processing automatic renewals. If you do not wish to automatically renew a subscription, please turn off automatic renewals via your club's membership page.</p>
+                      </Col>
+                      <Col xs={24} mg={16} lg={8}>
+                        <h4 className="mb-sm">Credit Cards</h4>
+                        <ManageCreditCards viewer={viewer} />
+                      </Col>
+                    </Row>
+                  )
+              }}
+              />
+              <Match
+                pattern="/profile/invitations"
+                render={() => {
+                  const invitations = _.get(viewer, 'invitations', []);
+                  return (
+                    <div>
+                      {invitations.map(invitation => (
+                        <Card key={invitation._id} bodyStyle={{ padding: 0 }} key={invitation._id} className="mb-sm">
+                          <div className="table m0">
+                            <div className="cell oh" style={{ width: 90 }}>
+                              <img src={userPhoto(_.get(invitation, 'owner_entity.meta.images', {}))} style={{ maxWidth: '100%' }} alt={_.get(invitation, 'owner_entity.meta.name', 'No name')} role="presentation" />
+                            </div>
+                            <div className="cell p" style={{ verticalAlign: 'top' }}>
+                              <h4>{_.get(invitation, 'owner_entity.meta.name', 'No name')}</h4>
+                              {invitation.roles && (
+                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to manage {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                              )}
+                              {invitation.subscription && (
+                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has added your membership to {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                              )}
+                              {invitation.membership_plan_id && (
+                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to join {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                              )}
+                              {!invitation.membership_plan_id && !invitation.roles && !invitation.subscription && (
+                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to join a private plan on {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                              )}
+                              <Button type="primary" onClick={() => this.context.router.transitionTo(`/invite/${invitation.invitation_url}`)}>Open Invite</Button> <Button type="danger" onClick={() => Modal.confirm({ title: 'Are you sure?', content: 'Are you sure you want to delete this invite?', okText: 'Yes', cancelText: 'No', onOk: this.deleteInvite.bind(this, invitation._id) })}>Delete Invite</Button>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
                     </div>
-                    <h3 className="bottom-gap-large" id="payment" ref={payment => { this.anchors.payment = payment }}>Payment Details</h3>
-                    <hr className="bottom-gap" />
-                    <ManageCreditCards viewer={viewer} />
-                </Col>
-              </Row>
-            </ContentPage>
+                  )
+                }}
+                />
+              <Match pattern="/profile/help" render={() => <Redirect to="/help" />} />
+            </MatchGroup>
+          </ContentPage>
         </ContentArea>
     );
   }
 }
-export default Profile;
+
+const deleteInvite = gql`
+  mutation deleteInvite($invitationId: MongoID!) {
+    deleteInvite(invitationId: $invitationId) {
+      _id
+    }
+  }
+`
+
+const ProfileApollo = graphql(deleteInvite, {
+  name: 'deleteInvite',
+  options: {
+    updateQueries: {
+      user: (prev, { mutationResult }) => {
+        if (!mutationResult.data.deleteInvite) return prev;
+        const clonedState = _.clone(prev);
+        _.remove(prev.user.invitations, invite => invite._id === mutationResult.data.deleteInvite._id);
+        return clonedState;
+      }
+    }
+  }
+})(Profile)
+
+export default ProfileApollo;

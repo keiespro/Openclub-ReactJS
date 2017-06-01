@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Button from 'antd/lib/button';
 import Select, { Option } from 'antd/lib/select';
+import { Group as CheckboxGroup } from 'antd/lib/checkbox';
 import Spin from 'antd/lib/spin';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
@@ -63,30 +64,40 @@ class SettingsLanding extends Component {
 
     return (
       <Form>
-        <h4 className="bottom-gap">News Feed</h4>
+        <h4 className="bottom-gap">News Feed Privacy</h4>
         <hr className="bottom-gap" />
         <div className="bottom-gap-large">
           <p className="bottom-gap">
             The news feed allows your members to post content, questions, events and more. The feed is the starting point for members to engage with your club.
           </p>
           <FieldContainer title="Public Feed Permissions">
+            <p className="mb">Set feed permissions for OpenClub users and the public.</p>
             <Spin spinning={this.state.loading === 'settings.feed_public_permissions'}>
-              <Select onChange={val => this.submitSetting('settings.feed_public_permissions', val)} value={_.get(club, 'settings.feed_public_permissions', ['view', 'post'])} mode="tags">
-                <Option key="view" value="view">View and like posts</Option>
-                <Option key="post" value="post">Post and comment</Option>
-              </Select>
+              <CheckboxGroup
+                options={[
+                  { value: 'view', label: 'View feed' },
+                  { value: 'post', label: 'Post to feed' }
+                ]}
+                value={_.get(club, 'settings.feed_public_permissions', ['view', 'post'])}
+                onChange={val => this.submitSetting('settings.feed_public_permissions', val)}
+                />
             </Spin>
           </FieldContainer>
           <FieldContainer title="Member Feed Permissions">
+            <p className="mb">Set feed permissions for your members.</p>
             <Spin spinning={this.state.loading === 'settings.feed_permissions'}>
-              <Select onChange={val => this.submitSetting('settings.feed_permissions', val)} value={_.get(club, 'settings.feed_permissions', ['view', 'post'])} mode="tags">
-                <Option key="view" value="view">View and like posts</Option>
-                <Option key="post" value="post">Post and comment</Option>
-              </Select>
+              <CheckboxGroup
+                options={[
+                  { value: 'view', label: 'View feed' },
+                  { value: 'post', label: 'Post to feed' }
+                ]}
+                value={_.get(club, 'settings.feed_permissions', ['view', 'post'])}
+                onChange={val => this.submitSetting('settings.feed_permissions', val)}
+                />
             </Spin>
           </FieldContainer>
         </div>
-        <h4 className="bottom-gap">Club Directory</h4>
+        <h4 className="bottom-gap">Member Directory Privacy</h4>
         <hr className="bottom-gap" />
         <div className="bottom-gap-large">
           <p className="bottom-gap">
@@ -105,27 +116,8 @@ class SettingsLanding extends Component {
                 />
             </Spin>
           </FieldContainer>
-          <small>OpenClub protects the privacy of its users by protecting certain information from being indexed.
-          Members can choose to withhold certain details or to hide their profile from the directory at their own discretion.</small>
-        </div>
-        <h4 className="bottom-gap">Profile</h4>
-        <hr className="bottom-gap" />
-        <div className="bottom-gap-large">
-          <p className="bottom-gap">Provide information that will be displayed to your members and the public.
-          This information will help people find your club within OpenClub, and on the web.</p>
-        <Button type="primary" onClick={transitionTo.bind(this, `/${club.slug}/settings/profile`)} icon="edit">Edit Profile</Button>
-        </div>
-        <h5 className="bottom-gap">Membership Plans</h5>
-        <hr className="bottom-gap" />
-        <div className="bottom-gap-large">
-          <p className="bottom-gap">Let people join your club by providing some membership plans.</p>
-          <Button type="primary" onClick={transitionTo.bind(this, `/${club.slug}/settings/plans`)} icon="edit">Edit Plans</Button>
-        </div>
-        <h5 className="bottom-gap">Financial Details</h5>
-        <hr className="bottom-gap" />
-        <div className="bottom-gap-large">
-          <p className="bottom-gap">Receive payments for your club membership payments and event tickets.</p>
-          <Button type="primary" onClick={transitionTo.bind(this, `/${club.slug}/settings/payments`)} icon="credit-card">Setup Payments</Button>
+          <small><strong>Disclaimer: </strong>OpenClub protects the privacy of its users by protecting certain information from being indexed.
+          Regardless of your Club Directory Privacy setting, visibility of profiles within the club is at the discretion of the individual member.</small>
         </div>
       </Form>
     )

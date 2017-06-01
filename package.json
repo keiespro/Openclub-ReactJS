@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "animate.css": "^3.5.2",
-    "antd": "^2.9.3",
+    "antd": "2.9.3",
     "apollo-client": "^1.2.2",
     "app-root-dir": "1.0.2",
     "assets-webpack-plugin": "^3.5.1",
@@ -161,6 +161,7 @@
     "source-map-support": "^0.4.15",
     "style-loader": "^0.18.1",
     "teardrop": "^5.0.2",
+    "threads": "^0.7.3",
     "user-home": "2.0.0",
     "uuid": "3.0.1",
     "webpack": "^2.6.1",

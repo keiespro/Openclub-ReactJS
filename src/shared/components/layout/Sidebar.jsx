@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash';
 import { openSidebar, closeSidebar, toggleSidebar } from 'modules/ui/actions'
 import Icon from 'antd/lib/icon'
+import Badge from 'antd/lib/badge'
 import Menu, { Item, ItemGroup } from 'antd/lib/menu'
 import { keysFromFragments } from 'utils/route'
 import userPhoto from 'utils/user_photo'
@@ -16,7 +17,8 @@ class Sidebar extends Component {
     open: PropTypes.bool,
     openSidebar: PropTypes.func,
     closeSidebar: PropTypes.func,
-    toggleSidebar: PropTypes.func
+    toggleSidebar: PropTypes.func,
+    notifications: PropTypes.object
   }
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -34,7 +36,7 @@ class Sidebar extends Component {
     router.transitionTo('/' + e.key);
   }
   render() {
-    const { user, location } = this.props;
+    const { user, location, notifications } = this.props;
 
     if (user) {
       const myClubs = user.memberships || [];
@@ -71,8 +73,8 @@ class Sidebar extends Component {
               {process.env.NODE_ENV === 'development' && <Item key="discover"><Icon type="global" /> Discover</Item>}
             </ItemGroup>
             <ItemGroup key="sub2" title={<span>Menu</span>}>
-              <Item key="profile"><Icon type="idcard" /> Profile</Item>
-              <Item key="notifications"><Icon type="bell" /> Notifications</Item>
+              <Item key="profile"><Icon type="idcard" /> Profile <Badge count={_.get(user, 'invitations', []).length} /></Item>
+              <Item key="notifications"><Icon type="bell" /> Notifications <Badge count={notifications.unseen || 0} /></Item>
               {process.env.NODE_ENV === 'development' && <Item key="events"><Icon type="calendar" /> Events</Item>}
               <Item key="clubs"><Icon type="team" /> Clubs</Item>
             </ItemGroup>
@@ -106,7 +108,8 @@ class Sidebar extends Component {
 }
 
 export default connect(state => ({
-  open: state.ui.sidebar
+  open: state.ui.sidebar,
+  notifications: state.notifications
 }), {
   openSidebar,
   closeSidebar,

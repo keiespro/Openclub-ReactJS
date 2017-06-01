@@ -1,27 +1,34 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { formPrefix } from 'constants/index'
-import { Input as AntInput } from 'antd'
-import classNames from 'classnames'
+import AntInput from 'antd/lib/input';
+import { Item as FormItem } from 'antd/lib/form';
+import cx from 'classnames'
 
-const Input = ({ input = {}, meta = {}, help = '', type = 'input', basic = true, ...rest }) => {
-  const wrapClasses = classNames(`${formPrefix}-item-control`, {
-    'has-feedback': meta.touched,
-    'has-error': meta.touched && meta.error,
-    'has-warning': meta.touched && meta.warning
-  })
-
+const Input = ({ input = {}, meta = {}, help, type = 'input', basic = false, ...rest }) => {
   if (basic) {
     return <AntInput {...input} type={type} {...rest} />
   }
+
+  let validateStatus;
+  if (meta.touched && meta.error) validateStatus = 'error';
+  if (meta.touched && meta.warning) validateStatus = 'warning';
   return (
-    <div className={wrapClasses}>
+    <FormItem validateStatus={validateStatus} isFieldTouched={meta.touched} help={meta.touched ? meta.error || meta.warning : help} hasFeedback={meta.touched && (meta.error || meta.warning)}>
       <AntInput {...input} type={type} {...rest} />
-      <div className={`${formPrefix}-explain`} key="help">
-        {meta.touched && meta.error && meta.error}
-        {(!meta.touched || !meta.error) && help}
-      </div>
-    </div>
+    </FormItem>
   )
+}
+Input.propTypes = {
+  input: PropTypes.object,
+  meta: PropTypes.object,
+  help: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+    PropTypes.element
+  ]),
+  basic: PropTypes.bool,
+  type: PropTypes.string
 }
 
 export default Input

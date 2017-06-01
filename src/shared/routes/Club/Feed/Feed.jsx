@@ -34,12 +34,12 @@ class Feed extends Component {
         <Row gutter={16}>
           <Col xs={24} lg={16}>
             <MatchGroup>
-              <Match pattern={`/${slug}/feed`} render={() => <NewsFeed feedOwnerId={_.get(club, '_id')} feedOwnerType="clubs" viewer={viewer} firstPostId={firstPostId} perm={perm} />} />
+              <Match pattern={`/${slug}/feed`} render={() => <NewsFeed feedOwnerId={_.get(club, '_id')} feedOwnerType="clubs" slug={slug} viewer={viewer} firstPostId={firstPostId} perm={perm} />} />
               <Match pattern={`/${slug}/feed/post/:post_id`} render={params => <PostPage perm={perm} viewer={viewer} {...params} />} />
             </MatchGroup>
           </Col>
           <Col lg={8} className="hidden-xs hidden-sm hidden-md">
-            <ClubInviteWidget club={club} />
+            {viewer && <ClubInviteWidget club={club} />}
           </Col>
         </Row>
       </div>

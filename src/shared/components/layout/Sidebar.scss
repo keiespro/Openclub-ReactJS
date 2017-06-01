@@ -19,6 +19,11 @@
 }
 .oc-sidebar-menu {
   width: $sidebar-wd;
+  .ant-badge {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
 }
 .oc-sidebar-clubimage {
   width: 32px;

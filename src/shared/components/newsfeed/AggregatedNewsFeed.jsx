@@ -109,6 +109,7 @@ const NewsFeedGQL = gql`
         edges{
           post{
             _id
+            datetime
             user_id
             user{
               name

@@ -20,6 +20,27 @@ export default gql`
         thumb
         square
       }
+      invitations{
+        _id
+        owner_entity{
+          type
+          owner_id
+          meta
+        }
+        creator{
+          name
+          images{
+            square
+          }
+          email
+        }
+        subscription{
+          expiry_date
+        }
+        invitation_url
+        membership_plan_id
+        roles
+      }
       memberships {
         _id
         club_id
@@ -44,6 +65,7 @@ export default gql`
         bio
         subscription{
           start_date
+          expiry_date
           pending_approval
           auto_renew
           membership_plan{
@@ -58,7 +80,6 @@ export default gql`
               }
             }
           }
-          last_renewal_date
         }
       }
     }

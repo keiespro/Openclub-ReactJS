@@ -26,9 +26,15 @@ class ClubProfileForm extends Component {
     const minimumAgeOptions = [
       { value: '0', title: 'All ages allowed' },
       { value: '13', title: '13 and older' },
+      { value: '17', title: '17 and older' },
       { value: '18', title: '18 and older' },
       { value: '21', title: '21 and older' },
-      { value: '23', title: '23 and older' }
+      { value: '23', title: '23 and older' },
+      { value: '25', title: '25 and older' },
+      { value: '30', title: '30 and older' },
+      { value: '40', title: '40 and older' },
+      { value: '50', title: '50 and older' },
+      { value: '60', title: '60 and older' }
     ]
 
     return (
@@ -58,7 +64,7 @@ class ClubProfileForm extends Component {
             token={token}
             postname="background"
             action={`${process.env.ICEPICK_URL}/upload/image/background`}
-            aspect={25 / 6}
+            aspect={100 / 37}
             component={ImageUploader}
           />
         </FieldContainer>

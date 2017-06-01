@@ -15,7 +15,8 @@ class Auth extends Component {
   static propTypes = {
     token: PropTypes.string,
     success: PropTypes.func,
-    error: PropTypes.func
+    error: PropTypes.func,
+    user: PropTypes.object
   }
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -26,19 +27,19 @@ class Auth extends Component {
     this.state = {
       loading: true
     }
+    this.to = null;
   }
   async componentDidMount() {
+    if (this.props.user) return true;
     const { auth, success, error } = this.props;
-    const logonPath = localStorage.getItem('logonPath') || '';
     // Wait for the has to parse
     let token = localStorage.getItem('openclub_token');
     if (token) {
       success(token);
-      localStorage.removeItem('logonPath');
-      this.context.router.replaceWith('/' + logonPath);
       return;
     }
     try {
+      if (!window.location.hash) return this.context.router.replaceWith('/login');
       const accessToken = await hashParsed();
       if (!accessToken) return this.context.router.replaceWith('/login');
       const mutation = await auth({
@@ -50,19 +51,24 @@ class Auth extends Component {
       if (!data || !data.signin || !data.signin.token) throw new Error('OpenClub did not return a valid sign in token.');
       localStorage.setItem('openclub_token', data.signin.token);
       success(data.signin.token);
-      localStorage.removeItem('logonPath');
-      this.context.router.replaceWith('/' + logonPath);
     } catch (err) {
       console.log(err, err.message);
       notification.error({
         message: 'Uh-oh',
-        content: parseError(err.message),
+        description: parseError(err),
         duration: 10
       })
       return error(err);
     }
   }
   render() {
+    const { user } = this.props;
+    console.log(user);
+    if (user) {
+      const logonPath = localStorage.getItem('logonPath') || '';
+      localStorage.removeItem('logonPath');
+      return <Redirect to={logonPath} />
+    }
     return <Loading />
   }
 }

@@ -133,25 +133,23 @@ class NewsFeedPost extends Component {
       </Menu>
     );
     const comp = (
-      <ContentPage>
-        <div className="newsfeed-post">
-          <div>
-            {this.formatContent(content)}
-          </div>
-          <Form onSubmit={this.submit}>
-            <InputGroup compact style={{ display: 'flex' }}>
-              <div className="media">
-                <div className="creator-image small"><img src={userImage(viewer, 'thumb')} alt={viewer.name} role="presentation" /></div>
-              </div>
-              <Input className={cx({ inline })} type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder={placeholder || "Share something..."} style={{ flexGrow: 2 }} />
-              {!hidePrivacy && <Dropdown overlay={privacyMenu}>
-                <Button type="default"><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
-              </Dropdown>}
-              <Button type="primary" onClick={this.submit} disabled={this.props.activeRequest} htmlType="submit">Post</Button>
-            </InputGroup>
-          </Form>
+      <div className="newsfeed-post">
+        <div>
+          {this.formatContent(content)}
         </div>
-      </ContentPage>
+        <Form onSubmit={this.submit}>
+          <InputGroup compact style={{ display: 'flex' }}>
+            <div className="media">
+              <div className="creator-image small"><img src={userImage(viewer, 'thumb')} alt={viewer.name} role="presentation" /></div>
+            </div>
+            <Input className={cx({ inline })} type="textarea" autosize={{ minRows: 1 }} onChange={this.handleInput} placeholder={placeholder || "Share something..."} style={{ flexGrow: 2 }} />
+            {!hidePrivacy && <Dropdown overlay={privacyMenu}>
+              <Button type="default"><Icon type={this.state.privacy.icon} /> {this.state.privacy.title} <Icon type="down" /></Button>
+            </Dropdown>}
+            <Button type="primary" onClick={this.submit} disabled={this.props.activeRequest} htmlType="submit">Post</Button>
+          </InputGroup>
+        </Form>
+      </div>
     );
     if (this.props.activeRequest) {
       return (<Spin tip="Posting...">

@@ -193,6 +193,8 @@ table.va-bottom { td { vertical-align: bottom !important; } }
 .inline { display: inline-block !important; }
 .block-center { margin: 0 auto; }
 .block { display: block !important; }
+.cell { display: table-cell !important; }
+.table { display: table !important; }
 
 // Background helpers
 

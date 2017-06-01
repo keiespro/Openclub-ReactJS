@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { seenNotifications } from 'modules/notifications/actions'
+import { login } from 'modules/auth/actions'
 import { toggleSidebar } from 'modules/ui/actions'
 import { Layout, Menu, Dropdown, Icon, Button, Badge } from 'antd'
 import { Link } from 'teardrop'
@@ -36,7 +37,7 @@ const notificationMenu = (
   </div>
 )
 
-const Header = ({ user, showSearch, notifications, seen, sidebarOpen, toggleSb }) => (
+const Header = ({ login: doLogin, user, showSearch, notifications, seen, sidebarOpen, toggleSb }, { router }) => (
   <div className="oc-header">
     { !user && <div className="oc-header-context">
       <div className="oc-header-usermenu">
@@ -53,14 +54,15 @@ const Header = ({ user, showSearch, notifications, seen, sidebarOpen, toggleSb }
     </Link>
     { !user && <div className="oc-header-context right">
       <div className="oc-header-usermenu">
-        <Link to="/">Login / Sign Up</Link>
+        <a href="#" onClick={e => { e.preventDefault(); doLogin(); }}>Login / Sign Up</a>
       </div>
     </div>}
     { user &&
     <div className="oc-header-context right">
       <div className="oc-header-usermenu">
+        <Button className="mr" shape="circle" type="primary" icon="question" ghost onClick={() => router.transitionTo('/help')} />
         <Dropdown overlay={notificationMenu} trigger={['click']}>
-          <Badge dot={notifications.unseen > 0} className="notifications-toggle">
+          <Badge count={notifications.unseen || 0} className="notifications-toggle">
             <Button shape="circle" type="primary" icon="bell" ghost onClick={seen} />
           </Badge>
         </Dropdown>
@@ -95,5 +97,6 @@ export default connect(state => ({
   sidebarOpen: state.ui.sidebar
 }), {
   seen: seenNotifications,
-  toggleSb: toggleSidebar
+  toggleSb: toggleSidebar,
+  login
 })(Header)

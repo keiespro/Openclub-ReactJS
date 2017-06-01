@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet';
-import { inlineLogin }  from 'modules/auth/actions'
+import { inlineLogin, hideInlineLogin }  from 'modules/auth/actions'
 import { Row, Col } from 'antd'
 import Logo from 'components/logo/Logo'
 import { Link } from 'teardrop'
@@ -13,6 +13,7 @@ import './Home.scss'
 class HomeView extends Component {
   static propTypes = {
       inlineLogin: PropTypes.func,
+      hideInlineLogin: PropTypes.func,
       user: PropTypes.object
   }
   componentDidMount() {
@@ -69,4 +70,4 @@ class HomeView extends Component {
   }
 }
 
-export default connect(null, { inlineLogin })(HomeView)
+export default connect(null, { inlineLogin, hideInlineLogin })(HomeView)
