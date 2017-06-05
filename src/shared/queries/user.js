@@ -8,6 +8,7 @@ export default gql`
       name
       notification_token
       helpdesk_jwt
+      fbid
       address {
         formatted_address
       }

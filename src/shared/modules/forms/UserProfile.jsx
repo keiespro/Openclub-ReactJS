@@ -10,6 +10,7 @@ import gql from 'graphql-tag'
 import _ from 'lodash'
 import moment from 'moment'
 import error from 'utils/error'
+import userQuery from 'queries/user';
 
 class UserProfile extends Component {
   static propTypes = {
@@ -59,29 +60,6 @@ class UserProfile extends Component {
   }
 }
 
-const userProfileGQL = gql`
-  query userProfile {
-    user {
-      _id
-      email
-      name
-      address {
-        formatted_address
-      }
-      images {
-        thumb
-        square
-      }
-      stripe_account {
-        _id
-        data
-      }
-      birthday
-      email_verified
-    }
-  }
-`
-
 const updateProfileGQL = gql`
   mutation updateProfile($user:userUpdate!){
     updateUser(user: $user) {
@@ -106,24 +84,14 @@ const updateProfileGQL = gql`
 `
 
 const GraphQLWrapper = compose(
-  graphql(userProfileGQL, {
+  graphql(userQuery, {
     props: ({ data }) => ({
       refetch: data.refetch,
       initialValues: data.user
     })
   }),
   graphql(updateProfileGQL, {
-    name: 'updateProfile',
-    options: {
-      updateQueries: {
-        user: (prev, { mutationResult }) => ({
-          user: {
-            ...prev.user,
-            ...mutationResult.data.updateUser
-          }
-        })
-      }
-    }
+    name: 'updateProfile'
   })
 )(UserProfile);
 

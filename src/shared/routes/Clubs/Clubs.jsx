@@ -8,7 +8,6 @@ import gql from 'graphql-tag';
 
 // Components
 import { ContentArea, ContentPage } from 'components/layout'
-import CreateClub from './CreateClub'
 import Invitations from './Invitations'
 import Landing from './Landing'
 import My from './My'
@@ -56,7 +55,6 @@ class ClubsView extends Component {
           </Tabs>
           <MatchGroup>
             <Match pattern="/clubs" render={routerProps => <Landing viewer={viewer} {...routerProps} />} />
-            <Match pattern="/clubs/create" render={routerProps => viewer ? <CreateClub viewer={viewer} {...routerProps} /> : <Error404 {...routerProps} />} />
             <Match pattern="/clubs/invitations" render={routerProps => viewer ? <Invitations viewer={viewer} {...routerProps} /> : <Error404 {...routerProps} />} />
             <Match pattern="/clubs/my" render={routerProps => viewer ? <My viewer={this.props.viewer} {...routerProps} /> : <Error404 {...routerProps} />} />
             <Miss component={Error404} />

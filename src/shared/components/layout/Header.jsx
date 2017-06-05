@@ -67,7 +67,7 @@ const Header = ({ login: doLogin, user, showSearch, notifications, seen, sidebar
           </Badge>
         </Dropdown>
         <Dropdown overlay={userMenu} trigger={['click']}>
-          <img src={userPhoto(user, 'thumb')} alt="Profile" className="oc-header-userimage" />
+          <img src={userPhoto(user.images, 'thumb', user.fbid)} alt="Profile" className="oc-header-userimage" />
         </Dropdown>
       </div>
     </div>

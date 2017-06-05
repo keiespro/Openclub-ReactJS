@@ -5,7 +5,8 @@ import gql from 'graphql-tag'
 import { browserHistory } from 'teardrop'
 import CreateClubForm from 'components/forms/CreateClubForm'
 import {
-  PageHeader
+  PageHeader,
+  MiddleArea
 } from 'components/layout'
 import { message, Modal } from 'antd'
 import error from 'utils/error';
@@ -37,16 +38,19 @@ const CreateClub = ({ mutate, submitting }, { router }) => {
   }
 
   return (
-    <div>
-      <h3>Create a club</h3>
-      <p>
-        Power your social group, sporting club, association or business with OpenClub. Connect within the communities that matter to you.
-        <br />OpenClub is free to get started for unlimited members and events.
+    <MiddleArea>
+      <div className="text-center">
+        <i className="fa fa-fw fa-plus fa-5x mb" />
+        <h3>A new OpenClub</h3>
+        <hr className="mb mt" />
+      </div>
+      <p className="mb">
+        {"OpenClub manages your members, events and payments—it's free to get started. Your new club page is just one click away."}
       </p>
       <div style={{ maxWidth: 480 }}>
         <CreateClubForm onSubmit={createTheClub} submitting={submitting} />
       </div>
-    </div>
+    </MiddleArea>
   )
 }
 

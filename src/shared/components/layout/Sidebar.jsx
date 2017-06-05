@@ -56,7 +56,7 @@ class Sidebar extends Component {
       return (
         <aside className="oc-sidebar">
           <div className="oc-sidebar-profile">
-            <a href=""><img src={userPhoto(user, 'thumb')} alt="Profile" className="oc-sidebar-profile--img thumb64" /></a>
+            <a href=""><img src={userPhoto(user.images, 'square')} alt="Profile" className="oc-sidebar-profile--img thumb64" /></a>
             <div className="mt">{user.name}</div>
           </div>
           <Menu

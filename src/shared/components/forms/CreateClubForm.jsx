@@ -28,27 +28,27 @@ class CreateClubForm extends Component {
 
     return (
       <Form onSubmit={handleSubmit} className="m-sm">
-        <FieldContainer required title="Club, Community or Organisation Name">
+        <FieldContainer required title="Community Name">
           <Field
             name="club.name"
             type="text"
-            help="Enter the name you want to appear on your club page."
+            help="Pick a name for your community page."
             validate={[required, maxLength(64)]}
             component={Input}
           />
         </FieldContainer>
-        <FieldContainer required title="Username">
+        <FieldContainer required title="Handle">
           <Field
             name="slug"
             type="text"
             addonBefore={location ? `${location.origin}/` : 'http://www.openclub.co/'}
-            help={<span>Choose a name that members can use to find your club.<br />{(location ? location.origin : 'http://www.openclub.co') + '/' + slugString}</span>}
+            help={<span>Pick a unique handle — you can't change this later.<br />{(location ? location.origin : 'http://www.openclub.co') + '/' + slugString}</span>}
             validate={[required, slug, maxLength(64), reservedSlugs]}
             component={Input}
           />
         </FieldContainer>
-        <FieldContainer title="Profile Photo">
-          <p>Upload a photo that members can use to identify your club.</p>
+        <FieldContainer title="Community Profile Photo">
+          <p>Pick a profile photo that your members can use to identify you on OpenClub.</p>
           <Field
             name="club.images.square"
             component={ImageUploader}
@@ -57,7 +57,8 @@ class CreateClubForm extends Component {
             action={`${process.env.ICEPICK_URL}/upload/image/square`}
           />
         </FieldContainer>
-        <FieldContainer title="Background Image">
+        <FieldContainer title="Community Cover Photo">
+          <p>Spruce up the profile with a cover photo. You don't have to do this now, you can pick one later.</p>
           <Field
             name="images.background"
             token={token}
@@ -67,9 +68,11 @@ class CreateClubForm extends Component {
             component={ImageUploader}
           />
         </FieldContainer>
-        <Button type="primary" htmlType="submit" loading={this.props.submitting} size="large">
-          <i className="fa fa-fw fa-check" /> Next Step
-        </Button>
+        <div className="text-center">
+          <Button type="primary" htmlType="submit" loading={this.props.submitting} size="large">
+            <i className="fa fa-fw fa-check" /> Get Started
+          </Button>
+        </div>
       </Form>
     )
   }

@@ -141,7 +141,7 @@ class Profile extends Component {
                         <Card key={invitation._id} bodyStyle={{ padding: 0 }} key={invitation._id} className="mb-sm">
                           <div className="table m0">
                             <div className="cell oh" style={{ width: 90 }}>
-                              <img src={userPhoto(_.get(invitation, 'owner_entity.meta.images', {}))} style={{ maxWidth: '100%' }} alt={_.get(invitation, 'owner_entity.meta.name', 'No name')} role="presentation" />
+                              <img src={userPhoto(_.get(invitation, 'owner_entity.meta.json.images', {}))} style={{ maxWidth: '100%' }} alt={_.get(invitation, 'owner_entity.meta.name', 'No name')} role="presentation" />
                             </div>
                             <div className="cell p" style={{ verticalAlign: 'top' }}>
                               <h4>{_.get(invitation, 'owner_entity.meta.name', 'No name')}</h4>
