@@ -38,7 +38,7 @@ class Community extends Component {
                     </div>
                     <div className="cell p" style={{ verticalAlign: 'top' }}>
                       <h4>{_.get(user, 'profile.name', 'No name')}</h4>
-                      {_.get(user, 'profile.fbid') && <Button type="primary" onClick={e => { e.preventDefault(); window.open(`https://m.me/${user.profile.fbid}`) }}><i className="fa fa-fw fa-facebook" /></Button>}
+                      {_.get(user, 'profile.fbid') && <Button size="small" style={{ position: 'absolute', right: 10, top: 10 }} type="primary" onClick={e => { e.preventDefault(); window.open(`https://m.me/${user.profile.fbid}`) }}><i className="fa fa-fw fa-comment" /></Button>}
                       <p>
                         {_.get(user, 'profile.email') && <span>Email: {_.get(user, 'profile.email')}<br /></span>}
                         {_.get(user, 'profile.phone') && <span>Phone: {_.get(user, 'profile.phone')}<br /></span>}

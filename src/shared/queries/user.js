@@ -65,6 +65,7 @@ export default gql`
         display_messenger
         bio
         subscription{
+          active
           start_date
           expiry_date
           pending_approval

@@ -103,6 +103,8 @@ class App extends Component {
     const { data, location } = this.props;
     if (data.loading) return <Loading />;
 
+    console.log(data.user);
+
     const logonCheckPath = (path) => {
       if (process.env.IS_CLIENT && !data.user) {
         localStorage.setItem('logonPath', path);
