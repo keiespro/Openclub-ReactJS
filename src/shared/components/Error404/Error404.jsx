@@ -11,7 +11,7 @@ const Error = () => (
       <hr className="mb mt" />
       <p className="mb">We recommend reloading or returning to the homepage</p>
       <div className="btn-group">
-        <button onClick={() => { window.reload() }} className="btn btn-lg btn-danger"><i className="fa fa-fw fa-refresh" />Reload</button>
+        <button onClick={() => { window.location.reload() }} className="btn btn-lg btn-danger"><i className="fa fa-fw fa-refresh" />Reload</button>
         <Link to="/" className="btn btn-lg btn-primary"><i className="fa fa-fw fa-house" /> Homepage</Link>
       </div>
     </div>

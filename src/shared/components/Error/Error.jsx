@@ -39,8 +39,8 @@ const Error = ({ error }) => {
         <hr className="mb mt" />
         <p className="mb">We recommend reloading to try again</p>
         <div className="btn-group">
-          <button onClick={() => { window.reload() }} className="btn btn-lg btn-danger"><i className="fa fa-fw fa-refresh" />Reload</button>
-          <button onClick={() => { window.reload() }} className="btn btn-lg btn-primary"><i className="fa fa-fw fa-life-ring" /> Helpdesk</button>
+          <button onClick={() => { window.location.reload() }} className="btn btn-lg btn-danger"><i className="fa fa-fw fa-refresh" />Reload</button>
+          <button onClick={() => { window.location.reload() }} className="btn btn-lg btn-primary"><i className="fa fa-fw fa-life-ring" /> Helpdesk</button>
         </div>
       </div>
     </MiddleArea>
