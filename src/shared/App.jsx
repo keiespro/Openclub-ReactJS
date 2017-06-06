@@ -167,7 +167,7 @@ class App extends Component {
                   }
                   if (data.user) {
                     window.open(`https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`);
-                    window.setTimeout(() => this.context.router.transitionTo('/'), 10000);
+                    window.setTimeout(() => this.context.router.transitionTo('/'), 1000);
                     return <div>If a window does not appear in 3 seconds, <a href={`https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`} target="_blank">click here</a>.</div>;
                   }
                   if (logonCheckPath('help')) return <Redirect to="/auth" />;
