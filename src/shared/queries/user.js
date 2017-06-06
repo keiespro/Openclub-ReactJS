@@ -5,6 +5,7 @@ export default gql`
     user {
       _id
       email
+      birthday
       name
       notification_token
       helpdesk_jwt
