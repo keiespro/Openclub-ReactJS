@@ -137,3 +137,11 @@ a {
 .ant-btn-lg {
   border-radius: 1px;
 }
+
+.btn-group {
+  display: flex;
+  width: 100%;
+  .btn {
+    flex-grow: 1;
+  }
+}

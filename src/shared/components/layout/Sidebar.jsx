@@ -96,9 +96,6 @@ class Sidebar extends Component {
                 </Item>
               )}
             </ItemGroup>}
-            <Item key="clubs/create" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, paddingTop: 3, backgroundColor: '#404040' }}>
-              <Icon type="plus circle" /> Create a Club
-            </Item>
           </Menu>
         </aside>
       )
