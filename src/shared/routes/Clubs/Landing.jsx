@@ -61,8 +61,6 @@ class ClubsLanding extends Component {
 
     return (
       <div>
-        <h3>Suggested Clubs</h3>
-        <hr className="bottom-gap-large" />
         <Row type="flex" justify="flex-start">
           <InfiniteScroll
             hasMore={pageInfo && pageInfo.has_next_page}
