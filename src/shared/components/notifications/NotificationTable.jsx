@@ -79,7 +79,12 @@ class Notifications extends Component {
     let { notifications } = data;
 
     if (!notifications || notifications.length <= 0) {
-      return <div className="text-center">No new notifications.</div>
+      return (
+        <div className="text-center">
+          <i className="fa fa-fw fa-5x fa-bell-slash mb" />
+          <h4>You have no Notifications</h4>
+        </div>
+      )
     }
     notifications = _.filter(notifications, n => _.has(n, 'activities[0].actor_data') && _.has(n, 'activities[0].object_data'));
     if (max && notifications) notifications = notifications.slice(0, max)

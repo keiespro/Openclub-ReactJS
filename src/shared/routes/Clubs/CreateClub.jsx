@@ -83,21 +83,6 @@ const createMutation = gql`
       }
       subscription{
         start_date
-        pending_approval
-        auto_renew
-        membership_plan{
-          _id
-          name
-          prices{
-            price{
-              amount_float
-            }
-            setup_price{
-              amount_float
-            }
-          }
-        }
-        last_renewal_date
       }
     }
   }

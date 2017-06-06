@@ -27,11 +27,9 @@ class ClubInvitations extends Component {
 
     return (
       <div>
-        <h3>My Clubs</h3>
-        <hr className="bottom-gap-large" />
-        <Row type="flex" justify="flex-start">
+        <Row>
           {subscriptions.map(membership => (
-            <ClubCard club={membership.club} viewer={viewer} />
+            <ClubCard club={membership.club} viewer={viewer} key={membership._id} />
           ))}
         </Row>
       </div>

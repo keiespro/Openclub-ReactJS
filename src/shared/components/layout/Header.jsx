@@ -37,6 +37,15 @@ const userMenu = (
         <Link to="/logout" className="btn bg-danger"><i className="fa fa-fw fa-sign-out" /> Logout</Link>
       </Menu.Item>
     </Menu>
+    <div className="company-details text-center mb">
+      Copyright © OpenClub Pty Ltd.
+      <br />
+      <a href="https://www.openclub.co/legal/terms" target="_blank" rel="noopener noreferrer">
+        Terms of Service
+      </a> | <a href="https://www.openclub.co/legal/privacy" target="_blank" rel="noopener noreferrer">
+        Privacy Policy
+      </a>
+    </div>
   </div>
 )
 

@@ -26,7 +26,7 @@ class ClubsView extends Component {
     this.state = { ready: false }
   }
   setActiveKey(activeKey) {
-    if (activeKey === 'invitations') this.context.router.transitionTo('/profile/invitations');
+    if (activeKey === 'invitations') return this.context.router.transitionTo('/profile/invitations');
     this.context.router.transitionTo(`/clubs/${activeKey}`)
   }
   componentDidMount() {

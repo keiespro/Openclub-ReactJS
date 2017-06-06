@@ -100,7 +100,7 @@ class Profile extends Component {
                           </p>
                         </div>
                       </Col>
-                      <Col xs={24} mg={16} lg={8}>
+                      <Col xs={24} md={16} lg={8}>
                         <div>
                           <h4 className="mb-sm">Profile</h4>
                           <UserProfile viewer={viewer} />
@@ -138,6 +138,14 @@ class Profile extends Component {
                   const invitations = _.get(viewer, 'invitations', []);
                   return (
                     <div>
+                      {(!invitations || invitations.length === 0) && (
+                        <div className="text-center">
+                          <i className="fa fa-fw fa-5x fa-envelope mb" />
+                          <h4>You have no Invitations</h4>
+                          <hr className="mb mt" />
+                          <p>You don't have any invitations, yet. But, we'll notify you as soon you receive one.</p>
+                        </div>
+                      )}
                       {invitations.map(invitation => (
                         <Card key={invitation._id} bodyStyle={{ padding: 0 }} key={invitation._id} className="mb-sm">
                           <div className="table m0">
