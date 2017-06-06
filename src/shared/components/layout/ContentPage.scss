@@ -1,13 +1,13 @@
 @import "styles/Variables.scss";
 
 .oc-content-page {
-  padding: 20px;
-  background-color: #fff;
-  margin-bottom: 20px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
-  @media #{$max-mobile} {
-    padding: 10px;
+  padding: 10px;
+  background: #fff;
+  @media #{$min-desktop} {
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
   }
 }
 

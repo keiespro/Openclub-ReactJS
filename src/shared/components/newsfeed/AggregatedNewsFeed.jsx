@@ -4,6 +4,8 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Card from 'antd/lib/card';
 import _ from 'lodash';
+import { Link } from 'teardrop';
+import { MiddleArea } from 'components/layout';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Button from 'antd/lib/button';
 import clubPermissions from 'utils/club_permissions';
@@ -64,16 +66,15 @@ class AggregatedNewsFeed extends Component {
 
     if (posts.length <= 0) {
       return (
-        <div>
-          <Button onClick={data.refetch.bind(this)} type="primary" loading={data.loading}><i className="fa fa-refresh" /></Button>
-          <div className="posts-container">
-            <div className="no-posts">
-              <h1><i className="fa fa-newspaper-o" /></h1>
-              <h2>Nothing to show!</h2>
-              <p>Posts from clubs you are a member of will appear here.</p>
-            </div>
-          </div>
-        </div>
+        <MiddleArea className="text-center">
+          <i className="fa fa-fw fa-5x fa-newspaper-o mb" />
+          <h2>Welcome to your news feed!</h2>
+          <hr className="mb mt" />
+          <p className="p mb">
+            Posts from clubs you follow or join will appear here. We recommend following OpenClub for updates and news.
+          </p>
+          <Link to="/openclub" className="btn btn-primary btn-lg"><i className="fa fa-fw fa-chevron-right" /> {"Let's go"}</Link>
+        </MiddleArea>
       )
     }
     return (

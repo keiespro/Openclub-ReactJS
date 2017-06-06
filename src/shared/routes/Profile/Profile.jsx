@@ -11,7 +11,7 @@ import message from 'antd/lib/message';
 import _ from 'lodash';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ContentArea, ContentPage } from 'components/layout'
+import { ContentArea, ContentPage, IconTitle } from 'components/layout'
 import UserProfile from 'modules/forms/UserProfile'
 import ManageCreditCards from 'modules/forms/ManageCreditCards'
 import { MatchGroup, Match, Redirect } from 'teardrop';
@@ -60,6 +60,7 @@ class Profile extends Component {
     if (!viewer) return <div>You must be logged in to view this page.</div>
     return (
         <ContentArea>
+          <IconTitle title="Profile" icon="fa-id-card-o" />
           <ContentPage>
             <div className="mb-xl">
               <Menu
@@ -99,7 +100,7 @@ class Profile extends Component {
                           </p>
                         </div>
                       </Col>
-                      <Col xs={24} mg={16} lg={8}>
+                      <Col xs={24} md={16} lg={8}>
                         <div>
                           <h4 className="mb-sm">Profile</h4>
                           <UserProfile viewer={viewer} />
@@ -137,11 +138,19 @@ class Profile extends Component {
                   const invitations = _.get(viewer, 'invitations', []);
                   return (
                     <div>
+                      {(!invitations || invitations.length === 0) && (
+                        <div className="text-center">
+                          <i className="fa fa-fw fa-5x fa-envelope mb" />
+                          <h4>You have no Invitations</h4>
+                          <hr className="mb mt" />
+                          <p>You don't have any invitations, yet. But, we'll notify you as soon you receive one.</p>
+                        </div>
+                      )}
                       {invitations.map(invitation => (
                         <Card key={invitation._id} bodyStyle={{ padding: 0 }} key={invitation._id} className="mb-sm">
                           <div className="table m0">
                             <div className="cell oh" style={{ width: 90 }}>
-                              <img src={userPhoto(_.get(invitation, 'owner_entity.meta.images', {}))} style={{ maxWidth: '100%' }} alt={_.get(invitation, 'owner_entity.meta.name', 'No name')} role="presentation" />
+                              <img src={userPhoto(_.get(invitation, 'owner_entity.meta.json.images', {}))} style={{ maxWidth: '100%' }} alt={_.get(invitation, 'owner_entity.meta.name', 'No name')} role="presentation" />
                             </div>
                             <div className="cell p" style={{ verticalAlign: 'top' }}>
                               <h4>{_.get(invitation, 'owner_entity.meta.name', 'No name')}</h4>

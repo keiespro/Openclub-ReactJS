@@ -34,8 +34,8 @@ class AddCard extends Component {
         }
       })
       message.success('Credit card sucessfully added', 10)
-      this.setState({ loading: false })
       if (successCallback) successCallback();
+      this.setState({ loading: false })
     } catch (err) {
       Modal.error({
         title: "Error adding card",
@@ -71,17 +71,7 @@ const addCreditCardGQL = gql`
 `
 
 const AddCardApollo = graphql(addCreditCardGQL, {
-    name: 'addCreditCard',
-    options: {
-      updateQueries: {
-        user: (prev, { mutationResult }) => ({
-          user: {
-            ...prev.user,
-            ...mutationResult.data.addCreditCard
-          }
-        })
-      }
-    }
+    name: 'addCreditCard'
   })(AddCard);
 
   export default AddCardApollo;

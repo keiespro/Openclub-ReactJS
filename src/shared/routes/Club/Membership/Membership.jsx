@@ -62,11 +62,11 @@ class Membership extends Component {
     let timelineChildren = [];
 
     if (subscription) {
-      if (subscription.membership_plan && subscription.pending_approval === false && !_.get(subscription, 'membership_plan.prices')) {
+      if (subscription.membership_plan && subscription.pending_approval === false && !subscription.expiry_date) {
         timelineChildren.push(<TimelineItem key="free-active" dot={<Icon type="check-circle" />} color="green">{_.get(subscription, 'membership_plan.name') } subscription active.</TimelineItem>)
       }
-      if (subscription.membership_plan && subscription.pending_approval === false && _.get(subscription, 'membership_plan.prices')) {
-        timelineChildren.push(<TimelineItem key="active" dot={<Icon type="check-circle" />} color="green">{_.get(subscription, 'membership_plan.name') } subscription active until {m(_.get(subscription, 'next_renewal')).format('LL')}</TimelineItem>)
+      if (subscription.membership_plan && subscription.pending_approval === false && subscription.expiry_date) {
+        timelineChildren.push(<TimelineItem key="active" dot={<Icon type="check-circle" />} color="green">{_.get(subscription, 'membership_plan.name') } subscription active until {m(_.get(subscription, 'expiry_date')).format('LL')}</TimelineItem>)
       }
       if (subscription.pending_approval === true) {
         timelineChildren.push(<TimelineItem key="pending" dot={<Icon type="clock-circle-o" />} color="orange">Pending membership approval</TimelineItem>);
@@ -88,41 +88,44 @@ class Membership extends Component {
             <Timeline>
               {timelineChildren}
             </Timeline>
-            {subscription.membership_plan && subscription.pending_approval === false &&
-              <ButtonGroup>
-                <Button type="primary" onClick={() => this.context.router.transitionTo(`/${club.slug}/join`)}>Change Plan</Button>
-                <Button
-                  type="danger" onClick={() => Modal.warning({
-                    title: 'Leave Club',
-                    content: 'Are you sure you wish to leave this club? This will cancel any active membership agreement you have with this club at the end of your billing period.',
-                    onOk: () => true,
-                    okText: 'Yes, leave club',
-                    cancelText: 'No'
-                })}
-                >
-                  Leave Club
-                </Button>
-              </ButtonGroup>
-            }
-            <hr style={{ marginTop: 7, marginBottom: 20 }} />
-            <h4 style={{ marginBottom: 25 }}>Club Profile</h4>
+            <hr className="mb mt" />
+            <h4 className="mb">Club Profile</h4>
             <ClubMemberProfile initialValues={membership} onSubmit={this.updateProfile} />
+            <hr className="mb mt" />
+            {subscription.membership_plan && subscription.pending_approval === false &&
+              <div className="text-center">
+                  <Button type="primary" onClick={() => this.context.router.transitionTo(`/${club.slug}/join`)}><i className="fa fa-fw fa-refresh" /> Change Plan</Button>
+                  <span> </span>
+                  <Button
+                    type="danger"
+                    onClick={() => Modal.warning({
+                      title: 'Leave Club',
+                      content: 'Are you sure you wish to leave this club? This will cancel any active membership agreement you have with this club at the end of your billing period.',
+                      onOk: () => true,
+                      okText: 'Yes, leave club',
+                      cancelText: 'No'
+                    })}
+                    >
+                    <i className="fa fa-fw fa-sign-out" /> Leave Club
+                  </Button>
+              </div>
+            }
           </ContentPage>
         </Col>
         <Col xs={24} md={8}>
             <ContentPage>
-              <h4 style={{ marginBottom: 25 }}>Club Permissions</h4>
-              <div>
+              <h4 className="mb">Club Permissions</h4>
+              <div className="mb">
                 {_.includes(roles, 'admin') && <Tooltip title="Full access to all club controls"><Tag color="#f50">Admin</Tag></Tooltip>}
                 {(_.includes(roles, 'admin') || _.includes(roles, 'moderator')) && <Tooltip title="Moderate feed posts and comments"><Tag color="#ffbe08">Feed</Tag></Tooltip>}
                 {(_.includes(roles, 'admin') || _.includes(roles, 'accountant')) && <Tooltip title="View and log club finances"><Tag color="#87d068">Finances</Tag></Tooltip>}
                 {(_.includes(roles, 'admin') || _.includes(roles, 'curator')) && <Tooltip title="View, manage and approve club members"><Tag color="#108ee9">Members</Tag></Tooltip>}
                 {(!roles || roles.length === 0) && <p>{"You haven't been assigned any roles."}</p>}
               </div>
-              <h4 style={{ marginBottom: 25 }}>Feed Permissions</h4>
-              <div>
-                <Tooltip title="You can post in the feed"><Tag color="#108ee9">Post</Tag></Tooltip>
-                <Tooltip title="You can view the feed"><Tag color="#87d068">View</Tag></Tooltip>
+              <h4 className="mb">Feed Permissions</h4>
+              <div className="mb">
+                {perm.canPostFeed && <Tooltip title="You can post in the feed"><Tag color="#108ee9">Post</Tag></Tooltip>}
+                {perm.canViewFeed && <Tooltip title="You can view the feed"><Tag color="#87d068">View</Tag></Tooltip>}
               </div>
             </ContentPage>
         </Col>

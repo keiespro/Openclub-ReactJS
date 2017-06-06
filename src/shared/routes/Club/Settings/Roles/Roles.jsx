@@ -123,8 +123,8 @@ class Roles extends Component {
         {users.map(user => (
           <Card bodyStyle={{ padding: 0 }} key={user._id} className="mb-sm">
             <div className="table m0">
-              <div className="cell oh" style={{ width: 90 }}>
-                <img src={userPhoto(_.get(user, 'profile.photo', {}))} style={{ maxWidth: '100%' }} alt={_.get(user, 'profile.name', 'No name')} role="presentation" />
+              <div className="cell oh" style={{ width: 90, height: 90, overflow: 'hidden' }}>
+                <img src={userPhoto(_.get(user, 'profile.images'), 'square')} style={{ maxWidth: '100%' }} alt={_.get(user, 'profile.name', 'No name')} role="presentation" />
               </div>
               <div className="cell p" style={{ verticalAlign: 'top' }}>
                 <h4>{_.get(user, 'profile.name', 'No name')}</h4>

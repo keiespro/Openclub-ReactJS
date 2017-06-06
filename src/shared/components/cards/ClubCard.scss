@@ -1,6 +1,5 @@
 .club-card {
-  width: 100%;
-  max-width: 375px;
+  width: 375px;
   flex-grow: 1;
 }
 .club-card-cover, .club-card-profile {
@@ -27,16 +26,18 @@
   overflow: hidden;
   border: 2px solid white;
   position: absolute;
-  bottom: -20px;
+  bottom: 5px;
   left: 10px;
 }
 .club-card-content {
   padding: 10px 16px;
   h3 {
+    font-size: 20px;
     max-width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    margin-bottom: 5px;
   }
   .description {
     max-height: 48px;

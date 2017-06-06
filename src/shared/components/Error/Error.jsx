@@ -1,5 +1,6 @@
 import React from 'react'
-import Alert from 'antd/lib/alert'
+import MiddleArea from 'components/layout/MiddleArea'
+import parseError from 'utils/error';
 
 const Error = ({ error }) => {
   const style = {
@@ -27,6 +28,22 @@ const Error = ({ error }) => {
       description: process.env.NODE_ENV === "production" ? "OpenClub failed to load because of an error. Please try again or contact support@openclub.co." : (error ? error.message : 'Undefined error, see console.')
     }
   }
-  return <div style={{ width: '100%', height: 'calc(100vh - 50px)', display: 'block' }}><Alert {...config} /></div>;
+  return (
+    <MiddleArea>
+      <div className="text-center">
+        <i className="fa fa-5x fa-fw fa-exclamation-triangle text-danger mb" />
+        <h3 className="mb text-danger">Uh-oh!</h3>
+        <h5 className="text-danger">We've encountered an error</h5>
+        <hr className="mb mt" />
+        <p>{parseError(error)}</p>
+        <hr className="mb mt" />
+        <p className="mb">We recommend reloading to try again</p>
+        <div className="btn-group">
+          <button onClick={() => { window.location.reload() }} className="btn btn-lg btn-danger"><i className="fa fa-fw fa-refresh" />Reload</button>
+          <button onClick={() => { window.location.reload() }} className="btn btn-lg btn-primary"><i className="fa fa-fw fa-life-ring" /> Helpdesk</button>
+        </div>
+      </div>
+    </MiddleArea>
+  )
 }
 export default Error

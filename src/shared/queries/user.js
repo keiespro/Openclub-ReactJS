@@ -5,9 +5,11 @@ export default gql`
     user {
       _id
       email
+      birthday
       name
       notification_token
       helpdesk_jwt
+      fbid
       address {
         formatted_address
       }
@@ -38,7 +40,11 @@ export default gql`
           expiry_date
         }
         invitation_url
-        membership_plan_id
+        membership_plan{
+          _id
+          name
+          description
+        }
         roles
       }
       memberships {
@@ -64,6 +70,7 @@ export default gql`
         display_messenger
         bio
         subscription{
+          active
           start_date
           expiry_date
           pending_approval

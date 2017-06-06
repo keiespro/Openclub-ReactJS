@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Row, Col, Layout } from 'antd'
 import AggregatedNewsFeed from 'components/newsfeed/AggregatedNewsFeed'
 import { CalendarItem } from 'components/EventCalendar'
+import UserProfile from 'modules/forms/UserProfile'
+import { ContentArea, ContentPage } from 'components/layout';
 
 import './Feed.scss';
 
@@ -30,25 +32,25 @@ class Feed extends Component {
     return true;
   }
   render() {
+    const { viewer } = this.props;
     return (
       <Row gutter={8}>
         <Col lg={16} xs={24}>
           <div className="feed-container">
             <AggregatedNewsFeed viewer={this.props.viewer} />
-            <Content className="content">
-              <div className="company-details">
-                © OpenClub Pty Ltd.
-                <br />
-                <a href="https://www.openclub.co/legal/terms" target="_blank" rel="noopener noreferrer">
-                  Terms of Service
-                </a> | <a href="https://www.openclub.co/legal/privacy" target="_blank" rel="noopener noreferrer">
-                  Privacy Policy
-                </a> | <a href="/help" target="_blank" rel="noopener noreferrer">
-                 Help
-               </a>
-              </div>
-            </Content>
           </div>
+        </Col>
+        <Col lg={8} className="hidden-xs hidden-sm hidden-md">
+          {viewer && (!viewer.email || !viewer.birthday) && (
+            <ContentArea>
+              <ContentPage>
+                <h3 className="mb">Profile Details</h3>
+                <p>Some details are missing from your profile. Your OpenClub profile is portable between the clubs that you join. This means that once this is set, you'll never need to change it elsewhere again.</p>
+                <hr className="mb mt" />
+                <UserProfile />
+              </ContentPage>
+            </ContentArea>
+          )}
         </Col>
       </Row>
     );

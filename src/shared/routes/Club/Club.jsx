@@ -53,6 +53,7 @@ class Club extends Component {
     if (!club) return <Error404 />
 
     const perm = clubPermissions(club, viewer);
+    console.log(perm);
     const handleClick = e => {
       router.transitionTo(`/${params.club_id}/${e}`, true);
     }
@@ -63,7 +64,7 @@ class Club extends Component {
     }
 
     const selectedKey = keysFromFragments(location.pathname, pathname, [
-      'feed', 'events', 'about', 'community', 'mymembership', 'settings'
+      'feed', 'events', 'about', 'community', 'transactions', 'mymembership', 'settings'
     ])[0]
 
     const followMenu = <ClubActions club={club} perm={perm} viewer={viewer} />;
@@ -116,7 +117,7 @@ class Club extends Component {
             />
             <Match
               pattern={`/${params.club_id}/community`}
-              render={routerProps => perm.userIsMember ? <AsyncCommunity {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
+              render={routerProps => perm.canViewDirectory ? <AsyncCommunity {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
             />
             <Match
               pattern={`/${params.club_id}/mymembership`}

@@ -19,6 +19,11 @@ a {
 
 .ant-layout-content {
   overflow-x: hidden;
+  margin-top: 50px;
+}
+
+.ant-tabs-bar {
+  margin-bottom: 0;
 }
 
 .max-form {
@@ -62,7 +67,7 @@ a {
   -webkit-overflow-scrolling: touch;
 }
 .ant-tabs-extra-content {
-  margin: 2px 3px 0 0;
+  margin: 1px 2px 0 0;
 }
 .ant-tabs-bar {
   background: white;
@@ -131,4 +136,12 @@ a {
 }
 .ant-btn-lg {
   border-radius: 1px;
+}
+
+.btn-group {
+  display: flex;
+  width: 100%;
+  .btn {
+    flex-grow: 1;
+  }
 }

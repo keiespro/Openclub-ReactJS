@@ -13,26 +13,38 @@ import userPhoto from 'utils/user_photo'
 const AntHeader = Layout.Header
 
 const userMenu = (
-  <Menu>
-    <Menu.Item key="0">
-      <Link to="/profile"><Icon type="user"/> Profile</Link>
-    </Menu.Item>
-    <Menu.Divider />
-    <Menu.Item key="1">
-      <Link to="/logout"><Icon type="logout"/> Logout</Link>
-    </Menu.Item>
-  </Menu>
-)
-
-const notificationMenu = (
   <div className="notification-table">
-    <div className="header">
-      <h4 className="bottom-gap">Notifications</h4>
-    </div>
-    <hr className="bottom-gap" />
+    <h4 className="text-center mb-sm mt-sm">Notifications</h4>
+    <hr />
     <NotificationTable max={5} />
-    <div className="footer">
-      <Link to="/notifications">Open Notifications</Link>
+    <Menu>
+      <Menu.Item key="4" className="text-center">
+        <Link to="/notifications" className="btn bg-primary"><i className="fa fa-fw fa-bell-slash-o" /> All Notifications</Link>
+      </Menu.Item>
+      <Menu.Item key="0" className="text-center">
+        <Link to="/profile" className="btn bg-gray-dark"><i className="fa fa-fw fa-id-card-o" /> Update Profile</Link>
+      </Menu.Item>
+      <Menu.Item key="1" className="text-center">
+        <div className="btn-group">
+          <Link to="/clubs/create" className="btn bg-success"><i className="fa fa-fw fa-users" /> Create a Club</Link>
+          <Link to="/events/create" className="btn bg-danger"><i className="fa fa-fw fa-calendar-plus-o" /> Create an Event</Link>
+        </div>
+      </Menu.Item>
+      <Menu.Item key="2" className="text-center">
+        <Link to="/help" className="btn bg-info"><i className="fa fa-fw fa-life-ring" /> Helpdesk</Link>
+      </Menu.Item>
+      <Menu.Item key="3" className="text-center">
+        <Link to="/logout" className="btn bg-danger"><i className="fa fa-fw fa-sign-out" /> Logout</Link>
+      </Menu.Item>
+    </Menu>
+    <div className="company-details text-center mb">
+      Copyright © OpenClub Pty Ltd.
+      <br />
+      <a href="https://www.openclub.co/legal/terms" target="_blank" rel="noopener noreferrer">
+        Terms of Service
+      </a> | <a href="https://www.openclub.co/legal/privacy" target="_blank" rel="noopener noreferrer">
+        Privacy Policy
+      </a>
     </div>
   </div>
 )
@@ -46,7 +58,7 @@ const Header = ({ login: doLogin, user, showSearch, notifications, seen, sidebar
     </div>}
     <div className="oc-header-context hidden-md hidden-lg">
       { user && <div className="oc-header-usermenu">
-        <Button shape="circle" type="primary" ghost icon={sidebarOpen ? 'menu-fold' : 'menu-unfold'} onClick={toggleSb} />
+        <Button shape="circle" type="primary" icon={sidebarOpen ? 'menu-fold' : 'menu-unfold'} onClick={toggleSb} />
       </div> }
     </div>
     <Link to="/" className="oc-header-logo">
@@ -60,14 +72,10 @@ const Header = ({ login: doLogin, user, showSearch, notifications, seen, sidebar
     { user &&
     <div className="oc-header-context right">
       <div className="oc-header-usermenu">
-        <Button className="mr" shape="circle" type="primary" icon="question" ghost onClick={() => router.transitionTo('/help')} />
-        <Dropdown overlay={notificationMenu} trigger={['click']}>
-          <Badge count={notifications.unseen || 0} className="notifications-toggle">
-            <Button shape="circle" type="primary" icon="bell" ghost onClick={seen} />
-          </Badge>
-        </Dropdown>
         <Dropdown overlay={userMenu} trigger={['click']}>
-          <img src={userPhoto(user, 'thumb')} alt="Profile" className="oc-header-userimage" />
+          <Badge count={notifications.unseen || 0} className="notifications-toggle">
+            <img src={userPhoto(user.images, 'thumb', user.fbid)} alt="Profile" className="oc-header-userimage" />
+          </Badge>
         </Dropdown>
       </div>
     </div>

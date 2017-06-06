@@ -5,6 +5,10 @@
   width: 150px;
   height: 150px;
 }
+.image-upload-field {
+  margin-left:auto;
+  margin-right:auto;
+}
 .avatar-uploader {
   display: block;
   border: 1px dashed #d9d9d9;

@@ -33,6 +33,12 @@ class Join extends Component {
   async joinClub(values, dispatch, props) {
     const { joinClub } = this.props;
     console.log('submission', values, props);
+    if (!values.acceptTerms) {
+      return Modal.error({
+        title: 'Uh oh!',
+        content: 'You must accept the club\'s terms before joining.'
+      })
+    }
 
     try {
       if (!values.selectedPlan) throw new Error('No plan has been selected.');
@@ -107,7 +113,27 @@ const JoinMutation = gql`
 
 const JoinApollo = graphql(JoinMutation,
   {
-    name: 'joinClub'
+    name: 'joinClub',
+    options: {
+      updateQueries: {
+        user: (prev, { mutationResult }) => {
+          let clonedState = _.clone(prev);
+          const { joinClub } = mutationResult.data;
+          if (!joinClub) return prev;
+
+          let index = _.findIndex(clonedState.user.memberships, m => m._id === joinClub._id);
+          if (!index) {
+            clonedState.user.memberships.push(joinClub);
+          } else {
+            clonedState.user.memberships[index] = {
+              ...clonedState.user.memberships[index],
+              ...joinClub
+            }
+          }
+          return clonedState;
+        }
+      }
+    }
   }
 )(Join)
 

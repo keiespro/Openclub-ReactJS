@@ -22,6 +22,7 @@ import AsyncTest from 'routes/Test'
 import Auth from 'routes/Auth'
 import Invitation from 'routes/Invitation'
 import Logout from 'routes/Auth/Logout'
+import CreateClub from 'routes/Clubs/CreateClub'
 
 import { initNotifications } from 'modules/notifications/actions'
 import { logoutUser, login, checkAuthentication } from 'modules/auth/actions'
@@ -102,6 +103,8 @@ class App extends Component {
     const { data, location } = this.props;
     if (data.loading) return <Loading />;
 
+    console.log(data.user);
+
     const logonCheckPath = (path) => {
       if (process.env.IS_CLIENT && !data.user) {
         localStorage.setItem('logonPath', path);
@@ -164,7 +167,7 @@ class App extends Component {
                   }
                   if (data.user) {
                     window.open(`https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`);
-                    window.setTimeout(() => this.context.router.transitionTo('/'), 10000);
+                    window.setTimeout(() => this.context.router.transitionTo('/'), 1000);
                     return <div>If a window does not appear in 3 seconds, <a href={`https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`} target="_blank">click here</a>.</div>;
                   }
                   if (logonCheckPath('help')) return <Redirect to="/auth" />;
@@ -194,7 +197,8 @@ class App extends Component {
                 }}
               />
               {/* CLUB PAGES */}
-              <Match pattern="/test" component={AsyncTest} />
+              <Match pattern="/test" component={Loading} />
+              <Match pattern="/clubs/create" render={routerProps => data.user ? <CreateClub viewer={data.user} {...routerProps} /> : <Error404 {...routerProps} />} />
               <Match pattern="/clubs" render={routerProps => <AsyncClubs viewer={data.user} login={this.props.login} {...routerProps} />} />
               <Match pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
               {/* 404 */}

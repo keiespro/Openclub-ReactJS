@@ -8,7 +8,6 @@ import message from 'antd/lib/message';
 import Button, { Group as ButtonGroup } from 'antd/lib/button';
 import gql from 'graphql-tag';
 import { compose, graphql } from 'react-apollo';
-import la from 'logandarrow'
 import error from 'utils/error';
 
 import CreditCard from 'components/cards/CreditCard'
@@ -144,31 +143,11 @@ const ChangePrimaryCardQuery = gql`
 
 const CardListApollo = compose(
   graphql(DeleteCardQuery, {
-      name: 'deleteCreditCard',
-      options: {
-        updateQueries: {
-          user: (prev, { mutationResult }) => la()({
-            user: {
-              ...prev.user,
-              ...mutationResult.data.deleteCreditCard
-            }
-          })
-        }
-      }
+      name: 'deleteCreditCard'
     }),
     graphql(ChangePrimaryCardQuery, {
-        name: 'changePrimaryCard',
-        options: {
-          updateQueries: {
-            user: (prev, { mutationResult }) => la()({
-              user: {
-                ...prev.user,
-                ...mutationResult.data.changePrimaryCard
-              }
-            })
-          }
-        }
-      })
+        name: 'changePrimaryCard'
+    })
 )(CardList);
 
 export default CardListApollo;

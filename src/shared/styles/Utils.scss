@@ -158,6 +158,7 @@ table.va-bottom { td { vertical-align: bottom !important; } }
 .text-inherit       { color: inherit !important; }
 .text-soft          { color: rgba($gray-base,.66); }
 .text-light         { color: rgba(255,255,255,.74); }
+.text-danger        { color: $brand-danger }
 
 // Text sizing
 

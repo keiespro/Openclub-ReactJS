@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { seenNotifications } from 'modules/notifications/actions'
 import { Button, Table, Icon } from 'antd'
 import { objectIcon } from 'constants/index'
+import userPhoto from 'utils/user_photo';
 import cx from 'classnames'
 import _ from 'lodash'
 import './NotificationTable.scss'
@@ -66,12 +67,24 @@ class Notifications extends Component {
         return `${actorIndex(0)}, ${actorIndex(1)} and ${remaining} other ${personOrPeople}`
       }
     }
+    const recordImg = record => {
+      const actorImages = _.get(record, 'activities[0].actor_data.images');
+      const objectImages = _.get(record, 'activities[0].object_data.images');
+      if (!_.isEmpty(actorImages)) return userPhoto(actorImages);
+      if (!_.isEmpty(objectImages)) return userPhoto(objectImages);
+      return '/blank.gif';
+    }
 
     const { data, max } = this.props
     let { notifications } = data;
 
     if (!notifications || notifications.length <= 0) {
-      return <div className="text-center">No new notifications.</div>
+      return (
+        <div className="text-center">
+          <i className="fa fa-fw fa-5x fa-bell-slash mb" />
+          <h4>You have no Notifications</h4>
+        </div>
+      )
     }
     notifications = _.filter(notifications, n => _.has(n, 'activities[0].actor_data') && _.has(n, 'activities[0].object_data'));
     if (max && notifications) notifications = notifications.slice(0, max)
@@ -80,16 +93,15 @@ class Notifications extends Component {
     const onRowClick = record => this.goTo(getLink(record));
     const rowKey = record => record.id;
     const rowClassName = record => cx({ 'notification-unseen': !record.is_seen });
-    const recordImg = record => record.activities && record.activities.length > 0 && 'img' in record.activities[0] ? record.activities[0].img : (record.img || false);
     const notificationCols = [
       {
         key: 'icon',
         width: '32px',
-        render: (text, record) => <div className="notification-icon">{recordImg(record) ? <img alt="Icon" className="notification-image" src={recordImg(record)} /> : <Icon type={objectIcon(record.object)} />}</div>
+        render: (text, record) => <div className="notification-icon">{recordImg(record) ? <img alt="Icon" className="thumb32 rounded" src={recordImg(record)} /> : <Icon type={objectIcon(record.object)} />}</div>
       },
       {
         key: 'notification',
-        render: (text, record) => <div>{`${formatActors(record)} ${record.verb} ${findTarget(record)} ${findObjectName(record)}`}</div>
+        render: (text, record) => <div><strong>{formatActors(record)}</strong> {record.verb} {findTarget(record)} <strong>{findObjectName(record)}</strong></div>
       },
       {
         key: 'actions',

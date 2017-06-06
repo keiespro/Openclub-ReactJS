@@ -27,9 +27,6 @@ body {
   }
 }
 @media #{$min-desktop} {
-  .rc-drawer-sidebar {
-    top: 0px !important;
-  }
   .loggedin {
     .rc-drawer-sidebar {
       transform: translateX(0%) !important;
