@@ -215,55 +215,15 @@ const deleteBankAccountQL = gql`
 const FinancialsWithApollo = compose(
   graphql(createAccountMutationQL, {
   name: 'createAccount',
-  options: {
-    updateQueries: {
-      club: (prev, { mutationResult }) => ({
-        club: {
-          ...prev.club,
-          ...mutationResult.data.createAccount
-        }
-      })
-    }
-  }
 }),
 graphql(updateAccountMutationQL, {
 name: 'updateAccount',
-options: {
-  updateQueries: {
-    club: (prev, { mutationResult }) => ({
-      club: {
-        ...prev.club,
-        ...mutationResult.data.updateAccount
-      }
-    })
-  }
-}
 }),
 graphql(saveBankAccountQL, {
   name: 'saveBankAccount',
-  options: {
-    updateQueries: {
-      club: (prev, { mutationResult }) => ({
-        club: {
-          ...prev.club,
-          ...mutationResult.data.saveBankAccount
-        }
-      })
-    }
-  }
 }),
 graphql(deleteBankAccountQL, {
   name: 'deleteBankAccount',
-  options: {
-    updateQueries: {
-      club: (prev, { mutationResult }) => ({
-        club: {
-          ...prev.club,
-          ...mutationResult.data.deleteBankAccount
-        }
-      })
-    }
-  }
 })
 )(BankDetails)
 

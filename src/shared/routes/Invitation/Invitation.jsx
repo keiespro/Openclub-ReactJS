@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { MiddleArea } from 'components/layout';
 import Loading from 'components/Loading/Loading';
+import Error from 'components/Error/Error'
 import _ from 'lodash';
 
 class Invitation extends Component {
@@ -12,8 +13,13 @@ class Invitation extends Component {
   }
   render() {
     const { data } = this.props;
+    console.log(data);
 
     const { invitation } = data;
+    if (data.error) {
+      return <Error error={data.error} />;
+    }
+
     if (!invitation) return <Loading />
 
     let type = 'view';

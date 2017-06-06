@@ -290,7 +290,7 @@ class StripeAccountForm extends Component {
             />
         </FieldContainer>
         <FieldContainer required title="Additional Verifications" deleted={this.isFieldDisabled('legal_entity.additional_owners')}>
-          Our payment provider has additional verification requirements in this region that may require that you contact us. Please email support@openclub.co if you have any difficulties.
+          <div>Our payment provider has additional verification requirements in this region that may require that you contact us. Please email support@openclub.co if you have any difficulties.</div>
         </FieldContainer>
         {!existingAccount && (
           <FieldContainer required title="Terms and Conditions" deleted={this.isFieldDisabled('tos_acceptance.date')}>
