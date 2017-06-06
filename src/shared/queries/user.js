@@ -39,7 +39,11 @@ export default gql`
           expiry_date
         }
         invitation_url
-        membership_plan_id
+        membership_plan{
+          _id
+          name
+          description
+        }
         roles
       }
       memberships {
