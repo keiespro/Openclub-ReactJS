@@ -10,7 +10,21 @@
     width: 100%;
   }
 
+  .background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-image: url(/coverphoto.jpg);
+    background-position: center center;
+    background-size: cover;
+    transition: filter 0.5s;
+    overflow: hidden;
+  }
+
   .header-details {
+    position: absolute;
     display: table;
     justify-content: center;
     height: 100%;
@@ -62,9 +76,14 @@
       background-color: #fff;
       box-shadow: none;
     }
+    .background {
+      filter: blur(2px);
+      background-size: 120% !important;
+    }
     .header-details {
-      padding: 0px 20px;
+      padding: 0px 0;
       background: transparent;
+      position: absolute;
     }
     .media-object {
       height: 50px;

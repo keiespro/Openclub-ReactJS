@@ -197,7 +197,7 @@ class App extends Component {
                 }}
               />
               {/* CLUB PAGES */}
-              <Match pattern="/test" component={AsyncTest} />
+              <Match pattern="/test" component={Loading} />
               <Match pattern="/clubs/create" render={routerProps => data.user ? <CreateClub viewer={data.user} {...routerProps} /> : <Error404 {...routerProps} />} />
               <Match pattern="/clubs" render={routerProps => <AsyncClubs viewer={data.user} login={this.props.login} {...routerProps} />} />
               <Match pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />

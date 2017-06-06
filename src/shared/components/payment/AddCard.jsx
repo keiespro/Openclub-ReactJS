@@ -71,17 +71,7 @@ const addCreditCardGQL = gql`
 `
 
 const AddCardApollo = graphql(addCreditCardGQL, {
-    name: 'addCreditCard',
-    options: {
-      updateQueries: {
-        user: (prev, { mutationResult }) => ({
-          user: {
-            ...prev.user,
-            ...mutationResult.data.addCreditCard
-          }
-        })
-      }
-    }
+    name: 'addCreditCard'
   })(AddCard);
 
   export default AddCardApollo;

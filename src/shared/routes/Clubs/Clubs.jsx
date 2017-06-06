@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 import { Match, MatchGroup, Miss } from 'teardrop'
 import Tabs, { TabPane } from 'antd/lib/tabs';
 import Button from 'antd/lib/button';
-import gql from 'graphql-tag';
 
 // Components
-import { ContentArea, ContentPage } from 'components/layout'
-import Invitations from './Invitations'
+import { ContentArea, ContentPage, IconTitle } from 'components/layout'
 import Landing from './Landing'
 import My from './My'
 import Error404 from 'components/Error404/Error404'
@@ -28,6 +26,7 @@ class ClubsView extends Component {
     this.state = { ready: false }
   }
   setActiveKey(activeKey) {
+    if (activeKey === 'invitations') this.context.router.transitionTo('/profile/invitations');
     this.context.router.transitionTo(`/clubs/${activeKey}`)
   }
   componentDidMount() {
@@ -43,6 +42,7 @@ class ClubsView extends Component {
     )
     return (
       <ContentArea>
+        <IconTitle icon="fa-users" title="Clubs" />
         <ContentPage>
           <Tabs
             activeKey={this.state.ready ? (activeKey || 'suggestions') : ''}
@@ -55,7 +55,6 @@ class ClubsView extends Component {
           </Tabs>
           <MatchGroup>
             <Match pattern="/clubs" render={routerProps => <Landing viewer={viewer} {...routerProps} />} />
-            <Match pattern="/clubs/invitations" render={routerProps => viewer ? <Invitations viewer={viewer} {...routerProps} /> : <Error404 {...routerProps} />} />
             <Match pattern="/clubs/my" render={routerProps => viewer ? <My viewer={this.props.viewer} {...routerProps} /> : <Error404 {...routerProps} />} />
             <Miss component={Error404} />
           </MatchGroup>

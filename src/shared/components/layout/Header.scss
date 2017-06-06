@@ -2,7 +2,9 @@
 @import 'styles/Mixins';
 
 .oc-header {
-  position: relative;
+  position: fixed;
+  right:0;
+  left:0;
   background-color: $header-bg;
   height: $header-hg;
   box-shadow: $header-shadow;

@@ -11,7 +11,7 @@ import message from 'antd/lib/message';
 import _ from 'lodash';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ContentArea, ContentPage } from 'components/layout'
+import { ContentArea, ContentPage, IconTitle } from 'components/layout'
 import UserProfile from 'modules/forms/UserProfile'
 import ManageCreditCards from 'modules/forms/ManageCreditCards'
 import { MatchGroup, Match, Redirect } from 'teardrop';
@@ -60,6 +60,7 @@ class Profile extends Component {
     if (!viewer) return <div>You must be logged in to view this page.</div>
     return (
         <ContentArea>
+          <IconTitle title="Profile" icon="fa-id-card-o" />
           <ContentPage>
             <div className="mb-xl">
               <Menu

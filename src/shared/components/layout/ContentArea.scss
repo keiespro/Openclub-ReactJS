@@ -1,8 +1,8 @@
 @import "styles/Variables.scss";
 
 .oc-content-area {
-  padding: 20px;
-  @media #{$max-mobile} {
-    padding: 0px;
+  padding: 0px;
+  @media #{$min-desktop} {
+    padding: 20px;
   }
 }

@@ -49,9 +49,7 @@ class ProfileHeader extends Component {
     const { buttons } = this.props
 
     const headerImageStyles = {
-      backgroundImage: `url(${_.get(this.props, 'images.background') || '/coverphoto.jpg'})`,
-      backgroundPosition: 'center center',
-      backgroundSize: 'cover'
+      backgroundImage: `url(${_.get(this.props, 'images.background') || '/coverphoto.jpg'})`
     }
 
     const classes = cx({
@@ -61,7 +59,8 @@ class ProfileHeader extends Component {
 
     return (
       <div className={classes}>
-        <div className="banner-container" style={headerImageStyles}>
+        <div className="banner-container">
+          <div className="background" style={headerImageStyles} />
           <div className="header-details">
             <div className="details-container">
               {this.renderProfileBackdrop()}

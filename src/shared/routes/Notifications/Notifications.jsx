@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { seenNotifications } from 'modules/notifications/actions'
-import { ContentArea, ContentPage } from 'components/layout'
+import { ContentArea, ContentPage, IconTitle } from 'components/layout'
 import cx from 'classnames'
 import './Notifications.scss'
 
@@ -25,9 +25,8 @@ class Notifications extends Component {
 
     return (
       <ContentArea>
+        <IconTitle title="Notifications" icon="fa-bell" />
         <ContentPage>
-          <h3 className="bottom-gap-large">Notifications</h3>
-          <hr className="bottom-gap" />
           <div className={cx({'bottom-gap-large': true, 'loading': !isNotLoading})}>
             <NotificationTable />
           </div>
@@ -39,6 +38,6 @@ class Notifications extends Component {
 
 export default connect(state => ({
   data: state.notifications
-}),{
+}), {
   seen: seenNotifications
 })(Notifications);

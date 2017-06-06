@@ -73,10 +73,10 @@ class Sidebar extends Component {
               {process.env.NODE_ENV === 'development' && <Item key="discover"><Icon type="global" /> Discover</Item>}
             </ItemGroup>
             <ItemGroup key="sub2" title={<span>Menu</span>}>
-              <Item key="profile"><Icon type="idcard" /> Profile <Badge count={_.get(user, 'invitations', []).length} /></Item>
-              <Item key="notifications"><Icon type="bell" /> Notifications <Badge count={notifications.unseen || 0} /></Item>
-              {process.env.NODE_ENV === 'development' && <Item key="events"><Icon type="calendar" /> Events</Item>}
-              <Item key="clubs"><Icon type="team" /> Clubs</Item>
+              <Item key="profile"><Icon type="idcard" className="opt-profile" /> Profile <Badge count={_.get(user, 'invitations', []).length} /></Item>
+              <Item key="notifications"><Icon type="bell" className="opt-notifications" /> Notifications <Badge count={notifications.unseen || 0} /></Item>
+              <Item key="events"><Icon type="calendar" className="opt-events" /> Events</Item>
+              <Item key="clubs"><Icon type="team" className="opt-clubs" /> Clubs</Item>
             </ItemGroup>
             {subscriptions.length > 0 && <ItemGroup key="sub3" title={<span>My Clubs</span>}>
               {subscriptions.map(c =>

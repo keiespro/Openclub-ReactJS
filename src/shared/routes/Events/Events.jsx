@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
-import { Match, MatchGroup } from 'teardrop'
-import { ContentArea } from 'components/layout'
-import AsyncCreateEvent from './CreateEvent'
-import Landing from './Landing'
+import { ContentArea, MiddleArea } from 'components/layout'
 
 class EventsPage extends Component {
   render() {
     return (
       <ContentArea>
-        <MatchGroup>
-          <Match pattern="/events" component={Landing} />
-          <Match pattern="/events/create" component={AsyncCreateEvent} />
-        </MatchGroup>
+        <MiddleArea>
+          <div className="text-center">
+            <i className="fa fa-fw fa-5x fa-calendar mb" />
+            <h4>OpenClub Events</h4>
+            <hr className="mb mt" />
+            <p className="text-md">
+              Events are coming soon. Stay tuned.
+            </p>
+          </div>
+        </MiddleArea>
       </ContentArea>
     )
   }
