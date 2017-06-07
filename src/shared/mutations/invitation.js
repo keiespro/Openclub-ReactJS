@@ -10,7 +10,7 @@ export const decline = gql`
 
 export const accept = gql`
   mutation acceptInvite($invitationId: MongoID!) {
-    acceptInite(invitationId: $invitationId) {
+    acceptInvite(invitationId: $invitationId) {
       _id
     }
   }
