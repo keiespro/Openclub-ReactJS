@@ -137,7 +137,7 @@ class Profile extends Component {
                 render={() => {
                   const invitations = _.get(viewer, 'invitations', []);
                   return (
-                    <div>
+                    <Row gutter={16}>
                       {(!invitations || invitations.length === 0) && (
                         <div className="text-center">
                           <i className="fa fa-fw fa-5x fa-envelope mb" />
@@ -147,31 +147,33 @@ class Profile extends Component {
                         </div>
                       )}
                       {invitations.map(invitation => (
-                        <Card key={invitation._id} bodyStyle={{ padding: 0 }} key={invitation._id} className="mb-sm">
-                          <div className="table m0">
-                            <div className="cell oh" style={{ width: 90 }}>
-                              <img src={userPhoto(_.get(invitation, 'owner_entity.meta.json.images', {}))} style={{ maxWidth: '100%' }} alt={_.get(invitation, 'owner_entity.meta.name', 'No name')} role="presentation" />
+                        <Col xs={24} md={12}>
+                          <Card key={invitation._id} bodyStyle={{ padding: 0 }} key={invitation._id} className="mb-sm">
+                            <div className="table m0">
+                              <div className="cell oh" style={{ width: 90 }}>
+                                <img src={userPhoto(_.get(invitation, 'owner_entity.meta.images', {}))} style={{ maxWidth: '100%' }} alt={_.get(invitation, 'owner_entity.meta.name', 'No name')} role="presentation" />
+                              </div>
+                              <div className="cell p" style={{ verticalAlign: 'top' }}>
+                                <h4>{_.get(invitation, 'owner_entity.meta.name', 'No name')}</h4>
+                                {invitation.roles && (
+                                  <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to manage {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                                )}
+                                {invitation.subscription && (
+                                  <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has added your membership to {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                                )}
+                                {invitation.membership_plan_id && (
+                                  <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to join {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                                )}
+                                {!invitation.membership_plan_id && !invitation.roles && !invitation.subscription && (
+                                  <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to join a private plan on {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
+                                )}
+                                <Button size="small" style={{ position: 'absolute', top: 10, right: 10 }} type="primary" onClick={() => this.context.router.transitionTo(`/invite/${invitation.invitation_url}`)}><i className="fa fa-fw fa-external-link" /> Open</Button>
+                              </div>
                             </div>
-                            <div className="cell p" style={{ verticalAlign: 'top' }}>
-                              <h4>{_.get(invitation, 'owner_entity.meta.name', 'No name')}</h4>
-                              {invitation.roles && (
-                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to manage {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
-                              )}
-                              {invitation.subscription && (
-                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has added your membership to {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
-                              )}
-                              {invitation.membership_plan_id && (
-                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to join {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
-                              )}
-                              {!invitation.membership_plan_id && !invitation.roles && !invitation.subscription && (
-                                <p><strong>{_.get(invitation, 'creator.name', 'Somebody')}</strong> has invited you to join a private plan on {_.get(invitation, 'owner_entity.meta.name', 'No name')}.</p>
-                              )}
-                              <Button type="primary" onClick={() => this.context.router.transitionTo(`/invite/${invitation.invitation_url}`)}>Open Invite</Button> <Button type="danger" onClick={() => Modal.confirm({ title: 'Are you sure?', content: 'Are you sure you want to delete this invite?', okText: 'Yes', cancelText: 'No', onOk: this.deleteInvite.bind(this, invitation._id) })}>Delete Invite</Button>
-                            </div>
-                          </div>
-                        </Card>
+                          </Card>
+                        </Col>
                       ))}
-                    </div>
+                    </Row>
                   )
                 }}
                 />

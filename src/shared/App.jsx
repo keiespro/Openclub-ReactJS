@@ -181,10 +181,11 @@ class App extends Component {
               {/* EVENT PAGES */}
               <Match pattern="/events" component={AsyncEvents} />
               {/* INVITATION */}
-              <Match pattern="/invite/:invitationUrl" component={Invitation} />
+              <Match pattern="/invite/:invitationUrl" render={routerProps => <Invitation {...routerProps} viewer={data.user} />} />
               {/* USER AGGREGATED FEED */}
               <Match
-                pattern="/feed" render={() => {
+                pattern="/feed"
+                render={() => {
                   if (logonCheckPath('feed')) return <Redirect to="/auth" />;
                   return <AsyncFeed viewer={data.user} />
                 }
