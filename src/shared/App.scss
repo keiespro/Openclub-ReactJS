@@ -26,6 +26,17 @@ body {
     transform: translateX(0%) !important;
   }
 }
+.loader {
+  display: table;
+  width: 100%;
+  height: calc(100vh - 50px);
+  .middle {
+    text-align: center;
+    vertical-align: middle;
+    padding-bottom: 200px;
+    display: table-cell
+  }
+}
 @media #{$min-desktop} {
   .loggedin {
     .rc-drawer-sidebar {

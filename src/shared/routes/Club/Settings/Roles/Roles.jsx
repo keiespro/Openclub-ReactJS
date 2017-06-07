@@ -144,10 +144,8 @@ class Roles extends Component {
 const updateMutation = gql`
   mutation updateRoles($memberId: MongoID!, $roles: [String]) {
     updateRoles(memberId: $memberId, roles: $roles) {
-      member{
-        _id
-        roles
-      }
+      _id
+      roles
     }
   }
 `

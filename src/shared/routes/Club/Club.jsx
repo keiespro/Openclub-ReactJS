@@ -26,6 +26,7 @@ import AsyncJoin from './Join/Join'
 import AsyncSettings from './Settings'
 import AsyncMembership from './Membership'
 import AsyncTransactions from './Transactions'
+import AsyncMembers from './Members/Members'
 
 import './Club.scss'
 
@@ -53,7 +54,6 @@ class Club extends Component {
     if (!club) return <Error404 />
 
     const perm = clubPermissions(club, viewer);
-    console.log(perm);
     const handleClick = e => {
       router.transitionTo(`/${params.club_id}/${e}`, true);
     }
@@ -93,6 +93,7 @@ class Club extends Component {
           <TabPane tab="About" key="about" />
           {perm.canViewDirectory && <TabPane tab="Community" key="community" />}
           {perm.userIsMember && <TabPane tab="My Membership" key="mymembership" />}
+          {perm.userCanAccessMembers && <TabPane tab="Members" key="members" />}
           {perm.userCanAccessFinances && <TabPane tab="Transactions" key="transactions" />}
           {perm.userCanAccessSettings && <TabPane tab="Settings" key="settings" />}
         </Tabs>
@@ -107,34 +108,38 @@ class Club extends Component {
                 }
                 return <Redirect to={`/${params.club_id}/about`} />
               }}
-            />
+              />
             <Match pattern={`/${params.club_id}/about`}>
               {routerProps => <AsyncAbout {...routerProps} club={club} perm={perm} />}
             </Match>
             <Match
               pattern={`/${params.club_id}/feed`}
               render={routerProps => <AsyncFeed {...routerProps} club={club} perm={perm} viewer={viewer} slug={params.club_id} />}
-            />
+              />
             <Match
               pattern={`/${params.club_id}/community`}
               render={routerProps => perm.canViewDirectory ? <AsyncCommunity {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
-            />
+              />
+            <Match
+              pattern={`/${params.club_id}/members`}
+              render={routerProps => perm.userCanAccessMembers ? <AsyncMembers {...routerProps} club={club} perm={perm} /> : <Error404 />}
+              />
             <Match
               pattern={`/${params.club_id}/mymembership`}
               render={routerProps => perm.userIsMember ? <AsyncMembership {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
-            />
+              />
             <Match
               pattern={`/${params.club_id}/transactions`}
               render={routerProps => perm.userCanAccessFinances ? <AsyncTransactions {...routerProps} clubId={club._id} /> : <Error404 />}
-            />
+              />
             <Match
               pattern={`/${params.club_id}/settings`}
               render={routerProps => perm.userCanAccessSettings ? <AsyncSettings {...routerProps} club={club} perm={perm} /> : <Error404 />}
-            />
+              />
             <Match
               pattern={`/${params.club_id}/join`}
               render={routerProps => perm.clubHasPublicPlans ? <AsyncJoin {...routerProps} club={club} perm={perm} viewer={viewer} /> : <Error404 />}
-            />
+              />
           <Miss component={Error404} />
           </MatchGroup>
         </ContentArea>
