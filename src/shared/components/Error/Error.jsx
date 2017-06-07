@@ -23,7 +23,7 @@ class Error extends React.Component {
       showIcon: true,
       type: 'error'
     }
-    if (error.networkError) {
+    if (error && error.networkError) {
       config = {
         ...config,
         message: 'Network error',
@@ -43,10 +43,10 @@ class Error extends React.Component {
           <h3 className="mb text-danger">Uh-oh!</h3>
           <h5 className="text-danger">We've encountered an error</h5>
           <hr className="mb mt" />
-          <p>{parseError(error)}</p>
+          <p>{error ? parseError(error) : 'Unknown Error'}</p>
           {developer && (
             <pre className="mt">
-              {error.stack}
+              {error ? error.stack : "We weren't kidding. We really have no error."}
             </pre>
           )}
           <hr className="mb mt" />

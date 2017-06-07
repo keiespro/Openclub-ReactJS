@@ -1,9 +1,10 @@
 import gql from 'graphql-tag';
 
 export const members = gql`
-  query members($clubId: MongoID!, $cursor: MongoID!, $first: Int!) {
+  query members($clubId: MongoID!, $cursor: ID, $first: Int!) {
     members(clubId: $clubId) {
       members(cursor: $cursor, first: $first) {
+        total_count
         page_info{
           has_next_page
           next_page_cursor
@@ -31,7 +32,9 @@ export const members = gql`
             fbid
             email
             phone
-            address
+            address{
+              formatted_address
+            }
           }
         }
       }

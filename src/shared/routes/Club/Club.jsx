@@ -26,7 +26,7 @@ import AsyncJoin from './Join/Join'
 import AsyncSettings from './Settings'
 import AsyncMembership from './Membership'
 import AsyncTransactions from './Transactions'
-import AsyncMembers from './Members'
+import AsyncMembers from './Members/Members'
 
 import './Club.scss'
 
@@ -54,7 +54,6 @@ class Club extends Component {
     if (!club) return <Error404 />
 
     const perm = clubPermissions(club, viewer);
-    console.log(perm);
     const handleClick = e => {
       router.transitionTo(`/${params.club_id}/${e}`, true);
     }
