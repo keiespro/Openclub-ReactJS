@@ -92,7 +92,7 @@ class Club extends Component {
           {perm.canViewFeed && <TabPane tab="Feed" key="feed" />}
           <TabPane tab="About" key="about" />
           {perm.canViewDirectory && <TabPane tab="Community" key="community" />}
-          {perm.userIsMember && <TabPane tab="My Membership" key="mymembership" />}
+          {(perm.userIsMember || perm.isPendingMember) && <TabPane tab="My Membership" key="mymembership" />}
           {perm.userCanAccessMembers && <TabPane tab="Members" key="members" />}
           {perm.userCanAccessFinances && <TabPane tab="Transactions" key="transactions" />}
           {perm.userCanAccessSettings && <TabPane tab="Settings" key="settings" />}
@@ -126,7 +126,7 @@ class Club extends Component {
               />
             <Match
               pattern={`/${params.club_id}/mymembership`}
-              render={routerProps => perm.userIsMember ? <AsyncMembership {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
+              render={routerProps => perm.userIsMember || perm.isPendingMember ? <AsyncMembership {...routerProps} club={club} perm={perm} membership={perm.membership} /> : <Error404 />}
               />
             <Match
               pattern={`/${params.club_id}/transactions`}

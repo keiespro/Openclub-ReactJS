@@ -61,6 +61,7 @@ class StripePaymentMethod extends Component {
 const stripeAccountQuery = gql`
 query user {
   user{
+    _id
     stripe_account {
       cards
       default_source
