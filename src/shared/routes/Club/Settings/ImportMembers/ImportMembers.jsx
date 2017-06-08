@@ -263,7 +263,10 @@ class ImportMembers extends Component {
           {steps.map(s => <Step key={s.title} title={s.title} />)}
         </Steps>
         <div className="step-content">
-          {this.state.step === 0 && (
+          {!club.membership_plans && (
+            <p>You must add membership plans before you can import members.</p>
+          )}
+          {club.membership_plans && this.state.step === 0 && (
             <div className="bottom-gap">
               <p className="bottom-gap">
                 You can import your member database into OpenClub via CSV. We support the following fields:<br />
