@@ -90,14 +90,7 @@ const createMutation = gql`
 
 const CreateClubWithApollo = graphql(createMutation, {
   options: {
-    updateQueries: {
-      user: (prev, { mutationResult }) => {
-        const { createClub } = mutationResult.data;
-        if (!prev.user.memberships || prev.user.memberships instanceof Array === false) prev.user.memberships = [];
-        prev.user.memberships.push(createClub);
-        return prev;
-      }
-    }
+    refetchQueries: ['user']
   }
 })(CreateClub)
 
