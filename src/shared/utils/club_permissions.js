@@ -20,6 +20,8 @@ const clubPermissions = (club, viewer) => {
     feedPermissions
   };
 
+  p.isPendingMember = p.subscription && !!p.subscription.pending_approval
+
   // Club has plans
   p.clubHasPlans = !_.isEmpty(_.filter(club.membership_plans, { public: true }))
 

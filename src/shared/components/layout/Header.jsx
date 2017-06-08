@@ -72,7 +72,7 @@ const Header = ({ login: doLogin, user, showSearch, notifications, seen, sidebar
     { user &&
     <div className="oc-header-context right">
       <div className="oc-header-usermenu">
-        <Dropdown overlay={userMenu} trigger={['click']}>
+        <Dropdown overlay={userMenu} trigger={['click']} onClick={() => seen()}>
           <Badge count={notifications.unseen || 0} className="notifications-toggle">
             <img src={userPhoto(user.images, 'thumb', user.fbid)} alt="Profile" className="oc-header-userimage" />
           </Badge>

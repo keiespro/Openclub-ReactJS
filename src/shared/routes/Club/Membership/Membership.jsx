@@ -88,28 +88,30 @@ class Membership extends Component {
             <Timeline>
               {timelineChildren}
             </Timeline>
-            <hr className="mb mt" />
-            <h4 className="mb">Club Profile</h4>
-            <ClubMemberProfile initialValues={membership} onSubmit={this.updateProfile} />
-            <hr className="mb mt" />
-            {subscription.membership_plan && subscription.pending_approval === false &&
-              <div className="text-center">
-                  <Button type="primary" onClick={() => this.context.router.transitionTo(`/${club.slug}/join`)}><i className="fa fa-fw fa-refresh" /> Change Plan</Button>
-                  <span> </span>
-                  <Button
-                    type="danger"
-                    onClick={() => Modal.warning({
-                      title: 'Leave Club',
-                      content: 'Are you sure you wish to leave this club? This will cancel any active membership agreement you have with this club at the end of your billing period.',
-                      onOk: () => true,
-                      okText: 'Yes, leave club',
-                      cancelText: 'No'
-                    })}
-                    >
-                    <i className="fa fa-fw fa-sign-out" /> Leave Club
-                  </Button>
-              </div>
-            }
+            {perm.isMember && <div>
+              <hr className="mb mt" />
+              <h4 className="mb">Club Profile</h4>
+              <ClubMemberProfile initialValues={membership} onSubmit={this.updateProfile} />
+              <hr className="mb mt" />
+              {subscription.membership_plan && subscription.pending_approval === false &&
+                <div className="text-center">
+                    <Button type="primary" onClick={() => this.context.router.transitionTo(`/${club.slug}/join`)}><i className="fa fa-fw fa-refresh" /> Change Plan</Button>
+                    <span> </span>
+                    <Button
+                      type="danger"
+                      onClick={() => Modal.warning({
+                        title: 'Leave Club',
+                        content: 'Are you sure you wish to leave this club? This will cancel any active membership agreement you have with this club at the end of your billing period.',
+                        onOk: () => true,
+                        okText: 'Yes, leave club',
+                        cancelText: 'No'
+                      })}
+                      >
+                      <i className="fa fa-fw fa-sign-out" /> Leave Club
+                    </Button>
+                </div>
+              }
+            </div>}
           </ContentPage>
         </Col>
         <Col xs={24} md={8}>

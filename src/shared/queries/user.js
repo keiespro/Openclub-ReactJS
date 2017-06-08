@@ -14,7 +14,6 @@ export default gql`
         formatted_address
       }
       stripe_account {
-        _id
         cards
         default_source
       }

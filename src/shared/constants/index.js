@@ -7,6 +7,7 @@ export const durations = {
     YEARLY: 'Annually',
     BIYEARLY: 'Biannually',
     MONTHLY: 'Monthly',
+    FORTNIGHTLY: 'Fortnightly',
     WEEKLY: 'Weekly'
   },
   lookupPer: {
@@ -14,9 +15,10 @@ export const durations = {
     YEARLY: 'per year',
     BIYEARLY: 'twice per year',
     MONTHLY: 'per month',
+    FORTNIGHTLY: 'per fortnight',
     WEEKLY: 'per week'
   },
-  list: ['LIFETIME', 'YEARLY', 'BIYEARLY', 'MONTHLY', 'WEEKLY']
+  list: ['LIFETIME', 'YEARLY', 'BIYEARLY', 'MONTHLY', 'WEEKLY', 'FORTNIGHTLY']
 }
 
 export const countries = [

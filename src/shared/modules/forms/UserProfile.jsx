@@ -66,6 +66,7 @@ const updateProfileGQL = gql`
       _id
       name
       email
+      phone
       address {
         formatted_address
       }
@@ -74,8 +75,8 @@ const updateProfileGQL = gql`
         square
       }
       stripe_account {
-        _id
         cards
+        default_source
       }
       birthday
       email_verified

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Button from 'antd/lib/button';
 import Modal from 'antd/lib/modal';
 import Table from 'antd/lib/table';
 import Col from 'antd/lib/col';
@@ -10,10 +11,14 @@ import _ from 'lodash';
 
 // graphql
 import membersQuery from 'queries/members';
+import { changeMemberGQL, approveMemberGQL, deleteMemberGQL } from 'mutations/members';
 
 // Components
 import { ContentPage, IconTitle } from 'components/layout';
 import Loading from 'components/Loading/Loading';
+
+// utils
+import { display as displayError } from 'utils/error';
 
 class Members extends Component {
   static propTypes = {
@@ -27,39 +32,89 @@ class Members extends Component {
       expandedRows: []
     }
   }
+  async deleteMember(member) {
+    const { club, deleteMember } = this.props;
+
+    try {
+      await deleteMember({
+        variables: {
+          clubId: club._id,
+          memberId: member._id
+        }
+      });
+    } catch (err) {
+      displayError(err);
+    }
+  }
+  async approveMember(member) {
+    const { club, approveMember } = this.props;
+    try {
+      await approveMember({
+        variables: {
+          clubId: club._id,
+          memberId: member._id
+        }
+      });
+    } catch (err) {
+      displayError(err);
+    }
+  }
+  async changeMember(member, subscription) {
+    const { club, changeMember } = this.props;
+
+    try {
+      await changeMember({
+        variables: {
+          clubId: club._id,
+          memberId: member._id,
+          subscription
+        }
+      });
+    } catch (err) {
+      displayError(err);
+    }
+  }
   render() {
+    const { member } = this.state;
     const { data, club } = this.props;
+    console.log(this.props);
 
     const { loading, members } = data;
     const { membership_plans: membershipPlans } = club;
 
     if (!members && loading) return <Loading />;
 
-    const deleteMember = (value, e) => {
+    const deleteMember = (member, e) => {
       e.preventDefault();
       Modal.confirm({
-        title: `Delete: ${_.get(value, 'profile.name', 'user')}`,
+        title: `Delete ${_.get(member, 'profile.name', 'user')}?`,
         content: 'Are you sure you want to delete this membership?',
         okText: 'Yes',
         cancelText: 'No',
-        onOk: this.deleteMember
+        onOk: this.deleteMember.bind(this, member)
       });
     }
 
-    const changeMembership = (value, e) => {
+    const changeMembership = (member, e) => {
       e.preventDefault();
     }
 
+    const approveMember = (member, e) => {
+      e.preventDefault();
+      this.approveMember(member);
+    }
+
     const columns = [
-      { title: 'Name', dataIndex: 'profile.name', key: 'name', fixed: 'left' },
+      { title: 'Name', dataIndex: 'profile.name', key: 'name' },
       { title: 'Email', dataIndex: 'profile.email', key: 'email' },
       { title: 'Plan', dataIndex: 'subscription.membership_plan_id', key: 'membership_plan_name', render: value => <span>{(_.find(membershipPlans, p => p._id === value) || {}).name || 'Non member'}</span> },
-      { title: 'Join Date', dataIndex: 'subscription.start_date', key: 'start_date', render: value => <span>{moment(value).format('DD/MM/YYYY')}</span> },
+      { title: 'Approval', dataIndex: 'subscription.pending_approval', key: 'pending_approval', render: (value, row) => value ? <span><Button type="primary" size="small" onClick={approveMember.bind(this, row)}>Approve</Button></span> : <span>Approved</span> },
       { title: 'Expiry', dataIndex: 'subscription.expiry_date', key: 'expiry_date', render: value => <span>{moment(value).format('DD/MM/YYYY')}</span> },
-      { title: 'Actions', key: 'actions', render: (i, value) => <span><a href="#" onClick={deleteMember.bind(this, value)}>Delete</a> | <a href="#" onClick={changeMembership.bind(this, value)}>Change</a></span> }
+      { title: 'Actions', key: 'actions', render: (i, value) => <span><a href="#" onClick={deleteMember.bind(this, value)}>Delete</a>{/* | <a href="#" onClick={changeMembership.bind(this, value)}>Change</a>*/}</span> }
     ]
 
     const memberList = members && members.members ? members.members.edges : [];
+    console.log(memberList);
 
     const expandRow = record => {
       const planId = _.get(record, 'subscription.membership_plan_id');
@@ -82,6 +137,8 @@ class Members extends Component {
           </Col>
           <Col xs={24} md={12}>
             <strong>Plan:</strong><br />
+            {_.get(plan, 'subscription.start_date', 'N/A')}<br />
+            <strong>Plan:</strong><br />
             {_.get(plan, 'name', 'N/A')}<br />
             <strong>Price:</strong><br />
             {price ? '$' + _.get(price, 'amount.float', 'N/A') : 'N/A'}<br />
@@ -92,7 +149,7 @@ class Members extends Component {
           </Col>
         </Row>
       );
-    }
+    } //end expandRow()
 
     return (
       <div>
@@ -121,6 +178,18 @@ const MembersApollo = compose(
       }
     }) : null,
     skip: props => !props || !props.club || !props.club._id
+  }),
+  graphql(approveMemberGQL, {
+    name: 'approveMember'
+  }),
+  graphql(deleteMemberGQL, {
+    name: 'deleteMember',
+    options: {
+      refetchQueries: ['members']
+    }
+  }),
+  graphql(changeMemberGQL, {
+    name: 'changeMember'
   })
 )(Members);
 

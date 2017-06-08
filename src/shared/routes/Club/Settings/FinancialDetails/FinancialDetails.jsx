@@ -169,7 +169,6 @@ const createAccountMutationQL = gql`
     createClubAccount(clubId: $clubId, account: $account){
       _id
       stripe_account{
-        _id
         data
       }
     }
@@ -181,7 +180,6 @@ const updateAccountMutationQL = gql`
     updateClubAccount(clubId: $clubId, account: $account){
       _id
       stripe_account{
-        _id
         data
       }
     }
@@ -193,7 +191,6 @@ const saveBankAccountQL = gql`
     saveBankAccount(clubId: $clubId, source: $source){
       _id
       stripe_account{
-        _id
         data
       }
     }
@@ -205,7 +202,6 @@ const deleteBankAccountQL = gql`
     deleteBankAccount(clubId: $clubId, source: $source){
       _id
       stripe_account{
-        _id
         data
       }
     }
