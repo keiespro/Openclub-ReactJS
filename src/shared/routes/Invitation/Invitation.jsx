@@ -21,7 +21,13 @@ class Invitation extends Component {
     viewer: PropTypes.object
   }
   async acceptInvitation() {
-    const { acceptInvite, data: { invitation } } = this.props;
+    const { acceptInvite, data: { invitation }, viewer, location } = this.props;
+
+    if (!viewer) {
+      localStorage.setItem('logonPath', location.pathname);
+      message.info('Please login or create an account to accept this invitation.', 10);
+      return this.context.router.transitionTo('/login');
+    }
 
     try {
       await acceptInvite({
