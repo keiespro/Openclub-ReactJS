@@ -54,9 +54,11 @@ class AddCardForm extends Component {
     return (
       <Spin spinning={this.state.loading}>
         <FieldContainer id="payment">
-          Please enter a credit card number that you wish to add to your OpenClub account.
-          <StripeCreditCardField input={{onChange: this.handleCreditCardInput}} storeError={this.storeError} />
-          <Button className="bottom-gap" icon="plus" type="primary" onClick={this.submit} loading={this.state.loading} disabled={this.state.error}>Add Card</Button>
+          <div>
+            Please enter a credit card number that you wish to add to your OpenClub account.
+            <StripeCreditCardField input={{onChange: this.handleCreditCardInput}} storeError={this.storeError} />
+            <Button className="bottom-gap" icon="plus" type="primary" onClick={this.submit} loading={this.state.loading} disabled={this.state.error}>Add Card</Button>
+          </div>
         </FieldContainer>
       </Spin>
     )

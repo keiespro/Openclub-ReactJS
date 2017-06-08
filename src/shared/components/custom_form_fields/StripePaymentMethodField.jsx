@@ -40,6 +40,7 @@ class StripePaymentMethod extends Component {
   }
   render() {
     const { user, loading = true } = this.props.data;
+    if (!user) return <div />;
     const { cards = [] } = user.stripe_account || {};
     return (
       <Spin spinning={loading}>
@@ -61,8 +62,8 @@ const stripeAccountQuery = gql`
 query user {
   user{
     stripe_account {
-      _id
       cards
+      default_source
     }
   }
 }

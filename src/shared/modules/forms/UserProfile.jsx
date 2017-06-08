@@ -75,8 +75,8 @@ const updateProfileGQL = gql`
         square
       }
       stripe_account {
-        _id
         cards
+        default_source
       }
       birthday
       email_verified
@@ -92,10 +92,7 @@ const GraphQLWrapper = compose(
     })
   }),
   graphql(updateProfileGQL, {
-    name: 'updateProfile',
-    options: {
-      refetchQueries: ['user']
-    }
+    name: 'updateProfile'
   })
 )(UserProfile);
 

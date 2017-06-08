@@ -63,8 +63,8 @@ const addCreditCardGQL = gql`
     addCreditCard(card: $card) {
       _id
       stripe_account {
-        _id
         cards
+        default_source
       }
     }
   }

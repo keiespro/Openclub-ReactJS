@@ -120,7 +120,6 @@ const DeleteCardQuery = gql`
     deleteCreditCard(card: $card) {
       _id
       stripe_account {
-        _id
         cards
         default_source
       }
@@ -133,7 +132,6 @@ const ChangePrimaryCardQuery = gql`
     changePrimaryCard(card: $card) {
       _id
       stripe_account {
-        _id
         cards
         default_source
       }
