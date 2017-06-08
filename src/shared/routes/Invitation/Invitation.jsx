@@ -55,6 +55,7 @@ class Invitation extends Component {
           invitationId: invitation._id
         }
       });
+      this.redirect();
     } catch (err) {
       message.error(parseError(err));
     }
