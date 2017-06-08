@@ -115,24 +115,7 @@ const JoinApollo = graphql(JoinMutation,
   {
     name: 'joinClub',
     options: {
-      updateQueries: {
-        user: (prev, { mutationResult }) => {
-          let clonedState = _.clone(prev);
-          const { joinClub } = mutationResult.data;
-          if (!joinClub) return prev;
-
-          let index = _.findIndex(clonedState.user.memberships, m => m._id === joinClub._id);
-          if (!index) {
-            clonedState.user.memberships.push(joinClub);
-          } else {
-            clonedState.user.memberships[index] = {
-              ...clonedState.user.memberships[index],
-              ...joinClub
-            }
-          }
-          return clonedState;
-        }
-      }
+      refetchQueries: ['user']
     }
   }
 )(Join)
