@@ -51,7 +51,7 @@ class Members extends Component {
     }
 
     const columns = [
-      { title: 'Name', dataIndex: 'profile.name', key: 'name', fixed: 'left' },
+      { title: 'Name', dataIndex: 'profile.name', key: 'name' },
       { title: 'Email', dataIndex: 'profile.email', key: 'email' },
       { title: 'Plan', dataIndex: 'subscription.membership_plan_id', key: 'membership_plan_name', render: value => <span>{(_.find(membershipPlans, p => p._id === value) || {}).name || 'Non member'}</span> },
       { title: 'Join Date', dataIndex: 'subscription.start_date', key: 'start_date', render: value => <span>{moment(value).format('DD/MM/YYYY')}</span> },
@@ -60,6 +60,7 @@ class Members extends Component {
     ]
 
     const memberList = members && members.members ? members.members.edges : [];
+    console.log(memberList);
 
     const expandRow = record => {
       const planId = _.get(record, 'subscription.membership_plan_id');

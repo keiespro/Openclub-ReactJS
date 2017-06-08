@@ -66,6 +66,7 @@ const updateProfileGQL = gql`
       _id
       name
       email
+      phone
       address {
         formatted_address
       }
@@ -91,7 +92,10 @@ const GraphQLWrapper = compose(
     })
   }),
   graphql(updateProfileGQL, {
-    name: 'updateProfile'
+    name: 'updateProfile',
+    options: {
+      refetchQueries: ['user']
+    }
   })
 )(UserProfile);
 
