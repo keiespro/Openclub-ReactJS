@@ -1,4 +1,11 @@
 /* eslint-disable global-require */
+import Raven from 'raven-js';
+
+const ravenConfig = {
+  environment: process.env.NODE_ENV
+}
+Raven.config('https://6f11d6b6b7ce44ba90f134c8428061d3@sentry.io/179407', ravenConfig).install()
+
 import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter } from 'teardrop';
