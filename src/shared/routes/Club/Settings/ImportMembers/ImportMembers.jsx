@@ -145,10 +145,16 @@ class ImportMembers extends Component {
           case 'YEARLY': yearAddition = [1, 'years']; break;
           case 'BIYEARLY': yearAddition = [6, 'months']; break;
           case 'MONTHLY': yearAddition = [1, 'months']; break;
+          case 'FORTNIGHTLY': yearAddition = [2, 'weeks']; break;
           case 'WEEKLY': yearAddition = [1, 'weeks']; break;
+          case 'LIFETIME': yearAddition = null; break;
           default: errors.push('billing_period'); break;
         }
-        let expiryDate = new Date(rowRecord.expiry_date) || m(rowRecord.last_renewal_date).add(...yearAddition).toDate();
+
+        let expiryDate = null;
+        if (rowRecord.billing_period) {
+          expiryDate = rowRecord.expiry_date ? new Date(rowRecord.expiry_date) : m(rowRecord.last_renewal_date).add(...yearAddition).toDate();
+        }
 
         let subscription = {
           membership_plan_id: membershipPlan._id,
