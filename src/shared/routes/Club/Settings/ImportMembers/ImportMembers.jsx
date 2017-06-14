@@ -145,10 +145,16 @@ class ImportMembers extends Component {
           case 'YEARLY': yearAddition = [1, 'years']; break;
           case 'BIYEARLY': yearAddition = [6, 'months']; break;
           case 'MONTHLY': yearAddition = [1, 'months']; break;
+          case 'FORTNIGHTLY': yearAddition = [2, 'weeks']; break;
           case 'WEEKLY': yearAddition = [1, 'weeks']; break;
+          case 'LIFETIME': yearAddition = null; break;
           default: errors.push('billing_period'); break;
         }
-        let expiryDate = new Date(rowRecord.expiry_date) || m(rowRecord.last_renewal_date).add(...yearAddition).toDate();
+
+        let expiryDate = null;
+        if (rowRecord.billing_period) {
+          expiryDate = rowRecord.expiry_date ? new Date(rowRecord.expiry_date) : m(rowRecord.last_renewal_date).add(...yearAddition).toDate();
+        }
 
         let subscription = {
           membership_plan_id: membershipPlan._id,
@@ -263,7 +269,10 @@ class ImportMembers extends Component {
           {steps.map(s => <Step key={s.title} title={s.title} />)}
         </Steps>
         <div className="step-content">
-          {this.state.step === 0 && (
+          {!club.membership_plans && (
+            <p>You must add membership plans before you can import members.</p>
+          )}
+          {club.membership_plans && this.state.step === 0 && (
             <div className="bottom-gap">
               <p className="bottom-gap">
                 You can import your member database into OpenClub via CSV. We support the following fields:<br />
