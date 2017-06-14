@@ -124,6 +124,7 @@
     "payment": "^2.2.1",
     "prop-types": "^15.5.8",
     "qrcodesvg": "^1.0.2",
+    "raven-js": "^3.16.0",
     "rc-drawer": "^0.4.9",
     "rc-touchable": "^1.0.0",
     "rc-upload": "^2.3.4",
