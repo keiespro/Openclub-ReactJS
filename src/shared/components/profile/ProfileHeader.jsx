@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd'
 import cx from 'classnames'
 import './ProfileHeader.scss'
-import _ from 'lodash';
+import _ from 'lodash'; //eslint-disable-line
 
 class ProfileHeader extends Component {
   static defaultProps = {
@@ -80,7 +79,11 @@ ProfileHeader.propTypes = {
   name: PropTypes.string,
   location: PropTypes.string,
   images: PropTypes.object,
-  collapsed: PropTypes.bool
+  collapsed: PropTypes.bool,
+  buttons: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.element
+  ])
 }
 
 export default ProfileHeader

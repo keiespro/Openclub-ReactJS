@@ -69,33 +69,8 @@
   }
 
   &.collapsed {
-    height: 50px;
-    .profile-backdrop {
-      padding: 0;
-      border-radius: 0;
-      background-color: #fff;
-      box-shadow: none;
-    }
-    .background {
-      filter: blur(2px);
-      background-size: 120% !important;
-    }
-    .header-details {
-      padding: 0px 0;
-      background: transparent;
-      position: absolute;
-    }
-    .media-object {
-      height: 50px;
-    }
-    .objectpage-heading {
-      margin-top: auto;
-      margin-bottom: auto;
-      height: 38px;
-    }
-    .header-buttons {
-      vertical-align: middle;
-    }
+    height: 0px;
+    overflow: hidden;
   }
 
   .img-round-corners {
