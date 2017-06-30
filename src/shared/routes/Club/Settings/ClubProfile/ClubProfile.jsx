@@ -85,6 +85,9 @@ const mutation = gql`
         linkedin
         twitter
       }
+      settings{
+        theme
+      }
     }
   }
 `
