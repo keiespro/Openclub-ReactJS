@@ -14,6 +14,7 @@ import {
   ImageUploader,
   FileUploader
 } from 'components/form_controls'
+import { ThemeField } from 'components/custom_form_fields'
 
 class ClubProfileForm extends Component {
   static propTypes = {
@@ -66,6 +67,12 @@ class ClubProfileForm extends Component {
             action={`${process.env.ICEPICK_URL}/upload/image/background`}
             aspect={100 / 37}
             component={ImageUploader}
+          />
+        </FieldContainer>
+        <FieldContainer title="Theme">
+          <Field
+            name="settings.theme"
+            component={ThemeField}
           />
         </FieldContainer>
         <FieldContainer title="Club Location">

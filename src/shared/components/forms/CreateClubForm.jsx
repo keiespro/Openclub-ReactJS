@@ -13,6 +13,7 @@ import {
   ImageUploader,
   FileUploader
 } from 'components/form_controls'
+import { ThemeField } from 'components/custom_form_fields'
 
 class CreateClubForm extends Component {
   static propTypes = {
@@ -47,6 +48,13 @@ class CreateClubForm extends Component {
             component={Input}
           />
         </FieldContainer>
+        <FieldContainer required title="Theme">
+          <p>Pick a theme for your community page.</p>
+          <Field
+            name="club.settings.theme"
+            component={ThemeField}
+          />
+        </FieldContainer>
         <FieldContainer title="Community Profile Photo">
           <p>Pick a profile photo that your members can use to identify you on OpenClub.</p>
           <Field
@@ -60,7 +68,7 @@ class CreateClubForm extends Component {
         <FieldContainer title="Community Cover Photo">
           <p>Spruce up the profile with a cover photo. You don't have to do this now, you can pick one later.</p>
           <Field
-            name="images.background"
+            name="club.images.background"
             token={token}
             postname="background"
             action={`${process.env.ICEPICK_URL}/upload/image/background`}
@@ -69,9 +77,9 @@ class CreateClubForm extends Component {
           />
         </FieldContainer>
         <div className="text-center">
-          <Button type="primary" htmlType="submit" loading={this.props.submitting} size="large">
+          <button type="submit" className="btn btn-primary btn-lg">
             <i className="fa fa-fw fa-check" /> Get Started
-          </Button>
+          </button>
         </div>
       </Form>
     )
