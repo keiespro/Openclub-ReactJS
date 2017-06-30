@@ -81,7 +81,7 @@ const Header = ({ user, notifications, login: doLogin, seen, data }) => {
       <div className="oc-header-context">
         <div className="oc-header-usermenu">
           <Link
-            to="/"
+            to={currentClub ? `/${currentClub.slug}` : '/'}
             className={cx('oc-header-img', { 'context': !!currentClub })}
             style={currentClub ? { backgroundImage: `url(${currentClub.images || {}.square || '/empty-club.png'})`} : {}} />
           <Dropdown overlay={primaryMenu} trigger={['click']}>
