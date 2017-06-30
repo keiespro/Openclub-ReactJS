@@ -1,28 +1,25 @@
 /* eslint-disable global-require */
 import Raven from 'raven-js';
-
-const ravenConfig = {
-  environment: process.env.NODE_ENV
-}
-Raven.config('https://6f11d6b6b7ce44ba90f134c8428061d3@sentry.io/179407', ravenConfig).install()
-
 import React from 'react';
 import { render } from 'react-dom';
 import { BrowserRouter } from 'teardrop';
-//import { CodeSplitProvider, rehydrateState } from 'code-split-component';
 import { AsyncComponentProvider, createAsyncContext } from 'react-async-component';
 import asyncBootstrapper from 'react-async-bootstrapper';
 import { ApolloProvider } from 'react-apollo';
 import ReactHotLoader from './components/ReactHotLoader';
-import AuthLoader from '../shared/components/auth/AuthLoader'
 import App from '../shared/App';
-import createStore from '../shared/store/create_store';
-import apolloClient, { initMiddlewares } from '../shared/modules/apollo';
 import LocaleProvider from 'antd/lib/locale-provider'
 import enUS from 'antd/lib/locale-provider/en_US'
 import { setup as mixpanel } from 'modules/mixpanel';
 import 'utils/offlineMode'
+import createStore from '../shared/store/create_store';
+import apolloClient from '../shared/modules/apollo';
 
+if (process.env.NODE_ENV === 'production') {
+  Raven.config('https://6f11d6b6b7ce44ba90f134c8428061d3@sentry.io/179407', {
+    environment: process.env.NODE_ENV
+  }).install()
+}
 
 mixpanel()
 // Get the DOM Element that will host our React application.
