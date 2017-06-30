@@ -28,7 +28,7 @@ const CreateClub = ({ mutate, submitting }, { router }) => {
         title: "Club Created",
         content: "Your club page has been created. Follow the steps to complete the setup and invite members to your club."
       });
-      router.transitionTo(`/${values.slug}/settings`);
+      router.transitionTo(`/${values.slug}/admin`);
     } catch (err) {
       Modal.error({
         title: "Error Creating Club",
@@ -41,11 +41,11 @@ const CreateClub = ({ mutate, submitting }, { router }) => {
     <MiddleArea>
       <div className="text-center">
         <i className="fa fa-fw fa-plus fa-5x mb" />
-        <h3>A new OpenClub</h3>
+        <h3>Create a Community</h3>
         <hr className="mb mt" />
       </div>
       <p className="mb">
-        {"OpenClub manages your members, events and payments—it's free to get started. Your new club page is just one click away."}
+        {"OpenClub manages your members, events and payments—it's free to get started. Your new community page is just one click away."}
       </p>
       <div style={{ maxWidth: 480 }}>
         <CreateClubForm onSubmit={createTheClub} submitting={submitting} />
