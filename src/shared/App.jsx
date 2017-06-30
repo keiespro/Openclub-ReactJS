@@ -26,13 +26,11 @@ import CreateClub from 'routes/Clubs/CreateClub'
 
 import { initNotifications } from 'modules/notifications/actions'
 import { logoutUser, login, checkAuthentication } from 'modules/auth/actions'
-import { toggleSidebar, openSidebar, closeSidebar } from 'modules/ui/actions'
 
 import Error404 from 'components/Error404/Error404'
 import Unauthorised from 'components/Unauthorised/Unauthorised'
 import Loading from 'components/Loading/Loading'
 import Header from 'components/layout/Header'
-import Sidebar from 'components/layout/Sidebar'
 import { safeConfigGet } from 'utils/config'
 
 import userQuery from 'queries/user'
@@ -61,10 +59,6 @@ class App extends Component {
     login: PropTypes.func,
     location: PropTypes.object,
     logoutUser: PropTypes.func,
-    toggleSidebar: PropTypes.func,
-    openSidebar: PropTypes.func,
-    closeSidebar: PropTypes.func,
-    sidebarOpen: PropTypes.bool,
     initNotifications: PropTypes.func,
     checkAuthentication: PropTypes.func
   }
@@ -76,14 +70,6 @@ class App extends Component {
     this.state = {
       open: false
     }
-    this.onOpenChange = this.onOpenChange.bind(this);
-  }
-  onOpenChange(to) {
-    if (to) this.props.openSidebar();
-    if (!to) this.props.closeSidebar();
-  }
-  toggleSidebar() {
-    this.props.toggleSidebar()
   }
   isHome() {
     const { pathname = '' } = this.props.location || {};
@@ -103,8 +89,6 @@ class App extends Component {
     const { data, location } = this.props;
     if (data.loading) return <Loading />;
 
-    console.log(data.user);
-
     const logonCheckPath = (path) => {
       if (process.env.IS_CLIENT && !data.user) {
         localStorage.setItem('logonPath', path);
@@ -114,102 +98,100 @@ class App extends Component {
     }
 
     return (
-      <Drawer
-        className={cx({'loggedin': data.user, 'open': this.props.sidebarOpen})}
-        sidebar={<Sidebar user={data.user} location={location} />}
-        style={{ overflow: 'auto' }}
-        onOpenChange={this.onOpenChange}
-        enableDragHandle
-        open={this.props.sidebarOpen}
+      <Layout>
+        <Helmet
+          htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}
+          defaultTitle={safeConfigGet(['htmlPage', 'defaultTitle'])}
+          meta={safeConfigGet(['htmlPage', 'meta'])}
+          link={safeConfigGet(['htmlPage', 'links'])}
+          script={safeConfigGet(['htmlPage', 'scripts'])}
         >
-        <LoadingBar style={{ zIndex: 999 }} />
-        <Layout>
-          <Helmet
-            htmlAttributes={safeConfigGet(['htmlPage', 'htmlAttributes'])}
-            defaultTitle={safeConfigGet(['htmlPage', 'defaultTitle'])}
-            meta={safeConfigGet(['htmlPage', 'meta'])}
-            link={safeConfigGet(['htmlPage', 'links'])}
-            script={safeConfigGet(['htmlPage', 'scripts'])}
-          >
-            <title>OpenClub — be social, be organised, be an open club</title>
-            <link rel="canonical" href="https://www.openclub.co/" />
-            <meta name="description" content="Discover clubs and events in your local community on OpenClub. Sign up today..." />
-          </Helmet>
+          <title>OpenClub — be social, be organised, be an open club</title>
+          <link rel="canonical" href="https://www.openclub.co/" />
+          <meta name="description" content="Discover clubs and events in your local community on OpenClub. Sign up today..." />
+        </Helmet>
 
-          {!this.isHome() && <Header user={data.user} />}
-          <Content>
-            <MatchGroup>
-              {/* HOMEPAGE REDIRECT */}
-              <Match
-                exactly
-                pattern="/"
-                render={() => {
-                  if (data.loading) {
-                    return <Loading />;
-                  }
-                  if (data.user) {
-                    return <Redirect to="/feed" />;
-                  }
-                  if (logonCheckPath('')) return <Redirect to="/auth" />;
+        {!this.isHome() && <Header user={data.user} location={location} />}
+        <Content>
+          <MatchGroup>
+            {/* HOMEPAGE REDIRECT */}
+            <Match
+              exactly
+              pattern="/"
+              render={() => {
+                if (data.loading) {
                   return <Loading />;
                 }
-              }
-            />
-              {/* UTIL PAGES */}
-              <Match pattern="/login" render={routerProps => <AsyncHome {...routerProps} user={data.user} />} />
-              <Match pattern="/auth" render={routerProps => <Auth {...routerProps} user={data.user} />} />
-              <Match pattern="/logout" component={Logout} />
-              <Match
-                pattern="/help"
-                render={() => {
-                  if (data.loading) {
-                    return <Loading />;
-                  }
-                  if (data.user) {
-                    window.open(`https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`);
-                    window.setTimeout(() => this.context.router.transitionTo('/'), 1000);
-                    return <div>If a window does not appear in 3 seconds, <a href={`https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`} target="_blank">click here</a>.</div>;
-                  }
-                  if (logonCheckPath('help')) return <Redirect to="/auth" />;
-                  return <Loading />
-                }}
-              />
-              {/* NOTIFICATIONS */}
-              <Match pattern="/notifications" render={() => data.user ? <AsyncNotifications viewer={data.user} /> : <Unauthorised />} />
-              {/* EVENT PAGES */}
-              <Match pattern="/(discover|search)" component={AsyncDiscover} />
-              {/* EVENT PAGES */}
-              <Match pattern="/events" component={AsyncEvents} />
-              {/* INVITATION */}
-              <Match pattern="/invite/:invitationUrl" render={routerProps => <Invitation {...routerProps} viewer={data.user} />} />
-              {/* USER AGGREGATED FEED */}
-              <Match
-                pattern="/feed"
-                render={() => {
-                  if (logonCheckPath('feed')) return <Redirect to="/auth" />;
-                  return <AsyncFeed viewer={data.user} />
+                if (data.user) {
+                  return <Redirect to="/feed" />;
                 }
-              } />
-              {/* PROFILE */}
-              <Match
-                pattern="/profile" render={routerProps => {
-                  if (logonCheckPath('profile')) return <Redirect to="/auth" />;
-                  return <AsyncProfile viewer={data.user} {...routerProps} />;
-                }}
-              />
-              {/* CLUB PAGES */}
-              <Match pattern="/test" component={Loading} />
-              <Match pattern="/clubs/create" render={routerProps => data.user ? <CreateClub viewer={data.user} {...routerProps} /> : <Error404 {...routerProps} />} />
-              <Match pattern="/clubs" render={routerProps => <AsyncClubs viewer={data.user} login={this.props.login} {...routerProps} />} />
-              <Match pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
-              {/* 404 */}
-              <Miss component={Error404} />
-            </MatchGroup>
-
-          </Content>
-        </Layout>
-      </Drawer>
-    )
+                if (logonCheckPath('')) return <Redirect to="/auth" />;
+                return <Loading />;
+              }
+            }
+          />
+            {/* UTIL PAGES */}
+            <Match pattern="/login" render={routerProps => <AsyncHome {...routerProps} user={data.user} />} />
+            <Match pattern="/auth" render={routerProps => <Auth {...routerProps} user={data.user} />} />
+            <Match pattern="/logout" component={Logout} />
+            <Match
+              pattern="/help"
+              render={() => {
+                if (data.loading) {
+                  return <Loading />;
+                }
+                if (data.user) {
+                  window.open(`https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`);
+                  window.setTimeout(() => this.context.router.transitionTo('/'), 1000);
+                  return <div>If a window does not appear in 3 seconds, <a href={`https://openclub.zendesk.com/access/jwt?jwt=${data.user.helpdesk_jwt}`} target="_blank">click here</a>.</div>;
+                }
+                if (logonCheckPath('help')) return <Redirect to="/auth" />;
+                return <Loading />
+              }}
+            />
+            {/* NOTIFICATIONS */}
+            <Match pattern="/notifications" render={() => data.user ? <AsyncNotifications viewer={data.user} /> : <Unauthorised />} />
+            {/* EVENT PAGES */}
+            <Match pattern="/events" component={AsyncEvents} />
+            {/* INVITATION */}
+            <Match pattern="/invite/:invitationUrl" render={routerProps => <Invitation {...routerProps} viewer={data.user} />} />
+            {/* USER AGGREGATED FEED */}
+            <Match
+              pattern="/feed"
+              render={() => {
+                if (logonCheckPath('feed')) return <Redirect to="/auth" />;
+                return <AsyncFeed viewer={data.user} />
+              }
+            } />
+            {/* PROFILE */}
+            <Match
+              pattern="/profile"
+              render={routerProps => {
+                if (logonCheckPath('profile')) return <Redirect to="/auth" />;
+                return <AsyncProfile viewer={data.user} {...routerProps} />;
+              }}
+            />
+            {/* CLUB PAGES */}
+            <Match pattern="/test" component={Loading} />
+            <Match pattern="/clubs/create" render={routerProps => data.user ? <CreateClub viewer={data.user} {...routerProps} /> : <Error404 {...routerProps} />} />
+            <Match pattern="/discover" render={routerProps => <AsyncClubs viewer={data.user} login={this.props.login} {...routerProps} />} />
+            <Match pattern="/clubs" render={() => <Redirect to="/discover" />} />
+            <Match pattern="/:club_id" render={routerProps => <AsyncClub {...routerProps} viewer={data.user} />} />
+            {/* 404 */}
+            <Miss component={Error404} />
+          </MatchGroup>
+          <div className="company-details text-center mb">
+            Copyright © OpenClub Pty Ltd.
+            <br />
+            <a href="https://www.openclub.co/legal/terms" target="_blank" rel="noopener noreferrer">
+              Terms of Service
+            </a> | <a href="https://www.openclub.co/legal/privacy" target="_blank" rel="noopener noreferrer">
+              Privacy Policy
+            </a>
+          </div>
+        </Content>
+      </Layout>
+    );
   }
 }
 
@@ -221,14 +203,10 @@ const AppWithApollo = graphql(userQuery, {
 export default connect(state => ({
     auth0Loaded: state.auth.auth0Loaded,
     token: state.auth.token,
-    sidebarOpen: state.ui.sidebar,
     authenticating: state.auth.authenticating
 }), {
   logoutUser,
   login,
-  toggleSidebar,
-  openSidebar,
-  closeSidebar,
   initNotifications,
   checkAuthentication
 })(AppWithApollo)
