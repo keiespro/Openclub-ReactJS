@@ -6,6 +6,7 @@ import Button from 'antd/lib/button';
 import Checkbox from 'antd/lib/checkbox';
 import Input from 'antd/lib/input';
 import DatePicker from 'antd/lib/date-picker';
+import { Link } from 'teardrop';
 import Select, { Option } from 'antd/lib/select';
 import Form, { Item as FormItem } from 'antd/lib/form';
 import Steps, { Step } from 'antd/lib/steps';
@@ -121,6 +122,10 @@ class ImportMembers extends Component {
             if (_.findIndex(membershipPlans, p => p.name === col) < 0) errors.push(config);
             rowRecord[config] = col;
             return col;
+          }
+          // Capture ignored meta tags
+          if (config === 'ignore') {
+            rowRecord[`meta.${rawData[0][colKey]}`] = col;
           }
           rowRecord[config] = col;
           return col;
@@ -262,6 +267,8 @@ class ImportMembers extends Component {
       if (i instanceof Error) progressStatus = 'exception';
     });
 
+    const plans = _.get(club, 'membership_plans', []);
+
     return (
       <ContentPage>
         <Form>
@@ -271,31 +278,34 @@ class ImportMembers extends Component {
             {steps.map(s => <Step key={s.title} title={s.title} />)}
           </Steps>
           <div className="step-content">
-            {!club.membership_plans && (
-              <p>You must add membership plans before you can import members.</p>
+            {plans.length === 0 && (
+              <div className="bottom-gap text-center">
+                <h3>Add Membership Plans</h3>
+                <p className="bottom-gap-large">Before you can import your members, you must add plans to your club.</p>
+                <Link to={`/${club.slug}/admin/memberships/plans`} className="btn btn-primary btn-lg">Add Plans</Link>
+              </div>
             )}
-            {club.membership_plans && this.state.step === 0 && (
+            {plans.length > 0 && this.state.step === 0 && (
               <div className="bottom-gap">
                 <h3>Import Members</h3>
-                <p>OpenClub supports database imports by uploading a CSV. If you require assistance with this process, please get in touch.</p>
+                <p className="bottom-gap-large">OpenClub supports database imports by uploading a CSV. If you require assistance with this process, please get in touch.</p>
                 <h4>Upload Requirements</h4>
                 <p>Please ensure that your CSV meets the minium requirements:</p>
                 <ul className="bottom-gap">
                   <li>- All dates must be in YEAR-MM-DD format. (eg. {m().format('YYYY-MM-DD')})</li>
                   <li>- Provide a Full Name and Email Address</li>
-                  <li>- Use the exact plan title (eg. {club.membership.plans.map(p => p.title).join(', ')})</li>
+                  <li>- Use the exact plan title (eg. {(plans.map(p => p.title) || []).join(', ')})</li>
                   <li>- Use a price option that matches those available in your plan (eg. YEARLY, BIYEARLY, MONTHLY, FORTNIGHTLY, WEEKLY or FREE)</li>
                   <li>- Provide either an expiry date or a join date per member - free plans do not need an expiry.</li>
                 </ul>
-
                 <button className="btn btn-primary btn-lg" disabled={this.state.progress !== 0} onClick={() => { this.input.click() }}><i className="fa fa-fw fa-upload" /> Upload CSV</button>
                 <input ref={input => this.input = input} accept=".csv" type="file" style={{ display: 'none' }} onChange={this.fileUploader.bind(this)} />
               </div>
             )}
             {this.state.progress !== 0 && (
               <div className="bottom-gap">
-                {this.state.import && <strong>Do not close your browser during this process</strong>}
-                <strong>Processing entries...</strong>
+                {this.state.import && <strong>Do not close your browser window during this process</strong>}
+                <strong>Importing members...</strong>
                 <Progress percent={this.state.progress} status={progressStatus} />
               </div>
             )}
