@@ -5,6 +5,7 @@ import gql from 'graphql-tag'
 import Button from 'antd/lib/button'
 import Modal from 'antd/lib/modal'
 import { Alert, message } from 'antd'
+import { ContentPage } from 'components/layout';
 import StripeAccountForm from 'components/forms/StripeAccountForm'
 import StripeBankAccountForm from 'components/forms/StripeBankAccountForm'
 import { stringKeyObjectFilter } from 'utils/object_helpers'
@@ -103,8 +104,8 @@ class BankDetails extends Component {
     if (!club.stripe_account) {
       return (
         <Alert
-          message="Club Account Not Setup"
-          description="Bank accounts cannot be added until the primary club account above is setup"
+          message="Pending Identification"
+          description="You can add bank accounts once the primary identification information has been provided."
           type="warning"
           showIcon
         />
@@ -149,17 +150,27 @@ class BankDetails extends Component {
     const { club, submitting } = this.props
 
     return (
-      <div className="oc-form">
-        <h4 className="bottom-gap-large">Financial Details</h4>
-        <StripeAccountForm onSubmit={this.saveDetails} club={club} initialValues={_.get(club, 'stripe_account.data')} submitting={submitting} />
-        <div className="bottom-gap-large" />
-        <hr />
-        <div className="bottom-gap-large" />
-        <h4 className="bottom-gap-large">Bank Accounts</h4>
-        <div>
-          {this.renderBankAccounts(club, submitting)}
+      <ContentPage>
+        <h4 className="bottom-gap">Payments</h4>
+        <p className="bottom-gap-large">Payment processing is available for communities in select regions. Follow the steps below to setup or modify your account and payout preferences.</p>
+        <div className="row oc-form">
+          <div className="col-xs-12 col-md-6">
+            <h5>Identification</h5>
+            <hr className="bottom-gap" />
+            <p className="bottom-gap-large">The following details are required to identify the payment account holders. These details are used to prevent fraud and minimise the risks of online payments. Please note, some form of identification may be requested by OpenClub if your details cannot be automatically verified.</p>
+            <StripeAccountForm onSubmit={this.saveDetails} club={club} initialValues={_.get(club, 'stripe_account.data')} submitting={submitting} />
+            <div className="bottom-gap-large" />
+          </div>
+          <div className="col-xs-12 col-md-6">
+            <h5>Payout Bank Account</h5>
+            <hr className="bottom-gap" />
+            <p className="bottom-gap-large">Specify a bank account to receive payout funds into.</p>
+            <div>
+              {this.renderBankAccounts(club, submitting)}
+            </div>
+          </div>
         </div>
-      </div>
+      </ContentPage>
     )
   }
 }
