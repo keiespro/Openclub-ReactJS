@@ -17,6 +17,7 @@ import _ from 'lodash';
 import m from 'moment';
 import { spawn } from 'threads';
 import { email } from 'utils/form_validation/errors';
+import { ContentPage } from 'components/layout';
 
 import './ImportMembers.scss';
 
@@ -250,7 +251,7 @@ class ImportMembers extends Component {
         <Option value="last_renewal_date" disabled={isDisabled(col, 'last_renewal_date') || isDisabled(col, 'expiry_date')}>Renewal Date</Option>
         <Option value="membership_plan" disabled={isDisabled(col, 'membership_plan')}>Membership Plan</Option>
         <Option value="billing_period" disabled={isDisabled(col, 'billing_period')}>Billing Period</Option>
-        <Option value="ignore">Ignore</Option>
+        <Option value="ignore">Custom Field</Option>
       </Select>
     )
 
@@ -262,114 +263,114 @@ class ImportMembers extends Component {
     });
 
     return (
-      <Form>
-        <h4 className="bottom-gap">Import Members</h4>
-        <hr className="bottom-gap-large" />
-        <Steps current={step} className="bottom-gap-large">
-          {steps.map(s => <Step key={s.title} title={s.title} />)}
-        </Steps>
-        <div className="step-content">
-          {!club.membership_plans && (
-            <p>You must add membership plans before you can import members.</p>
-          )}
-          {club.membership_plans && this.state.step === 0 && (
-            <div className="bottom-gap">
-              <p className="bottom-gap">
-                You can import your member database into OpenClub via CSV. We support the following fields:<br />
-                Email, Plan Name, Billing Period, Join Date and an Expiry Date or Last Renewal Date.<br /><br />
-                Any unrecognised fields will still be stored under the member's account as Meta Data that can be accessed later as custom fields.<br /><br />
-                <strong>Upload Requirements:</strong>
-              </p>
-              <ul>
-                <li>- Date Format must be YYYY-MM-DD format (ie. {m().format('YYYY-MM-DD')})</li>
-                <li>- Billing Period must be one of the period available on the Plan (either: YEARLY, BIYEARLY, MONTHLY, WEEKLY or FREE)</li>
-                <li>- You can only use Last Renewal Date or Expiry Date, not both.</li>
-                <li>- Email addresses must be valid</li>
-                <li>- Plan titles must match your club plans (ie. {club.membership_plans.map(p => p.title)})</li>
-                <li>- The Billing Period must match a period available within the specified plan</li>
-              </ul>
-              <Button disabled={this.state.progress !== 0} type="primary" onClick={() => { this.input.click() }}><i className="fa fa-fw fa-upload" /> Import CSV</Button>
-              <input ref={input => this.input = input} accept=".csv" type="file" style={{ display: 'none' }} onChange={this.fileUploader.bind(this)} />
-            </div>
-          )}
-          {this.state.progress !== 0 && (
-            <div className="bottom-gap">
-              {this.state.import && <strong>Do not close your browser during this process</strong>}
-              <strong>Processing entries...</strong>
-              <Progress percent={this.state.progress} status={progressStatus} />
-            </div>
-          )}
-          {this.state.step === 1 && (
-            <div className="bottom-gap">
-              <input ref={input => this.input = input} accept=".csv" type="file" style={{ display: 'none' }} onChange={this.fileUploader.bind(this)} />
+      <ContentPage>
+        <Form>
+          <h4 className="bottom-gap">Import Members</h4>
+          <hr className="bottom-gap-large" />
+          <Steps current={step} className="bottom-gap-large">
+            {steps.map(s => <Step key={s.title} title={s.title} />)}
+          </Steps>
+          <div className="step-content">
+            {!club.membership_plans && (
+              <p>You must add membership plans before you can import members.</p>
+            )}
+            {club.membership_plans && this.state.step === 0 && (
               <div className="bottom-gap">
+                <h3>Import Members</h3>
+                <p>OpenClub supports database imports by uploading a CSV. If you require assistance with this process, please get in touch.</p>
+                <h4>Upload Requirements</h4>
+                <p>Please ensure that your CSV meets the minium requirements:</p>
+                <ul className="bottom-gap">
+                  <li>- All dates must be in YEAR-MM-DD format. (eg. {m().format('YYYY-MM-DD')})</li>
+                  <li>- Provide a Full Name and Email Address</li>
+                  <li>- Use the exact plan title (eg. {club.membership.plans.map(p => p.title).join(', ')})</li>
+                  <li>- Use a price option that matches those available in your plan (eg. YEARLY, BIYEARLY, MONTHLY, FORTNIGHTLY, WEEKLY or FREE)</li>
+                  <li>- Provide either an expiry date or a join date per member - free plans do not need an expiry.</li>
+                </ul>
+
+                <button className="btn btn-primary btn-lg" disabled={this.state.progress !== 0} onClick={() => { this.input.click() }}><i className="fa fa-fw fa-upload" /> Upload CSV</button>
+                <input ref={input => this.input = input} accept=".csv" type="file" style={{ display: 'none' }} onChange={this.fileUploader.bind(this)} />
+              </div>
+            )}
+            {this.state.progress !== 0 && (
+              <div className="bottom-gap">
+                {this.state.import && <strong>Do not close your browser during this process</strong>}
+                <strong>Processing entries...</strong>
+                <Progress percent={this.state.progress} status={progressStatus} />
+              </div>
+            )}
+            {this.state.step === 1 && (
+              <div className="bottom-gap">
+                <input ref={input => this.input = input} accept=".csv" type="file" style={{ display: 'none' }} onChange={this.fileUploader.bind(this)} />
+                <div className="bottom-gap">
+                  <Button disabled={this.state.progress !== 0} type="primary" onClick={() => { this.input.click() }}><i className="fa fa-fw fa-upload" /> Upload Different CSV</Button>
+                  <Button type="primary" onClick={() => { this.validateFields() }} className="pull-right">Continue</Button>
+                </div>
+                <p className="bottom-gap">
+                  {"Please select the column headers and ensure that the data you have uploaded looks correct."}
+                </p>
+                <div style={{ overflowX: 'scroll' }}>
+                  <table className="table bottom-gap">
+                    <tbody>
+                      <tr style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+                        {this.state.colConfig.map((row, key) => <td key={'head' + key}>{fieldType(key)}</td>)}
+                      </tr>
+                      {
+                        rawData.map((row, rowKey) => <tr key={rowKey}>{row.map((cell, cellKey) => <td key={`rd${rowKey}-${cellKey}`}>{cell}</td>)}</tr>)
+                      }
+                    </tbody>
+                  </table>
+                </div>
+                {this.state.someExclusions && <Alert type="info" message="Rows Removed" description="Some rows have been removed because they were invalid." showIcon />}
+                <hr className="bottom-gap top-gap" />
                 <Button disabled={this.state.progress !== 0} type="primary" onClick={() => { this.input.click() }}><i className="fa fa-fw fa-upload" /> Upload Different CSV</Button>
                 <Button type="primary" onClick={() => { this.validateFields() }} className="pull-right">Continue</Button>
               </div>
-              <p className="bottom-gap">
-                {"Please select the column headers and ensure that the data you have uploaded looks correct."}
-              </p>
-              <div style={{ overflowX: 'scroll' }}>
-                <table className="table bottom-gap">
-                  <tbody>
-                    <tr style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
-                      {this.state.colConfig.map((row, key) => <td key={'head' + key}>{fieldType(key)}</td>)}
-                    </tr>
-                    {
-                      rawData.map((row, rowKey) => <tr key={rowKey}>{row.map((cell, cellKey) => <td key={`rd${rowKey}-${cellKey}`}>{cell}</td>)}</tr>)
-                    }
-                  </tbody>
-                </table>
+            )}
+            {this.state.step === 2 && (
+              <div className="bottom-gap">
+                <p className="bottom-gap">Once the data is processed, you can begin importing.</p>
+                  {this.state.invalidData.length > 0 && (
+                    <div className="bottom-gap">
+                      <p className="bottom-gap">
+                        <strong>Ready for Import</strong><br />
+                        {this.state.validData.length} rows are ready for import<br />
+                        <strong>Excluded Rows</strong><br />
+                        The following rows will be excluded as they contain errors.
+                      </p>
+                      <table className="table bottom-gap">
+                        <tbody>
+                          {
+                            this.state.invalidData.map((row, rowKey) => {
+                              let { errors } = row;
+                              errors = errors.map(e => this.state.colConfig.indexOf(e));
+                              return <tr key={rowKey}>{row.data.map((cell, cellKey) => <td style={{ backgroundColor: errors.indexOf(cellKey) > -1 ? '#f39086' : 'white' }} key={`${rowKey}-${cellKey}`}>{cell}</td>)}</tr>;
+                            })
+                          }
+                        </tbody>
+                      </table>
+                      <Button onClick={() => { this.setState({ step: 1 }) }}>Previous Step</Button>
+                      <Button type="primary" disabled={this.state.progress !== 0} onClick={() => { Modal.confirm({ title: 'Begin Import', content: 'Are you sure you want to begin the import? This will produce an email invitation for each of these members to join your club.', onOk: () => { this.processImport() } }) }}>Import and Invite</Button>
+                    </div>
+                  )}
               </div>
-              {this.state.someExclusions && <Alert type="info" message="Rows Removed" description="Some rows have been removed because they were invalid." showIcon />}
-              <hr className="bottom-gap top-gap" />
-              <Button disabled={this.state.progress !== 0} type="primary" onClick={() => { this.input.click() }}><i className="fa fa-fw fa-upload" /> Upload Different CSV</Button>
-              <Button type="primary" onClick={() => { this.validateFields() }} className="pull-right">Continue</Button>
-            </div>
-          )}
-          {this.state.step === 2 && (
-            <div className="bottom-gap">
-              <p className="bottom-gap">Once the data is processed, you can begin importing.</p>
-                {this.state.invalidData.length > 0 && (
-                  <div className="bottom-gap">
-                    <p className="bottom-gap">
-                      <strong>Ready for Import</strong><br />
-                      {this.state.validData.length} rows are ready for import<br />
-                      <strong>Excluded Rows</strong><br />
-                      The following rows will be excluded as they contain errors.
-                    </p>
-                    <table className="table bottom-gap">
-                      <tbody>
-                        {
-                          this.state.invalidData.map((row, rowKey) => {
-                            let { errors } = row;
-                            errors = errors.map(e => this.state.colConfig.indexOf(e));
-                            return <tr key={rowKey}>{row.data.map((cell, cellKey) => <td style={{ backgroundColor: errors.indexOf(cellKey) > -1 ? '#f39086' : 'white' }} key={`${rowKey}-${cellKey}`}>{cell}</td>)}</tr>;
-                          })
-                        }
-                      </tbody>
-                    </table>
-                    <Button onClick={() => { this.setState({ step: 1 }) }}>Previous Step</Button>
-                    <Button type="primary" disabled={this.state.progress !== 0} onClick={() => { Modal.confirm({ title: 'Begin Import', content: 'Are you sure you want to begin the import? This will produce an email invitation for each of these members to join your club.', onOk: () => { this.processImport() } }) }}>Import and Invite</Button>
-                  </div>
-                )}
-            </div>
-          )}
-          {this.state.step === 3 && (
-            <div className="bottom-gap">
-              <p className="bottom-gap">
-                The import is complete. The results are below.
-              </p>
-              <ul>
-                {_.flattenDeep(this.state.importStatus).map((chunk, chunkkey) => {
-                  if (chunk instanceof Error) return <li key={`err-${chunkkey}`} style={{ color: 'darkred' }}>— {chunk.message}</li>;
-                  return <li key={chunk._id || `err-${chunkkey}`} style={{ color: 'darkgreen' }}>— {chunk.external_recipient || _.get(chunk, 'system_recipient.meta.email', 'Private User')} sent OK</li>
-                })}
-              </ul>
-            </div>
-          )}
-        </div>
-      </Form>
+            )}
+            {this.state.step === 3 && (
+              <div className="bottom-gap">
+                <p className="bottom-gap">
+                  The import is complete. The results are below.
+                </p>
+                <ul>
+                  {_.flattenDeep(this.state.importStatus).map((chunk, chunkkey) => {
+                    if (chunk instanceof Error) return <li key={`err-${chunkkey}`} style={{ color: 'darkred' }}>— {chunk.message}</li>;
+                    return <li key={chunk._id || `err-${chunkkey}`} style={{ color: 'darkgreen' }}>— {chunk.external_recipient || _.get(chunk, 'system_recipient.meta.email', 'Private User')} sent OK</li>
+                  })}
+                </ul>
+              </div>
+            )}
+          </div>
+        </Form>
+      </ContentPage>
     )
   }
 }
