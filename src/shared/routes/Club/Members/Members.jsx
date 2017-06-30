@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { graphql, compose } from 'react-apollo';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Select, { Option } from 'antd/lib/select';
 import Button from 'antd/lib/button';
 import Modal from 'antd/lib/modal';
 import Table from 'antd/lib/table';
@@ -108,7 +109,6 @@ class Members extends Component {
       { title: 'Name', dataIndex: 'profile.name', key: 'name' },
       { title: 'Email', dataIndex: 'profile.email', key: 'email' },
       { title: 'Plan', dataIndex: 'subscription.membership_plan_id', key: 'membership_plan_name', render: value => <span>{(_.find(membershipPlans, p => p._id === value) || {}).name || 'Non member'}</span> },
-      { title: 'Approval', dataIndex: 'subscription.pending_approval', key: 'pending_approval', render: (value, row) => value ? <span><Button type="primary" size="small" onClick={approveMember.bind(this, row)}>Approve</Button></span> : <span>Approved</span> },
       { title: 'Expiry', dataIndex: 'subscription.expiry_date', key: 'expiry_date', render: value => <span>{moment(value).format('DD/MM/YYYY')}</span> },
       { title: 'Actions', key: 'actions', render: (i, value) => <span><a href="#" onClick={deleteMember.bind(this, value)}>Delete</a>{/* | <a href="#" onClick={changeMembership.bind(this, value)}>Change</a>*/}</span> }
     ]
@@ -152,19 +152,32 @@ class Members extends Component {
     } //end expandRow()
 
     return (
-      <div>
-        <IconTitle icon="fa-users" title="Members" />
-        <ContentPage>
-          <Table
-            rowKey={record => record._id}
-            loading={loading}
-            columns={columns}
-            dataSource={memberList}
-            expandedRowRender={expandRow}
-            pagination={{ pageSize: 10, pageSizeOptions: ['10', '25', '50'] }}
-            />
-        </ContentPage>
-      </div>
+      <ContentPage>
+        <Select
+          showSearch
+          style={{ width: 200 }}
+          className="pull-right"
+          placeholder="Select a filter"
+          optionFilterProp="children"
+          filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+        >
+          <Option value="all">All members</Option>
+          <Option value="current">Current members</Option>
+          <Option value="expired">Expired members</Option>
+          <Option value="recently_joined">Recently joined</Option>
+          <Option value="recently_expired">Recently expired</Option>
+          <Option value="expiring_soon">Expiring soon</Option>
+        </Select>
+        <h4 className="bottom-gap">Members</h4>
+        <Table
+          rowKey={record => record._id}
+          loading={loading}
+          columns={columns}
+          dataSource={memberList}
+          expandedRowRender={expandRow}
+          pagination={{ pageSize: 10, pageSizeOptions: ['10', '25', '50'] }}
+          />
+      </ContentPage>
     )
   }
 }
