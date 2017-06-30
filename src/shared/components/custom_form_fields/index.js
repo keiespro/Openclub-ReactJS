@@ -12,6 +12,7 @@ import StripeCreditCardField from './StripeCreditCardField'
 import StripePaymentMethodField from './StripePaymentMethodField'
 import StripeCardList from './StripeCardList'
 import Terms from './Terms'
+import ThemeField from './ThemeField'
 
 export {
   Terms,
@@ -22,5 +23,6 @@ export {
   StripeCardList,
   StripeBankAccountField,
   StripeCreditCardField,
-  StripePaymentMethodField
+  StripePaymentMethodField,
+  ThemeField
 }
