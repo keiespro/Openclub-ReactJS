@@ -40,9 +40,6 @@ const ClubNav = ({ perm, club, pathname }) => (
           <li>
             <Link to={`/${club.slug}/admin`}><i className="fa fa-fw fa-tachometer" /> Dashboard</Link>
           </li>
-          <li>
-            <Link to={`/${club.slug}/admin/details`}><i className="fa fa-fw fa-asterisk" /> Details</Link>
-          </li>
           <NavDropdown id="clubMemberships" title={<span><i className="fa fa-fw fa-users" /> Memberships</span>}>
             <li>
               <Link to={`/${club.slug}/admin/memberships/members`}>Members</Link>

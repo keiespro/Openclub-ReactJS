@@ -25,7 +25,7 @@ import AsyncMembers from './Members/Members'
 import AsyncClubProfile from './Settings/ClubProfile'
 import AsyncFinancialDetails from './Settings/FinancialDetails'
 import AsyncMembershipPlans from './Settings/MembershipPlans'
-import AsyncImportMembers from './Settings/ImportMembers'
+import AsyncImportMembers from './Settings/ImportMembers/ImportMembers'
 import AsyncRoles from './Settings/Roles/Roles'
 import AdminDashboard from './Settings/Landing'
 
@@ -101,7 +101,7 @@ class Club extends Component {
               render={routerProps => perm.userCanAccessSettings ? <AdminDashboard {...routerProps} club={club} perm={perm} /> : <Error404 />}
               />
             <Match
-              pattern={`/${params.club_id}/admin/details`}
+              pattern={`/${params.club_id}/admin/settings`}
               render={routerProps => perm.userCanAccessSettings ? <AsyncClubProfile {...routerProps} club={club} perm={perm} /> : <Error404 />}
               />
             <Match
