@@ -46,7 +46,7 @@ $colors: (
     color: $text-color !important;
 }
 
-@mixin thumnbail-size($sz: 8px) {
+@mixin thumbnail-size($sz: 8px) {
     width: $sz !important;
     height: $sz !important;
 }

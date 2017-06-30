@@ -234,16 +234,16 @@ table.va-bottom { td { vertical-align: bottom !important; } }
 }
 
 // Common thumbnail sizes (ideal for images)
-.thumb8   { @include thumnbail-size; }
-.thumb16  { @include thumnbail-size(16px); }
-.thumb24  { @include thumnbail-size(24px); }
-.thumb32  { @include thumnbail-size(32px); }
-.thumb40  { @include thumnbail-size(40px); }
-.thumb48  { @include thumnbail-size(48px); }
-.thumb64  { @include thumnbail-size(64px); }
-.thumb80  { @include thumnbail-size(80px); }
-.thumb96  { @include thumnbail-size(96px); }
-.thumb128 { @include thumnbail-size(128px); }
+.thumb8   { @include thumbnail-size; }
+.thumb16  { @include thumbnail-size(16px); }
+.thumb24  { @include thumbnail-size(24px); }
+.thumb32  { @include thumbnail-size(32px); }
+.thumb40  { @include thumbnail-size(40px); }
+.thumb48  { @include thumbnail-size(48px); }
+.thumb64  { @include thumbnail-size(64px); }
+.thumb80  { @include thumbnail-size(80px); }
+.thumb96  { @include thumbnail-size(96px); }
+.thumb128 { @include thumbnail-size(128px); }
 
 // Circle with an initial inside
 .initial8   { @include initial-size; }
