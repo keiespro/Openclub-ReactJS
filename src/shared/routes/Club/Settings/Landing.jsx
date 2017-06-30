@@ -1,144 +1,108 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Button from 'antd/lib/button';
-import Select, { Option } from 'antd/lib/select';
-import { Group as CheckboxGroup } from 'antd/lib/checkbox';
-import Spin from 'antd/lib/spin';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
-import _ from 'lodash';
-import message from 'antd/lib/message';
-import la from 'logandarrow'
+import { Link } from 'teardrop'
 
-// Components
-import { Form, Checkbox, FieldContainer } from 'components/form_controls';
-
-// Helpers
-import { stringKeyObjectFilter } from 'utils/object_helpers';
-import error from 'utils/error';
-
-class SettingsLanding extends Component {
-  static contextTypes = {
-    router: PropTypes.object.isRequired
-  }
+class CommunityDashboard extends Component {
   static propTypes = {
-    club: PropTypes.object,
-    updateClub: PropTypes.func
-  }
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      loading: ''
-    }
-  }
-  async submitChange(club) {
-    const { updateClub } = this.props;
-
-    try {
-      message.loading('Updating...', 20);
-      const returns = await updateClub({
-        variables: {
-          clubId: this.props.club._id,
-          club
-        }
-      })
-      message.destroy();
-      message.success('Done', 5);
-      this.setState({ loading: '' })
-    } catch (err) {
-      message.destroy();
-      message.error(error(err.message), 20);
-      this.setState({ loading: '' })
-    }
-  }
-  submitSetting(field, value) {
-    let club = {};
-    _.set(club, field, value);
-    this.setState({ loading: field })
-    this.submitChange(club);
+    club: PropTypes.object
   }
   render() {
     const { club } = this.props;
-    const { transitionTo } = this.context.router;
 
     return (
-      <Form>
-        <h4 className="bottom-gap">News Feed Privacy</h4>
-        <hr className="bottom-gap" />
-        <div className="bottom-gap-large">
-          <p className="bottom-gap">
-            The news feed allows your members to post content, questions, events and more. The feed is the starting point for members to engage with your club.
-          </p>
-          <FieldContainer title="Public Feed Permissions">
-            <p className="mb">Set feed permissions for OpenClub users and the public.</p>
-            <Spin spinning={this.state.loading === 'settings.feed_public_permissions'}>
-              <CheckboxGroup
-                options={[
-                  { value: 'view', label: 'View feed' },
-                  { value: 'post', label: 'Post to feed' }
-                ]}
-                value={_.get(club, 'settings.feed_public_permissions', ['view', 'post'])}
-                onChange={val => this.submitSetting('settings.feed_public_permissions', val)}
-                />
-            </Spin>
-          </FieldContainer>
-          <FieldContainer title="Member Feed Permissions">
-            <p className="mb">Set feed permissions for your members.</p>
-            <Spin spinning={this.state.loading === 'settings.feed_permissions'}>
-              <CheckboxGroup
-                options={[
-                  { value: 'view', label: 'View feed' },
-                  { value: 'post', label: 'Post to feed' }
-                ]}
-                value={_.get(club, 'settings.feed_permissions', ['view', 'post'])}
-                onChange={val => this.submitSetting('settings.feed_permissions', val)}
-                />
-            </Spin>
-          </FieldContainer>
+      <div>
+        <div className="row">
+          <div className="jumbotron">
+            <div className="container">
+              <h1>Get started!</h1>
+              <p>Welcome to your new community page. To get your community up and running, you simply need to complete a few setup tasks.</p>
+              <p>
+                <div className="btn-group" role="group" aria-label="Setup Steps">
+                  <Link to={`/${club.slug}/admin/settings`} className="btn btn-primary btn-lg">1. Provide Community Details</Link>
+                  <Link to={`/${club.slug}/admin/memberships/plans`} className="btn btn-primary btn-lg">2. Add Membership Plans</Link>
+                  <Link to={`/${club.slug}/admin/finances/setup`} className="btn btn-primary btn-lg">3. Setup Payments</Link>
+                  <Link to={`/${club.slug}/admin/memberships/import`} className="btn btn-primary btn-lg">4. Import Members</Link>
+                </div>
+                <small className="text-center">
+                  <a href="#" onClick={() => true}>Don't show this notice again</a>
+                </small>
+              </p>
+            </div>
+          </div>
+          <hr className="bottom-gap" />
         </div>
-        <h4 className="bottom-gap">Member Directory Privacy</h4>
-        <hr className="bottom-gap" />
-        <div className="bottom-gap-large">
-          <p className="bottom-gap">
-            Provide information that will be displayed to your members and the public.
-            This information will help people find your club within OpenClub, and on the web.
-          </p>
-          <FieldContainer>
-            <Spin spinning={this.state.loading === 'settings.directory_privacy'}>
-              <Checkbox
-                input={{
-                  value: _.get(club, 'settings.directory_privacy', 'public') === 'public',
-                  onChange: val => this.submitSetting('settings.directory_privacy', val ? 'public' : 'private')
-                }}
-                label={_.get(club, 'settings.directory_privacy', 'public') === 'public' ? 'Directory is visible publicly' : 'Directory is visible to members only'}
-                isSwitch
-                />
-            </Spin>
-          </FieldContainer>
-          <small><strong>Disclaimer: </strong>OpenClub protects the privacy of its users by protecting certain information from being indexed.
-          Regardless of your Club Directory Privacy setting, visibility of profiles within the club is at the discretion of the individual member.</small>
+        <h4 className="bottom-gap">Dashboard</h4>
+        <div className="row xs-hidden sm-hidden">
+          <div className="col-md-4">
+            <div className="panel panel-default">
+              <div className="panel-body">
+                <h1>100</h1>
+                active members
+              </div>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="panel panel-default">
+              <div className="panel-body">
+                <h1>10</h1>
+                new members this month
+              </div>
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="panel panel-default">
+              <div className="panel-body">
+                <h1>5</h1>
+                members expiring soon
+              </div>
+            </div>
+          </div>
         </div>
-      </Form>
-    )
+        <div className="row">
+          <div className="col-xs-12 col-md-6">
+            <div className="panel panel-primary">
+              <div className="panel-heading">
+                <h3 className="panel-title">New Members</h3>
+              </div>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Approval</th>
+                    <th>Plan</th>
+                    <th>Date Joined</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  Nothing to display
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div className="col-xs-12 col-md-6">
+            <div className="panel panel-danger">
+              <div className="panel-heading">
+                <h3 className="panel-title">Expiring Soon</h3>
+              </div>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Plan</th>
+                    <th>Expiry Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  Nothing to display
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 
-const mutation = gql`
-  mutation updateClub($clubId: MongoID!, $club: clubUpdate!){
-    updateClub(clubId: $clubId, club: $club){
-      _id
-      settings{
-        directory_privacy
-        feed_permissions
-        feed_public_permissions
-      }
-    }
-  }
-`
-
-const ClubSettingsApollo = graphql(mutation, {
-  name: 'updateClub'
-})(SettingsLanding)
-
-export default ClubSettingsApollo;
+export default CommunityDashboard;
