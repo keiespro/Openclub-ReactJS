@@ -5,6 +5,8 @@ import gql from 'graphql-tag'
 import { Button, message, Alert } from 'antd'
 import Modal from 'antd/lib/modal';
 import Table from 'components/table'
+import { Link } from 'teardrop';
+import { ContentPage } from 'components/layout';
 import MembershipPlanForm from 'components/forms/MembershipPlanForm'
 import { durations } from 'constants/index'
 import { stringKeyObjectFilter } from 'utils/object_helpers'
@@ -100,9 +102,16 @@ class MembershipPlans extends Component {
     />
 
     return (
-      <div>
-        {!this.bankCheck() &&
-          <Alert message="You haven't setup any bank accounts yet. Please ensure that you add bank accounts before trying to accept payments." type="warning" showIcon />
+      <ContentPage>
+        <h4 className="bottom-gap">Membership Plans</h4>
+        <p className="bottom-gap">Membership plans provide a pathway for people to join your community. Your plans can have multiple billing periods and one-time fees. You have full control over who can join your club, and how much they pay.</p>
+        {!this.bankCheck() && (
+          <div className="alert alert-info">
+            <Link className="btn btn-default pull-right" to={`/${club.slug}/admin/finances/setup`}>Setup Payments</Link>
+            <h5>Heads up!</h5>
+            <p>If you want to accept payments for your memberships, you'll need to setup your community for payments.</p>
+          </div>
+        )
         }
         <Table
           data={club.membership_plans}
@@ -123,7 +132,7 @@ class MembershipPlans extends Component {
         ) : (
           <Button type="primary" icon="plus" onClick={() => this.setState({ showAdd: true })}>Create New Plan</Button>
         )}
-      </div>
+      </ContentPage>
     )
   }
 }
