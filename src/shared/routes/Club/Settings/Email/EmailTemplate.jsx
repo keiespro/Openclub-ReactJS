@@ -98,7 +98,7 @@ class EmailTemplate extends Component {
             <div className="col-xs-12 col-md-8">
               <h4 className="pb">Email Templates</h4>
               <p>Customise your email templates to create a more personal membership experience.<br />
-              <small><a href="https://help.openclub.co/SOME HELP ARTICLE" target="_blank" rel="noopener noreferrer">Learn how to use Email Templates.</a></small></p>.
+              <small><a href="https://help.openclub.co/SOME HELP ARTICLE" target="_blank" rel="noopener noreferrer">Learn how to use Email Templates</a>.</small></p>
               <Tabs>
                 <TabPane tab={`Welcome to ${club.name}`} key="1">
                   <Field

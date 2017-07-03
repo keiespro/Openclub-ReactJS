@@ -72,6 +72,7 @@
     "csvjson": "^4.3.3",
     "deli-space": "^1.0.0",
     "dotenv": "^4.0.0",
+    "draft-convert": "^1.4.7",
     "draft-js": "^0.10.0",
     "draftjs-to-html": "^0.7.2",
     "enzyme": "^2.8.2",
