@@ -13,7 +13,6 @@ import {
 } from 'components/form_controls'
 import { required, maxLength } from 'utils/form_validation/errors'
 import { durations } from 'constants/index'
-
 import './MembershipPlanForm.css'
 
 class MembershipPlanForm extends Component {
@@ -28,7 +27,10 @@ class MembershipPlanForm extends Component {
 
     this.renderPrices = this.renderPrices.bind(this)
   }
-  renderPrices({ fields, meta: { touched, error } }) {
+  renderPrices({ fields, meta: { touched, error }, ...rest }) {
+
+    const durationsAlreadyInUse = fields.getAll().map(d => d.duration);
+
     return (
       <div>
         {fields.length <= 0 &&
@@ -54,7 +56,7 @@ class MembershipPlanForm extends Component {
                 component={Select}
                 placeholder="Duration"
                 validate={[required]}
-                options={durations.list.map(d => ({ value: d, title: durations.lookup[d] }))}
+                options={durations.list.map(d => ({ value: d, title: durations.lookup[d], disabled: durationsAlreadyInUse.indexOf(d) > -1 }))}
               />
             </Col>
             <Col xs={6}>
