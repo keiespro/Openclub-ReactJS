@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Editor as EditorComponent, EditorState, ContentState, convertToRaw } from 'react-draft-wysiwyg';
+import { Editor as EditorComponent, EditorState, ContentState } from 'react-draft-wysiwyg';
+import { convertToRaw } from 'draft-js';
 import htmlToDraft from 'html-to-draftjs';
 import draftToHtml from 'draftjs-to-html';
 
@@ -28,12 +29,19 @@ class Editor extends Component {
   componentWillMount() {
     const { input } = this.props;
 
-    const blocksFromHtml = htmlToDraft(input.value);
-    const contentBlocks = blocksFromHtml.contentBlocks;
-    const contentState = ContentState.createFromBlockArray(contentBlocks);
-    const editorState = EditorState.createWithContent(contentState);
+    console.log(input.value);
 
-    this.setState({ editorState });
+    if (!input.value) return;
+
+    const blocksFromHtml = htmlToDraft(input.value);
+    console.log(blocksFromHtml);
+    const contentBlock = blocksFromHtml.contentBlock;
+    if (contentBlock) {
+      const contentState = ContentState.createFromBlockArray(contentBlock);
+      const editorState = EditorState.createWithContent(contentState);
+
+      this.setState({ editorState });
+    }
   }
   onEditorStateChange(editorState) {
     this.setState({ editorState });
@@ -41,7 +49,7 @@ class Editor extends Component {
     const contentState = convertToRaw(editorState.getCurrentContent());
     this.props.input.onChange(draftToHtml(contentState));
   }
-  uploadImageCallBack() {
+  uploadImageCallback() {
     // do struff this.potato
     return this.state;
   }
