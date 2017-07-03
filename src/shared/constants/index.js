@@ -6,6 +6,7 @@ export const durations = {
     LIFETIME: 'Lifetime',
     YEARLY: 'Annually',
     BIYEARLY: 'Biannually',
+    QUARTERLY: 'Quarterly',
     MONTHLY: 'Monthly',
     FORTNIGHTLY: 'Fortnightly',
     WEEKLY: 'Weekly'
@@ -14,11 +15,12 @@ export const durations = {
     LIFETIME: 'one time',
     YEARLY: 'per year',
     BIYEARLY: 'twice per year',
+    QUARTERLY: 'per quarter',
     MONTHLY: 'per month',
     FORTNIGHTLY: 'per fortnight',
     WEEKLY: 'per week'
   },
-  list: ['LIFETIME', 'YEARLY', 'BIYEARLY', 'MONTHLY', 'WEEKLY', 'FORTNIGHTLY']
+  list: ['LIFETIME', 'YEARLY', 'BIYEARLY', 'QUARTERLY', 'MONTHLY', 'WEEKLY', 'FORTNIGHTLY']
 }
 
 export const countries = [
