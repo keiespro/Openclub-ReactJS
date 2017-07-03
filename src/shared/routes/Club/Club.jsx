@@ -26,6 +26,7 @@ import AsyncClubProfile from './Settings/ClubProfile'
 import AsyncFinancialDetails from './Settings/FinancialDetails'
 import AsyncMembershipPlans from './Settings/MembershipPlans'
 import AsyncImportMembers from './Settings/ImportMembers/ImportMembers'
+import AsyncEmailTemplate from './Settings/Email/EmailTemplate.jsx';
 import AsyncRoles from './Settings/Roles/Roles'
 import AdminDashboard from './Settings/Landing'
 
@@ -127,6 +128,10 @@ class Club extends Component {
             <Match
               pattern={`/${params.club_id}/admin/finances/setup`}
               render={routerProps => perm.userCanAccessSettings ? <AsyncFinancialDetails {...routerProps} club={club} perm={perm} /> : <Error404 />}
+              />
+            <Match
+              pattern={`/${params.club_id}/admin/email/templates`}
+              render={routerProps => perm.userCanAccessSettings ? <AsyncEmailTemplate {...routerProps} club={club} perm={perm} /> : <Error404 />}
               />
           <Miss component={Error404} />
           </MatchGroup>

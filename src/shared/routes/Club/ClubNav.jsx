@@ -51,6 +51,9 @@ const ClubNav = ({ perm, club, pathname }) => (
               <Link to={`/${club.slug}/admin/memberships/plans`}>Plans</Link>
             </li>
             <li>
+              <Link to={`/${club.slug}/admin/memberships/invitations`}>Pending Invitations</Link>
+            </li>
+            <li>
               <Link to={`/${club.slug}/admin/memberships/import`}>Import</Link>
             </li>
           </NavDropdown>
@@ -59,6 +62,10 @@ const ClubNav = ({ perm, club, pathname }) => (
             <li><Link to={`/${club.slug}/admin/finances/expenses`}>Expenses</Link></li>
             <li><Link to={`/${club.slug}/admin/finances/reports`}>Reports</Link></li>
             <li><Link to={`/${club.slug}/admin/finances/setup`}>Payments Setup</Link></li>
+          </NavDropdown>
+          <NavDropdown id="mailSettings" title={<span><i className="fa fa-fw fa-envelope-o" /> Email</span>}>
+            <li><Link to={`/${club.slug}/admin/email/templates`}>Templates</Link></li>
+            {process.env.NODE_ENV === 'development' && <li><Link to={`/${club.slug}/admin/email/logs`}>Logs</Link></li>}
           </NavDropdown>
           <li>
             <Link to={`/${club.slug}/admin/settings`}><i className="fa fa-fw fa-cog" /> Settings</Link>
