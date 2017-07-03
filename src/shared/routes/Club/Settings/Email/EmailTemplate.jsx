@@ -1,31 +1,43 @@
 import React, { Component } from 'react';
-import { ContentPage } from 'components/layout';
+import PropTypes from 'prop-types';
+import { Field, reduxForm } from 'redux-form'
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
+import Tabs, { TabPane } from 'antd/lib/tabs';
+
+// Components
+import { ContentPage } from 'components/layout';
 import { required, maxLength, slug, email, url, phone } from 'utils/form_validation/errors'
 import {
   Form,
   FieldContainer,
-  MonthPicker,
   Input,
-  Select,
-  Address,
-  Button,
-  ImageUploader,
-  FileUploader
+  Editor
 } from 'components/form_controls'
-import { Field, reduxForm } from 'redux-form'
 
 class EmailTemplate extends Component {
+  static propTypes = {
+    club: PropTypes.object
+  }
   constructor(props) {
     super(props);
+
+    this.state = {
+      view: ''
+    }
+  }
+  submitChanges() {
+
   }
   render() {
+    const { club } = this.props;
+
     return (
       <Form>
         <ContentPage>
-          <h4 className="bottom-gap">Email Templates</h4>
-          <p>OpenClub uses customised email templates to personalise your member communication.</p>
+          <div className="row">
+            <h4 className="bottom-gap">Email Templates</h4>
+          </div>
           <div className="row">
             <div className="col-xs-12 col-md-4">
               <h5 className="pb">Defaults</h5>
@@ -39,6 +51,50 @@ class EmailTemplate extends Component {
                   validate={[required, maxLength(64)]}
                   />
               </FieldContainer>
+              <FieldContainer title="From Email" required>
+                <Field
+                  help="From email address members can reply to"
+                  type="text"
+                  name="settings.email_templates.from_email"
+                  component={Input}
+                  validate={[required, email]}
+                  />
+              </FieldContainer>
+              <FieldContainer title="Default Signature" required>
+                <Field
+                  help="Email sent to members when their membership is activated."
+                  component={Editor}
+                  name="settings.email_template.from_signature"
+                  />
+              </FieldContainer>
+              <button type="submit" className="btn btn-lg btn-primary">Save Templates</button>
+            </div>
+            <div className="col-xs-12 col-md-8">
+              <h5 className="pb">Email Templates</h5>
+              <p>Customise your email templates to create a more personal membership experience.</p>
+              <Tabs>
+                <TabPane tab={`Welcome to ${club.name}`} key="1">
+                  <Field
+                    help="Email sent to members when their membership is activated."
+                    component={Editor}
+                    name="settings.email_template.welcome_template"
+                    />
+                </TabPane>
+                <TabPane tab={`${club.name} Membership Invitation`} key="2">
+                  <Field
+                    help="Email sent to members when their membership is activated."
+                    component={Editor}
+                    name="settings.email_template.invitation_template"
+                    />
+                </TabPane>
+                <TabPane tab={`${club.name} Renewal`} key="3">
+                  <Field
+                    help="Email sent to members when their membership is activated."
+                    component={Editor}
+                    name="settings.email_template.renewal_template"
+                    />
+                </TabPane>
+              </Tabs>
             </div>
           </div>
         </ContentPage>
@@ -84,16 +140,17 @@ const mutation = gql`
 
 const EmailTemplateReduxForm = reduxForm(props => ({
   name: 'email_template',
-  initialValues: props.club
+  initialValues: props.club || {}
 }))(EmailTemplate);
 
 const EmailTemplateApollo = compose(
   graphql(query, {
     options: props => ({
-      varibales: {
+      variables: {
         slug: props.club.slug
       }
-    })
+    }),
+    skip: props => !props.club
   }),
   graphql(mutation, {
     name: 'updateEmails'
