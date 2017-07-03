@@ -23,8 +23,7 @@ import {
 class EmailTemplate extends Component {
   static propTypes = {
     club: PropTypes.object,
-    handleSubmit: PropTypes.func,
-    updateClub: PropTypes.func
+    handleSubmit: PropTypes.func
   }
   constructor(props) {
     super(props);
