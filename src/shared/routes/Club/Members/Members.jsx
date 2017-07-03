@@ -23,15 +23,19 @@ import { display as displayError } from 'utils/error';
 
 class Members extends Component {
   static propTypes = {
-    data: PropTypes.object,
+    loading: PropTypes.bool,
+    members: PropTypes.array,
     club: PropTypes.object
   }
   constructor(props) {
     super(props);
 
     this.state = {
-      expandedRows: []
+      expandedRows: [],
+      filter: 'all_members'
     }
+
+    this.selectFilter = this.selectFilter.bind(this);
   }
   async deleteMember(member) {
     const { club, deleteMember } = this.props;
@@ -75,12 +79,19 @@ class Members extends Component {
       displayError(err);
     }
   }
-  render() {
-    const { member } = this.state;
-    const { data, club } = this.props;
-    console.log(this.props);
+  selectFilter(filter) {
+    const { refetch, club } = this.props;
 
-    const { loading, members } = data;
+    this.setState({ filter })
+
+    refetch({
+      clubId: club._id,
+      filter
+    });
+  }
+  render() {
+    const { loading, club, members } = this.props;
+
     const { membership_plans: membershipPlans } = club;
 
     if (!members && loading) return <Loading />;
@@ -113,8 +124,7 @@ class Members extends Component {
       { title: 'Actions', key: 'actions', render: (i, value) => <span><a href="#" onClick={deleteMember.bind(this, value)}>Delete</a>{/* | <a href="#" onClick={changeMembership.bind(this, value)}>Change</a>*/}</span> }
     ]
 
-    const memberList = members && members.members ? members.members.edges : [];
-    console.log(memberList);
+    console.log(members);
 
     const expandRow = record => {
       const planId = _.get(record, 'subscription.membership_plan_id');
@@ -160,20 +170,21 @@ class Members extends Component {
           placeholder="Select a filter"
           optionFilterProp="children"
           filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+          onChange={this.selectFilter}
+          value={this.state.filter}
         >
-          <Option value="all">All members</Option>
-          <Option value="current">Current members</Option>
-          <Option value="expired">Expired members</Option>
-          <Option value="recently_joined">Recently joined</Option>
-          <Option value="recently_expired">Recently expired</Option>
-          <Option value="expiring_soon">Expiring soon</Option>
+          <Option value="all_members">All members</Option>
+          <Option value="current_members">Current members</Option>
+          <Option value="expired_members">Expired members</Option>
+          <Option value="new_members">Recently joined</Option>
+          <Option value="expiring_soon">Expiring Soon</Option>
         </Select>
         <h4 className="bottom-gap">Members</h4>
         <Table
           rowKey={record => record._id}
           loading={loading}
           columns={columns}
-          dataSource={memberList}
+          dataSource={members}
           expandedRowRender={expandRow}
           pagination={{ pageSize: 10, pageSizeOptions: ['10', '25', '50'] }}
           />
@@ -187,10 +198,16 @@ const MembersApollo = compose(
     options: props => props.club ? ({
       variables: {
         clubId: props.club._id,
+        filter: 'all_members',
         first: 1000
       }
     }) : null,
-    skip: props => !props || !props.club || !props.club._id
+    skip: props => !props || !props.club || !props.club._id,
+    props: ({ data }) => ({
+      members: data.club ? data.club.members.edges : [],
+      loading: data.loading,
+      refetch: data.refetch
+    })
   }),
   graphql(approveMemberGQL, {
     name: 'approveMember'
