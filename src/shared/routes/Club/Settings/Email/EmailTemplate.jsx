@@ -12,6 +12,7 @@ import { ContentPage } from 'components/layout';
 import { required, maxLength, slug, email, url, phone } from 'utils/form_validation/errors'
 import { stringKeyObjectFilter, shallowObjectDiff } from 'utils/object_helpers'
 import error from 'utils/error';
+import Loading from 'components/Loading/Loading';
 import {
   Form,
   FieldContainer,
@@ -53,7 +54,9 @@ class EmailTemplate extends Component {
     })
   }
   render() {
-    const { club, handleSubmit } = this.props;
+    const { club, handleSubmit, initialValues } = this.props;
+
+    if (!initialValues) return <Loading />
 
     return (
       <Form onSubmit={handleSubmit}>
