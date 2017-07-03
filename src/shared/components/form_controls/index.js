@@ -16,6 +16,7 @@ import FileUploader from './uploaders/FileUploader'
 import ImageUploader from './uploaders/ImageUploader'
 import InputGroup from './input_group/InputGroup'
 import Address from './address/Address'
+import Editor from './editor/Editor';
 
 export {
   Form,
@@ -35,5 +36,6 @@ export {
   TimePicker,
   FileUploader,
   ImageUploader,
-  InputGroup
+  InputGroup,
+  Editor
 }
