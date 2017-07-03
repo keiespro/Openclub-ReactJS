@@ -30,6 +30,8 @@ import AsyncEmailTemplate from './Settings/Email/EmailTemplate.jsx';
 import AsyncRoles from './Settings/Roles/Roles'
 import AdminDashboard from './Settings/Landing'
 
+import la from 'logandarrow';
+
 import './Club.scss'
 
 class Club extends Component {
@@ -145,6 +147,7 @@ const ClubWithApollo = graphql(clubQuery, {
   options: props => {
     if (!props.params) return false;
     return {
+      fetchPolicy: 'cache-and-network',
       variables: {
         slug: props.params.club_id,
         first: 25
