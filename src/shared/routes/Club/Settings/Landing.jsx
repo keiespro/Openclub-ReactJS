@@ -1,13 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'teardrop'
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import { get as g } from 'lodash';
+import m from 'moment';
+
+import la from 'logandarrow';
 
 class CommunityDashboard extends Component {
   static propTypes = {
-    club: PropTypes.object
+    club: PropTypes.object,
+    stats: PropTypes.object,
+    expiringSoon: PropTypes.array,
+    newMembers: PropTypes.array
   }
   render() {
-    const { club } = this.props;
+    const { club, stats, expiringSoon, newMembers } = this.props;
+
+    console.log(stats, expiringSoon, newMembers);
 
     return (
       <div>
@@ -36,7 +47,7 @@ class CommunityDashboard extends Component {
           <div className="col-md-4">
             <div className="panel panel-default">
               <div className="panel-body">
-                <h1>100</h1>
+                <h1>{stats ? stats.activeMembers : <i className="fa fa-spinner fa-spin" />}</h1>
                 active members
               </div>
             </div>
@@ -44,7 +55,7 @@ class CommunityDashboard extends Component {
           <div className="col-md-4">
             <div className="panel panel-default">
               <div className="panel-body">
-                <h1>10</h1>
+                <h1>{stats ? stats.newMembersThisMonth : <i className="fa fa-spinner fa-spin" />}</h1>
                 new members this month
               </div>
             </div>
@@ -52,7 +63,7 @@ class CommunityDashboard extends Component {
           <div className="col-md-4">
             <div className="panel panel-default">
               <div className="panel-body">
-                <h1>5</h1>
+                <h1>{stats ? stats.expiringSoon : <i className="fa fa-spinner fa-spin" />}</h1>
                 members expiring soon
               </div>
             </div>
@@ -74,7 +85,15 @@ class CommunityDashboard extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  Nothing to display
+                  {newMembers ? newMembers.map(member => (
+                  <tr>
+                    <td>
+                      <img alt={g(member, 'profile.name')} src={g(member, 'profile.images.square', '/blank.gif')} className="thumb16" /> {g(member, 'profile.name')}</td>
+                    <td>{g(member, 'subscription.pending_approval') ? 'Pending' : 'Approved'}</td>
+                    <td>{g(member, 'subscription.membership_plan.name', 'N/A')}</td>
+                    <td>{g(member, 'subscription.join_date') ? m(g(member, 'subscription.join_date').format('DD/MM/YYYY')) : 'N/A'}</td>
+                  </tr>
+                  )) : <span className="text-center p"><i className="fa fa-spinner fa-spin" /> Loading...</span>}
                 </tbody>
               </table>
             </div>
@@ -94,7 +113,16 @@ class CommunityDashboard extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  Nothing to display
+                  {expiringSoon ? expiringSoon.map(member => (
+                  <tr>
+                    <td>
+                      <img alt={g(member, 'profile.name')} src={g(member, 'profile.images.square', '/blank.gif')} className="thumb16" />
+                      {g(member, 'profile.name')}</td>
+                    <td>{g(member, 'profile.email')}</td>
+                    <td>{g(member, 'subscription.membership_plan.name', 'N/A')}</td>
+                    <td>{g(member, 'subscription.expiry_date') ? m(g(member, 'subscription.expiry_date').format('DD/MM/YYYY')) : 'N/A'}</td>
+                  </tr>
+                  )) : <span className="text-center p"><i className="fa fa-spinner fa-spin" /> Loading...</span>}
                 </tbody>
               </table>
             </div>
@@ -105,4 +133,69 @@ class CommunityDashboard extends Component {
   }
 }
 
-export default CommunityDashboard;
+const AdminQuery = gql`
+query($clubId:MongoID!) {
+  expiringSoon: members(clubId: $clubId, filter: "expiring_soon") {
+    members(first:10) {
+      edges{
+        _id
+        profile{
+          name
+          images{
+            square
+          }
+          email
+        }
+        subscription{
+          join_date
+          expiry_date
+          membership_plan{
+            name
+          }
+        }
+      }
+    }
+  }
+  newMembers: members(clubId:$clubId, filter: "recently_joined"){
+    members(first:10){
+      edges{
+        _id
+        profile{
+          name
+          images{
+            square
+          }
+          email
+        }
+        subscription{
+          pending_approval
+          join_date
+          expiry_date
+          membership_plan{
+            name
+          }
+        }
+      }
+    }
+  }
+  clubStats(clubId:$clubId){
+    stats
+  }
+}
+`
+
+const CommunityDashboardApollo = graphql(AdminQuery, {
+  options: ({ club }) => ({
+    variables: {
+      clubId: club._id
+    },
+    updateQuery: prev => prev
+  }),
+  props: ({ data }) => la()({
+    expiringSoon: data.expiringSoon ? data.expiringSoon.members.edges : false,
+    newMembers: data.newMembers ? data.newMembers.members.edges : false,
+    stats: data.clubStats ? data.clubStats.stats : false
+  })
+})(CommunityDashboard)
+
+export default CommunityDashboardApollo;
